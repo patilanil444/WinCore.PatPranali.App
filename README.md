@@ -1,0 +1,1 @@
+# WinCore.PatPranali.App
