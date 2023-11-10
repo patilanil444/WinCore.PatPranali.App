@@ -15,6 +15,9 @@ import { GeneralMasterListComponent } from '../common/masters/general-master/gen
 import { BranchMasterComponent } from '../common/masters/branch-master/branch-master.component';
 import { BranchMasterListComponent } from '../common/masters/branch-master/branch-master-list/branch-master-list.component';
 import { BranchMasterFormComponent } from '../common/masters/branch-master/branch-master-form/branch-master-form.component';
+import { BankMasterComponent } from '../common/masters/bank-master/bank-master.component';
+import { BankMasterFormComponent } from '../common/masters/bank-master/bank-master-form/bank-master-form.component';
+import { BankMasterListComponent } from '../common/masters/bank-master/bank-master-list/bank-master-list.component';
 
 
 @NgModule({
@@ -32,6 +35,9 @@ import { BranchMasterFormComponent } from '../common/masters/branch-master/branc
     BranchMasterComponent,
     BranchMasterFormComponent,
     BranchMasterListComponent,
+    BankMasterComponent,
+    BankMasterFormComponent,
+    BankMasterListComponent,
   ],
   imports: [
     CommonModule,

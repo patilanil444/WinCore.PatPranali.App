@@ -8,6 +8,7 @@ import { HomeComponent } from '../home/home.component';
 import { AppRouterComponent } from './app-router.component';
 import { GeneralMasterComponent } from '../common/masters/general-master/general-master.component';
 import { BranchMasterComponent } from '../common/masters/branch-master/branch-master.component';
+import { BankMasterComponent } from '../common/masters/bank-master/bank-master.component';
 
 
 // const routes: Routes = [
@@ -26,6 +27,7 @@ const routes: Routes = [
       { path: 'home', component: HomeComponent },
       { path: 'deposit-accounts', component: DepositAccountsComponent },
       { path: 'loan-accounts', component: LoanAccountsComponent },
+      { path: 'banks', component: BankMasterComponent },
       { path: 'priority-master', component: PriorityComponent },
       { path: 'general-master', component: GeneralMasterComponent },
       { path: 'branches', component: BranchMasterComponent },

@@ -2074,7 +2074,7 @@ pre {
 .form-control {
     display: block;
     width: 100%;
-    height: calc(2.25rem + 2px);
+    height: calc(2.25rem);
     padding: .375rem .75rem;
     font-size: 1rem;
     font-weight: 400;
@@ -2191,7 +2191,7 @@ textarea.form-control {
 }
 
 .form-group {
-    margin-bottom: 1rem;
+    margin-bottom: 0.5rem;
 }
 
 .form-text {
@@ -4698,7 +4698,7 @@ input[type="submit"].btn-block, input[type="reset"].btn-block, input[type="butto
 
 .card-body {
     flex: 1 1 auto;
-    padding: 1.25rem;
+    padding: 0.8rem;
 }
 
 .card-title {
@@ -24263,7 +24263,7 @@ a.fc-more {
 }
 
 .card.mb-3 {
-    margin-bottom: 30px !important;
+    margin-bottom: 10px !important;
 }
 
 .demo-image-bg {

@@ -11,6 +11,7 @@ import { NotFoundComponent } from './not-found/not-found.component';
     AppComponent,
     LoginComponent,
     NotFoundComponent,
+    
   ],
   imports: [
     BrowserModule,

@@ -886,15 +886,9 @@
                             </a>
                             <ul>
                                 <li>
-                                    <a [class.mm-active]="isMenuSelected('priority-master')" (click)="configClick('priority-master')">
-                                        <i class="metismenu-icon pe-7s-next-2"></i>
-                                        Priority Master
-                                    </a>
-                                </li>
-                                <li>
-                                    <a [class.mm-active]="isMenuSelected('general-master')" (click)="configClick('general-master')">
-                                        <i class="metismenu-icon pe-7s-back-2"></i>
-                                        General Master
+                                    <a [class.mm-active]="isMenuSelected('banks')" (click)="configClick('banks')">
+                                        <i class="metismenu-icon pe-7s-add-user"></i>
+                                        Bank Master
                                     </a>
                                 </li>
                                 <li>
@@ -904,9 +898,15 @@
                                     </a>
                                 </li>
                                 <li>
-                                    <a href="#">
-                                        <i class="metismenu-icon pe-7s-add-user"></i>
-                                        Bank Master
+                                    <a [class.mm-active]="isMenuSelected('priority-master')" (click)="configClick('priority-master')">
+                                        <i class="metismenu-icon pe-7s-next-2"></i>
+                                        Priority Master
+                                    </a>
+                                </li>
+                                <li>
+                                    <a [class.mm-active]="isMenuSelected('general-master')" (click)="configClick('general-master')">
+                                        <i class="metismenu-icon pe-7s-back-2"></i>
+                                        General Master
                                     </a>
                                 </li>
                                 <li>
