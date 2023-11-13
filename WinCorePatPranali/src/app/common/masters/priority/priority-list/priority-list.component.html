@@ -3,7 +3,14 @@
 
         <div class="main-card mb-3 card">
             <div class="card-body">
-                <h5 class="card-title">Priority List</h5>
+                <div class="row">
+                    <div class="col-md-6 position-relative">
+                        <h5 class="card-title">Priorities</h5>
+                    </div>
+                    <div class="col-md-6 position-relative">
+                        <button class="mt-1 btn btn-primary float-right" (click)="configClick('new-priority')">Add Priority</button>
+                    </div>
+                </div>
                 <table class="mb-0 table table-striped">
                     <thead>
                         <tr>

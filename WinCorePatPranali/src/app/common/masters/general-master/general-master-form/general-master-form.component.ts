@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-general-master-form',
@@ -6,5 +7,10 @@ import { Component } from '@angular/core';
   styleUrls: ['./general-master-form.component.css']
 })
 export class GeneralMasterFormComponent {
+  constructor(private router: Router) { }
 
+  configClick(routeValue: string) {
+    sessionStorage.setItem("configMenu", routeValue);
+    this.router.navigate(['/app/'+ routeValue]);
+  }
 }

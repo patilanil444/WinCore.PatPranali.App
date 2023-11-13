@@ -24299,3 +24299,8 @@ margin-top: 40px !important;
     margin-left: 5px;
     line-height: 1 !important;
 }
+
+.float-right{
+    float: right !important;
+    margin-bottom: 5px;
+}
