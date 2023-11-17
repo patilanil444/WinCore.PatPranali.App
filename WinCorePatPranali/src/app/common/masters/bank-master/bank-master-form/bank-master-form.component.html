@@ -2,59 +2,82 @@
     <div class="col-md-12">
         <div class="main-card mb-3 card">
             <div class="card-body">
-                <h5 class="card-title">Bank</h5>
-                <div class="row">
-                    <div class="col-md-6 position-relative form-group">
-                        <label for="txtCode" class="">Code</label>
-                        <input name="code" id="txtCode" tabindex="1" readonly="true" maxlength="10" placeholder="0"
-                            type="text" class="form-control">
-                    </div>
-                    <div class="col-md-6 position-relative form-group">
-                        <label for="txtName" class="">Name</label>
-                        <input name="bankName" id="txtName" tabindex="2" maxlength="50" placeholder="Bank Name"
-                            type="text" class="form-control">
-                    </div>
-                </div>
+                <form [formGroup]="bankForm" #form="ngForm">
+                    <h5 class="card-title">Bank</h5>
+                    <div class="row">
+                        <div class="col-md-6 position-relative form-group">
+                            <label class="">Code</label>
+                            <input name="code" id="txtCode" tabindex="1" readonly="true" placeholder="0" type="text"
+                            formControlName="code"  class="form-control">
+                        </div>
+                        <div class="col-md-6 position-relative form-group">
+                            <label class="">Name</label>
+                            <input type="text" tabindex="2" autocomplete="off" placeholder="Bank Name" id="txtName" 
+                                class="form-control" formControlName="name" required maxlength="50"
+                                [class.is-invalid]="name.invalid && (name.dirty || name.touched)">
 
-                <div class="row">
-                    <div class="col-md-6 position-relative form-group">
-                        <label for="txtAddress" class="">Address</label>
-                        <div class="input-group">
-                            <input placeholder="Address" id="txtAddress" tabindex="3" maxlength="100" type="text"
-                                class="form-control">
+                            <div *ngIf="name.invalid && (name.dirty || name.touched)" class="invalid-feedback">
+                                <div *ngIf="name.errors?.['required']">
+                                    Bank Name is required.
+                                </div>
+                            </div>
                         </div>
                     </div>
-                    <div class="col-md-6 position-relative form-group">
-                        <label for="txtDesc" class="">Description</label>
-                        <input name="priorityName" id="txtDesc" tabindex="4" maxlength="100" placeholder="Description"
-                            type="text" class="form-control">
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-md-6 position-relative">
-                        <label for="txtCode" class="">Has branch</label>
-                        <select class="mb-2 form-control" tabindex="5">
-                            <option>Yes</option>
-                            <option>No</option>
-                        </select>
-                    </div>
-                    <div class="col-md-6 position-relative">
-                        <label for="txtCode" class="">General Ledger</label>
-                        <select class="mb-2 form-control" tabindex="6">
-                            <option>General Ledger 1</option>
-                            <option>General Ledger 2</option>
-                        </select>
-                    </div>
-                </div>
 
-                <div class="row">
-                    <div class="col-md-6 position-relative">
-                        <button class="mt-1 btn btn-primary" tabindex="7">Submit</button>
-                        <button class="mt-1 btn btn-left-margin10 btn-secondary">Clear</button>
-                        <button class="mt-1 btn btn-left-margin10 btn-alternate" (click)="configClick('banks')">Bank List</button>
+                    <div class="row">
+                        <div class="col-md-6 position-relative form-group">
+                            <label class="">Address</label>
+                            <div class="input-group">
+                                <input placeholder="Address" id="txtAddress" tabindex="3" maxlength="100" type="text" autocomplete="off"
+                                    class="form-control" required maxlength="150" formControlName="address"
+                                    [class.is-invalid]="address.invalid && (address.dirty || address.touched)">
+                                <div *ngIf="address.invalid && (address.dirty || address.touched)" class="invalid-feedback">
+                                    <div *ngIf="address.errors?.['required']">
+                                        Address is required.
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6 position-relative form-group">
+                            <label class="">Description</label>
+                            <input placeholder="Description" type="text" class="form-control" tabindex="4" autocomplete="off"
+                             id="txtDesc" maxlength="100" formControlName="description"
+                             [class.is-invalid]="description.invalid && (description.dirty || description.touched)">
+                             <div *ngIf="description.invalid && (description.dirty || description.touched)" class="invalid-feedback">
+                                <div *ngIf="description.errors?.['required']">
+                                    Description is required.
+                                </div>
+                            </div>
+                        </div>
                     </div>
-                    
-                </div>
+                    <div class="row">
+                        <div class="col-md-6 position-relative">
+                            <label class="">Has branch</label>
+                            <select class="mb-2 form-control" formControlName="hasBranch">
+                                <option *ngFor="let branch of hBranchs" [ngValue]="branch.id">
+                                    {{branch.name}}
+                                </option>
+                            </select>
+                        </div>
+                        <div class="col-md-6 position-relative">
+                            <label class="">General Ledger</label>
+                            <select class="mb-2 form-control" formControlName="generalLeadger">
+                                <option *ngFor="let generalLeadger of generalLeadgers" [ngValue]="generalLeadger.id">
+                                        {{generalLeadger.name}}
+                                </option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-6 position-relative">
+                            <button type="button" class="mt-1 btn btn-primary" tabindex="7" (click)="saveBank()">Submit</button>
+                            <button class="mt-1 btn btn-left-margin10 btn-secondary" (click)="clear()">Clear</button>
+                            <button class="mt-1 btn btn-left-margin10 btn-alternate" (click)="configClick('banks')">Bank
+                                List</button>
+                        </div>
+                    </div>
+                </form>
             </div>
         </div>
     </div>

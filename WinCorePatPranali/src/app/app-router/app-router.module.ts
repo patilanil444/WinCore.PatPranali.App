@@ -18,6 +18,8 @@ import { BranchMasterFormComponent } from '../common/masters/branch-master/branc
 import { BankMasterComponent } from '../common/masters/bank-master/bank-master.component';
 import { BankMasterFormComponent } from '../common/masters/bank-master/bank-master-form/bank-master-form.component';
 import { BankMasterListComponent } from '../common/masters/bank-master/bank-master-list/bank-master-list.component';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { NgxPaginationModule } from 'ngx-pagination';
 
 
 @NgModule({
@@ -41,7 +43,10 @@ import { BankMasterListComponent } from '../common/masters/bank-master/bank-mast
   ],
   imports: [
     CommonModule,
-    AppRouterRoutingModule
+    ReactiveFormsModule,
+    FormsModule,
+    AppRouterRoutingModule,
+    NgxPaginationModule
   ]
 })
 export class AppRouterModule { }
