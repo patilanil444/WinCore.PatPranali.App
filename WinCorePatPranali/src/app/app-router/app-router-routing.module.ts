@@ -14,17 +14,6 @@ import { BranchMasterFormComponent } from '../common/masters/branch-master/branc
 import { PriorityFormComponent } from '../common/masters/priority/priority-form/priority-form.component';
 import { GeneralMasterFormComponent } from '../common/masters/general-master/general-master-form/general-master-form.component';
 
-
-// const routes: Routes = [
-//   {path: 'home', component: HomeComponent },
-//   {path: 'deposit-accounts', component: DepositAccountsComponent },
-//   {path: 'loan-accounts', component: LoanAccountsComponent },
-//   {path: 'priority', component: PriorityComponent },
-//   {path: 'general', component: GenaralMasterComponent },
-//   {path: '', redirectTo: 'configurations', pathMatch: 'full'},
-//   { path: '**', component: NotFoundComponent },
-// ];
-
 const routes: Routes = [
   {
     path: '', component: AppRouterComponent, children: [
@@ -34,7 +23,8 @@ const routes: Routes = [
       { path: 'new-bank/:maxId', component: BankMasterFormComponent },
       { path: 'edit-bank/:id', component: BankMasterFormComponent },
       { path: 'banks', component: BankMasterComponent },
-      { path: 'new-branch', component: BranchMasterFormComponent },
+      { path: 'new-branch/:maxId', component: BranchMasterFormComponent },
+      { path: 'edit-branch/:id', component: BranchMasterFormComponent },
       { path: 'branches', component: BranchMasterComponent },
       { path: 'new-priority', component: PriorityFormComponent },
       { path: 'priorities', component: PriorityComponent },

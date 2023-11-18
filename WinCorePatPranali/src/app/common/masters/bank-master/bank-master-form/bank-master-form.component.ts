@@ -71,30 +71,10 @@ export class BankMasterFormComponent {
     }
     else
     {
-      this.bankForm = new FormGroup({
-        code: new FormControl(parseInt(this.maxId) + 1, []),
-        name: new FormControl("", [Validators.required]),
-        address: new FormControl("", [Validators.required]),
-        description: new FormControl("", [Validators.required]),
-        hasBranch: new FormControl(1, [Validators.required]),
-        generalLeadger: new FormControl(1, [Validators.required])
-      });
+      this.bankForm.patchValue({
+        code: parseInt(this.maxId) + 1
+     });
     }
-
-    // this._sharedService.bankEmitter.subscribe((data: any) => {
-    //   if (data) {
-    //     this.newCode = data;
-    //     let form = {
-    //       code: new FormControl(this.newCode),
-    //       name: new FormControl("", [Validators.required]),
-    //       address: new FormControl("", [Validators.required]),
-    //       description: new FormControl("", [Validators.required]),
-    //       hasBranch: new FormControl(1, [Validators.required]),
-    //       generalLeadger: new FormControl(1, [Validators.required])};
-
-    //     this.bankForm.patchValue(form);
-    //   }
-    // })
   }
 
   get name() {
@@ -134,7 +114,7 @@ export class BankMasterFormComponent {
           console.log(data);
           if (data) {
             if (data.statusCode == 200 && data.data.data == 1) {
-              this.clear();
+              this.configClick("banks");
             }
           }
         })
@@ -145,7 +125,7 @@ export class BankMasterFormComponent {
           console.log(data);
           if (data) {
             if (data.statusCode == 200 && data.data.data == 1) {
-              this.clear();
+              this.configClick("banks");
             }
           }
         })

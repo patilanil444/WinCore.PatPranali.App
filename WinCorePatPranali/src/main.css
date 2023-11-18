@@ -24304,3 +24304,7 @@ margin-top: 40px !important;
     float: right !important;
     margin-bottom: 5px;
 }
+
+select.form-control {
+    -webkit-appearance: menulist; 
+}

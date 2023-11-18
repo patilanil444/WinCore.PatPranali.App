@@ -1,5 +1,7 @@
 import { AfterViewInit, Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { BranchMasterService } from '../services/common/branch-master/branch-master.service';
+import { SharedService } from '../services/common/shared.service';
 
 @Component({
   selector: 'app-app-router',
@@ -8,7 +10,8 @@ import { Router } from '@angular/router';
 })
 export class AppRouterComponent implements OnInit, AfterViewInit{
 
-  constructor(private router: Router) { }
+  constructor(private router: Router, private _branchMasterService:BranchMasterService,
+    private _sharedService:SharedService) { }
 
   ngOnInit(): void {
     
@@ -19,6 +22,43 @@ export class AppRouterComponent implements OnInit, AfterViewInit{
     else {
       this.configClick('home');
     }
+
+    this.getStates();
+    this.getDistricts();
+    this.getTahshils();
+  }
+
+  getStates()
+  {
+    this._branchMasterService.getStates().subscribe((data: any) => {
+      if (data) {
+        if (data.statusCode == 200 && data.data.data) {
+          this._sharedService.uiAllStates = data.data.data;
+        }
+      }
+    })
+  }
+
+  getDistricts()
+  {
+    this._branchMasterService.getDistricts().subscribe((data: any) => {
+      if (data) {
+        if (data.statusCode == 200 && data.data.data) {
+          this._sharedService.uiAllDistricts = data.data.data;
+        }
+      }
+    })
+  }
+
+  getTahshils()
+  {
+    this._branchMasterService.getTahshils().subscribe((data: any) => {
+      if (data) {
+        if (data.statusCode == 200 && data.data.data) {
+          this._sharedService.uiAllTahshils = data.data.data;
+        }
+      }
+    })
   }
 
   configClick(routeValue: string) {
