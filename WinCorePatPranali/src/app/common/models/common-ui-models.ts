@@ -15,3 +15,10 @@ export enum NodeType{
     Equipment = 6,
     Meter = 7
 }
+
+
+export class UiUser
+{
+    constructor(public id: number, public branchId: number, )
+        {   }
+}

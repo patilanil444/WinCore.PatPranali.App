@@ -8,73 +8,36 @@
                         <h5 class="card-title">Priorities</h5>
                     </div>
                     <div class="col-md-6 position-relative">
-                        <button class="mt-1 btn btn-primary float-right" (click)="configClick('new-priority')">Add Priority</button>
+                        <button class="mt-1 btn btn-primary float-right" (click)="add('new-priority')">Add Priority</button>
                     </div>
                 </div>
                 <table class="mb-0 table table-striped">
                     <thead>
                         <tr>
-                            <th>#</th>
-                            <th>First Name</th>
-                            <th>Last Name</th>
-                            <th>Username</th>
-                            <th>Actions</th>
+                            <th width="5%">#</th>
+                            <th width="30%">Name</th>
+                            <th width="25%">From Amount</th>
+                            <th width="25%">To Amount</th>
+                            <th width="15%">Actions</th>
                         </tr>
                     </thead>
                     <tbody>
-                        <tr>
-                            <th scope="row">1</th>
-                            <td>Mark</td>
-                            <td>Otto</td>
-                            <td>@mdo</td>
+                        <tr *ngFor="let uiPriority of uiPriorities| paginate: { itemsPerPage: 5, currentPage: p, totalItems: total }">
+                            <th scope="row">{{uiPriority.id}}</th>
+                            <td>{{uiPriority.name}}</td>
+                            <td>{{uiPriority.fromAmount}}</td>
+                            <td>{{uiPriority.toAmount}}</td>
                             <td>
                                 <div class="widget-content-right">
-                                    <button type="button" title="Edit record" class="btn-shadow btn btn-info btn-actions">
+                                    <button type="button" title="Edit record"
+                                        class="btn-shadow btn btn-info btn-actions" (click)="edit(uiPriority)">
                                         <span class="btn-icon-wrapper opacity-10">
                                             <i class="fa fa-edit fa-w-10"></i>
                                         </span>
                                     </button>
-                                    <button type="button" title="Delete record" class="btn-shadow btn btn-danger btn-actions">
-                                        <span class="btn-icon-wrapper opacity-10">
-                                            <i class="fa fa-trash fa-w-20"></i>
-                                        </span>
-                                    </button>
-                                </div>
-                            </td>
-                        </tr>
-                        <tr>
-                            <th scope="row">2</th>
-                            <td>Jacob</td>
-                            <td>Thornton</td>
-                            <td>@fat</td>
-                            <td>
-                                <div class="widget-content-right">
-                                    <button type="button" title="Edit record" class="btn-shadow btn btn-info btn-actions">
-                                        <span class="btn-icon-wrapper opacity-10">
-                                            <i class="fa fa-edit fa-w-10"></i>
-                                        </span>
-                                    </button>
-                                    <button type="button" title="Delete record" class="btn-shadow btn btn-danger btn-actions">
-                                        <span class="btn-icon-wrapper opacity-10">
-                                            <i class="fa fa-trash fa-w-20"></i>
-                                        </span>
-                                    </button>
-                                </div>
-                            </td>
-                        </tr>
-                        <tr>
-                            <th scope="row">3</th>
-                            <td>Larry</td>
-                            <td>the Bird</td>
-                            <td>@twitter</td>
-                            <td>
-                                <div class="widget-content-right">
-                                    <button type="button" title="Edit record" class="btn-shadow btn btn-info btn-actions">
-                                        <span class="btn-icon-wrapper opacity-10">
-                                            <i class="fa fa-edit fa-w-10"></i>
-                                        </span>
-                                    </button>
-                                    <button type="button" title="Delete record" class="btn-shadow btn btn-danger btn-actions">
+                                    <button type="button" title="Delete record"
+                                        class="btn-shadow btn btn-danger btn-actions" data-toggle="modal"
+                                        data-target="#deleteModal" >
                                         <span class="btn-icon-wrapper opacity-10">
                                             <i class="fa fa-trash fa-w-20"></i>
                                         </span>
@@ -85,7 +48,32 @@
                     </tbody>
                 </table>
             </div>
+            <div class="d-flex justify-content-center">
+                <pagination-controls (pageChange)="pageChangeEvent($event)"></pagination-controls>
+              </div>
         </div>
 
+    </div>
+</div>
+
+<div id="deleteModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" 
+aria-hidden="true"
+    data-backdrop="false">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Delete</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <p class="mb-0">Are you sure do you want to delete?</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-danger">Yes</button>
+                <button type="button" class="btn btn-primary" data-dismiss="modal">No</button>
+            </div>
+        </div>
     </div>
 </div>
