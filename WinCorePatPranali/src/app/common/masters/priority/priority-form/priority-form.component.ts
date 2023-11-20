@@ -128,7 +128,7 @@ export class PriorityFormComponent {
 
   public clear(): void {
     this.priorityForm = new FormGroup({
-      code: new FormControl("", []),
+      // code: new FormControl("", []),
       name: new FormControl("", [Validators.required]),
       fromAmount: new FormControl("", [Validators.required]),
       toAmount: new FormControl("", [Validators.required])

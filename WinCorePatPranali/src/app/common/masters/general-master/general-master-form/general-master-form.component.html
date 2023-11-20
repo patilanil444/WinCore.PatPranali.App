@@ -2,36 +2,45 @@
     <div class="col-md-12">
         <div class="main-card mb-3 card">
             <div class="card-body">
-                <h5 class="card-title">General Master</h5>
-                <div class="row">
-                    <div class="col-md-6 position-relative">
-                        <label for="txtCode" class="">Master Type</label>
-                        <input name="code" id="txtCode" readonly="true" tabindex="1"
-                            type="text" class="form-control">
+                <form [formGroup]="priorityForm" #form="ngForm">
+                    <h5 class="card-title">General Master</h5>
+                    <div class="row">
+                        <div class="col-md-6 position-relative">
+                            <label for="txtCode" class="">Master Type</label>
+                            <input name="code" id="txtCode" readonly="true" tabindex="1" type="text"
+                                class="form-control" formControlName="masterType"> 
+                        </div>
                     </div>
-                </div>
-                <div class="divider"></div>
-                <div class="row">
-                    <div class="col-md-6 position-relative form-group">
-                        <label for="txtCode" class="">Code</label>
-                        <input name="code" id="txtCode" tabindex="2" readonly="true" maxlength="10" placeholder="0"
-                            type="text" class="form-control">
+                    <div class="divider"></div>
+                    <div class="row">
+                        <div class="col-md-6 position-relative form-group">
+                            <label for="txtCode" class="">Code</label>
+                            <input name="code" id="txtCode" tabindex="1" readonly="true" maxlength="10" placeholder="0"
+                                type="text" class="form-control" formControlName="code">
+                        </div>
+                        <div class="col-md-6 position-relative form-group">
+                            <label for="txtName" class="">Name</label>
+                            <input name="priorityName" id="txtName" tabindex="2" placeholder="Name" type="text"
+                                class="form-control" required maxlength="50" formControlName="name" autocomplete="off"
+                                [class.is-invalid]="name.invalid && (name.dirty || name.touched)">
+                            <div *ngIf="name.invalid && (name.dirty || name.touched)" class="invalid-feedback">
+                                <div *ngIf="name.errors?.['required']">
+                                    Name is required.
+                                </div>
+                            </div>
+                        </div>
                     </div>
-                    <div class="col-md-6 position-relative form-group">
-                        <label for="txtName" class="">Name</label>
-                        <input name="masterName" id="txtName" tabindex="3" maxlength="50" placeholder="Name"
-                            type="text" class="form-control">
-                    </div>
-                </div>
 
-                <div class="row">
-                    <div class="col-md-6 position-relative">
-                        <button class="mt-1 btn btn-primary">Submit</button>
-                        <button class="mt-1 btn btn-left-margin10 btn-secondary">Clear</button>
-                        <button class="mt-1 btn btn-left-margin10 btn-alternate" (click)="configClick('general-master')">Master List</button>
+                    <div class="row">
+                        <div class="col-md-6 position-relative">
+                            <button class="mt-1 btn btn-primary" (click)="saveGeneralMaster()">Submit</button>
+                            <button class="mt-1 btn btn-left-margin10 btn-secondary" (click)="clear()">Clear</button>
+                            <button class="mt-1 btn btn-left-margin10 btn-alternate"
+                                (click)="configClick('master-list')">Master List</button>
+                        </div>
+
                     </div>
-                    
-                </div>
+                </form>
             </div>
         </div>
     </div>

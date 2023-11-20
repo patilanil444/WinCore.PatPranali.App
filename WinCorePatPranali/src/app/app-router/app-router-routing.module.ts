@@ -29,8 +29,8 @@ const routes: Routes = [
       { path: 'new-priority/:maxId', component: PriorityFormComponent },
       { path: 'edit-priority/:id', component: PriorityFormComponent },
       { path: 'priorities', component: PriorityComponent },
-      { path: 'new-general-master', component: GeneralMasterFormComponent },
-      { path: 'general-master', component: GeneralMasterComponent },
+      { path: 'master-list', component: GeneralMasterComponent },
+      { path: 'general-master', component: GeneralMasterFormComponent },
       { path: '**', component: NotFoundComponent },
       { path: '', redirectTo: 'projects', pathMatch: 'full' },
     ]

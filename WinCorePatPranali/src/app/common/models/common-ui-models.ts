@@ -22,3 +22,13 @@ export class UiUser
     constructor(public id: number, public branchId: number, )
         {   }
 }
+
+export interface IGeneralMasterDTO
+{
+    route: string,
+    action: string,
+    id: number,
+    maxId: number,
+    masterId: number,
+    masterType: string
+}

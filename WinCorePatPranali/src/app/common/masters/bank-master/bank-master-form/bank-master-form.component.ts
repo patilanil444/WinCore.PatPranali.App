@@ -147,7 +147,7 @@ export class BankMasterFormComponent {
 
   public clear(): void {
     this.bankForm = new FormGroup({
-      code: new FormControl("", []),
+      // code: new FormControl("", []),
       name: new FormControl("", [Validators.required]),
       address: new FormControl("", [Validators.required]),
       description: new FormControl("", [Validators.required]),
