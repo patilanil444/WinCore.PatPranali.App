@@ -1,18 +1,18 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { DepositAccountsComponent } from '../screens/deposit-accounts/deposit-accounts.component';
 import { NotFoundComponent } from '../not-found/not-found.component';
-import { LoanAccountsComponent } from '../screens/loan-accounts/loan-accounts.component';
-import { PriorityComponent } from '../common/masters/priority/priority.component';
 import { HomeComponent } from '../home/home.component';
 import { AppRouterComponent } from './app-router.component';
-import { GeneralMasterComponent } from '../common/masters/general-master/general-master.component';
-import { BranchMasterComponent } from '../common/masters/branch-master/branch-master.component';
-import { BankMasterComponent } from '../common/masters/bank-master/bank-master.component';
-import { BankMasterFormComponent } from '../common/masters/bank-master/bank-master-form/bank-master-form.component';
-import { BranchMasterFormComponent } from '../common/masters/branch-master/branch-master-form/branch-master-form.component';
-import { PriorityFormComponent } from '../common/masters/priority/priority-form/priority-form.component';
-import { GeneralMasterFormComponent } from '../common/masters/general-master/general-master-form/general-master-form.component';
+import { DepositAccountsComponent } from '../screens/accounts/deposit-accounts/deposit-accounts.component';
+import { LoanAccountsComponent } from '../screens/accounts/loan-accounts/loan-accounts.component';
+import { BankMasterFormComponent } from '../screens/masters/bank-master/bank-master-form/bank-master-form.component';
+import { BankMasterComponent } from '../screens/masters/bank-master/bank-master.component';
+import { BranchMasterFormComponent } from '../screens/masters/branch-master/branch-master-form/branch-master-form.component';
+import { BranchMasterComponent } from '../screens/masters/branch-master/branch-master.component';
+import { PriorityFormComponent } from '../screens/masters/priority/priority-form/priority-form.component';
+import { PriorityComponent } from '../screens/masters/priority/priority.component';
+import { GeneralMasterComponent } from '../screens/masters/general-master/general-master.component';
+import { GeneralMasterFormComponent } from '../screens/masters/general-master/general-master-form/general-master-form.component';
 
 const routes: Routes = [
   {
