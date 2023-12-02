@@ -13,6 +13,10 @@ import { PriorityFormComponent } from '../screens/masters/priority/priority-form
 import { PriorityComponent } from '../screens/masters/priority/priority.component';
 import { GeneralMasterComponent } from '../screens/masters/general-master/general-master.component';
 import { GeneralMasterFormComponent } from '../screens/masters/general-master/general-master-form/general-master-form.component';
+import { GeneralLedgerMasterListComponent } from '../screens/masters/general-ledger-master/general-ledger-master-list/general-ledger-master-list.component';
+import { GeneralLedgerMasterFormComponent } from '../screens/masters/general-ledger-master/general-ledger-master-form/general-ledger-master-form.component';
+import { DepositInterestStructureComponent } from '../screens/masters/deposit-interest-structure/deposit-interest-structure.component';
+import { LoanInterestStructureComponent } from '../screens/masters/loan-interest-structure/loan-interest-structure.component';
 
 const routes: Routes = [
   {
@@ -31,6 +35,10 @@ const routes: Routes = [
       { path: 'priorities', component: PriorityComponent },
       { path: 'master-list', component: GeneralMasterComponent },
       { path: 'general-master', component: GeneralMasterFormComponent },
+      { path: 'general-ledger-list', component: GeneralLedgerMasterListComponent },
+      { path: 'general-ledger', component: GeneralLedgerMasterFormComponent },
+      { path: 'deposit-interest', component: DepositInterestStructureComponent },
+      { path: 'loan-interest', component: LoanInterestStructureComponent },
       { path: '**', component: NotFoundComponent },
       { path: '', redirectTo: 'projects', pathMatch: 'full' },
     ]

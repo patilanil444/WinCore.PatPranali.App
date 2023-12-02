@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
-import { BranchMasterService } from 'src/app/services/common/branch-master/branch-master.service';
+import { BranchMasterService } from 'src/app/services/masters/branch-master/branch-master.service';
 
 @Component({
   selector: 'app-branch-master-list',

@@ -1,7 +1,8 @@
 import { AfterViewInit, Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { BranchMasterService } from '../services/common/branch-master/branch-master.service';
-import { SharedService } from '../services/common/shared.service';
+import { BranchMasterService } from '../services/masters/branch-master/branch-master.service';
+import { SharedService } from '../services/shared.service';
+import { GeneralLedgerService } from '../services/masters/general-ledger/general-ledger.service';
 
 @Component({
   selector: 'app-app-router',
@@ -11,7 +12,7 @@ import { SharedService } from '../services/common/shared.service';
 export class AppRouterComponent implements OnInit, AfterViewInit{
 
   constructor(private router: Router, private _branchMasterService:BranchMasterService,
-    private _sharedService:SharedService) { }
+    private _sharedService:SharedService, private _generalLedgerService: GeneralLedgerService) { }
 
   ngOnInit(): void {
     
@@ -26,6 +27,8 @@ export class AppRouterComponent implements OnInit, AfterViewInit{
     this.getStates();
     this.getDistricts();
     this.getTahshils();
+    this.getGLGroups();
+    this.getAccountTypes();
   }
 
   getStates()
@@ -56,6 +59,28 @@ export class AppRouterComponent implements OnInit, AfterViewInit{
       if (data) {
         if (data.statusCode == 200 && data.data.data) {
           this._sharedService.uiAllTahshils = data.data.data;
+        }
+      }
+    })
+  }
+
+  getGLGroups()
+  {
+    this._generalLedgerService.getGLGroups().subscribe((data: any) => {
+      if (data) {
+        if (data.statusCode == 200 && data.data.data) {
+          this._sharedService.uiGLGroups = data.data.data;
+        }
+      }
+    })
+  }
+
+  getAccountTypes()
+  {
+    this._generalLedgerService.getAccountTypes().subscribe((data: any) => {
+      if (data) {
+        if (data.statusCode == 200 && data.data.data) {
+          this._sharedService.uiAccountTypes = data.data.data;
         }
       }
     })

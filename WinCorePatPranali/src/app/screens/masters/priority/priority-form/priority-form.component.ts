@@ -1,8 +1,8 @@
 import { Component } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
-import { PriorityMasterService } from 'src/app/services/common/priority-master/priority-master.service';
-import { SharedService } from 'src/app/services/common/shared.service';
+import { PriorityMasterService } from 'src/app/services/masters/priority-master/priority-master.service';
+import { SharedService } from 'src/app/services/shared.service';
 
 interface IPriorityServerModel {
   Id: string;

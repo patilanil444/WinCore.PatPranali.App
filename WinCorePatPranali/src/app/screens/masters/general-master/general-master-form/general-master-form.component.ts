@@ -2,8 +2,8 @@ import { Component } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { IGeneralMasterDTO } from 'src/app/common/models/common-ui-models';
-import { SharedService } from 'src/app/services/common/shared.service';
-import { GeneralMasterService } from 'src/app/services/general-master/general-master.service';
+import { GeneralMasterService } from 'src/app/services/masters/general-master/general-master.service';
+import { SharedService } from 'src/app/services/shared.service';
 
 interface IGeneralMasterServerModel {
   Id: number;
@@ -19,7 +19,7 @@ interface IGeneralMasterServerModel {
 })
 export class GeneralMasterFormComponent {
 
-  priorityForm!: FormGroup;
+  generalMasterForm!: FormGroup;
   id!: number;
   maxId!: number;
 
@@ -34,7 +34,7 @@ export class GeneralMasterFormComponent {
 
    ngOnInit() {
 
-    this.priorityForm = new FormGroup({
+    this.generalMasterForm = new FormGroup({
       masterType: new FormControl("", []),
       code: new FormControl("", []),
       name: new FormControl("", [Validators.required]),
@@ -51,7 +51,7 @@ export class GeneralMasterFormComponent {
         this._generalMasterService.getMaxGeneralMasterId().subscribe((data: any) => {
           if (data) {
             this.maxId = data.data.data;
-            this.priorityForm.patchValue({
+            this.generalMasterForm.patchValue({
               masterType: this.dto.masterType,
               code: this.maxId + 1
            });
@@ -66,7 +66,7 @@ export class GeneralMasterFormComponent {
           if (data) {
             if (data.statusCode == 200 && data.data.data) {
               var generalMaster = data.data.data;
-              this.priorityForm = new FormGroup({
+              this.generalMasterForm = new FormGroup({
                 masterType: new FormControl(this.dto.masterType, []),
                 code: new FormControl(generalMaster.id, []),
                 name: new FormControl(generalMaster.branchMasterName, [Validators.required]),
@@ -79,7 +79,7 @@ export class GeneralMasterFormComponent {
   }
 
   get name() {
-    return this.priorityForm.get('name')!;
+    return this.generalMasterForm.get('name')!;
   }
 
   public saveGeneralMaster(): void {
@@ -118,9 +118,9 @@ export class GeneralMasterFormComponent {
 
   public validateForm(): boolean {
 
-    if (this.priorityForm.invalid) {
-      for (const control of Object.keys(this.priorityForm.controls)) {
-        this.priorityForm.controls[control].markAsTouched();
+    if (this.generalMasterForm.invalid) {
+      for (const control of Object.keys(this.generalMasterForm.controls)) {
+        this.generalMasterForm.controls[control].markAsTouched();
       }
       return false;
     }
@@ -128,7 +128,7 @@ export class GeneralMasterFormComponent {
   }
 
   public clear(): void {
-    this.priorityForm = new FormGroup({
+    this.generalMasterForm = new FormGroup({
       name: new FormControl("", [Validators.required]),
     });
   }

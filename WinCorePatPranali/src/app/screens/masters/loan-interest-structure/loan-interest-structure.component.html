@@ -1,0 +1,83 @@
+<div class="row">
+    <div class="col-lg-12">
+
+        <div class="main-card mb-3 card">
+            <div class="card-body">
+                <h5 class="card-title">Loan Interest Rate Structure</h5>
+
+                <div class="row" style="margin-bottom: 10px;">
+                    <div class="col-md-4 position-relative">
+                        <label for="txtCode" class="">Date</label>
+                        <div class="input-group">
+                            <input tabindex="1" type="date" class="form-control" [(ngModel)]="interestStructureDate">
+                        </div>
+                    </div>
+                    <div class="col-md-4 position-relative">
+                        <label for="txtCode" class="">General Ledger</label>
+                        <select class="form-control" name="masterList" [(ngModel)]="generalLedgerId" tabindex="2">
+                            <option *ngFor="let uiGeneralLedger of uiGeneralLedgers" [ngValue]="uiGeneralLedger.id">
+                                {{uiGeneralLedger.name}}
+                            </option>
+                        </select>
+                    </div>
+                </div>
+                <div class="row" style="margin-bottom: 10px;">
+                    <div class="col-md-4 position-relative">
+                        <label for="txtCode" class="">Purpose from</label>
+                        <div class="input-group">
+                            <select class="form-control" name="masterList" [(ngModel)]="purposeToId" tabindex="2">
+                                <option *ngFor="let uiPurposeMaster of uiPurposeMasters" [ngValue]="uiPurposeMaster.id">
+                                    {{uiPurposeMaster.branchMasterName}}
+                                </option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-md-4 position-relative">
+                        <label for="txtCode" class="">Purpose To</label>
+                        <div class="input-group">
+                            <select class="form-control" name="masterList" [(ngModel)]="purposeFromId" tabindex="2">
+                                <option *ngFor="let uiPurposeMaster of uiPurposeMasters" [ngValue]="uiPurposeMaster.id">
+                                    {{uiPurposeMaster.branchMasterName}}
+                                </option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-md-4 position-relative form-group">
+                        <button class="btn btn-info" style="margin-top: 30px;" (click)="showSctructure()">Show Structure
+                        </button>
+                    </div>
+                </div>
+                <div class="divider"></div>
+
+                <table class="mb-0 table table-bordered">
+                    <thead>
+                        <tr>
+                            <th width="10%">From Amount</th>
+                            <th width="15%">To Amount</th>
+                            <th width="15%">Interest Rate</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let structure of structureArray">
+                            <td style="padding: 0rem !important;"><input type="number" class="form-control"
+                                    [(ngModel)]="structure.fromAmount"></td>
+                            <td style="padding: 0rem !important;"><input type="number" class="form-control"
+                                    [(ngModel)]="structure.toAmount"></td>
+                            <td style="padding: 0rem !important;"><input type="number" class="form-control"
+                                    [(ngModel)]="structure.rate"></td>
+                        </tr>
+                    </tbody>
+                </table>
+                <div class="divider"></div>
+
+                <div class="row">
+                    <div class="col-md-6 position-relative">
+                        <button class="mt-1 btn btn-primary" (click)="saveStructure()">Submit</button>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>

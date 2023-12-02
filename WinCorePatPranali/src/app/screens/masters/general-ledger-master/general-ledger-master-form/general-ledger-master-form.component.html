@@ -1,0 +1,156 @@
+<div class="row">
+    <div class="col-md-12">
+        <div class="main-card mb-3 card">
+            <div class="card-body">
+                <form [formGroup]="glForm" #form="ngForm">
+                    <h5 class="card-title">General Ledger</h5>
+                    <div class="row">
+                        <div class="col-md-4 position-relative form-group">
+                            <label class="">Code</label>
+                            <input name="code" id="txtCode" tabindex="1" readonly="true" placeholder="0" type="text"
+                                class="form-control" formControlName="code">
+                        </div>
+
+                        <div class="col-md-4 position-relative form-group">
+                            <label class="">Name</label>
+                            <input type="text" id="txtName" autocomplete="off" tabindex="1" placeholder="Ledger Name"
+                                class="form-control" formControlName="name" required maxlength="50"
+                                [class.is-invalid]="name.invalid && (name.dirty || name.touched)">
+                            <div *ngIf="name.invalid && (name.dirty || name.touched)" class="invalid-feedback">
+                                <div *ngIf="name.errors?.['required']">
+                                    Ledger Name is required.
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-4 position-relative">
+                            <label class="">Type of Account</label>
+                            <select class="mb-2 form-control" tabindex="9" formControlName="accountType">
+                                <option *ngFor="let uiAccountType of uiAccountTypes" [ngValue]="uiAccountType.id">
+                                    {{uiAccountType.name}}
+                                </option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-4 position-relative">
+                            <label class="">Group</label>
+                            <select class="mb-2 form-control" tabindex="2" formControlName="group">
+                                <option *ngFor="let uiGLGroup of uiGLGroups" [ngValue]="uiGLGroup.id">
+                                    {{uiGLGroup.name}}
+                                </option>
+                            </select>
+                        </div>
+
+                        <div class="col-md-4 position-relative form-group">
+                            <label class="">Interest Rate</label>
+                            <div class="input-group">
+                                <input placeholder="Interest Rate" tabindex="4" type="number" maxlength="5"
+                                    class="form-control" formControlName="interestRate" 
+                                   >
+                                   <!-- [class.is-invalid]="interestRate.invalid && (interestRate.dirty || interestRate.touched)" -->
+                                <!-- <div *ngIf="interestRate.invalid && (interestRate.dirty || interestRate.touched)"
+                                    class="invalid-feedback">
+                                    <div *ngIf="interestRate.errors?.['required']">
+                                        Interest Rate is required.
+                                    </div>
+                                </div> -->
+                            </div>
+                        </div>
+
+                        <div class="col-md-4 position-relative form-group">
+                            <label class="">Balance</label>
+                            <div class="input-group">
+                                <input placeholder="Balance" readonly="true" tabindex="7" type="text"
+                                    class="form-control" formControlName="balance">
+                            </div>
+                        </div>
+                    </div>
+                  
+                    <div class="row">
+                        <div class="col-md-4 position-relative">
+                            <label class="">Sub Accounts</label>
+                            <select class="mb-2 form-control" tabindex="3" formControlName="subAccounts">
+                                <option *ngFor="let uiSubAccount of uiSubAccounts" [ngValue]="uiSubAccount.id">
+                                    {{uiSubAccount.name}}
+                                </option>
+                            </select>
+                        </div>
+
+                        <div class="col-md-4 position-relative form-group">
+                            <label for="txtName" class="">Opening Date</label>
+                            <div class="input-group">
+                                <input tabindex="6" type="date" class="form-control" required formControlName="openDate">
+                            </div>
+                        </div>
+                     
+                        <div class="col-md-4 position-relative form-group">
+                            <label class="">Open Balance</label>
+                            <div class="input-group">
+                                <input placeholder="Open Balance" tabindex="8" type="text" class="form-control"
+                                    required maxlength="10" formControlName="openBalance">
+                                <!-- [class.is-invalid]="openBalance.invalid && (openBalance.dirty || openBalance.touched)" -->
+                                <!-- <div *ngIf="openBalance.invalid && (openBalance.dirty || openBalance.touched)" class="invalid-feedback">
+                                    <div *ngIf="openBalance.errors?.['required']">
+                                        Town is required.
+                                    </div>
+                                </div> -->
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="divider"></div>
+
+                    <div class="row">
+
+                        <div class="col-md-4 position-relative">
+                            <label class="">Regular Schedule</label>
+                            <select class="mb-2 form-control" tabindex="10" formControlName="regularSchedule">
+                                <option *ngFor="let uiScheduleMaster of uiScheduleMasters"
+                                    [ngValue]="uiScheduleMaster.id">
+                                    {{uiScheduleMaster.branchMasterName}}
+                                </option>
+                            </select>
+                        </div>
+                        <div class="col-md-4 position-relative">
+                            <label class="">Asset Schedule</label>
+                            <select class="mb-2 form-control" formControlName="tahshilId" tabindex="11"
+                                formControlName="assetSchedule">
+                                <option *ngFor="let uiScheduleMaster of uiScheduleMasters"
+                                    [ngValue]="uiScheduleMaster.id">
+                                    {{uiScheduleMaster.branchMasterName}}
+                                </option>
+                            </select>
+                        </div>
+                        <div class="col-md-4 position-relative">
+                            <label class="">Liability Schedule</label>
+                            <select class="mb-2 form-control" tabindex="12" formControlName="liabilitySchedule">
+                                <option *ngFor="let uiScheduleMaster of uiScheduleMasters"
+                                    [ngValue]="uiScheduleMaster.id">
+                                    {{uiScheduleMaster.branchMasterName}}
+                                </option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="row">
+
+                        
+                    </div>
+                    <div class="divider"></div>
+                    <div class="row">
+                        <div class="col-md-6 position-relative">
+                            <button class="mt-1 btn btn-primary" tabindex="13"
+                                (click)="saveGeneralMaster()">Submit</button>
+                            <button class="mt-1 btn btn-left-margin10 btn-secondary" (click)="clear()">Clear</button>
+                            <button class="mt-1 btn btn-left-margin10 btn-alternate"
+                                (click)="configClick('branches')">Ledgers List</button>
+                        </div>
+
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

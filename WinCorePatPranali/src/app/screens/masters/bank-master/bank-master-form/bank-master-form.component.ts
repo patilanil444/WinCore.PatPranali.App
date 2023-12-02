@@ -2,8 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { UiValueType } from 'src/app/common/models/common-ui-models';
-import { BankMasterService } from 'src/app/services/common/bank-master/bank-master.service';
-import { SharedService } from 'src/app/services/common/shared.service';
+import { BankMasterService } from 'src/app/services/masters/bank-master/bank-master.service';
+import { SharedService } from 'src/app/services/shared.service';
 
 interface IBankServerModel {
   Id: string;

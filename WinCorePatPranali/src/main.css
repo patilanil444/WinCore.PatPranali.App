@@ -10358,7 +10358,8 @@ a, button, .btn {
             color: #6c757d;
             height: 2rem;
             line-height: 2rem;
-            padding: 0 1.5rem 0;
+            padding: 0 0rem 0;
+            cursor: pointer;
         }
 
             .vertical-nav-menu ul > li > a:hover {

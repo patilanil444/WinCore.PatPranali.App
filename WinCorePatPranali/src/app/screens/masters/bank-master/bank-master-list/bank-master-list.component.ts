@@ -1,7 +1,7 @@
 import { Component, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
-import { BankMasterService } from 'src/app/services/common/bank-master/bank-master.service';
-import { SharedService } from 'src/app/services/common/shared.service';
+import { BankMasterService } from 'src/app/services/masters/bank-master/bank-master.service';
+import { SharedService } from 'src/app/services/shared.service';
 
 @Component({
   selector: 'app-bank-master-list',

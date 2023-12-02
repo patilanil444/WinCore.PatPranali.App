@@ -2,10 +2,8 @@ import { formatDate } from '@angular/common';
 import { Component } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
-import { UiValueType } from 'src/app/common/models/common-ui-models';
-import { BranchMasterService } from 'src/app/services/common/branch-master/branch-master.service';
-import { SharedService } from 'src/app/services/common/shared.service';
-
+import { BranchMasterService } from 'src/app/services/masters/branch-master/branch-master.service';
+import { SharedService } from 'src/app/services/shared.service';
 
 interface IBranchServerModel {
   Id: string;

@@ -32,3 +32,29 @@ export interface IGeneralMasterDTO
     masterId: number,
     masterType: string
 }
+
+export interface IGeneralLedgerDTO
+{
+    route: string,
+    action: string,
+    id: number,
+    maxId: number,
+}
+
+export enum UiEnumGeneralMaster {
+    PurposeMaster = 1,
+    HealthMaster = 2,
+    CastMaster = 3, 
+    OccupationMaster = 4,
+    CategoryMaster = 5,
+    RelationMaster = 6,
+	VillageMaster = 7,
+	ZoneMaster = 8,	
+    AccountTypeMaster = 9,
+	OperationModeMaster = 10,
+	GoldArticleMaster = 11,
+	DirectorMaster = 12,
+	SanctionByMaster = 13,
+	PartyGroupMaster = 14,
+    ScheduleMaster = 15
+}

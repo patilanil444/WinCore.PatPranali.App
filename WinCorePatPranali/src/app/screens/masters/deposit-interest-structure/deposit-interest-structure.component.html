@@ -1,0 +1,107 @@
+<div class="row">
+    <div class="col-lg-12">
+
+        <div class="main-card mb-3 card">
+            <div class="card-body">
+                <h5 class="card-title">Deposit Interest Rate Structure</h5>
+
+                <div class="row">
+                    <div class="col-md-4 position-relative">
+                        <label for="txtCode" class="">General Ledger</label>
+                        <select class="form-control" name="masterList" [(ngModel)]="generalLedgerId" tabindex="1">
+                            <option *ngFor="let uiGeneralLedger of uiGeneralLedgers" [ngValue]="uiGeneralLedger.id">
+                                {{uiGeneralLedger.name}}
+                            </option>
+                        </select>
+                    </div>
+                    <div class="col-md-4 position-relative form-group">
+                        <button class="btn btn-info" style="margin-top: 30px;" (click)="showSctructure()">Show Structure
+                        </button>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-4 position-relative">
+                        <label for="txtCode" class="">Date</label>
+                        <div class="input-group">
+                            <input tabindex="2" type="date" class="form-control" [(ngModel)]="interestStructureDate">
+                        </div>
+                    </div>
+                </div>
+                <div class="divider"></div>
+
+                <table class="mb-0 table table-bordered">
+                    <thead>
+                        <tr>
+                            <th width="10%">From Amount</th>
+                            <th width="15%">To Amount</th>
+                            <th width="10%">Period</th>
+                            <th width="10%">From Period</th>
+                            <th width="10%">To Period</th>
+                            <th width="15%">Pre Mature Rate</th>
+                            <th width="15%">Regular Interest Rate</th>
+                            <th width="15%">After Expiry Rate</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let structure of structureArray">
+                            <td style="padding: 0rem !important;"><input type="number" class="form-control"
+                                    [(ngModel)]="structure.fromAmount"></td>
+                            <td style="padding: 0rem !important;"><input type="number" class="form-control"
+                                    [(ngModel)]="structure.toAmount"></td>
+                            <td style="padding: 0rem !important;">
+                                <select class="form-control" [(ngModel)]="structure.period">
+                                    <option *ngFor="let uiPeriod of uiPeriods" [ngValue]="uiPeriod.id">
+                                        {{uiPeriod.name}}
+                                    </option>
+                                </select>
+                            </td>
+                            <td style="padding: 0rem !important;"><input type="number" class="form-control"
+                                    [(ngModel)]="structure.fromPeriod"></td>
+                            <td style="padding: 0rem !important;"><input type="number" class="form-control"
+                                    [(ngModel)]="structure.toPeriod"></td>
+                            <td style="padding: 0rem !important;"><input type="number" class="form-control"
+                                    [(ngModel)]="structure.preMatureRate"></td>
+                            <td style="padding: 0rem !important;"><input type="number" class="form-control"
+                                    [(ngModel)]="structure.regularInterestRate"></td>
+                            <td style="padding: 0rem !important;"><input type="number" class="form-control"
+                                    [(ngModel)]="structure.afterExpiryRate"></td>
+                        </tr>
+                    </tbody>
+                </table>
+                <div class="divider"></div>
+
+                <div class="row">
+                    <div class="col-md-6 position-relative">
+                        <button class="mt-1 btn btn-primary" (click)="saveStructure()">Submit</button>
+                        <button class="mt-1 btn btn-left-margin10 btn-secondary" (click)="clear()">Clear</button>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+
+<!-- <div id="deleteModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" 
+aria-hidden="true"
+    data-backdrop="false">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Delete</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <p class="mb-0">Are you sure do you want to delete?</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-danger">Yes</button>
+                <button type="button" class="btn btn-primary" data-dismiss="modal">No</button>
+            </div>
+        </div>
+    </div>
+</div> -->

@@ -12,6 +12,8 @@ export class SharedService {
   public uiAllStates = [];
   public uiAllDistricts = [];
   public uiAllTahshils = [];
+  public uiGLGroups = [];
+  public uiAccountTypes = [];
 
   constructor() { }
 

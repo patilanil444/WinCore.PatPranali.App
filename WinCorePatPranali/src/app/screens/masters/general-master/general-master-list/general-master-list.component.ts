@@ -1,8 +1,8 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { IGeneralMasterDTO } from 'src/app/common/models/common-ui-models';
-import { SharedService } from 'src/app/services/common/shared.service';
-import { GeneralMasterService } from 'src/app/services/general-master/general-master.service';
+import { GeneralMasterService } from 'src/app/services/masters/general-master/general-master.service';
+import { SharedService } from 'src/app/services/shared.service';
 
 @Component({
   selector: 'app-general-master-list',

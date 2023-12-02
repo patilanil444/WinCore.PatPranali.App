@@ -19,6 +19,11 @@ import { BranchMasterListComponent } from '../screens/masters/branch-master/bran
 import { BankMasterComponent } from '../screens/masters/bank-master/bank-master.component';
 import { BankMasterFormComponent } from '../screens/masters/bank-master/bank-master-form/bank-master-form.component';
 import { BankMasterListComponent } from '../screens/masters/bank-master/bank-master-list/bank-master-list.component';
+import { GeneralLedgerMasterComponent } from '../screens/masters/general-ledger-master/general-ledger-master.component';
+import { GeneralLedgerMasterListComponent } from '../screens/masters/general-ledger-master/general-ledger-master-list/general-ledger-master-list.component';
+import { GeneralLedgerMasterFormComponent } from '../screens/masters/general-ledger-master/general-ledger-master-form/general-ledger-master-form.component';
+import { DepositInterestStructureComponent } from '../screens/masters/deposit-interest-structure/deposit-interest-structure.component';
+import { LoanInterestStructureComponent } from '../screens/masters/loan-interest-structure/loan-interest-structure.component';
 
 
 @NgModule({
@@ -39,6 +44,11 @@ import { BankMasterListComponent } from '../screens/masters/bank-master/bank-mas
     BankMasterComponent,
     BankMasterFormComponent,
     BankMasterListComponent,
+    GeneralLedgerMasterComponent,
+    GeneralLedgerMasterListComponent,
+    GeneralLedgerMasterFormComponent,
+    DepositInterestStructureComponent,
+    LoanInterestStructureComponent,
   ],
   imports: [
     CommonModule,
