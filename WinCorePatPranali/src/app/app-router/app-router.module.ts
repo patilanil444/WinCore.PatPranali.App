@@ -24,6 +24,7 @@ import { GeneralLedgerMasterListComponent } from '../screens/masters/general-led
 import { GeneralLedgerMasterFormComponent } from '../screens/masters/general-ledger-master/general-ledger-master-form/general-ledger-master-form.component';
 import { DepositInterestStructureComponent } from '../screens/masters/deposit-interest-structure/deposit-interest-structure.component';
 import { LoanInterestStructureComponent } from '../screens/masters/loan-interest-structure/loan-interest-structure.component';
+import { GLInterestParameterComponent } from '../screens/masters/gl-interest-parameter/gl-interest-parameter.component';
 
 
 @NgModule({
@@ -49,6 +50,7 @@ import { LoanInterestStructureComponent } from '../screens/masters/loan-interest
     GeneralLedgerMasterFormComponent,
     DepositInterestStructureComponent,
     LoanInterestStructureComponent,
+    GLInterestParameterComponent,
   ],
   imports: [
     CommonModule,

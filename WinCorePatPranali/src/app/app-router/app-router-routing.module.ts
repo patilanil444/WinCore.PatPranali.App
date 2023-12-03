@@ -17,6 +17,7 @@ import { GeneralLedgerMasterListComponent } from '../screens/masters/general-led
 import { GeneralLedgerMasterFormComponent } from '../screens/masters/general-ledger-master/general-ledger-master-form/general-ledger-master-form.component';
 import { DepositInterestStructureComponent } from '../screens/masters/deposit-interest-structure/deposit-interest-structure.component';
 import { LoanInterestStructureComponent } from '../screens/masters/loan-interest-structure/loan-interest-structure.component';
+import { GLInterestParameterComponent } from '../screens/masters/gl-interest-parameter/gl-interest-parameter.component';
 
 const routes: Routes = [
   {
@@ -39,6 +40,7 @@ const routes: Routes = [
       { path: 'general-ledger', component: GeneralLedgerMasterFormComponent },
       { path: 'deposit-interest', component: DepositInterestStructureComponent },
       { path: 'loan-interest', component: LoanInterestStructureComponent },
+      { path: 'gl-interest-parameters', component: GLInterestParameterComponent },
       { path: '**', component: NotFoundComponent },
       { path: '', redirectTo: 'projects', pathMatch: 'full' },
     ]
