@@ -7,12 +7,6 @@
 
                 <div class="row" style="margin-bottom: 10px;">
                     <div class="col-md-4 position-relative">
-                        <label for="txtCode" class="">Date</label>
-                        <div class="input-group">
-                            <input tabindex="1" type="date" class="form-control" [(ngModel)]="interestStructureDate">
-                        </div>
-                    </div>
-                    <div class="col-md-4 position-relative">
                         <label for="txtCode" class="">General Ledger</label>
                         <select class="form-control" name="masterList" [(ngModel)]="generalLedgerId" tabindex="2">
                             <option *ngFor="let uiGeneralLedger of uiGeneralLedgers" [ngValue]="uiGeneralLedger.id">
@@ -20,8 +14,18 @@
                             </option>
                         </select>
                     </div>
+                    <div class="col-md-4 position-relative form-group">
+                        <button class="btn btn-info" style="margin-top: 30px;" (click)="showSctructure()">Show Structure
+                        </button>
+                    </div>
                 </div>
                 <div class="row" style="margin-bottom: 10px;">
+                    <div class="col-md-4 position-relative">
+                        <label for="txtCode" class="">Date</label>
+                        <div class="input-group">
+                            <input tabindex="1" type="date" class="form-control" [(ngModel)]="interestStructureDate">
+                        </div>
+                    </div>
                     <div class="col-md-4 position-relative">
                         <label for="txtCode" class="">Purpose from</label>
                         <div class="input-group">
@@ -42,17 +46,14 @@
                             </select>
                         </div>
                     </div>
-                    <div class="col-md-4 position-relative form-group">
-                        <button class="btn btn-info" style="margin-top: 30px;" (click)="showSctructure()">Show Structure
-                        </button>
-                    </div>
+
                 </div>
                 <div class="divider"></div>
 
-                <table class="mb-0 table table-bordered">
+                <table class="mb-0 table table-bordered" style="width: 50% !important;">
                     <thead>
                         <tr>
-                            <th width="10%">From Amount</th>
+                            <th width="15%">From Amount</th>
                             <th width="15%">To Amount</th>
                             <th width="15%">Interest Rate</th>
                         </tr>
@@ -63,8 +64,12 @@
                                     [(ngModel)]="structure.fromAmount"></td>
                             <td style="padding: 0rem !important;"><input type="number" class="form-control"
                                     [(ngModel)]="structure.toAmount"></td>
-                            <td style="padding: 0rem !important;"><input type="number" class="form-control"
-                                    [(ngModel)]="structure.rate"></td>
+                            <td style="padding: 0rem !important;">
+                                <div class="input-group">
+                                    <input type="number" class="form-control" [(ngModel)]="structure.interestRate">
+                                    <div class="input-group-append"><span class="input-group-text">%</span></div>
+                                </div>
+                            </td>
                         </tr>
                     </tbody>
                 </table>
@@ -73,6 +78,7 @@
                 <div class="row">
                     <div class="col-md-6 position-relative">
                         <button class="mt-1 btn btn-primary" (click)="saveStructure()">Submit</button>
+                        <button class="mt-1 btn btn-left-margin10 btn-secondary" (click)="clear()">Clear</button>
                     </div>
 
                 </div>

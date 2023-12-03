@@ -113,7 +113,10 @@ export class DepositInterestStructureComponent implements OnInit {
         let response = data.data.data;
         if (response) {
           this.uiDepositInterestRate = response;
-          if (this.uiDepositInterestRate.schedules) {
+          if (this.uiDepositInterestRate.id > 0 && this.uiDepositInterestRate.schedules) {
+
+            this.interestStructureDate = formatDate(new Date(this.uiDepositInterestRate.interestSetDate), 'yyyy-MM-dd', 'en');
+
             this.uiDepositInterestRate.schedules.forEach((schedule: any) => {
               this.structureArray[schedule.rowIndex].id = schedule.id;
               this.structureArray[schedule.rowIndex].fromAmount = schedule.fromAmount;
@@ -127,6 +130,10 @@ export class DepositInterestStructureComponent implements OnInit {
               this.structureArray[schedule.rowIndex].depositInterestRateId = schedule.depositInterestRateId;
             });
             this.isAddMode = false;
+          }
+          else
+          {
+            this.interestStructureDate = formatDate(new Date(Date.now()), 'yyyy-MM-dd', 'en');
           }
         }
       }

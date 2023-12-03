@@ -33,13 +33,13 @@
                     <thead>
                         <tr>
                             <th width="10%">From Amount</th>
-                            <th width="15%">To Amount</th>
+                            <th width="10%">To Amount</th>
                             <th width="10%">Period</th>
                             <th width="10%">From Period</th>
                             <th width="10%">To Period</th>
-                            <th width="15%">Pre Mature Rate</th>
-                            <th width="15%">Regular Interest Rate</th>
-                            <th width="15%">After Expiry Rate</th>
+                            <th width="12%">Pre Mature Rate</th>
+                            <th width="12%">Regular Interest Rate</th>
+                            <th width="12%">After Expiry Rate</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -55,16 +55,31 @@
                                     </option>
                                 </select>
                             </td>
-                            <td style="padding: 0rem !important;"><input type="number" class="form-control"
-                                    [(ngModel)]="structure.fromPeriod"></td>
-                            <td style="padding: 0rem !important;"><input type="number" class="form-control"
-                                    [(ngModel)]="structure.toPeriod"></td>
-                            <td style="padding: 0rem !important;"><input type="number" class="form-control"
-                                    [(ngModel)]="structure.preMatureRate"></td>
-                            <td style="padding: 0rem !important;"><input type="number" class="form-control"
-                                    [(ngModel)]="structure.regularInterestRate"></td>
-                            <td style="padding: 0rem !important;"><input type="number" class="form-control"
-                                    [(ngModel)]="structure.afterExpiryRate"></td>
+                            <td style="padding: 0rem !important;">
+                                <input type="number" class="form-control" [(ngModel)]="structure.fromPeriod">
+                            </td>
+                            <td style="padding: 0rem !important;">
+                                <input type="number" class="form-control" [(ngModel)]="structure.toPeriod">
+                            </td>
+                            <td style="padding: 0rem !important;">
+                                <div class="input-group">
+                                    <input type="number" class="form-control" [(ngModel)]="structure.preMatureRate">
+                                    <div class="input-group-append"><span class="input-group-text">%</span></div>
+                                </div>
+                            </td>
+                            <td style="padding: 0rem !important;">
+                                <div class="input-group">
+                                    <input type="number" class="form-control"
+                                        [(ngModel)]="structure.regularInterestRate">
+                                    <div class="input-group-append"><span class="input-group-text">%</span></div>
+                                </div>
+                            </td>
+                            <td style="padding: 0rem !important;">
+                                <div class="input-group">
+                                    <input type="number" class="form-control" [(ngModel)]="structure.afterExpiryRate">
+                                    <div class="input-group-append"><span class="input-group-text">%</span></div>
+                                </div>
+                            </td>
                         </tr>
                     </tbody>
                 </table>
