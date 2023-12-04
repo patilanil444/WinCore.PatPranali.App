@@ -18,6 +18,7 @@ import { GeneralLedgerMasterFormComponent } from '../screens/masters/general-led
 import { DepositInterestStructureComponent } from '../screens/masters/deposit-interest-structure/deposit-interest-structure.component';
 import { LoanInterestStructureComponent } from '../screens/masters/loan-interest-structure/loan-interest-structure.component';
 import { GLInterestParameterComponent } from '../screens/masters/gl-interest-parameter/gl-interest-parameter.component';
+import { BankProfileMasterComponent } from '../screens/masters/bank-profile-master/bank-profile-master.component';
 
 const routes: Routes = [
   {
@@ -25,14 +26,11 @@ const routes: Routes = [
       { path: 'home', component: HomeComponent },
       { path: 'deposit-accounts', component: DepositAccountsComponent },
       { path: 'loan-accounts', component: LoanAccountsComponent },
-      { path: 'new-bank/:maxId', component: BankMasterFormComponent },
-      { path: 'edit-bank/:id', component: BankMasterFormComponent },
+      { path: 'bank', component: BankMasterFormComponent },
       { path: 'banks', component: BankMasterComponent },
-      { path: 'new-branch/:maxId', component: BranchMasterFormComponent },
-      { path: 'edit-branch/:id', component: BranchMasterFormComponent },
+      { path: 'branch', component: BranchMasterFormComponent },
       { path: 'branches', component: BranchMasterComponent },
-      { path: 'new-priority/:maxId', component: PriorityFormComponent },
-      { path: 'edit-priority/:id', component: PriorityFormComponent },
+      { path: 'priority', component: PriorityFormComponent },
       { path: 'priorities', component: PriorityComponent },
       { path: 'master-list', component: GeneralMasterComponent },
       { path: 'general-master', component: GeneralMasterFormComponent },
@@ -41,6 +39,7 @@ const routes: Routes = [
       { path: 'deposit-interest', component: DepositInterestStructureComponent },
       { path: 'loan-interest', component: LoanInterestStructureComponent },
       { path: 'gl-interest-parameters', component: GLInterestParameterComponent },
+      { path: 'profile', component: BankProfileMasterComponent },
       { path: '**', component: NotFoundComponent },
       { path: '', redirectTo: 'projects', pathMatch: 'full' },
     ]

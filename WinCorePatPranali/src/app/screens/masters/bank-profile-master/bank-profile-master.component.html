@@ -1,0 +1,316 @@
+<div class="row">
+    <div class="col-lg-12">
+
+        <div class="main-card mb-3 card">
+            <div class="card-body">
+                <h5 class="card-title">Bank Profile - System Master Entry</h5>
+
+                <!-- <div class="row" >
+                    <div style="display: flex;">
+                        <label for="txtCode" style="font-weight: bold;">Bank -</label>
+                        <label for="txtCode" class=""></label>
+                    </div>
+                </div>
+                <div class="row">
+                    <div style="display: flex;">
+                        <label for="txtCode" style="font-weight: bold;">Address -</label>
+                        <label for="txtCode" class=""></label>
+                    </div>
+                </div> -->
+
+                <ul class="body-tabs body-tabs-layout tabs-animated body-tabs-animated nav">
+                    <li class="nav-item">
+                        <a role="tab" class="nav-link active" id="tab-0" data-toggle="tab" href="#tab-content-0">
+                            <span>General</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a role="tab" class="nav-link" id="tab-1" data-toggle="tab" href="#tab-content-1">
+                            <span>Loan</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a role="tab" class="nav-link" id="tab-2" data-toggle="tab" href="#tab-content-2">
+                            <span>Fixed GI Numbers</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a role="tab" class="nav-link" id="tab-3" data-toggle="tab" href="#tab-content-3">
+                            <span>Deposit Interest</span>
+                        </a>
+                    </li>
+                </ul>
+
+                <div class="tab-content">
+                    <div class="tab-pane tabs-animation fade show active" id="tab-content-0" role="tabpanel">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="tab-content">
+                                    <div class="divider" style="margin-top:0px !important"></div>
+                                    <div class="row">
+                                        <div class="col-md-3 ">
+                                            <label for="txtCode" class="">Today</label>
+                                            <input tabindex="2" type="date" class="form-control">
+                                        </div>
+                                        <div class="col-md-3">
+                                            <label for="txtCode" class="">Day Open (Y/N)</label>
+                                            <select class="form-control" name="masterList" tabindex="1">
+                                                <option>Yes
+                                                    <!-- *ngFor="let uiGeneralLedger of uiGeneralLedgers" [ngValue]="uiGeneralLedger.id"
+                                                    {{uiGeneralLedger.name}} -->
+                                                </option>
+                                            </select>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <label for="txtCode" class="">Standing Instruction Executed (Y/N)</label>
+                                            <select class="form-control" name="masterList" tabindex="1">
+                                                <option>Yes
+
+                                                </option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="divider" style="margin-bottom: 0.5rem !important"></div>
+                                    <div class="row">
+                                        <div class="col-md-3 ">
+                                            <label for="txtCode" class="">Branch Code</label>
+                                            <input tabindex="2" type="text" class="form-control">
+                                        </div>
+                                        <div class="col-md-3">
+                                            <label for="txtCode" class="">Start Date</label>
+                                            <input tabindex="2" type="date" class="form-control">
+                                        </div>
+                                        <div class="col-md-3">
+                                            <label for="txtCode" class="">Correction Date</label>
+                                            <input tabindex="2" type="date" class="form-control">
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-3 ">
+                                            <label for="txtCode" class="">Max GI No for Balance Sheet</label>
+                                            <input tabindex="2" type="text" class="form-control">
+                                        </div>
+                                        <div class="col-md-3">
+                                            <label for="txtCode" class="">Max Schedule code for Balance Sheet</label>
+                                            <input tabindex="2" type="date" class="form-control">
+                                        </div>
+                                        <div class="col-md-3">
+                                            <label for="txtCode" class="">Actual Profit</label>
+                                            <select class="form-control" name="masterList" tabindex="1">
+                                                <option>Yes
+                                                </option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="divider" style="margin-bottom: 0.5rem !important"></div>
+                                    <div class="row">
+                                        <div class="col-md-3">
+                                            <h5 class="card-title">Regular Share</h5>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <label for="txtCode" class="">Value</label>
+                                            <input tabindex="2" type="text" class="form-control">
+                                        </div>
+                                        <div class="col-md-3">
+                                            <label for="txtCode" class="">General Ledger</label>
+                                            <select class="form-control" name="masterList" tabindex="1">
+                                                <option>Ledger 1
+                                                </option>
+                                            </select>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <label for="txtCode" class="">Divident GI Number</label>
+                                            <input tabindex="2" type="text" class="form-control">
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-3">
+                                            <h5 class="card-title">Associated Share</h5>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <label for="txtCode" class="">Value</label>
+                                            <input tabindex="2" type="text" class="form-control">
+                                        </div>
+                                        <div class="col-md-3">
+                                            <label for="txtCode" class="">General Ledger</label>
+                                            <select class="form-control" name="masterList" tabindex="1">
+                                                <option>Ledger 1
+                                                </option>
+                                            </select>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <label for="txtCode" class="">Divident GI Number</label>
+                                            <input tabindex="2" type="text" class="form-control">
+                                        </div>
+                                    </div>
+                                    <div class="divider" style="margin-bottom: 0.5rem !important"></div>
+                                    <div class="row">
+                                        <div class="col-md-3">
+                                            <label for="txtCode" class="">Authorised Share Capital</label>
+                                            <input tabindex="2" type="text" class="form-control">
+                                        </div>
+                                        <div class="col-md-3">
+                                            <label for="txtCode" class="">Nominal Share GI Code</label>
+                                            <input tabindex="2" type="text" class="form-control">
+                                        </div>
+                                        <div class="col-md-3">
+                                            <label for="txtCode" class="">S.T. Cast No</label>
+                                            <input tabindex="2" type="text" class="form-control">
+                                        </div>
+                                        <div class="col-md-3">
+                                            <label for="txtCode" class="">Deposit Security No</label>
+                                            <input tabindex="2" type="text" class="form-control">
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-3">
+                                            <label for="txtCode" class="">Gold Security No</label>
+                                            <input tabindex="2" type="text" class="form-control">
+                                        </div>
+                                        <div class="col-md-3">
+                                            <label for="txtCode" class="">Photo Extension</label>
+                                            <input tabindex="2" type="text" class="form-control">
+                                        </div>
+                                        <div class="col-md-3">
+                                            <label for="txtCode" class="">Signature Extension</label>
+                                            <input tabindex="2" type="text" class="form-control">
+                                        </div>
+                                    </div>
+                                    <div class="divider" style="margin-bottom: 0.5rem !important"></div>
+                                    <div class="row">
+                                        <div class="col-md-3">
+                                            <label for="txtCode" class="">Clearing</label>
+                                            <input tabindex="2" type="text" class="form-control">
+                                        </div>
+                                        <div class="col-md-3">
+                                            <label for="txtCode" class="">Clearing Member</label>
+                                            <select class="form-control" name="masterList" tabindex="1">
+                                                <option>Value 1
+                                                </option>
+                                            </select>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <label for="txtCode" class="">Clearing House No</label>
+                                            <select class="form-control" name="masterList" tabindex="1">
+                                                <option>Value 1
+                                                </option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="divider" style="margin-bottom: 0.5rem !important"></div>
+                                    <div class="row">
+                                        <div class="col-md-3">
+                                            <label for="txtCode" class="">Daily Authorisation</label>
+                                            <select class="form-control" name="masterList" tabindex="1">
+                                                <option>Value 1
+                                                </option>
+                                            </select>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <label for="txtCode" class="">Bank Advice</label>
+                                            <select class="form-control" name="masterList" tabindex="1">
+                                                <option>Value 1
+                                                </option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="divider" style="margin-bottom: 0.5rem !important"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="tab-pane tabs-animation fade" id="tab-content-1" role="tabpanel">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="tab-content">
+                                    <div class="divider" style="margin-top:0 !important"></div>
+                                    <div class="tab-pane active" id="tab-eg1-0" role="tabpanel">
+                                        <p>It was popularised in the 1960s with the release of Letraset sheets
+                                            containing Lorem Ipsum passages, and more recently with desktop publishing
+                                            software like Aldus PageMaker
+                                            including versions of Lorem Ipsum.</p>
+                                    </div>
+                                    <div class="tab-pane" id="tab-eg1-1" role="tabpanel">
+                                        <p>Like Aldus PageMaker including versions of Lorem. It has survived not only
+                                            five centuries, but also the leap into electronic typesetting, remaining
+                                            essentially unchanged. </p>
+                                    </div>
+                                    <div class="tab-pane" id="tab-eg1-2" role="tabpanel">
+                                        <p>Lorem Ipsum has been the industry's standard dummy text ever since the 1500s,
+                                            when an unknown printer took a galley of type and scrambled it to make a
+                                            type specimen book. It has
+                                            survived not only five centuries, but also the leap into electronic
+                                            typesetting, remaining essentially unchanged. </p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="tab-pane tabs-animation fade" id="tab-content-2" role="tabpanel">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="tab-content">
+                                    <div class="divider" style="margin-top:0 !important"></div>
+                                    <div class="tab-pane active" id="tab-eg1-0" role="tabpanel">
+                                        <p>It was popularised in the 1960s with the release of Letraset sheets
+                                            containing Lorem Ipsum passages, and more recently with desktop publishing
+                                            software like Aldus PageMaker
+                                            including versions of Lorem Ipsum.</p>
+                                    </div>
+                                    <div class="tab-pane" id="tab-eg1-1" role="tabpanel">
+                                        <p>Like Aldus PageMaker including versions of Lorem. It has survived not only
+                                            five centuries, but also the leap into electronic typesetting, remaining
+                                            essentially unchanged. </p>
+                                    </div>
+                                    <div class="tab-pane" id="tab-eg1-2" role="tabpanel">
+                                        <p>Lorem Ipsum has been the industry's standard dummy text ever since the 1500s,
+                                            when an unknown printer took a galley of type and scrambled it to make a
+                                            type specimen book. It has
+                                            survived not only five centuries, but also the leap into electronic
+                                            typesetting, remaining essentially unchanged. </p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="tab-pane tabs-animation fade" id="tab-content-3" role="tabpanel">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="tab-content">
+                                    <div class="divider" style="margin-top:0 !important"></div>
+                                    <div class="tab-pane active" id="tab-eg1-0" role="tabpanel">
+                                        <p>It was popularised in the 1960s with the release of Letraset sheets
+                                            containing Lorem Ipsum passages, and more recently with desktop publishing
+                                            software like Aldus PageMaker
+                                            including versions of Lorem Ipsum.</p>
+                                    </div>
+                                    <div class="tab-pane" id="tab-eg1-1" role="tabpanel">
+                                        <p>Like Aldus PageMaker including versions of Lorem. It has survived not only
+                                            five centuries, but also the leap into electronic typesetting, remaining
+                                            essentially unchanged. </p>
+                                    </div>
+                                    <div class="tab-pane" id="tab-eg1-2" role="tabpanel">
+                                        <p>Lorem Ipsum has been the industry's standard dummy text ever since the 1500s,
+                                            when an unknown printer took a galley of type and scrambled it to make a
+                                            type specimen book. It has
+                                            survived not only five centuries, but also the leap into electronic
+                                            typesetting, remaining essentially unchanged. </p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-6 position-relative">
+                        <button class="mt-1 btn btn-primary" (click)="saveProfile()">Submit</button>
+                        <button class="mt-1 btn btn-left-margin10 btn-secondary" (click)="clear()">Clear</button>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>

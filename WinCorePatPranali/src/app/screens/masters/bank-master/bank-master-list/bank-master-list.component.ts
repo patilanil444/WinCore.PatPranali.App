@@ -1,5 +1,6 @@
 import { Component, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
+import { IGeneralDTO } from 'src/app/common/models/common-ui-models';
 import { BankMasterService } from 'src/app/services/masters/bank-master/bank-master.service';
 import { SharedService } from 'src/app/services/shared.service';
 
@@ -43,17 +44,36 @@ export class BankMasterListComponent {
 
   add(route:any)
   {
-    const ids = this.uiBanks.map(bank => {
-      return bank.id;
+    let maxId = 1;
+    const ids = this.uiBanks.map(gl => {
+      return gl.id;
     })
-    let maxId = Math.max(...ids);
+    maxId = Math.max(...ids);
 
-    this.configClick("new-bank/"+ maxId);
+    let dtObject: IGeneralDTO = {
+      route: route,
+      action: "newRecord",
+      id: 0,
+      maxId: maxId,
+    }
+
+    this._bankMasterService.setDTO(dtObject);
+
+    this.configClick("bank");
     //this._sharedService.bankEmitter.emit(maxId);
   }
 
   edit(uiBank: any) {
-    this.configClick("edit-bank/"+ uiBank.id);
+
+    let dtObject: IGeneralDTO = {
+      route: "bank",
+      action: "editRecord",
+      id: uiBank.id,
+      maxId: 0,
+    }
+    this._bankMasterService.setDTO(dtObject);
+
+    this.configClick("bank");
   }
 
   delete(uiBank: any) {

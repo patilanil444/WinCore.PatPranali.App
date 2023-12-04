@@ -66,11 +66,12 @@ export class GeneralMasterFormComponent {
           if (data) {
             if (data.statusCode == 200 && data.data.data) {
               var generalMaster = data.data.data;
-              this.generalMasterForm = new FormGroup({
-                masterType: new FormControl(this.dto.masterType, []),
-                code: new FormControl(generalMaster.id, []),
-                name: new FormControl(generalMaster.branchMasterName, [Validators.required]),
-              });
+
+              this.generalMasterForm.patchValue({
+                masterType: this.dto.masterType,
+                code: generalMaster.id,
+                name: generalMaster.branchMasterName
+             });
             }
           }
         })

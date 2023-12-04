@@ -1,6 +1,8 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { GlobleDeclarations } from 'src/app/common/globle-declarations';
+import { BehaviorSubject } from 'rxjs/internal/BehaviorSubject';
+import { IGeneralDTO } from 'src/app/common/models/common-ui-models';
 
 @Injectable({
   providedIn: 'root'
@@ -8,6 +10,14 @@ import { GlobleDeclarations } from 'src/app/common/globle-declarations';
 export class BankMasterService {
   serviceBaseURL = "";
   constructor(private http: HttpClient) { }
+
+  private dto = new BehaviorSubject<IGeneralDTO>({} as IGeneralDTO);
+  setDTO(object: any) {
+    this.dto.next(object);
+  }
+  getDTO() {
+    return this.dto.asObservable();
+  }
 
   getBanks() {
     let options = GlobleDeclarations.getHeaderOptions();

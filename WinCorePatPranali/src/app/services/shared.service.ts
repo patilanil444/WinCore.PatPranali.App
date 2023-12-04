@@ -13,7 +13,7 @@ export class SharedService {
   public uiAllDistricts = [];
   public uiAllTahshils = [];
   public uiGLGroups = [];
-  public uiAccountTypes = [];
+  public uiTypeOfAccounts = [];
 
   constructor() { }
 

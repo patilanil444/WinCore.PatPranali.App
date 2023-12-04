@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
+import { IGeneralDTO } from 'src/app/common/models/common-ui-models';
 import { PriorityMasterService } from 'src/app/services/masters/priority-master/priority-master.service';
 import { SharedService } from 'src/app/services/shared.service';
 
@@ -37,17 +38,34 @@ export class PriorityListComponent {
 
   add(route:any)
   {
-    const ids = this.uiPriorities.map(priority => {
-      return priority.id;
+    let maxId = 1;
+    const ids = this.uiPriorities.map(gl => {
+      return gl.id;
     })
-    let maxId = Math.max(...ids);
+    maxId = Math.max(...ids);
 
-    this.configClick("new-priority/"+ maxId);
-    //this._sharedService.bankEmitter.emit(maxId);
+    let dtObject: IGeneralDTO = {
+      route: route,
+      action: "newRecord",
+      id: 0,
+      maxId: maxId,
+    }
+
+    this._priorityMasterService.setDTO(dtObject);
+    this.configClick("priority");
   }
 
   edit(uiPriority: any) {
-    this.configClick("edit-priority/"+ uiPriority.id);
+
+    let dtObject: IGeneralDTO = {
+      route: "general-ledger",
+      action: "editRecord",
+      id: uiPriority.id,
+      maxId: 0,
+    }
+    this._priorityMasterService.setDTO(dtObject);
+
+    this.configClick("priority");
   }
 
   delete(uiPriority: any) {

@@ -26,8 +26,8 @@
                         <div class="col-md-4 position-relative">
                             <label class="">Type of Account</label>
                             <select class="mb-2 form-control" tabindex="9" formControlName="accountType">
-                                <option *ngFor="let uiAccountType of uiAccountTypes" [ngValue]="uiAccountType.id">
-                                    {{uiAccountType.name}}
+                                <option *ngFor="let uiTypeOfAccount of uiTypeOfAccounts" [ngValue]="uiTypeOfAccount.id">
+                                    {{uiTypeOfAccount.typeDescription}}
                                 </option>
                             </select>
                         </div>
@@ -145,7 +145,7 @@
                                 (click)="saveGeneralMaster()">Submit</button>
                             <button class="mt-1 btn btn-left-margin10 btn-secondary" (click)="clear()">Clear</button>
                             <button class="mt-1 btn btn-left-margin10 btn-alternate"
-                                (click)="configClick('branches')">Ledgers List</button>
+                                (click)="configClick('general-ledger-list')">Ledgers List</button>
                         </div>
 
                     </div>

@@ -13,6 +13,7 @@ import { CommonModule } from '@angular/common';
     AppComponent,
     LoginComponent,
     NotFoundComponent,
+   
   ],
   imports: [
     CommonModule,

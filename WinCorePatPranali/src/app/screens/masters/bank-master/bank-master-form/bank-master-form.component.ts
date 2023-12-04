@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
-import { UiValueType } from 'src/app/common/models/common-ui-models';
+import { IGeneralDTO, UiValueType } from 'src/app/common/models/common-ui-models';
 import { BankMasterService } from 'src/app/services/masters/bank-master/bank-master.service';
 import { SharedService } from 'src/app/services/shared.service';
 
@@ -22,8 +22,9 @@ interface IBankServerModel {
 export class BankMasterFormComponent {
 
   bankForm!: FormGroup;
-  id!: string;
-  maxId!: string;
+  id!: number;
+  maxId!: number;
+  dto: IGeneralDTO = {} as IGeneralDTO;
 
   newCode!: string;
   isAddMode!: boolean;
@@ -38,10 +39,6 @@ export class BankMasterFormComponent {
 
   ngOnInit(): void {
 
-    this.id = this.route.snapshot.params['id'];
-    this.maxId = this.route.snapshot.params['maxId'];
-    this.isAddMode = !this.id;
-
     this.bankForm = new FormGroup({
       code: new FormControl("", []),
       name: new FormControl("", [Validators.required]),
@@ -51,29 +48,37 @@ export class BankMasterFormComponent {
       generalLeadger: new FormControl(1, [Validators.required])
     });
 
-    if (!this.isAddMode) {
-      this._bankMasterService.getBank(parseInt(this.id)).subscribe((data: any) => {
-        console.log(data);
-        if (data) {
-          if (data.statusCode == 200 && data.data.data) {
-            var bnk = data.data.data;
-            this.bankForm = new FormGroup({
-              code: new FormControl(bnk.id, []),
-              name: new FormControl(bnk.name, [Validators.required]),
-              address: new FormControl(bnk.address, [Validators.required]),
-              description: new FormControl(bnk.description, [Validators.required]),
-              hasBranch: new FormControl(bnk.hasBranches ? 1 : 2, [Validators.required]),
-              generalLeadger: new FormControl(bnk.glId, [Validators.required])
-            });
+    this._bankMasterService.getDTO().subscribe(obj => this.dto = obj);
+    if (this.dto) {
+      this.id = this.dto.id;
+      if (this.dto.id == 0) {
+        this.isAddMode = true;
+        this.maxId = this.dto.maxId;
+        this.bankForm.patchValue({
+          code: this.maxId + 1,
+          hasBranch: this.hBranchs[0].id,
+          //generalLeadger : this.uiScheduleMasters[0].id,
+        });
+      }
+      else {
+        this.isAddMode = false;
+        // edit a record
+        this._bankMasterService.getBank(this.dto.id).subscribe((data: any) => {
+          if (data) {
+            if (data.statusCode == 200 && data.data.data) {
+              var bnk = data.data.data;
+              this.bankForm.patchValue({
+                code: bnk.id,
+                name: bnk.name,
+                address: bnk.address,
+                description: bnk.description,
+                hasBranch: this.hBranchs[0].id,
+                generalLeadger: bnk.glId
+              });
+            }
           }
-        }
-      })
-    }
-    else
-    {
-      this.bankForm.patchValue({
-        code: parseInt(this.maxId) + 1
-     });
+        })
+      }
     }
   }
 
@@ -119,9 +124,8 @@ export class BankMasterFormComponent {
           }
         })
       }
-      else  
-      {
-        this._bankMasterService.updateBank(parseInt(this.id), bankModel).subscribe((data: any) => {
+      else {
+        this._bankMasterService.updateBank(this.dto.id, bankModel).subscribe((data: any) => {
           console.log(data);
           if (data) {
             if (data.statusCode == 200 && data.data.data == 1) {

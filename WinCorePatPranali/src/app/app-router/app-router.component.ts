@@ -77,10 +77,10 @@ export class AppRouterComponent implements OnInit, AfterViewInit{
 
   getAccountTypes()
   {
-    this._generalLedgerService.getAccountTypes().subscribe((data: any) => {
+    this._generalLedgerService.getTypeOfAccounts().subscribe((data: any) => {
       if (data) {
         if (data.statusCode == 200 && data.data.data) {
-          this._sharedService.uiAccountTypes = data.data.data;
+          this._sharedService.uiTypeOfAccounts = data.data.data;
         }
       }
     })
