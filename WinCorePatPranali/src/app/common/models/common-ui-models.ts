@@ -41,6 +41,14 @@ export interface IGeneralLedgerDTO
     maxId: number,
 }
 
+export interface IGeneralDTO
+{
+    route: string,
+    action: string,
+    id: number,
+    maxId: number,
+}
+
 export enum UiEnumGeneralMaster {
     PurposeMaster = 1,
     HealthMaster = 2,

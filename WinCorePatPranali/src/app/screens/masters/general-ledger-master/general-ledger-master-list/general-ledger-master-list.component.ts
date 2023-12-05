@@ -62,7 +62,15 @@ export class GeneralLedgerMasterListComponent implements OnInit {
   }
 
   edit(uiGeneralLedger: any) {
-    this.configClick("edit-bank/"+ uiGeneralLedger.id);
+    let dtObject: IGeneralLedgerDTO = {
+      route: "general-ledger",
+      action: "editRecord",
+      id: uiGeneralLedger.id,
+      maxId: 0,
+    }
+    this._generalLedgerService.setDTO(dtObject);
+
+    this.configClick("general-ledger");
   }
 
   delete(uiGeneralLedger: any) {

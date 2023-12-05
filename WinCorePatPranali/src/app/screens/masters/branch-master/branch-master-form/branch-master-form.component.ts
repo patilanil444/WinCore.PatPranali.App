@@ -2,6 +2,7 @@ import { formatDate } from '@angular/common';
 import { Component } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
+import { IGeneralDTO } from 'src/app/common/models/common-ui-models';
 import { BranchMasterService } from 'src/app/services/masters/branch-master/branch-master.service';
 import { SharedService } from 'src/app/services/shared.service';
 
@@ -28,8 +29,9 @@ interface IBranchServerModel {
 export class BranchMasterFormComponent {
 
   branchForm!: FormGroup;
-  id!: string;
-  maxId!: string;
+  id!: number;
+  maxId!: number;
+  dto: IGeneralDTO = {} as IGeneralDTO;
 
   newCode!: string;
   isAddMode!: boolean;
@@ -47,14 +49,6 @@ export class BranchMasterFormComponent {
 
   ngOnInit(): void {
 
-    this.id = this.route.snapshot.params['id'];
-    this.maxId = this.route.snapshot.params['maxId'];
-    this.isAddMode = !this.id;
-
-    this.uiStates = this._sharedService.uiAllStates;
-    this.uiAllDistricts = this._sharedService.uiAllDistricts;
-    this.uiAllTahshils = this._sharedService.uiAllTahshils;
-
     this.branchForm = new FormGroup({
       code: new FormControl("", []),
       name: new FormControl("", [Validators.required]),
@@ -70,53 +64,72 @@ export class BranchMasterFormComponent {
       districtId: new FormControl(1, [Validators.required])
     });
 
+    this._branchMasterService.getDTO().subscribe(obj => this.dto = obj);
+   
+    this.uiStates = this._sharedService.uiAllStates;
+    this.uiAllDistricts = this._sharedService.uiAllDistricts;
+    this.uiAllTahshils = this._sharedService.uiAllTahshils;
     let districts = this.uiAllDistricts.filter((d: any) => d.stateId == this.uiStates[0].id);
     if (districts) {
       this.uiDistricts = districts;
     }
-
-    if (!this.isAddMode) {
-
-      this._branchMasterService.getBranch(parseInt(this.id)).subscribe((data: any) => {
-        console.log(data);
-        if (data) {
-          if (data.statusCode == 200 && data.data.data) {
-            var brnch = data.data.data;
-
-            let tahshils = this.uiAllTahshils.filter((d: any) => d.districtId == brnch.districtId);
-            if (tahshils) {
-              this.uiTahshils = tahshils;
-            }
-
-            this.branchForm = new FormGroup({
-              code: new FormControl(brnch.id, []),
-              name: new FormControl(brnch.name, [Validators.required]),
-              address: new FormControl(brnch.address, [Validators.required]),
-              phone: new FormControl(brnch.phone, [Validators.required]),
-              email: new FormControl(brnch.emailId, [Validators.required, Validators.email]),
-              openingDate : new FormControl(formatDate(new Date(brnch.openingDate), 'yyyy-MM-dd', 'en'), [Validators.required]),
-              distance: new FormControl(brnch.headOfficeDistance, []),
-              town: new FormControl(brnch.town, [Validators.required]),
-              zone: new FormControl(brnch.sZone, []),
-              stateId: new FormControl(1, []),
-              tahshilId: new FormControl(brnch.tahshilId, [Validators.required]),
-              districtId: new FormControl(brnch.districtId, [Validators.required])
-            });
-          }
-        }
-      })
-    }
-    else
-    {
   
-      let tahshils = this.uiAllTahshils.filter((d: any) => d.districtId == this.uiDistricts[0].id);
-      if (tahshils) {
-        this.uiTahshils = tahshils;
+    if (this.dto) {
+      this.id = this.dto.id;
+      if (this.dto.id == 0) {
+        this.isAddMode = true;
+        this.maxId = this.dto.maxId;
+        this.branchForm.patchValue({
+          code: this.maxId + 1,
+        });
       }
+      else
+      {
+        this.isAddMode = false;
+        this._branchMasterService.getBranch(this.dto.id).subscribe((data: any) => {
+          console.log(data);
+          if (data) {
+            if (data.statusCode == 200 && data.data.data) {
+              var brnch = data.data.data;
+  
+              let tahshils = this.uiAllTahshils.filter((d: any) => d.districtId == brnch.districtId);
+              if (tahshils) {
+                this.uiTahshils = tahshils;
+              }
+  
+              this.branchForm.patchValue({
+                code:brnch.id,
+                name: brnch.name,
+                address: brnch.address,
+                phone: brnch.phone,
+                email: brnch.emailId,
+                openingDate: formatDate(new Date(brnch.openingDate), 'yyyy-MM-dd', 'en'),
+                distance: brnch.headOfficeDistance,
+                town: brnch.town,
+                zone: brnch.sZone,
+                stateId: 1,
+                tahshilId: brnch.tahshilId,
+                districtId: brnch.districtId
+              });
 
-      this.branchForm.patchValue({
-        code: parseInt(this.maxId) + 1
-     });
+              // this.branchForm = new FormGroup({
+              //   code: new FormControl(brnch.id, []),
+              //   name: new FormControl(brnch.name, [Validators.required]),
+              //   address: new FormControl(brnch.address, [Validators.required]),
+              //   phone: new FormControl(brnch.phone, [Validators.required]),
+              //   email: new FormControl(brnch.emailId, [Validators.required, Validators.email]),
+              //   openingDate : new FormControl(formatDate(new Date(brnch.openingDate), 'yyyy-MM-dd', 'en'), [Validators.required]),
+              //   distance: new FormControl(brnch.headOfficeDistance, []),
+              //   town: new FormControl(brnch.town, [Validators.required]),
+              //   zone: new FormControl(brnch.sZone, []),
+              //   stateId: new FormControl(1, []),
+              //   tahshilId: new FormControl(brnch.tahshilId, [Validators.required]),
+              //   districtId: new FormControl(brnch.districtId, [Validators.required])
+              // });
+            }
+          }
+        })
+      }
     }
   }
 
@@ -174,7 +187,7 @@ export class BranchMasterFormComponent {
       }
       else  
       {
-        this._branchMasterService.updateBranch(parseInt(this.id), branchModel).subscribe((data: any) => {
+        this._branchMasterService.updateBranch(this.dto.id, branchModel).subscribe((data: any) => {
           console.log(data);
           if (data) {
             if (data.statusCode == 200 && data.data.data == 1) {

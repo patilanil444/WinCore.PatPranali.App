@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
+import { IGeneralDTO } from 'src/app/common/models/common-ui-models';
 import { PriorityMasterService } from 'src/app/services/masters/priority-master/priority-master.service';
 import { SharedService } from 'src/app/services/shared.service';
 
@@ -19,8 +20,9 @@ interface IPriorityServerModel {
 })
 export class PriorityFormComponent {
   priorityForm!: FormGroup;
-  id!: string;
-  maxId!: string;
+  id!: number;
+  maxId!: number;
+  dto: IGeneralDTO = {} as IGeneralDTO;
 
   newCode!: string;
   isAddMode!: boolean;
@@ -33,10 +35,6 @@ export class PriorityFormComponent {
 
   ngOnInit(): void {
 
-    this.id = this.route.snapshot.params['id'];
-    this.maxId = this.route.snapshot.params['maxId'];
-    this.isAddMode = !this.id;
-
     this.priorityForm = new FormGroup({
       code: new FormControl("", []),
       name: new FormControl("", [Validators.required]),
@@ -44,27 +42,34 @@ export class PriorityFormComponent {
       toAmount: new FormControl("", [Validators.required])
     });
 
-    if (!this.isAddMode) {
-      this._priorityMasterService.getPriority(parseInt(this.id)).subscribe((data: any) => {
-        console.log(data);
-        if (data) {
-          if (data.statusCode == 200 && data.data.data) {
-            var priority = data.data.data;
-            this.priorityForm = new FormGroup({
-              code: new FormControl(priority.id, []),
-              name: new FormControl(priority.name, [Validators.required]),
-              fromAmount: new FormControl(priority.fromAmount, [Validators.required]),
-              toAmount: new FormControl(priority.toAmount, [Validators.required])
-            });
+    this._priorityMasterService.getDTO().subscribe(obj => this.dto = obj);
+    if (this.dto) {
+      this.id = this.dto.id;
+      if (this.dto.id == 0) {
+        this.isAddMode = true;
+        this.maxId = this.dto.maxId;
+        this.priorityForm.patchValue({
+          code: this.maxId + 1,
+        });
+      }
+      else  
+      {
+        this.isAddMode = false;
+        this._priorityMasterService.getPriority(this.dto.id).subscribe((data: any) => {
+          console.log(data);
+          if (data) {
+            if (data.statusCode == 200 && data.data.data) {
+              var priority = data.data.data;
+              this.priorityForm.patchValue({
+                code: priority.id,
+                name: priority.name,
+                fromAmount: priority.fromAmount,
+                toAmount: priority.toAmount
+              });
+            }
           }
-        }
-      })
-    }
-    else
-    {
-      this.priorityForm.patchValue({
-        code: parseInt(this.maxId) + 1
-     });
+        })
+      }
     }
   }
 
@@ -102,7 +107,7 @@ export class PriorityFormComponent {
       }
       else  
       {
-        this._priorityMasterService.updatePriority(parseInt(this.id), priorityModel).subscribe((data: any) => {
+        this._priorityMasterService.updatePriority(this.dto.id, priorityModel).subscribe((data: any) => {
           console.log(data);
           if (data) {
             if (data.statusCode == 200 && data.data.data == 1) {

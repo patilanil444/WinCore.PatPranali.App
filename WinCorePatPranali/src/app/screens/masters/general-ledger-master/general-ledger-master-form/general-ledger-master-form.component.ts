@@ -18,7 +18,7 @@ export class GeneralLedgerMasterFormComponent implements OnInit {
   id!: number;
   maxId!: number;
   uiGLGroups:any = [];
-  uiAccountTypes:any = [];
+  uiTypeOfAccounts:any = [];
   uiScheduleMasters:any = [];
 
   uiSubAccounts = [new UiValueType(1, "Yes"), new UiValueType(2, "No")];
@@ -35,7 +35,7 @@ export class GeneralLedgerMasterFormComponent implements OnInit {
    ngOnInit() {
 
     this.uiGLGroups = this._sharedService.uiGLGroups;
-    this.uiAccountTypes = this._sharedService.uiAccountTypes;
+    this.uiTypeOfAccounts = this._sharedService.uiTypeOfAccounts;
 
     this.glForm = new FormGroup({
       code: new FormControl("", []),
@@ -46,7 +46,7 @@ export class GeneralLedgerMasterFormComponent implements OnInit {
       openDate: new FormControl(formatDate(new Date(new Date()), 'yyyy-MM-dd', 'en'), [Validators.required]),
       balance: new FormControl("", [Validators.required]),
       openBalance: new FormControl("", [Validators.required]),
-      accountType: new FormControl(this.uiAccountTypes[0].id, [Validators.required]),
+      accountType: new FormControl(this.uiTypeOfAccounts[0].id, [Validators.required]),
       regularSchedule: new FormControl(1, [Validators.required]),
       assetSchedule: new FormControl(1, [Validators.required]),
       liabilitySchedule: new FormControl(1, [Validators.required]),
@@ -205,7 +205,7 @@ export class GeneralLedgerMasterFormComponent implements OnInit {
       openDate: new FormControl(formatDate(new Date(new Date()), 'yyyy-MM-dd', 'en'), [Validators.required]),
       balance: new FormControl("", [Validators.required]),
       openBalance: new FormControl("", [Validators.required]),
-      accountType: new FormControl(this.uiAccountTypes[0].id, [Validators.required]),
+      accountType: new FormControl(this.uiTypeOfAccounts[0].id, [Validators.required]),
       regularSchedule: new FormControl(1, [Validators.required]),
       assetSchedule: new FormControl(1, [Validators.required]),
       liabilitySchedule: new FormControl(1, [Validators.required]),

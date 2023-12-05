@@ -51,8 +51,8 @@ export class GeneralLedgerService {
     return this.http.get(GlobleDeclarations.apiBaseURL + "api/GLMaster/gl-groups", options);
   }
 
-  getAccountTypes() {
+  getTypeOfAccounts() {
     let options = GlobleDeclarations.getHeaderOptions();
-    return this.http.get(GlobleDeclarations.apiBaseURL + "api/common/account-types", options);
+    return this.http.get(GlobleDeclarations.apiBaseURL + "api/common/type-of-accounts", options);
   }
 }

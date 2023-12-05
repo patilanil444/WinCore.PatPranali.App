@@ -1,6 +1,8 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { BehaviorSubject } from 'rxjs/internal/BehaviorSubject';
 import { GlobleDeclarations } from 'src/app/common/globle-declarations';
+import { IGeneralDTO } from 'src/app/common/models/common-ui-models';
 
 @Injectable({
   providedIn: 'root'
@@ -8,6 +10,15 @@ import { GlobleDeclarations } from 'src/app/common/globle-declarations';
 export class PriorityMasterService {
   serviceBaseURL = "";
   constructor(private http: HttpClient) { }
+
+  private dto = new BehaviorSubject<IGeneralDTO>({} as IGeneralDTO);
+  setDTO(object: any) {
+    this.dto.next(object);
+  }
+  getDTO() {
+    return this.dto.asObservable();
+  }
+
 
   getPriorities(branchId: number) {
     let options = GlobleDeclarations.getHeaderOptions();
