@@ -27,8 +27,8 @@
                         <tr *ngFor="let uiGeneralLedger of uiGeneralLedgers| paginate: { itemsPerPage: 5, currentPage: p, totalItems: total }">
                             <th scope="row">{{uiGeneralLedger.id}}</th>
                             <td>{{uiGeneralLedger.name}}</td>
-                            <td>{{uiGeneralLedger.groupCode}}</td>
-                            <td>{{uiGeneralLedger.accountTypeId}}</td>
+                            <td>{{uiGeneralLedger.glGroupName}}</td>
+                            <td>{{uiGeneralLedger.typeOfAccount}}</td>
                             <td>{{uiGeneralLedger.interestRate}}</td>
                             <td>
                                 <div class="widget-content-right">

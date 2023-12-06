@@ -5,6 +5,7 @@ import { AppRouterComponent } from './app-router.component';
 import { HomeComponent } from '../home/home.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NgxPaginationModule } from 'ngx-pagination';
+import { BsDatepickerModule } from 'ngx-bootstrap/datepicker'
 import { DepositAccountsComponent } from '../screens/accounts/deposit-accounts/deposit-accounts.component';
 import { LoanAccountsComponent } from '../screens/accounts/loan-accounts/loan-accounts.component';
 import { PriorityFormComponent } from '../screens/masters/priority/priority-form/priority-form.component';
@@ -59,7 +60,8 @@ import { BankProfileMasterComponent } from '../screens/masters/bank-profile-mast
     ReactiveFormsModule,
     FormsModule,
     AppRouterRoutingModule,
-    NgxPaginationModule
+    NgxPaginationModule,
+    BsDatepickerModule.forRoot(),
   ]
 })
 export class AppRouterModule { }

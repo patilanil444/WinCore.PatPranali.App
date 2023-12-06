@@ -28,8 +28,8 @@ export class GeneralLedgerMasterListComponent implements OnInit {
         this.uiGeneralLedgers = data.data.data;
         this.total = this.uiGeneralLedgers.length;
         if (this.uiGeneralLedgers) {
-          this.uiGeneralLedgers.map((bank, i) => {
-            bank.hasBranchesYN = bank.hasBranches ? "Yes" : "No";
+          this.uiGeneralLedgers.map((ledger, i) => {
+            ledger.hasBranchesYN = ledger.hasBranches ? "Yes" : "No";
           });
         }
       }

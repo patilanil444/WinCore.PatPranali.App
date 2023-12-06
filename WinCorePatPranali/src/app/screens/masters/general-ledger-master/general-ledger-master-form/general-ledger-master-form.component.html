@@ -13,7 +13,7 @@
 
                         <div class="col-md-4 position-relative form-group">
                             <label class="">Name</label>
-                            <input type="text" id="txtName" autocomplete="off" tabindex="1" placeholder="Ledger Name"
+                            <input type="text" id="txtName" autocomplete="off" tabindex="2" placeholder="Ledger Name"
                                 class="form-control" formControlName="name" required maxlength="50"
                                 [class.is-invalid]="name.invalid && (name.dirty || name.touched)">
                             <div *ngIf="name.invalid && (name.dirty || name.touched)" class="invalid-feedback">
@@ -25,7 +25,7 @@
 
                         <div class="col-md-4 position-relative">
                             <label class="">Type of Account</label>
-                            <select class="mb-2 form-control" tabindex="9" formControlName="accountType">
+                            <select class="mb-2 form-control" tabindex="3" formControlName="accountType">
                                 <option *ngFor="let uiTypeOfAccount of uiTypeOfAccounts" [ngValue]="uiTypeOfAccount.id">
                                     {{uiTypeOfAccount.typeDescription}}
                                 </option>
@@ -36,7 +36,7 @@
                     <div class="row">
                         <div class="col-md-4 position-relative">
                             <label class="">Group</label>
-                            <select class="mb-2 form-control" tabindex="2" formControlName="group">
+                            <select class="mb-2 form-control" tabindex="4" formControlName="group">
                                 <option *ngFor="let uiGLGroup of uiGLGroups" [ngValue]="uiGLGroup.id">
                                     {{uiGLGroup.name}}
                                 </option>
@@ -46,8 +46,8 @@
                         <div class="col-md-4 position-relative form-group">
                             <label class="">Interest Rate</label>
                             <div class="input-group">
-                                <input placeholder="Interest Rate" tabindex="4" type="number" maxlength="5"
-                                    class="form-control" formControlName="interestRate" 
+                                <input placeholder="Interest Rate" tabindex="5" type="number" maxlength="5"
+                                    class="form-control" formControlName="interestRate"  
                                    >
                                    <!-- [class.is-invalid]="interestRate.invalid && (interestRate.dirty || interestRate.touched)" -->
                                 <!-- <div *ngIf="interestRate.invalid && (interestRate.dirty || interestRate.touched)"
@@ -62,7 +62,7 @@
                         <div class="col-md-4 position-relative form-group">
                             <label class="">Balance</label>
                             <div class="input-group">
-                                <input placeholder="Balance" readonly="true" tabindex="7" type="text"
+                                <input placeholder="0" readonly="true" tabindex="6" type="text"
                                     class="form-control" formControlName="balance">
                             </div>
                         </div>
@@ -71,7 +71,7 @@
                     <div class="row">
                         <div class="col-md-4 position-relative">
                             <label class="">Sub Accounts</label>
-                            <select class="mb-2 form-control" tabindex="3" formControlName="subAccounts">
+                            <select class="mb-2 form-control" tabindex="7" formControlName="subAccounts">
                                 <option *ngFor="let uiSubAccount of uiSubAccounts" [ngValue]="uiSubAccount.id">
                                     {{uiSubAccount.name}}
                                 </option>
@@ -81,14 +81,14 @@
                         <div class="col-md-4 position-relative form-group">
                             <label for="txtName" class="">Opening Date</label>
                             <div class="input-group">
-                                <input tabindex="6" type="date" class="form-control" required formControlName="openDate">
+                                <input tabindex="8" type="date" class="form-control" required formControlName="openDate">
                             </div>
                         </div>
                      
                         <div class="col-md-4 position-relative form-group">
                             <label class="">Open Balance</label>
                             <div class="input-group">
-                                <input placeholder="Open Balance" tabindex="8" type="text" class="form-control"
+                                <input placeholder="Open Balance" tabindex="9" type="text" class="form-control"
                                     required maxlength="10" formControlName="openBalance">
                                 <!-- [class.is-invalid]="openBalance.invalid && (openBalance.dirty || openBalance.touched)" -->
                                 <!-- <div *ngIf="openBalance.invalid && (openBalance.dirty || openBalance.touched)" class="invalid-feedback">
@@ -142,7 +142,7 @@
                     <div class="row">
                         <div class="col-md-6 position-relative">
                             <button class="mt-1 btn btn-primary" tabindex="13"
-                                (click)="saveGeneralMaster()">Submit</button>
+                                (click)="saveGLMaster()">Submit</button>
                             <button class="mt-1 btn btn-left-margin10 btn-secondary" (click)="clear()">Clear</button>
                             <button class="mt-1 btn btn-left-margin10 btn-alternate"
                                 (click)="configClick('general-ledger-list')">Ledgers List</button>

@@ -2,10 +2,27 @@ import { formatDate } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
+import { BsDatepickerConfig } from 'ngx-bootstrap/datepicker';
 import { IGeneralLedgerDTO, UiEnumGeneralMaster, UiValueType } from 'src/app/common/models/common-ui-models';
 import { GeneralLedgerService } from 'src/app/services/masters/general-ledger/general-ledger.service';
 import { GeneralMasterService } from 'src/app/services/masters/general-master/general-master.service';
 import { SharedService } from 'src/app/services/shared.service';
+
+interface IGLMasterServerModel {
+  Id: number;
+  Name: string;
+  GLGroupId: string;
+  HasSubAccounts: boolean;
+  InterestRate: number;
+  OpenDate: Date;
+  OpenBalance: number;
+  AccountTypeId: number;
+  RegularScheduleId: number;
+  AssetScheduleId: number;
+  LiabilityScheduleId: number;
+  BranchId: number;
+}
+
 
 @Component({
   selector: 'app-general-ledger-master-form',
@@ -17,10 +34,11 @@ export class GeneralLedgerMasterFormComponent implements OnInit {
   glForm!: FormGroup;
   id!: number;
   maxId!: number;
-  uiGLGroups:any = [];
-  uiTypeOfAccounts:any = [];
-  uiScheduleMasters:any = [];
-
+  uiGLGroups: any = [];
+  uiTypeOfAccounts: any = [];
+  uiScheduleMasters: any = [];
+  datepickerConfig!:Partial<BsDatepickerConfig>;
+  todate=new Date();
   uiSubAccounts = [new UiValueType(1, "Yes"), new UiValueType(2, "No")];
 
   newCode!: string;
@@ -29,10 +47,16 @@ export class GeneralLedgerMasterFormComponent implements OnInit {
   dto: IGeneralLedgerDTO = {} as IGeneralLedgerDTO;
 
   constructor(private router: Router, private _sharedService: SharedService,
-    private _generalLedgerService: GeneralLedgerService, private _generalMasterService: GeneralMasterService, ) {
-   }
+    private _generalLedgerService: GeneralLedgerService, private _generalMasterService: GeneralMasterService,) {
 
-   ngOnInit() {
+      this.datepickerConfig=Object.assign({},{containerClass:'theme-green',showWeekNumbers:false,showTodayButton:true},
+      {dateInputFormat:'DD/MM/YYYY'},
+      {minDate:new Date(2000,1,1)},
+      {maxDate:new Date(2050,12,31)}
+      );
+  }
+
+  ngOnInit() {
 
     this.uiGLGroups = this._sharedService.uiGLGroups;
     this.uiTypeOfAccounts = this._sharedService.uiTypeOfAccounts;
@@ -43,21 +67,39 @@ export class GeneralLedgerMasterFormComponent implements OnInit {
       group: new FormControl(this.uiGLGroups[0].id, [Validators.required]),
       subAccounts: new FormControl(1, [Validators.required]),
       interestRate: new FormControl("", [Validators.required]),
-      openDate: new FormControl(formatDate(new Date(new Date()), 'yyyy-MM-dd', 'en'), [Validators.required]),
-      balance: new FormControl("", [Validators.required]),
+      openDate: new FormControl(formatDate(new Date(Date.now()), 'yyyy-MM-dd', 'en'), [Validators.required]),
+      balance: new FormControl("", []),
       openBalance: new FormControl("", [Validators.required]),
       accountType: new FormControl(this.uiTypeOfAccounts[0].id, [Validators.required]),
       regularSchedule: new FormControl(1, [Validators.required]),
       assetSchedule: new FormControl(1, [Validators.required]),
       liabilitySchedule: new FormControl(1, [Validators.required]),
     });
-     
+
     this.getScheduleMaster();
-    
+
   }
 
-  loadForm()
-  {
+  fromJsonDate(jDate:any): string {
+    const bDate: Date = new Date(jDate);
+    return bDate.toISOString().substring(0, 10);  //Ignore time
+  }
+
+  getScheduleMaster() {
+    let branchGeneralMasterModel = {
+      GeneralMasterId: UiEnumGeneralMaster.ScheduleMaster,
+      BranchId: this._sharedService.applicationUser.branchId
+    }
+    this._generalMasterService.getAllGeneralMasters(branchGeneralMasterModel).subscribe((data: any) => {
+      if (data) {
+        this.uiScheduleMasters = data.data.data;
+
+        this.loadForm();
+      }
+    })
+  }
+
+  loadForm() {
     this._generalLedgerService.getDTO().subscribe(obj => this.dto = obj);
 
     if (this.dto) {
@@ -66,35 +108,37 @@ export class GeneralLedgerMasterFormComponent implements OnInit {
       if (this.dto.id == 0) {
         this.isAddMode = true;
         this.maxId = this.dto.maxId;
-            this.glForm.patchValue({
-              code: this.maxId + 1,
-              regularSchedule: this.uiScheduleMasters[0].id,
-              assetSchedule : this.uiScheduleMasters[0].id,
-              liabilitySchedule : this.uiScheduleMasters[0].id,
-           });
-      }  
-      else 
-      {
+        this.glForm.patchValue({
+          code: this.maxId + 1,
+          regularSchedule: this.uiScheduleMasters[0].id,
+          assetSchedule: this.uiScheduleMasters[0].id,
+          liabilitySchedule: this.uiScheduleMasters[0].id,
+        });
+      }
+      else {
         this.isAddMode = false;
-         // edit a record
-         this._generalLedgerService.getGeneralLedger(this.dto.id).subscribe((data: any) => {
+        // edit a record
+        this._generalLedgerService.getGeneralLedger(this.dto.id).subscribe((data: any) => {
           if (data) {
             if (data.statusCode == 200 && data.data.data) {
               var generalLedger = data.data.data;
-              this.glForm = new FormGroup({
-                code: new FormControl(generalLedger.id, []),
-                name: new FormControl(generalLedger.name, [Validators.required]),
-                group: new FormControl(generalLedger.group, [Validators.required]),
-                subAccounts: new FormControl(generalLedger.HasSubAccounts? 1: 2 , [Validators.required]),
-                interestRate: new FormControl(generalLedger.interestRate, [Validators.required]),
-                openDate: new FormControl(formatDate(new Date(generalLedger.openDate), 'yyyy-MM-dd', 'en'), [Validators.required]),
-                balance: new FormControl(generalLedger.balance, [Validators.required]),
-                openBalance: new FormControl(generalLedger.openBalance, [Validators.required]),
-                accountType: new FormControl(generalLedger.accountTypeId, [Validators.required]),
-                regularSchedule: new FormControl(generalLedger.regularScheduleId, [Validators.required]),
-                assetSchedule: new FormControl(generalLedger.assetScheduleId, [Validators.required]),
-                liabilitySchedule: new FormControl(generalLedger.liabilityScheduleId, [Validators.required]),
+              this.glForm.patchValue({
+                code: generalLedger.id,
+                name: generalLedger.name,
+                group: generalLedger.glGroupId,
+                subAccounts: generalLedger.hasSubAccounts ? 1 : 2,
+                interestRate: generalLedger.interestRate,
+                openDate: formatDate(new Date(generalLedger.openDate), 'yyyy-MM-dd', 'en'),
+                balance: generalLedger.balance,
+                openBalance: generalLedger.openBalance,
+                accountType: generalLedger.accountTypeId,
+                regularSchedule: generalLedger.regularScheduleId,
+                assetSchedule: generalLedger.assetScheduleId,
+                liabilitySchedule: generalLedger.liabilityScheduleId,
               });
+
+              this.glForm.controls['openDate'].disable()
+              this.glForm.controls['openBalance'].disable()
             }
           }
         })
@@ -136,51 +180,45 @@ export class GeneralLedgerMasterFormComponent implements OnInit {
     return this.glForm.get('liabilitySchedule')!;
   }
 
-  getScheduleMaster()
-  {
-    let branchGeneralMasterModel = {
-      GeneralMasterId: UiEnumGeneralMaster.ScheduleMaster,
-      BranchId: this._sharedService.applicationUser.branchId
-    }
-    this._generalMasterService.getAllGeneralMasters(branchGeneralMasterModel).subscribe((data: any) => {
-      if (data) {
-        this.uiScheduleMasters = data.data.data;
-
-        this.loadForm();
-      }
-    })
-  }
-
-  public saveGeneralMaster(): void {
+  public saveGLMaster(): void {
     if (this.validateForm()) {
-      // let generalMasterModel = {} as IGeneralMasterServerModel;
+      let glMasterModel = {} as IGLMasterServerModel;
 
-      // generalMasterModel.BranchMasterName = this.name.value.toString();
-      // generalMasterModel.GeneralMasterId = this.dto.masterId;
-      // generalMasterModel.BranchId = this._sharedService.applicationUser.branchId;
-      // console.log(generalMasterModel);
+      glMasterModel.Id = 0;
+      glMasterModel.Name = this.name.value.toString();
+      glMasterModel.GLGroupId = this.group.value.toString();
+      glMasterModel.HasSubAccounts = (this.subAccounts.value.toString() == "1" ? true : false);
+      glMasterModel.InterestRate = this.interestRate.value.toString();
+      glMasterModel.OpenDate = this.openDate.value.toString();
+      glMasterModel.OpenBalance = this.openBalance.value.toString();
+      glMasterModel.AccountTypeId = this.accountType.value.toString();
+      glMasterModel.RegularScheduleId = this.regularSchedule.value.toString();
+      glMasterModel.AssetScheduleId = this.assetSchedule.value.toString();
+      glMasterModel.LiabilityScheduleId = this.liabilitySchedule.value.toString();
+      glMasterModel.BranchId = this._sharedService.applicationUser.branchId;
 
-      // if (this.isAddMode) {
-      //   this._generalLedgerService.createGeneralLedger(generalMasterModel).subscribe((data: any) => {
-      //     console.log(data);
-      //     if (data) {
-      //       if (data.statusCode == 200 && data.data.data == 1) {
-      //         this.configClick("master-list");
-      //       }
-      //     }
-      //   })
-      // }
-      // else  
-      // {
-      //   this._generalLedgerService.createGeneralLedger(this.id, generalMasterModel).subscribe((data: any) => {
-      //     console.log(data);
-      //     if (data) {
-      //       if (data.statusCode == 200 && data.data.data == 1) {
-      //         this.configClick("master-list");
-      //       }
-      //     }
-      //   })
-      // }
+      console.log(glMasterModel);
+
+      if (this.isAddMode) {
+        this._generalLedgerService.createGeneralLedger(glMasterModel).subscribe((data: any) => {
+          console.log(data);
+          if (data) {
+            if (data.statusCode == 200 && data.data.data == 1) {
+              this.configClick("general-ledger-list");
+            }
+          }
+        })
+      }
+      else {
+        this._generalLedgerService.updateGeneralLedger(this.id, glMasterModel).subscribe((data: any) => {
+          console.log(data);
+          if (data) {
+            if (data.statusCode == 200 && data.data.data == 1) {
+              this.configClick("general-ledger-list");
+            }
+          }
+        })
+      }
 
     }
   }
@@ -203,7 +241,7 @@ export class GeneralLedgerMasterFormComponent implements OnInit {
       subAccounts: new FormControl(1, [Validators.required]),
       interestRate: new FormControl("", [Validators.required]),
       openDate: new FormControl(formatDate(new Date(new Date()), 'yyyy-MM-dd', 'en'), [Validators.required]),
-      balance: new FormControl("", [Validators.required]),
+      balance: new FormControl("", []),
       openBalance: new FormControl("", [Validators.required]),
       accountType: new FormControl(this.uiTypeOfAccounts[0].id, [Validators.required]),
       regularSchedule: new FormControl(1, [Validators.required]),
@@ -214,7 +252,7 @@ export class GeneralLedgerMasterFormComponent implements OnInit {
 
   configClick(routeValue: string) {
     sessionStorage.setItem("configMenu", routeValue);
-    this.router.navigate(['/app/'+ routeValue]);
+    this.router.navigate(['/app/' + routeValue]);
   }
 
 }
