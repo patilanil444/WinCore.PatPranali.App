@@ -1,6 +1,13 @@
-export class UiValueType
+export class UiValueType {
+    //public description: string;
+    constructor(public id: number, public name: string) {
+        //this.description = id + "-" + name;
+    }
+}
+
+export class UiStaticType
 {
-    constructor(public id: number, public name: string)
+    constructor(public id: number,public code: string, public name: string)
         {   }
 }
 

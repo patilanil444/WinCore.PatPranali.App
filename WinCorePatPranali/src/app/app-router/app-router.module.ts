@@ -27,7 +27,8 @@ import { DepositInterestStructureComponent } from '../screens/masters/deposit-in
 import { LoanInterestStructureComponent } from '../screens/masters/loan-interest-structure/loan-interest-structure.component';
 import { GLInterestParameterComponent } from '../screens/masters/gl-interest-parameter/gl-interest-parameter.component';
 import { BankProfileMasterComponent } from '../screens/masters/bank-profile-master/bank-profile-master.component';
-
+import { FilterPipe } from '../common/directives/filterPipe';
+import { SelectDropDownModule } from 'ngx-select-dropdown';
 
 @NgModule({
   declarations: [
@@ -54,6 +55,7 @@ import { BankProfileMasterComponent } from '../screens/masters/bank-profile-mast
     LoanInterestStructureComponent,
     GLInterestParameterComponent,
     BankProfileMasterComponent,
+    FilterPipe
   ],
   imports: [
     CommonModule,
@@ -62,6 +64,7 @@ import { BankProfileMasterComponent } from '../screens/masters/bank-profile-mast
     AppRouterRoutingModule,
     NgxPaginationModule,
     BsDatepickerModule.forRoot(),
+    SelectDropDownModule
   ]
 })
 export class AppRouterModule { }

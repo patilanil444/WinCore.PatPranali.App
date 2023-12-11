@@ -55,4 +55,15 @@ export class GeneralLedgerService {
     let options = GlobleDeclarations.getHeaderOptions();
     return this.http.get(GlobleDeclarations.apiBaseURL + "api/common/type-of-accounts", options);
   }
+
+
+  getGeneralLedgerInterestParams(id: number): any {
+    let options = GlobleDeclarations.getHeaderOptions();
+    return this.http.get(GlobleDeclarations.apiBaseURL + "api/GLMaster/gl-interest-parameters?id=" + id, options);
+  }
+
+  updateGeneralLedgerInterestParams(id: number, glModel: any): any {
+    let options = GlobleDeclarations.getHeaderOptions();
+    return this.http.post(GlobleDeclarations.apiBaseURL + "api/GLMaster/update-gl-interest-parameters?id=" + id, glModel, options);
+  }
 }
