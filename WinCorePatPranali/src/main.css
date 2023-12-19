@@ -10223,6 +10223,10 @@ a, button, .btn {
     position: relative;
 }
 
+.app-sidebar__heading ul li a{
+    text-transform: none !important;
+}
+
 .sidebar-mobile-overlay {
     display: none;
     position: fixed;
@@ -10361,7 +10365,8 @@ a, button, .btn {
             line-height: 2rem;
             padding: 0 1rem 0;
             cursor: pointer;
-            font-size: 12px;
+            font-size: 13px !important;
+            font-weight: 600 !important;
         }
 
             .vertical-nav-menu ul > li > a:hover {
