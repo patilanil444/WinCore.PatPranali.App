@@ -88,13 +88,29 @@ export class GeneralMasterListComponent {
     this.configClick("general-master");
   }
 
-  delete(uiBank: any) {
-    if (uiBank.id > 0) {
-      alert("Hi");
-      //this.deleteModel.open();
-      ///this.deleteModel.nativeElement.className = 'modal fade show';
-      // TODO: confirmation for delete 
+  delete(uiGeneralMaster: any) {
+    if (uiGeneralMaster.id > 0) {
+      this._generalMasterService.generalMasterIdToDelete = uiGeneralMaster.id; 
     }
+  }
+
+  onDelete()
+  {
+    let generalMasterIdToDelete = this._generalMasterService.generalMasterIdToDelete;
+    if (generalMasterIdToDelete > 0) {
+      this._generalMasterService.deleteGeneralMaster(generalMasterIdToDelete).subscribe((data: any) => {
+        console.log(data);
+        if (data) {
+          // show message
+          this.getBranchGeneralMasters();
+        }
+      })
+    }
+  }
+
+  cancelDelete()
+  {
+    this._generalMasterService.generalMasterIdToDelete = -1;
   }
 
   configClick(routeValue: string) {

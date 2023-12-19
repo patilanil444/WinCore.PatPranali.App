@@ -45,7 +45,7 @@
                                         </span>
                                     </button>
                                     <button type="button" title="Delete record" class="btn-shadow btn btn-danger btn-actions" data-toggle="modal"
-                                    data-target="#deleteModal" >
+                                    data-target="#deleteModal" (click)="delete(uiBranchGeneralMaster)">
                                         <span class="btn-icon-wrapper opacity-10">
                                             <i class="fa fa-trash fa-w-20"></i>
                                         </span>
@@ -72,7 +72,7 @@ aria-hidden="true"
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" id="exampleModalLabel">Delete</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="cancelDelete()">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
@@ -80,8 +80,8 @@ aria-hidden="true"
                 <p class="mb-0">Are you sure do you want to delete?</p>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-danger">Yes</button>
-                <button type="button" class="btn btn-primary" data-dismiss="modal">No</button>
+                <button type="button" class="btn btn-danger" data-dismiss="modal" (click)="onDelete()">Yes</button>
+                <button type="button" class="btn btn-primary" data-dismiss="modal" (click)="cancelDelete()">No</button>
             </div>
         </div>
     </div>

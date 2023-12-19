@@ -2,8 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, UntypedFormBuilder, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { NgxDropdownConfig, SelectDropDownService } from 'ngx-select-dropdown';
-import { GlobleDeclarations } from 'src/app/common/globle-declarations';
-import { UiStaticType, UiValueType } from 'src/app/common/models/common-ui-models';
+import { GlobleGLDeclarations } from 'src/app/common/general-ledger-declarations';
 import { GeneralLedgerService } from 'src/app/services/masters/general-ledger/general-ledger.service';
 import { SharedService } from 'src/app/services/shared.service';
 
@@ -54,21 +53,21 @@ export class GLInterestParameterComponent implements OnInit {
   isDepositEnabled = true;
   isLoanEnabled = true;
 
-  addInterestToBal = GlobleDeclarations.addInterestToBal;
-  interestPostings = GlobleDeclarations.interestPostings;
-  rateForSpecials = GlobleDeclarations.rateForSpecials;
-  calculateInterestAfter = GlobleDeclarations.calculateInterestAfter;
-  maturityAtTheTimeOf = GlobleDeclarations.maturityAtTheTimeOf;
-  calculateProvision01 = GlobleDeclarations.calculateProvision01;
-  calculateProvision02 = GlobleDeclarations.calculateProvision02;
-  calculatePayable = GlobleDeclarations.calculatePayable;
-  installmentPenal = GlobleDeclarations.installmentPenal;
-  riCumulative01 = GlobleDeclarations.riCumulative01;
-  installmentPenalAfter = GlobleDeclarations.installmentPenalAfter;
-  interestCalculationType = GlobleDeclarations.interestCalculationType;
-  interestAfterMaturity = GlobleDeclarations.interestAfterMaturity;
-  installmentCalculation = GlobleDeclarations.installmentCalculation;
-  extraInterestForCC = GlobleDeclarations.extraInterestForCC;
+  addInterestToBal = GlobleGLDeclarations.addInterestToBal;
+  interestPostings = GlobleGLDeclarations.interestPostings;
+  rateForSpecials = GlobleGLDeclarations.rateForSpecials;
+  calculateInterestAfter = GlobleGLDeclarations.calculateInterestAfter;
+  maturityAtTheTimeOf = GlobleGLDeclarations.maturityAtTheTimeOf;
+  calculateProvision01 = GlobleGLDeclarations.calculateProvision01;
+  calculateProvision02 = GlobleGLDeclarations.calculateProvision02;
+  calculatePayable = GlobleGLDeclarations.calculatePayable;
+  installmentPenal = GlobleGLDeclarations.installmentPenal;
+  riCumulative01 = GlobleGLDeclarations.riCumulative01;
+  installmentPenalAfter = GlobleGLDeclarations.installmentPenalAfter;
+  interestCalculationType = GlobleGLDeclarations.interestCalculationType;
+  interestAfterMaturity = GlobleGLDeclarations.interestAfterMaturity;
+  installmentCalculation = GlobleGLDeclarations.installmentCalculation;
+  extraInterestForCC = GlobleGLDeclarations.extraInterestForCC;
 
   config: NgxDropdownConfig = {
     displayKey: "name",
@@ -131,7 +130,13 @@ export class GLInterestParameterComponent implements OnInit {
       console.log(data);
       if (data) {
         this.uiGeneralLedgers = data.data.data;
-        if (this.uiGeneralLedgers) {
+        if ( this.uiGeneralLedgers) {
+
+          this.uiGeneralLedgers.map((gl: any, i: any) => {
+            gl.name = gl.id + "-" + gl.name;
+          });
+
+          //this.uiGeneralLedgers = ledgers.map((gl: any) => { id: gl.id; name: gl.id + "" + gl.name });
 
           this.uiReceivableGLs = this.uiGeneralLedgers.filter(gl => gl.typeOfAccount.toLowerCase().includes('payable')
             || gl.typeOfAccount.toLowerCase().includes('receivable'));

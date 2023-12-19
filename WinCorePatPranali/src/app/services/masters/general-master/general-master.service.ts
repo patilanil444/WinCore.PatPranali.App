@@ -10,6 +10,7 @@ import { IGeneralDTO } from 'src/app/common/models/common-ui-models';
 export class GeneralMasterService {
 
   serviceBaseURL = "";
+  generalMasterIdToDelete = -1;
   constructor(private http: HttpClient) { }
 
   private dto = new BehaviorSubject<IGeneralDTO>({} as IGeneralDTO);
@@ -47,7 +48,7 @@ export class GeneralMasterService {
 
   deleteGeneralMaster(id: number): any {
     let options = GlobleDeclarations.getHeaderOptions();
-    return this.http.post(GlobleDeclarations.apiBaseURL + "api/GeneralMaster/delete-master?id=" + id, options);
+    return this.http.delete(GlobleDeclarations.apiBaseURL + "api/GeneralMaster/delete-master?id=" + id, options);
   }
 
   getMaxGeneralMasterId(): any {

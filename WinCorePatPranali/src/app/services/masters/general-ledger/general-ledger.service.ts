@@ -10,6 +10,7 @@ import { IGeneralLedgerDTO } from 'src/app/common/models/common-ui-models';
 export class GeneralLedgerService {
 
   serviceBaseURL = "";
+  generalLedgerIdToDelete = -1;
   constructor(private http: HttpClient) { }
 
   private dto = new BehaviorSubject<IGeneralLedgerDTO>({} as IGeneralLedgerDTO);
@@ -43,7 +44,7 @@ export class GeneralLedgerService {
 
   deleteGeneralLedger(id: number): any {
     let options = GlobleDeclarations.getHeaderOptions();
-    return this.http.post(GlobleDeclarations.apiBaseURL + "api/GLMaster/delete-gl?id=" + id, options);
+    return this.http.delete(GlobleDeclarations.apiBaseURL + "api/GLMaster/delete-gl?id=" + id, options);
   }
 
   getGLGroups() {

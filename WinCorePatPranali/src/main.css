@@ -10355,11 +10355,13 @@ a, button, .btn {
         }
 
         .vertical-nav-menu ul > li > a {
-            color: #6c757d;
+            /* color: #6c757d; */
+            color: #6882ae !important;
             height: 2rem;
             line-height: 2rem;
-            padding: 0 0rem 0;
+            padding: 0 1rem 0;
             cursor: pointer;
+            font-size: 12px;
         }
 
             .vertical-nav-menu ul > li > a:hover {

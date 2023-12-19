@@ -73,13 +73,29 @@ export class BranchMasterListComponent {
     this.configClick("branch");
   }
 
-  delete(uiBank: any) {
-    if (uiBank.id > 0) {
-      alert("Hi");
-      //this.deleteModel.open();
-      ///this.deleteModel.nativeElement.className = 'modal fade show';
-      // TODO: confirmation for delete 
+  delete(uiBranch: any) {
+    if (uiBranch.id > 0) {
+      this._branchMasterService.branchIdToDelete = uiBranch.id;
     }
+  }
+
+  onDelete()
+  {
+    let branchIdToDelete = this._branchMasterService.branchIdToDelete;
+    if (branchIdToDelete > 0) {
+      this._branchMasterService.deleteBranch(branchIdToDelete).subscribe((data: any) => {
+        console.log(data);
+        if (data) {
+          // show message
+          this.getBranches();
+        }
+      })
+    }
+  }
+
+  cancelDelete()
+  {
+    this._branchMasterService.branchIdToDelete = -1;
   }
 
   configClick(routeValue: string) {

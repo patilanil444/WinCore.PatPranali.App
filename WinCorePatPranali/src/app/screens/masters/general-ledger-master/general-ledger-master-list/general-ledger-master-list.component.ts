@@ -75,11 +75,27 @@ export class GeneralLedgerMasterListComponent implements OnInit {
 
   delete(uiGeneralLedger: any) {
     if (uiGeneralLedger.id > 0) {
-      alert("Hi");
-      //this.deleteModel.open();
-      ///this.deleteModel.nativeElement.className = 'modal fade show';
-      // TODO: confirmation for delete 
+      this._generalLedgerService.generalLedgerIdToDelete = uiGeneralLedger.id;
     }
+  }
+
+  onDelete()
+  {
+    let generalLedgerIdToDelete = this._generalLedgerService.generalLedgerIdToDelete;
+    if (generalLedgerIdToDelete > 0) {
+      this._generalLedgerService.deleteGeneralLedger(generalLedgerIdToDelete).subscribe((data: any) => {
+        console.log(data);
+        if (data) {
+          // show message
+          this.getGeneralLedgers();
+        }
+      })
+    }
+  }
+
+  cancelDelete()
+  {
+    this._generalLedgerService.generalLedgerIdToDelete = -1;
   }
 
   configClick(routeValue: string) {

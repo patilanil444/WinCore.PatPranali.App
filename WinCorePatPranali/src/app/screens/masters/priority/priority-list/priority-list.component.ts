@@ -70,11 +70,27 @@ export class PriorityListComponent {
 
   delete(uiPriority: any) {
     if (uiPriority.id > 0) {
-      alert("Hi");
-      //this.deleteModel.open();
-      ///this.deleteModel.nativeElement.className = 'modal fade show';
-      // TODO: confirmation for delete 
+      this._priorityMasterService.priorityIdToDelete = uiPriority.id;
     }
+  }
+
+  onDelete()
+  {
+    let priorityIdToDelete = this._priorityMasterService.priorityIdToDelete;
+    if (priorityIdToDelete > 0) {
+      this._priorityMasterService.deletePriority(priorityIdToDelete).subscribe((data: any) => {
+        console.log(data);
+        if (data) {
+          // show message
+          this.getPriorities();
+        }
+      })
+    }
+  }
+
+  cancelDelete()
+  {
+    this._priorityMasterService.priorityIdToDelete = -1;
   }
 
   configClick(routeValue: string) {

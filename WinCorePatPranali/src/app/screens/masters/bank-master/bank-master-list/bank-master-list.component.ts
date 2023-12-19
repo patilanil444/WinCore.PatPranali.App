@@ -11,7 +11,6 @@ import { SharedService } from 'src/app/services/shared.service';
 })
 export class BankMasterListComponent {
 
-  @ViewChild('deleteModal') deleteModel:any
   uiBanks: any[] = [];
   p: number = 1;
   total: number = 0;
@@ -78,11 +77,27 @@ export class BankMasterListComponent {
 
   delete(uiBank: any) {
     if (uiBank.id > 0) {
-      alert("Hi");
-      //this.deleteModel.open();
-      ///this.deleteModel.nativeElement.className = 'modal fade show';
-      // TODO: confirmation for delete 
+      this._bankMasterService.bankIdToDelete = uiBank.id;
     }
+  }
+
+  onDelete()
+  {
+    let bankIdToDelete = this._bankMasterService.bankIdToDelete;
+    if (bankIdToDelete > 0) {
+      this._bankMasterService.deleteBank(bankIdToDelete).subscribe((data: any) => {
+        console.log(data);
+        if (data) {
+          // show message
+          this.getBanks();
+        }
+      })
+    }
+  }
+
+  cancelDelete()
+  {
+    this._bankMasterService.bankIdToDelete = -1;
   }
 
   configClick(routeValue: string) {
