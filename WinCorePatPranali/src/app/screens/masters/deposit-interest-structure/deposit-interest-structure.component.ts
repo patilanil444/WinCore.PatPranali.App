@@ -1,6 +1,7 @@
 import { formatDate } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { ToastrService } from 'ngx-toastr';
 import { UiValueType } from 'src/app/common/models/common-ui-models';
 import { DepositInterestRateService } from 'src/app/services/masters/deposit-interest-rate/deposit-interest-rate.service';
 import { GeneralLedgerService } from 'src/app/services/masters/general-ledger/general-ledger.service';
@@ -59,7 +60,8 @@ export class DepositInterestStructureComponent implements OnInit {
   isAddMode = true;
   
   constructor(private router: Router, private _generalLedgerService: GeneralLedgerService,
-    private _sharedService: SharedService, private _depositInterestRateService: DepositInterestRateService) { }
+    private _sharedService: SharedService, private _depositInterestRateService: DepositInterestRateService , 
+    private _toastrService: ToastrService) { }
 
   ngOnInit(): void {
     this.getGeneralLedgers();
@@ -133,6 +135,7 @@ export class DepositInterestStructureComponent implements OnInit {
           }
           else
           {
+            this.isAddMode = true;
             this.interestStructureDate = formatDate(new Date(Date.now()), 'yyyy-MM-dd', 'en');
           }
         }
@@ -184,8 +187,9 @@ export class DepositInterestStructureComponent implements OnInit {
         this._depositInterestRateService.createDepositRateStructure(depositInterestRateModel).subscribe((data: any) => {
           console.log(data);
           if (data) {
-            if (data.statusCode == 200 && data.data.data == 1) {
-              //this.configClick("banks");
+            if (data.statusCode == 200 && data.data.data > 0) {
+              this._toastrService.success('Deposit interest structure added.', 'Success!');
+              this.getDepositInterestRates();
             }
           }
         })
@@ -195,8 +199,8 @@ export class DepositInterestStructureComponent implements OnInit {
         this._depositInterestRateService.updateDepositRateStructure(parseInt(this.uiDepositInterestRate.id), depositInterestRateModel).subscribe((data: any) => {
           console.log(data);
           if (data) {
-            if (data.statusCode == 200 && data.data.data == 1) {
-              //this.configClick("banks");
+            if (data.statusCode == 200 && data.data.data > 0) {
+              this._toastrService.success('Deposit interest structure updated.', 'Success!');
             }
           }
         })

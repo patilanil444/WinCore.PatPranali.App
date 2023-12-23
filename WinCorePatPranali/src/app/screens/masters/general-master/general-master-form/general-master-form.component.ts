@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
+import { ToastrService } from 'ngx-toastr';
 import { IGeneralMasterDTO } from 'src/app/common/models/common-ui-models';
 import { GeneralMasterService } from 'src/app/services/masters/general-master/general-master.service';
 import { SharedService } from 'src/app/services/shared.service';
@@ -29,7 +30,8 @@ export class GeneralMasterFormComponent {
   dto: IGeneralMasterDTO = {} as IGeneralMasterDTO;
 
   constructor(private router: Router, private _sharedService: SharedService,
-    private _generalMasterService: GeneralMasterService) {
+    private _generalMasterService: GeneralMasterService, 
+    private _toastrService: ToastrService) {
    }
 
    ngOnInit() {
@@ -97,6 +99,7 @@ export class GeneralMasterFormComponent {
           console.log(data);
           if (data) {
             if (data.statusCode == 200 && data.data.data == 1) {
+              this._toastrService.success('General master updated.', 'Success!');
               this.configClick("master-list");
             }
           }
@@ -108,6 +111,7 @@ export class GeneralMasterFormComponent {
           console.log(data);
           if (data) {
             if (data.statusCode == 200 && data.data.data == 1) {
+              this._toastrService.success('General master added.', 'Success!');
               this.configClick("master-list");
             }
           }

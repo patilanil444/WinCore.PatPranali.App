@@ -3,6 +3,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { BsDatepickerConfig } from 'ngx-bootstrap/datepicker';
+import { ToastrService } from 'ngx-toastr';
 import { IGeneralLedgerDTO, UiEnumGeneralMaster, UiValueType } from 'src/app/common/models/common-ui-models';
 import { GeneralLedgerService } from 'src/app/services/masters/general-ledger/general-ledger.service';
 import { GeneralMasterService } from 'src/app/services/masters/general-master/general-master.service';
@@ -47,7 +48,8 @@ export class GeneralLedgerMasterFormComponent implements OnInit {
   dto: IGeneralLedgerDTO = {} as IGeneralLedgerDTO;
 
   constructor(private router: Router, private _sharedService: SharedService,
-    private _generalLedgerService: GeneralLedgerService, private _generalMasterService: GeneralMasterService,) {
+    private _generalLedgerService: GeneralLedgerService, private _generalMasterService: GeneralMasterService,
+    private _toastrService: ToastrService) {
 
       this.datepickerConfig=Object.assign({},{containerClass:'theme-green',showWeekNumbers:false,showTodayButton:true},
       {dateInputFormat:'DD/MM/YYYY'},
@@ -204,6 +206,7 @@ export class GeneralLedgerMasterFormComponent implements OnInit {
           console.log(data);
           if (data) {
             if (data.statusCode == 200 && data.data.data == 1) {
+              this._toastrService.success('General ledger added.', 'Success!');
               this.configClick("general-ledger-list");
             }
           }
@@ -214,6 +217,7 @@ export class GeneralLedgerMasterFormComponent implements OnInit {
           console.log(data);
           if (data) {
             if (data.statusCode == 200 && data.data.data == 1) {
+              this._toastrService.success('General ledger updated.', 'Success!');
               this.configClick("general-ledger-list");
             }
           }

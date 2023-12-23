@@ -32,6 +32,19 @@ export class SystemEntryDeclarations
     static dailyAuthorisationGeneral = [new UiStaticType(1, "Y", "Yes"), 
     new UiStaticType(2, "N", "No")];
 
+    static softwareTypeGeneral = [new UiStaticType(1, "B", "Back Office"), 
+    new UiStaticType(2, "S", "Direct Passing"), 
+    new UiStaticType(2, "O", "Online")];
+
+    static softwareLanguageGeneral = [new UiStaticType(1, "E", "English"), 
+    new UiStaticType(2, "M", "Other")];
+
+    static bankTypeGeneral = [new UiStaticType(1, "P", "Patsanstha"), 
+    new UiStaticType(2, "B", "Bank")];
+
+    static sharesLanguageGeneral = [new UiStaticType(1, "E", "English"), 
+    new UiStaticType(2, "M", "Other")];
+
 
     static addReceivableInBalanceLoan = [new UiStaticType(1, "Y", "Yes"), 
     new UiStaticType(2, "N", "No")];

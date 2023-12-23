@@ -11312,8 +11312,8 @@ a, button, .btn {
 }
 
 .divider {
-    margin-top: 1rem;
-    margin-bottom: 1rem;
+    margin-top: 0.5rem;
+    margin-bottom: 0.5rem;
     height: 1px;
     overflow: hidden;
     background: #e9ecef;
@@ -15151,7 +15151,7 @@ a.badge-alternate:hover, a.badge-alternate:focus {
     }
 
 .body-tabs-shadow .body-tabs-animated {
-    padding: .75rem 0;
+    padding: .2rem 0;
 }
 
     .body-tabs-shadow .body-tabs-animated .nav-link span {

@@ -1,6 +1,7 @@
 import { formatDate } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { ToastrService } from 'ngx-toastr';
 import { UiEnumGeneralMaster } from 'src/app/common/models/common-ui-models';
 import { GeneralLedgerService } from 'src/app/services/masters/general-ledger/general-ledger.service';
 import { GeneralMasterService } from 'src/app/services/masters/general-master/general-master.service';
@@ -56,7 +57,7 @@ export class LoanInterestStructureComponent implements OnInit {
   
   constructor(private router: Router, private _generalLedgerService: GeneralLedgerService,
     private _sharedService: SharedService, private _generalMasterService: GeneralMasterService,
-    private _loanInterestRateService: LoanInterestRateService) { }
+    private _loanInterestRateService: LoanInterestRateService, private _toastrService: ToastrService) { }
 
   ngOnInit(): void {
     this.getGeneralLedgers();
@@ -138,6 +139,7 @@ export class LoanInterestStructureComponent implements OnInit {
           }
           else
           {
+            this.isAddMode = true;
             this.interestStructureDate = formatDate(new Date(Date.now()), 'yyyy-MM-dd', 'en');
           }
         }
@@ -186,8 +188,10 @@ export class LoanInterestStructureComponent implements OnInit {
         this._loanInterestRateService.createLoanRateStructure(loanInterestRateModel).subscribe((data: any) => {
           console.log(data);
           if (data) {
-            if (data.statusCode == 200 && data.data.data == 1) {
+            if (data.statusCode == 200 && data.data.data > 0) {
+              this._toastrService.success('Loan interest structure added.', 'Success!');
               //this.configClick("banks");
+              this.getLoanInterestRates();
             }
           }
         })
@@ -197,7 +201,8 @@ export class LoanInterestStructureComponent implements OnInit {
         this._loanInterestRateService.updateLoanRateStructure(parseInt(this.uiLoanInterestRate.id), loanInterestRateModel).subscribe((data: any) => {
           console.log(data);
           if (data) {
-            if (data.statusCode == 200 && data.data.data == 1) {
+            if (data.statusCode == 200 && data.data.data > 0) {
+              this._toastrService.success('Loan interest structure updated.', 'Success!');
               //this.configClick("banks");
             }
           }

@@ -55,7 +55,7 @@ import { SelectDropDownModule } from 'ngx-select-dropdown';
     LoanInterestStructureComponent,
     GLInterestParameterComponent,
     BankProfileMasterComponent,
-    FilterPipe
+    FilterPipe,
   ],
   imports: [
     CommonModule,
@@ -64,7 +64,8 @@ import { SelectDropDownModule } from 'ngx-select-dropdown';
     AppRouterRoutingModule,
     NgxPaginationModule,
     BsDatepickerModule.forRoot(),
-    SelectDropDownModule
-  ]
+    SelectDropDownModule,
+  ],
+  providers: [],// Toastr providers
 })
 export class AppRouterModule { }

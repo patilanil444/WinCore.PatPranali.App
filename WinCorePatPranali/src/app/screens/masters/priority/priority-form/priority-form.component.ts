@@ -4,6 +4,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { IGeneralDTO } from 'src/app/common/models/common-ui-models';
 import { PriorityMasterService } from 'src/app/services/masters/priority-master/priority-master.service';
 import { SharedService } from 'src/app/services/shared.service';
+import { ToastrService } from 'ngx-toastr';
 
 interface IPriorityServerModel {
   Id: string;
@@ -29,7 +30,7 @@ export class PriorityFormComponent {
 
   constructor(private router: Router, private route: ActivatedRoute,
     private _priorityMasterService: PriorityMasterService,
-    private _sharedService: SharedService) {
+    private _sharedService: SharedService, private toastrService: ToastrService) {
 
   }
 
@@ -100,6 +101,7 @@ export class PriorityFormComponent {
           console.log(data);
           if (data) {
             if (data.statusCode == 200 && data.data.data == 1) {
+              this.toastrService.success('Priority added.', 'Success!');
               this.configClick("priorities");
             }
           }
@@ -111,6 +113,7 @@ export class PriorityFormComponent {
           console.log(data);
           if (data) {
             if (data.statusCode == 200 && data.data.data == 1) {
+              this.toastrService.success('Priority updated.', 'Success!');
               this.configClick("priorities");
             }
           }

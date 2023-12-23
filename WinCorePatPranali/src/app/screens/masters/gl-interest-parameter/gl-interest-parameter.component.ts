@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, UntypedFormBuilder, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { NgxDropdownConfig, SelectDropDownService } from 'ngx-select-dropdown';
+import { ToastrService } from 'ngx-toastr';
 import { GlobleGLDeclarations } from 'src/app/common/general-ledger-declarations';
 import { GeneralLedgerService } from 'src/app/services/masters/general-ledger/general-ledger.service';
 import { SharedService } from 'src/app/services/shared.service';
@@ -85,7 +86,7 @@ export class GLInterestParameterComponent implements OnInit {
   };
 
   constructor(private router: Router, private _generalLedgerService: GeneralLedgerService,
-    private _sharedService: SharedService) { }
+    private _sharedService: SharedService, private _toastrService: ToastrService) { }
 
   ngOnInit(): void {
     this.getGeneralLedgers();
@@ -328,7 +329,8 @@ export class GLInterestParameterComponent implements OnInit {
       this._generalLedgerService.updateGeneralLedgerInterestParams(this.code.value, glMasterModel).subscribe((data: any) => {
         console.log(data);
         if (data) {
-          if (data.statusCode == 200 && data.data.data == 1) {
+          if (data.statusCode == 200 && data.data.data > 0) {
+            this._toastrService.success('GL interest parameters updated.', 'Success!');
             //this.configClick("general-ledger-list");
           }
         }

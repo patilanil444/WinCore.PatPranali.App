@@ -1,5 +1,6 @@
 import { Component, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
+import { ToastrService } from 'ngx-toastr';
 import { IGeneralDTO } from 'src/app/common/models/common-ui-models';
 import { BankMasterService } from 'src/app/services/masters/bank-master/bank-master.service';
 import { SharedService } from 'src/app/services/shared.service';
@@ -15,7 +16,7 @@ export class BankMasterListComponent {
   p: number = 1;
   total: number = 0;
   constructor(private router: Router, private _bankMasterService: BankMasterService,
-    private _sharedService: SharedService) { }
+    private _sharedService: SharedService, private _toastrService: ToastrService) { }
 
   ngOnInit(): void {
     this.getBanks();
@@ -89,6 +90,7 @@ export class BankMasterListComponent {
         console.log(data);
         if (data) {
           // show message
+          this._toastrService.success('Bank deleted.', 'Success!');
           this.getBanks();
         }
       })

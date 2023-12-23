@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
+import { ToastrService } from 'ngx-toastr';
 import { IGeneralMasterDTO } from 'src/app/common/models/common-ui-models';
 import { GeneralMasterService } from 'src/app/services/masters/general-master/general-master.service';
 import { SharedService } from 'src/app/services/shared.service';
@@ -18,7 +19,7 @@ export class GeneralMasterListComponent {
 
   masterId: number = 0;
   constructor(private router: Router, private _generalMasterService: GeneralMasterService,
-    private _sharedService: SharedService) { }
+    private _sharedService: SharedService, private _toastrService: ToastrService) { }
 
   ngOnInit(): void {
     this.getMasters();
@@ -102,6 +103,7 @@ export class GeneralMasterListComponent {
         console.log(data);
         if (data) {
           // show message
+          this._toastrService.success('General master deleted.', 'Success!');
           this.getBranchGeneralMasters();
         }
       })

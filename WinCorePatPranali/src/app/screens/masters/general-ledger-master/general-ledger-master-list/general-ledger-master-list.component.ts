@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { ToastrService } from 'ngx-toastr';
 import { IGeneralLedgerDTO } from 'src/app/common/models/common-ui-models';
 import { GeneralLedgerService } from 'src/app/services/masters/general-ledger/general-ledger.service';
 import { SharedService } from 'src/app/services/shared.service';
@@ -15,7 +16,7 @@ export class GeneralLedgerMasterListComponent implements OnInit {
   p: number = 1;
   total: number = 0;
   constructor(private router: Router, private _generalLedgerService: GeneralLedgerService,
-    private _sharedService: SharedService) { }
+    private _sharedService: SharedService, private _toastrService: ToastrService) { }
 
   ngOnInit(): void {
     this.getGeneralLedgers();
@@ -87,6 +88,7 @@ export class GeneralLedgerMasterListComponent implements OnInit {
         console.log(data);
         if (data) {
           // show message
+          this._toastrService.success('General ledger deleted.', 'Success!');
           this.getGeneralLedgers();
         }
       })

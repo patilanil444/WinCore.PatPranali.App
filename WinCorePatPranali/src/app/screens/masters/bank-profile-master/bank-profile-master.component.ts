@@ -24,6 +24,10 @@ export class BankProfileMasterComponent implements OnInit {
  dailyAuthorisationGeneral = SystemEntryDeclarations.dailyAuthorisationGeneral;
  automaticTransferEntryLoan = SystemEntryDeclarations.automaticTransferEntryLoan;
  addReceivableInBalanceLoan = SystemEntryDeclarations.addReceivableInBalanceLoan;
+ softwareTypesGeneral = SystemEntryDeclarations.softwareTypeGeneral;
+ softwareLanguageGeneral = SystemEntryDeclarations.softwareLanguageGeneral;
+ bankTypeGeneral = SystemEntryDeclarations.bankTypeGeneral;
+ sharesLanguageGeneral = SystemEntryDeclarations.sharesLanguageGeneral;
 
  uiGeneralLedgers = [];
 
@@ -63,19 +67,30 @@ export class BankProfileMasterComponent implements OnInit {
       associatedShareGI: new FormControl("", []),
       authorisedShareCapital: new FormControl("", []),
       nominalShareGICode: new FormControl("", []),
-      stCastNo1: new FormControl("", []),
-      stCastNo2: new FormControl("", []),
+      scCastNo: new FormControl("", []),
+      stCastNo: new FormControl("", []),
       depositSecurityNumber: new FormControl("", []),
       goldSecurityNumber: new FormControl("", []),
       actualProfit: new FormControl(this.actualProfitGeneral[0].code, []),
       photoSignatureSeperate: new FormControl(this.photoSignatureGeneral[0].code, []),
-      photoExtension: new FormControl(this.photoSignatureGeneral[0].code, []),
+      photoExtension: new FormControl(this.photoExtentionsGeneral[0].code, []),
       signatureExtension: new FormControl(this.photoExtentionsGeneral[0].code, []),
       clearing: new FormControl(this.clearingGeneral[0].code, []),
       clearingMember: new FormControl(this.clearingMemberGeneral[0].code, []),
       clearingHouseNumber: new FormControl("", []),
       dailyAuthorisation: new FormControl(this.dailyAuthorisationGeneral[0].code, []),
-      bankAdvice: new FormControl("", [])
+      bankAdvice: new FormControl("", []),
+
+      englishFont: new FormControl("", []),
+      englishFontSize: new FormControl("", []),
+      marathiFont: new FormControl("", []),
+      marathiFontSize: new FormControl("", []),
+      commonFont: new FormControl("", []),
+      commonFontSize: new FormControl("", []),
+      softwareType: new FormControl(this.softwareTypesGeneral[0].code, []),
+      softwareLanguage: new FormControl(this.softwareLanguageGeneral[0].code, []),
+      bankType: new FormControl(this.bankTypeGeneral[0].code, []),
+      sharesLanguage: new FormControl(this.sharesLanguageGeneral[0].code, []),
     });
 
     this.code.disable();
@@ -88,6 +103,11 @@ export class BankProfileMasterComponent implements OnInit {
     this.clearing.disable();
     this.clearingMember.disable();
     this.dailyAuthorisation.disable();
+
+    this.softwareType.disable();
+    this.softwareLanguage.disable();
+    this.bankType.disable();
+    this.sharesLanguage.disable();
 
     this.getGeneralLedgers();
   }
@@ -166,11 +186,11 @@ export class BankProfileMasterComponent implements OnInit {
   get nominalShareGICode() {
     return this.profileForm.get('nominalShareGICode')!;
   }
-  get stCastNo1() {
-    return this.profileForm.get('stCastNo1')!;
+  get scCastNo() {
+    return this.profileForm.get('scCastNo')!;
   }
-  get stCastNo2() {
-    return this.profileForm.get('stCastNo2')!;
+  get stCastNo() {
+    return this.profileForm.get('stCastNo')!;
   }
   get depositSecurityNumber() {
     return this.profileForm.get('depositSecurityNumber')!;
@@ -203,7 +223,34 @@ export class BankProfileMasterComponent implements OnInit {
   get dailyAuthorisation() {
     return this.profileForm.get('dailyAuthorisation')!;
   }
-  get bankAdvice() {
-    return this.profileForm.get('bankAdvice')!;
+  get englishFont() {
+    return this.profileForm.get('englishFont')!;
+  }
+  get englishFontSize() {
+    return this.profileForm.get('englishFontSize')!;
+  }
+  get marathiFont() {
+    return this.profileForm.get('marathiFont')!;
+  }
+  get marathiFontSize() {
+    return this.profileForm.get('marathiFontSize')!;
+  }
+  get commonFont() {
+    return this.profileForm.get('commonFont')!;
+  }
+  get commonFontSize() {
+    return this.profileForm.get('commonFontSize')!;
+  }
+  get softwareType() {
+    return this.profileForm.get('softwareType')!;
+  }
+  get softwareLanguage() {
+    return this.profileForm.get('softwareLanguage')!;
+  }
+  get bankType() {
+    return this.profileForm.get('bankType')!;
+  }
+  get sharesLanguage() {
+    return this.profileForm.get('sharesLanguage')!;
   }
 }
