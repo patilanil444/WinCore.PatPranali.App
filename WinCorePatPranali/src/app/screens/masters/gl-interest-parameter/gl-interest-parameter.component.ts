@@ -177,8 +177,8 @@ export class GLInterestParameterComponent implements OnInit {
             this.glForm.patchValue({
               interestPosting: this.bindCommonValue(glwithParams.interestPosting, this.interestPostings[0].code),
               addIntToBalance: this.bindCommonValue(glwithParams.addInterestToBalance, this.addInterestToBal[0].code),
-              //receivable: glwithParams.payableGL,
-              //received: glwithParams.paidGL,
+              receivable: this.bindGLValue(glwithParams.payableGL),
+              received: this.bindGLValue(glwithParams.paidGL),
               rateForStaffYN: this.bindCommonValue(glwithParams.staffRateYN, this.rateForSpecials[0].code),
               //rateForStaff: new FormControl({value: (glwithParams.staffRateYN == 'S' ? "" : glwithParams.staffRate), disabled: (glwithParams.staffRateYN == 'S'?  true :  false)  }, []),
               rateForFemaleYN: this.bindCommonValue(glwithParams.femaleRateYN, this.rateForSpecials[0].code),
@@ -238,6 +238,14 @@ export class GLInterestParameterComponent implements OnInit {
         })
 
       }
+    }
+  }
+
+  bindGLValue(glValue: number)
+  {
+    let filteredGLs = this.uiGeneralLedgers.filter(gl=>gl.id == glValue);
+    if (filteredGLs && filteredGLs.length) {
+      return filteredGLs[0];
     }
   }
 

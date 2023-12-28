@@ -3,11 +3,10 @@
 
         <div class="main-card mb-3 card">
             <div class="card-body">
-                <form [formGroup]="profileForm" #form="ngForm">
 
-                    <h5 class="card-title">Branch Profile - System Master Entry</h5>
+                <h5 class="card-title">Branch Profile - System Master Entry</h5>
 
-                    <!-- <div class="row" >
+                <!-- <div class="row" >
                     <div style="display: flex;">
                         <label for="txtCode" style="font-weight: bold;">Bank -</label>
                         <label for="txtCode" class=""></label>
@@ -20,31 +19,32 @@
                     </div>
                 </div> -->
 
-                    <ul class="body-tabs body-tabs-layout tabs-animated body-tabs-animated nav">
-                        <li class="nav-item">
-                            <a role="tab" class="nav-link" id="tab-0" data-toggle="tab" href="#tab-content-0">
-                                <span>General</span>
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a role="tab" class="nav-link active" id="tab-1" data-toggle="tab" href="#tab-content-1">
-                                <span>Loan</span>
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a role="tab" class="nav-link" id="tab-2" data-toggle="tab" href="#tab-content-2">
-                                <span>Fixed GI Numbers</span>
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a role="tab" class="nav-link" id="tab-3" data-toggle="tab" href="#tab-content-3">
-                                <span>Deposit Interest</span>
-                            </a>
-                        </li>
-                    </ul>
+                <ul class="body-tabs body-tabs-layout tabs-animated body-tabs-animated nav">
+                    <li class="nav-item">
+                        <a role="tab" class="nav-link" id="tab-0" data-toggle="tab" href="#tab-content-0">
+                            <span>General</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a role="tab" class="nav-link active" id="tab-1" data-toggle="tab" href="#tab-content-1">
+                            <span>Loan</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a role="tab" class="nav-link" id="tab-2" data-toggle="tab" href="#tab-content-2">
+                            <span>Fixed GI Numbers</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a role="tab" class="nav-link" id="tab-3" data-toggle="tab" href="#tab-content-3">
+                            <span>Deposit Interest</span>
+                        </a>
+                    </li>
+                </ul>
 
-                    <div class="tab-content">
-                        <div class="tab-pane tabs-animation fade" id="tab-content-0" role="tabpanel">
+                <div class="tab-content">
+                    <div class="tab-pane tabs-animation fade" id="tab-content-0" role="tabpanel">
+                        <form [formGroup]="profileForm" #form="ngForm">
                             <div class="row">
                                 <div class="col-md-12">
                                     <div class="tab-content">
@@ -62,8 +62,8 @@
                                             </div>
                                             <div class="col-md-3 position-relative form-group">
                                                 <label for="txtCode" class="">Day Open (Y/N)</label>
-                                                <select class="form-control" tabindex="3"
-                                                    formControlName="dayOpen" readonly>
+                                                <select class="form-control" tabindex="3" formControlName="dayOpen"
+                                                    readonly>
                                                     <option *ngFor="let dayOpenGen of dayOpenGeneral"
                                                         [ngValue]="dayOpenGen.code"> {{dayOpenGen.name}}
                                                     </option>
@@ -96,13 +96,13 @@
                                             </div>
                                             <div class="col-md-3 position-relative form-group">
                                                 <label for="txtCode" class="">Max GI No for Balance Sheet</label>
-                                                <input tabindex="7" readonly type="text" class="form-control"
+                                                <input tabindex="7" type="text" class="form-control"
                                                     formControlName="maxGIBalanceSheet">
                                             </div>
                                             <div class="col-md-3 position-relative form-group">
                                                 <label for="txtCode" class="">Max Schedule code for Balance
                                                     Sheet</label>
-                                                <input tabindex="8" readonly type="text" class="form-control"
+                                                <input tabindex="8" type="text" class="form-control"
                                                     formControlName="maxScheduleBalanceSheet">
                                             </div>
                                         </div>
@@ -110,7 +110,9 @@
                                         <div class="divider" style="margin-bottom: 0.5rem !important"></div>
                                         <div class="row">
                                             <div class="col-md-3 position-relative form-group">
-                                                <h5 class="card-title" style="margin-top: 35px; color: #bb3fd8 !important;">Regular Share</h5>
+                                                <h5 class="card-title"
+                                                    style="margin-top: 35px; color: #bb3fd8 !important;">Regular Share
+                                                </h5>
                                             </div>
                                             <div class="col-md-3 position-relative form-group">
                                                 <label for="txtCode" class="">Value</label>
@@ -131,7 +133,9 @@
                                         </div>
                                         <div class="row">
                                             <div class="col-md-3 position-relative form-group">
-                                                <h5 class="card-title" style="margin-top: 35px; color: #bb3fd8 !important;">Associated Share</h5>
+                                                <h5 class="card-title"
+                                                    style="margin-top: 35px; color: #bb3fd8 !important;">Associated
+                                                    Share</h5>
                                             </div>
                                             <div class="col-md-3 position-relative form-group">
                                                 <label for="txtCode" class="">Value</label>
@@ -177,12 +181,12 @@
                                             <div class="col-md-3 position-relative form-group">
                                                 <label for="txtCode" class="">Deposit Security Number</label>
                                                 <input tabindex="19" type="text" class="form-control"
-                                                    formControlName="depositSecurityNumber">
+                                                    formControlName="depositSecurityNumber" maxlength="4">
                                             </div>
                                             <div class="col-md-3 position-relative form-group">
                                                 <label for="txtCode" class="">Gold Security Number</label>
                                                 <input tabindex="20" type="text" class="form-control"
-                                                    formControlName="goldSecurityNumber">
+                                                    formControlName="goldSecurityNumber" maxlength="4">
                                             </div>
                                             <div class="col-md-3 position-relative form-group">
                                                 <label for="txtCode" class="">Actual Profit</label>
@@ -227,8 +231,8 @@
                                             </div>
                                             <div class="col-md-3 position-relative form-group">
                                                 <label for="txtCode" class="">Clearing</label>
-                                                <select class="form-control" tabindex="25"
-                                                    formControlName="clearing" readonly>
+                                                <select class="form-control" tabindex="25" formControlName="clearing"
+                                                    readonly>
                                                     <option *ngFor="let clearingGen of clearingGeneral"
                                                         [ngValue]="clearingGen.code"> {{clearingGen.name}}
                                                     </option>
@@ -275,42 +279,41 @@
                                         <div class="row">
                                             <div class="col-md-3 position-relative form-group">
                                                 <label for="txtCode" class="">English font</label>
-                                                <input tabindex="30" type="text" class="form-control" readonly
-                                                    formControlName="clearingHouseNumber">
+                                                <input tabindex="30" type="text" class="form-control" 
+                                                    formControlName="englishFont">
                                             </div>
                                             <div class="col-md-3 position-relative form-group">
                                                 <label for="txtCode" class="">English font size</label>
-                                                <input tabindex="31" type="text" class="form-control" readonly
-                                                    formControlName="clearingHouseNumber">
+                                                <input tabindex="31" type="text" class="form-control" 
+                                                    formControlName="englishFontSize">
                                             </div>
                                             <div class="col-md-3 position-relative form-group">
                                                 <label for="txtCode" class="">Marathi font</label>
-                                                <input tabindex="32" type="text" class="form-control" readonly
-                                                    formControlName="clearingHouseNumber">
+                                                <input tabindex="32" type="text" class="form-control" 
+                                                    formControlName="marathiFont">
                                             </div>
                                             <div class="col-md-3 position-relative form-group">
                                                 <label for="txtCode" class="">Marathi font size</label>
-                                                <input tabindex="33" type="text" class="form-control" readonly
-                                                    formControlName="clearingHouseNumber">
+                                                <input tabindex="33" type="text" class="form-control" 
+                                                    formControlName="marathiFontSize">
                                             </div>
                                         </div>
                                         <div class="row">
                                             <div class="col-md-3 position-relative form-group">
                                                 <label for="txtCode" class="">Common font</label>
-                                                <input tabindex="34" type="text" class="form-control" readonly
-                                                    formControlName="clearingHouseNumber">
+                                                <input tabindex="34" type="text" class="form-control" 
+                                                    formControlName="commonFont">
                                             </div>
                                             <div class="col-md-3 position-relative form-group">
                                                 <label for="txtCode" class="">Common font size</label>
-                                                <input tabindex="35" type="text" class="form-control" readonly
-                                                    formControlName="clearingHouseNumber">
+                                                <input tabindex="35" type="text" class="form-control" 
+                                                    formControlName="commonFontSize">
                                             </div>
                                             <div class="col-md-3 position-relative form-group">
                                                 <label for="txtCode" class="">Software type</label>
                                                 <select class="form-control" tabindex="36"
                                                     formControlName="softwareType">
-                                                    <option
-                                                        *ngFor="let softwareTypesGen of softwareTypesGeneral"
+                                                    <option *ngFor="let softwareTypesGen of softwareTypesGeneral"
                                                         [ngValue]="softwareTypesGen.code">
                                                         {{softwareTypesGen.name}}
                                                     </option>
@@ -319,45 +322,43 @@
                                             <div class="col-md-3 position-relative form-group">
                                                 <label for="txtCode" class="">Software language</label>
                                                 <select class="form-control" tabindex="37"
-                                                formControlName="softwareLanguage">
-                                                <option
-                                                    *ngFor="let softwareLanguageGen of softwareLanguageGeneral"
-                                                    [ngValue]="softwareLanguageGen.code">
-                                                    {{softwareLanguageGen.name}}
-                                                </option>
-                                            </select>
+                                                    formControlName="softwareLanguage">
+                                                    <option *ngFor="let softwareLanguageGen of softwareLanguageGeneral"
+                                                        [ngValue]="softwareLanguageGen.code">
+                                                        {{softwareLanguageGen.name}}
+                                                    </option>
+                                                </select>
                                             </div>
                                         </div>
                                         <div class="row">
                                             <div class="col-md-3 position-relative form-group">
                                                 <label for="txtCode" class="">Bank type</label>
-                                                <select class="form-control" tabindex="38"
-                                                formControlName="bankType">
-                                                <option
-                                                    *ngFor="let bankTypeGen of bankTypeGeneral"
-                                                    [ngValue]="bankTypeGen.code">
-                                                    {{bankTypeGen.name}}
-                                                </option>
-                                            </select>
+                                                <select class="form-control" tabindex="38" formControlName="bankType">
+                                                    <option *ngFor="let bankTypeGen of bankTypeGeneral"
+                                                        [ngValue]="bankTypeGen.code">
+                                                        {{bankTypeGen.name}}
+                                                    </option>
+                                                </select>
                                             </div>
                                             <div class="col-md-3 position-relative form-group">
                                                 <label for="txtCode" class="">Shares language</label>
                                                 <select class="form-control" tabindex="39"
-                                                formControlName="sharesLanguage">
-                                                <option
-                                                    *ngFor="let sharesLanguageGen of sharesLanguageGeneral"
-                                                    [ngValue]="sharesLanguageGen.code">
-                                                    {{sharesLanguageGen.name}}
-                                                </option>
-                                            </select>
+                                                    formControlName="sharesLanguage">
+                                                    <option *ngFor="let sharesLanguageGen of sharesLanguageGeneral"
+                                                        [ngValue]="sharesLanguageGen.code">
+                                                        {{sharesLanguageGen.name}}
+                                                    </option>
+                                                </select>
                                             </div>
-                                          
+
                                         </div>
                                     </div>
                                 </div>
                             </div>
-                        </div>
-                        <div class="tab-pane tabs-animation fade show active" id="tab-content-1" role="tabpanel">
+                        </form>
+                    </div>
+                    <div class="tab-pane tabs-animation fade show active" id="tab-content-1" role="tabpanel">
+                        <form [formGroup]="loanForm" #form="ngForm">
                             <div class="row">
                                 <div class="col-md-12">
                                     <div class="tab-content">
@@ -378,16 +379,16 @@
                                                         Principalise interest
                                                     </td>
                                                     <td>
-                                                        <ngx-select-dropdown [config]="config" tabindex="10"
+                                                        <ngx-select-dropdown [config]="config" tabindex="40"
                                                             [options]="uiGeneralLedgers" style="width: 100%;"
                                                             [multiple]="false"
-                                                            formControlName="regularShareGL"></ngx-select-dropdown>
+                                                            formControlName="principaliseInterestReceivedGL"></ngx-select-dropdown>
                                                     </td>
                                                     <td>
-                                                        <ngx-select-dropdown [config]="config" tabindex="10"
+                                                        <ngx-select-dropdown [config]="config" tabindex="41"
                                                             [options]="uiGeneralLedgers" style="width: 100%;"
                                                             [multiple]="false"
-                                                            formControlName="regularShareGL"></ngx-select-dropdown>
+                                                            formControlName="principaliseInterestReceivableGL"></ngx-select-dropdown>
                                                     </td>
                                                     <td></td>
                                                     <td></td>
@@ -400,8 +401,8 @@
                                                     <td></td>
                                                     <td></td>
                                                     <td>
-                                                        <select class="form-control" tabindex="22"
-                                                            formControlName="photoSignatureSeperate">
+                                                        <select class="form-control" tabindex="42"
+                                                            formControlName="overdueLoanInterestAutoCR">
                                                             <option
                                                                 *ngFor="let automaticTransferEntry of automaticTransferEntryLoan"
                                                                 [ngValue]="automaticTransferEntry.code">
@@ -415,20 +416,20 @@
                                                         Penal interest
                                                     </td>
                                                     <td>
-                                                        <ngx-select-dropdown [config]="config" tabindex="10"
+                                                        <ngx-select-dropdown [config]="config" tabindex="43"
                                                             [options]="uiGeneralLedgers" style="width: 100%;"
                                                             [multiple]="false"
-                                                            formControlName="regularShareGL"></ngx-select-dropdown>
+                                                            formControlName="penalInterestReceivedGL"></ngx-select-dropdown>
                                                     </td>
                                                     <td>
-                                                        <ngx-select-dropdown [config]="config" tabindex="10"
+                                                        <ngx-select-dropdown [config]="config" tabindex="44"
                                                             [options]="uiGeneralLedgers" style="width: 100%;"
                                                             [multiple]="false"
-                                                            formControlName="regularShareGL"></ngx-select-dropdown>
+                                                            formControlName="penalInterestReceivableGL"></ngx-select-dropdown>
                                                     </td>
                                                     <td>
-                                                        <select class="form-control" tabindex="22"
-                                                            formControlName="photoSignatureSeperate">
+                                                        <select class="form-control" tabindex="45"
+                                                            formControlName="penalInterestAddBalance">
                                                             <option
                                                                 *ngFor="let addReceivableInBalance of addReceivableInBalanceLoan"
                                                                 [ngValue]="addReceivableInBalance.code">
@@ -436,8 +437,8 @@
                                                             </option>
                                                         </select>
                                                     </td>
-                                                    <td><select class="form-control" tabindex="22"
-                                                            formControlName="photoSignatureSeperate">
+                                                    <td><select class="form-control" tabindex="46"
+                                                            formControlName="penalInterestAutoCR">
                                                             <option
                                                                 *ngFor="let automaticTransferEntry of automaticTransferEntryLoan"
                                                                 [ngValue]="automaticTransferEntry.code">
@@ -448,20 +449,29 @@
                                                 <tr>
                                                     <td>Postage</td>
                                                     <td>
-                                                        <ngx-select-dropdown [config]="config" tabindex="10"
+                                                        <ngx-select-dropdown [config]="config" tabindex="47"
                                                             [options]="uiGeneralLedgers" style="width: 100%;"
                                                             [multiple]="false"
-                                                            formControlName="regularShareGL"></ngx-select-dropdown>
+                                                            formControlName="postageReceivedGL"></ngx-select-dropdown>
                                                     </td>
                                                     <td>
-                                                        <ngx-select-dropdown [config]="config" tabindex="10"
+                                                        <ngx-select-dropdown [config]="config" tabindex="48"
                                                             [options]="uiGeneralLedgers" style="width: 100%;"
                                                             [multiple]="false"
-                                                            formControlName="regularShareGL"></ngx-select-dropdown>
+                                                            formControlName="postageReceivableGL"></ngx-select-dropdown>
                                                     </td>
-                                                    <td></td>
-                                                    <td><select class="form-control" tabindex="22"
-                                                            formControlName="photoSignatureSeperate">
+                                                    <td>
+                                                        <select class="form-control" tabindex="45"
+                                                            formControlName="postageInterestAddBalance">
+                                                            <option
+                                                                *ngFor="let addReceivableInBalance of addReceivableInBalanceLoan"
+                                                                [ngValue]="addReceivableInBalance.code">
+                                                                {{addReceivableInBalance.name}}
+                                                            </option>
+                                                        </select>
+                                                    </td>
+                                                    <td><select class="form-control" tabindex="49"
+                                                            formControlName="postageAutoCR">
                                                             <option
                                                                 *ngFor="let automaticTransferEntry of automaticTransferEntryLoan"
                                                                 [ngValue]="automaticTransferEntry.code">
@@ -472,27 +482,27 @@
                                                 <tr>
                                                     <td>Notice expenses</td>
                                                     <td>
-                                                        <ngx-select-dropdown [config]="config" tabindex="10"
+                                                        <ngx-select-dropdown [config]="config" tabindex="50"
                                                             [options]="uiGeneralLedgers" style="width: 100%;"
                                                             [multiple]="false"
-                                                            formControlName="regularShareGL"></ngx-select-dropdown>
+                                                            formControlName="noticeExpensesReceivedGL"></ngx-select-dropdown>
                                                     </td>
                                                     <td>
-                                                        <ngx-select-dropdown [config]="config" tabindex="10"
+                                                        <ngx-select-dropdown [config]="config" tabindex="51"
                                                             [options]="uiGeneralLedgers" style="width: 100%;"
                                                             [multiple]="false"
-                                                            formControlName="regularShareGL"></ngx-select-dropdown>
+                                                            formControlName="noticeExpensesReceivableGL"></ngx-select-dropdown>
                                                     </td>
-                                                    <td><select class="form-control" tabindex="22"
-                                                            formControlName="photoSignatureSeperate">
+                                                    <td><select class="form-control" tabindex="52"
+                                                            formControlName="noticeExpensesAddBalance">
                                                             <option
                                                                 *ngFor="let addReceivableInBalance of addReceivableInBalanceLoan"
                                                                 [ngValue]="addReceivableInBalance.code">
                                                                 {{addReceivableInBalance.name}}
                                                             </option>
                                                         </select></td>
-                                                    <td><select class="form-control" tabindex="22"
-                                                            formControlName="photoSignatureSeperate">
+                                                    <td><select class="form-control" tabindex="53"
+                                                            formControlName="noticeExpensesAutoCR">
                                                             <option
                                                                 *ngFor="let automaticTransferEntry of automaticTransferEntryLoan"
                                                                 [ngValue]="automaticTransferEntry.code">
@@ -503,27 +513,27 @@
                                                 <tr>
                                                     <td>Insurance</td>
                                                     <td>
-                                                        <ngx-select-dropdown [config]="config" tabindex="10"
+                                                        <ngx-select-dropdown [config]="config" tabindex="54"
                                                             [options]="uiGeneralLedgers" style="width: 100%;"
                                                             [multiple]="false"
-                                                            formControlName="regularShareGL"></ngx-select-dropdown>
+                                                            formControlName="insuranceReceivedGL"></ngx-select-dropdown>
                                                     </td>
                                                     <td>
-                                                        <ngx-select-dropdown [config]="config" tabindex="10"
+                                                        <ngx-select-dropdown [config]="config" tabindex="55"
                                                             [options]="uiGeneralLedgers" style="width: 100%;"
                                                             [multiple]="false"
-                                                            formControlName="regularShareGL"></ngx-select-dropdown>
+                                                            formControlName="insuranceReceivableGL"></ngx-select-dropdown>
                                                     </td>
-                                                    <td><select class="form-control" tabindex="22"
-                                                            formControlName="photoSignatureSeperate">
+                                                    <td><select class="form-control" tabindex="56"
+                                                            formControlName="insuranceAddBalance">
                                                             <option
                                                                 *ngFor="let addReceivableInBalance of addReceivableInBalanceLoan"
                                                                 [ngValue]="addReceivableInBalance.code">
                                                                 {{addReceivableInBalance.name}}
                                                             </option>
                                                         </select></td>
-                                                    <td><select class="form-control" tabindex="22"
-                                                            formControlName="photoSignatureSeperate">
+                                                    <td><select class="form-control" tabindex="57"
+                                                            formControlName="insuranceAutoCR">
                                                             <option
                                                                 *ngFor="let automaticTransferEntry of automaticTransferEntryLoan"
                                                                 [ngValue]="automaticTransferEntry.code">
@@ -534,27 +544,27 @@
                                                 <tr>
                                                     <td>Surcharge</td>
                                                     <td>
-                                                        <ngx-select-dropdown [config]="config" tabindex="10"
+                                                        <ngx-select-dropdown [config]="config" tabindex="58"
                                                             [options]="uiGeneralLedgers" style="width: 100%;"
                                                             [multiple]="false"
-                                                            formControlName="regularShareGL"></ngx-select-dropdown>
+                                                            formControlName="surchargeReceivedGL"></ngx-select-dropdown>
                                                     </td>
                                                     <td>
-                                                        <ngx-select-dropdown [config]="config" tabindex="10"
+                                                        <ngx-select-dropdown [config]="config" tabindex="59"
                                                             [options]="uiGeneralLedgers" style="width: 100%;"
                                                             [multiple]="false"
-                                                            formControlName="regularShareGL"></ngx-select-dropdown>
+                                                            formControlName="surchargeReceivableGL"></ngx-select-dropdown>
                                                     </td>
-                                                    <td><select class="form-control" tabindex="22"
-                                                            formControlName="photoSignatureSeperate">
+                                                    <td><select class="form-control" tabindex="60"
+                                                            formControlName="surchargeAddBalance">
                                                             <option
                                                                 *ngFor="let addReceivableInBalance of addReceivableInBalanceLoan"
                                                                 [ngValue]="addReceivableInBalance.code">
                                                                 {{addReceivableInBalance.name}}
                                                             </option>
                                                         </select></td>
-                                                    <td><select class="form-control" tabindex="22"
-                                                            formControlName="photoSignatureSeperate">
+                                                    <td><select class="form-control" tabindex="61"
+                                                            formControlName="surchargeAutoCR">
                                                             <option
                                                                 *ngFor="let automaticTransferEntry of automaticTransferEntryLoan"
                                                                 [ngValue]="automaticTransferEntry.code">
@@ -565,27 +575,27 @@
                                                 <tr>
                                                     <td>Other expenses</td>
                                                     <td>
-                                                        <ngx-select-dropdown [config]="config" tabindex="10"
+                                                        <ngx-select-dropdown [config]="config" tabindex="62"
                                                             [options]="uiGeneralLedgers" style="width: 100%;"
                                                             [multiple]="false"
-                                                            formControlName="regularShareGL"></ngx-select-dropdown>
+                                                            formControlName="otherExpenseReceivedGL"></ngx-select-dropdown>
                                                     </td>
                                                     <td>
-                                                        <ngx-select-dropdown [config]="config" tabindex="10"
+                                                        <ngx-select-dropdown [config]="config" tabindex="63"
                                                             [options]="uiGeneralLedgers" style="width: 100%;"
                                                             [multiple]="false"
-                                                            formControlName="regularShareGL"></ngx-select-dropdown>
+                                                            formControlName="otherExpenseReceivableGL"></ngx-select-dropdown>
                                                     </td>
-                                                    <td><select class="form-control" tabindex="22"
-                                                            formControlName="photoSignatureSeperate">
+                                                    <td><select class="form-control" tabindex="64"
+                                                            formControlName="otherExpenseAddBalance">
                                                             <option
                                                                 *ngFor="let addReceivableInBalance of addReceivableInBalanceLoan"
                                                                 [ngValue]="addReceivableInBalance.code">
                                                                 {{addReceivableInBalance.name}}
                                                             </option>
                                                         </select></td>
-                                                    <td><select class="form-control" tabindex="22"
-                                                            formControlName="photoSignatureSeperate">
+                                                    <td><select class="form-control" tabindex="65"
+                                                            formControlName="otherExpenseAutoCR">
                                                             <option
                                                                 *ngFor="let automaticTransferEntry of automaticTransferEntryLoan"
                                                                 [ngValue]="automaticTransferEntry.code">
@@ -604,31 +614,30 @@
                                 <div class="col-md-4 position-relative form-group">
                                     <label for="txtCode" class="">Want to calculate interest at every time of
                                         receipt</label>
-                                    <select class="form-control" tabindex="28"
-                                        formControlName="dailyAuthorisation">
-                                        <option *ngFor="let dailyAuthorisationGen of dailyAuthorisationGeneral"
-                                            [ngValue]="dailyAuthorisationGen.code">
-                                            {{dailyAuthorisationGen.name}}
+                                    <select class="form-control" tabindex="66" formControlName="calcInterestOnReceipt">
+                                        <option *ngFor="let calcInterestAtReceiptLo of calcInterestAtReceiptLoan"
+                                            [ngValue]="calcInterestAtReceiptLo.code">
+                                            {{calcInterestAtReceiptLo.name}}
                                         </option>
                                     </select>
                                 </div>
                                 <div class="col-md-4 position-relative form-group">
                                     <label for="txtCode" class="">Treat after expiry penal as interest</label>
-                                    <select class="form-control" tabindex="28"
-                                        formControlName="dailyAuthorisation">
-                                        <option *ngFor="let dailyAuthorisationGen of dailyAuthorisationGeneral"
-                                            [ngValue]="dailyAuthorisationGen.code">
-                                            {{dailyAuthorisationGen.name}}
+                                    <select class="form-control" tabindex="67" formControlName="treatPenalAsInterest">
+                                        <option *ngFor="let treatPenalAsInterestLo of treatPenalAsInterestLoan"
+                                            [ngValue]="treatPenalAsInterestLo.code">
+                                            {{treatPenalAsInterestLo.name}}
                                         </option>
                                     </select>
                                 </div>
                                 <div class="col-md-4 position-relative form-group">
                                     <label for="txtCode" class="">Want to calculate interest on all receivables</label>
-                                    <select class="form-control" tabindex="28"
-                                        formControlName="dailyAuthorisation">
-                                        <option *ngFor="let dailyAuthorisationGen of dailyAuthorisationGeneral"
-                                            [ngValue]="dailyAuthorisationGen.code">
-                                            {{dailyAuthorisationGen.name}}
+                                    <select class="form-control" tabindex="68"
+                                        formControlName="calcInterestOnReceivables">
+                                        <option
+                                            *ngFor="let calcInterestOnReceivablesLo of calcInterestOnReceivablesLoan"
+                                            [ngValue]="calcInterestOnReceivablesLo.code">
+                                            {{calcInterestOnReceivablesLo.name}}
                                         </option>
                                     </select>
                                 </div>
@@ -636,113 +645,114 @@
                             <div class="row">
                                 <div class="col-md-4 position-relative form-group">
                                     <label for="txtCode" class="">Loan interest</label>
-                                    <select class="form-control" tabindex="28"
-                                        formControlName="dailyAuthorisation">
-                                        <option *ngFor="let dailyAuthorisationGen of dailyAuthorisationGeneral"
-                                            [ngValue]="dailyAuthorisationGen.code">
-                                            {{dailyAuthorisationGen.name}}
+                                    <select class="form-control" tabindex="69" formControlName="loanInterest">
+                                        <option *ngFor="let loanInterestLo of loanInterestLoan"
+                                            [ngValue]="loanInterestLo.code">
+                                            {{loanInterestLo.name}}
                                         </option>
                                     </select>
                                 </div>
                                 <div class="col-md-4 position-relative form-group">
                                     <label for="txtCode" class="">Maximum days for receipt of CC interest used for
                                         limit</label>
-                                    <input tabindex="16" type="text" class="form-control"
-                                        formControlName="nominalShareGICode">
+                                    <input tabindex="70" type="text" class="form-control"
+                                        formControlName="maxDaysReceiptCCLimit">
                                 </div>
 
                             </div>
-                        </div>
-                        <div class="tab-pane tabs-animation fade" id="tab-content-2" role="tabpanel">
+                        </form>
+                    </div>
+                    <div class="tab-pane tabs-animation fade" id="tab-content-2" role="tabpanel">
+                        <form [formGroup]="fixGIForm" #form="ngForm">
                             <div class="divider" style="margin-top: 0px;"></div>
                             <div class="tab-content">
                                 <div class="row">
                                     <div class="col-md-3 position-relative form-group">
                                         <label for="txtCode" class="">Cash code</label>
-                                        <input tabindex="16" type="text" class="form-control"
-                                            formControlName="nominalShareGICode">
+                                        <input tabindex="71" type="text" class="form-control"
+                                            formControlName="cashCode">
                                     </div>
                                     <div class="col-md-3 position-relative form-group">
                                         <label for="txtCode" class="">Ho Code</label>
-                                        <input tabindex="16" type="text" class="form-control"
-                                            formControlName="nominalShareGICode">
+                                        <input tabindex="72" type="text" class="form-control" formControlName="hoCode">
                                     </div>
                                     <div class="col-md-3 position-relative form-group">
                                         <label for="txtCode" class="">Pigmy commision received code</label>
-                                        <input tabindex="16" type="text" class="form-control"
-                                            formControlName="nominalShareGICode">
+                                        <input tabindex="73" type="text" class="form-control"
+                                            formControlName="pigmyCommisionReceivedCode">
                                     </div>
                                     <div class="col-md-3 position-relative form-group">
                                         <label for="txtCode" class="">Pigmy commision receivable code</label>
-                                        <input tabindex="16" type="text" class="form-control"
-                                            formControlName="nominalShareGICode">
+                                        <input tabindex="74" type="text" class="form-control"
+                                            formControlName="pigmyCommisionReceivableCode">
                                     </div>
                                 </div>
                                 <div class="row">
                                     <div class="col-md-3 position-relative form-group">
                                         <label for="txtCode" class="">Recurring penal code</label>
-                                        <input tabindex="16" type="text" class="form-control"
-                                            formControlName="nominalShareGICode">
+                                        <input tabindex="75" type="text" class="form-control"
+                                            formControlName="recurringPenalCode">
                                     </div>
                                     <div class="col-md-3 position-relative form-group">
                                         <label for="txtCode" class="">Incidental charges GL no</label>
-                                        <input tabindex="16" type="text" class="form-control"
-                                            formControlName="nominalShareGICode">
+                                        <input tabindex="76" type="text" class="form-control"
+                                            formControlName="incidentalChargesGL">
                                     </div>
                                     <div class="col-md-3 position-relative form-group">
                                         <label for="txtCode" class="">Bills received code</label>
-                                        <input tabindex="16" type="text" class="form-control"
-                                            formControlName="nominalShareGICode">
+                                        <input tabindex="77" type="text" class="form-control"
+                                            formControlName="billsReceivableCode">
                                     </div>
                                     <div class="col-md-3 position-relative form-group">
                                         <label for="txtCode" class="">Bill send for collection code</label>
-                                        <input tabindex="16" type="text" class="form-control"
-                                            formControlName="nominalShareGICode">
+                                        <input tabindex="78" type="text" class="form-control"
+                                            formControlName="billsSendForCollectionCode">
                                     </div>
                                 </div>
                                 <div class="row">
                                     <div class="col-md-3 position-relative form-group">
                                         <label for="txtCode" class="">Inward bills receivable code</label>
-                                        <input tabindex="16" type="text" class="form-control"
-                                            formControlName="nominalShareGICode">
+                                        <input tabindex="79" type="text" class="form-control"
+                                            formControlName="inwardBillsReceivableCode">
                                     </div>
                                     <div class="col-md-3 position-relative form-group">
                                         <label for="txtCode" class="">Inward bills send for collection code</label>
-                                        <input tabindex="16" type="text" class="form-control"
-                                            formControlName="nominalShareGICode">
+                                        <input tabindex="80" type="text" class="form-control"
+                                            formControlName="inwardBillsSendCollectionCode">
                                     </div>
                                     <div class="col-md-3 position-relative form-group">
                                         <label for="txtCode" class="">IBC/OBC commission received code</label>
-                                        <input tabindex="16" type="text" class="form-control"
-                                            formControlName="nominalShareGICode">
+                                        <input tabindex="81" type="text" class="form-control"
+                                            formControlName="ibcOBCCommisionReceivedCode">
                                     </div>
                                     <div class="col-md-3 position-relative form-group">
                                         <label for="txtCode" class="">IBC/OBC commission paid code</label>
-                                        <input tabindex="16" type="text" class="form-control"
-                                            formControlName="nominalShareGICode">
+                                        <input tabindex="82" type="text" class="form-control"
+                                            formControlName="ibcOBCCommisionPaidCode">
                                     </div>
                                 </div>
                                 <div class="row" style="margin-top: 10px;">
                                     <div class="col-md-3 position-relative form-group">
                                         <label for="txtCode" class="">DD payable with advice</label>
-                                        <input tabindex="16" type="text" class="form-control"
-                                            formControlName="nominalShareGICode">
+                                        <input tabindex="83" type="text" class="form-control"
+                                            formControlName="ddPayableWithAdvice">
                                     </div>
                                     <div class="col-md-3 position-relative form-group">
                                         <label for="txtCode" class="">DD payable without advice</label>
-                                        <input tabindex="16" type="text" class="form-control"
-                                            formControlName="nominalShareGICode">
+                                        <input tabindex="84" type="text" class="form-control"
+                                            formControlName="ddPayableWithoutAdvice">
                                     </div>
                                     <div class="col-md-3 position-relative form-group">
                                         <label for="txtCode" class="">Overdue interest reserve</label>
-                                        <input tabindex="16" type="text" class="form-control"
-                                            formControlName="nominalShareGICode">
+                                        <input tabindex="86" type="text" class="form-control"
+                                            formControlName="overdueInterestReserve">
                                     </div>
                                 </div>
                             </div>
-
-                        </div>
-                        <div class="tab-pane tabs-animation fade" id="tab-content-3" role="tabpanel">
+                        </form>
+                    </div>
+                    <div class="tab-pane tabs-animation fade" id="tab-content-3" role="tabpanel">
+                        <form [formGroup]="depositForm" #form="ngForm">
                             <div class="row">
                                 <div class="col-md-12">
                                     <div class="tab-content">
@@ -753,26 +763,26 @@
                                             <div class="row">
                                                 <div class="col-md-3 position-relative form-group">
                                                     <label for="txtCode" class="">Interest not given above amount
-                                                        </label>
-                                                    <input tabindex="16" type="text" class="form-control"
-                                                        formControlName="nominalShareGICode">
+                                                    </label>
+                                                    <input tabindex="87" type="text" class="form-control"
+                                                        formControlName="maxAmount">
                                                 </div>
                                                 <div class="col-md-3 position-relative form-group">
                                                     <label for="txtCode" class="">Interest greater than</label>
-                                                    <input tabindex="16" type="text" class="form-control"
-                                                        formControlName="nominalShareGICode">
+                                                    <input tabindex="88" type="text" class="form-control"
+                                                        formControlName="minInterest">
                                                 </div>
                                                 <div class="col-md-6 position-relative form-group">
                                                     <label for="txtCode" class="">Minimum balance between dates</label>
                                                     <div style="display: flex;">
                                                         <div class="col-md-2" style="padding-left: 0px !important;">
-                                                            <input tabindex="16" type="text" class="form-control"
-                                                                formControlName="nominalShareGICode">
+                                                            <input tabindex="89" type="text" class="form-control"
+                                                                formControlName="savingMinBalanceStart">
                                                         </div>
                                                         <label for="txtCode" style="margin: 7px;">To</label>
                                                         <div class="col-md-2" style="padding-left: 0px !important;">
-                                                            <input tabindex="16" type="text" class="form-control"
-                                                                formControlName="nominalShareGICode">
+                                                            <input tabindex="90" type="text" class="form-control"
+                                                                formControlName="savingMinBalanceEnd">
                                                         </div>
                                                     </div>
                                                 </div>
@@ -783,33 +793,50 @@
                                             <h5 class="card-title" style="color: #bb3fd8 !important;">Pigmy interest
                                                 calculation</h5>
                                             <div class="row">
-                                              
+
                                                 <div class="col-md-3 position-relative form-group">
                                                     <label for="txtCode" class="">Calculation Type</label>
-                                                    <input tabindex="16" type="text" class="form-control"
-                                                        formControlName="nominalShareGICode">
+                                                    <select class="form-control" tabindex="91"
+                                                        formControlName="pigmyCalculationType">
+                                                        <option *ngFor="let pigmyCalcTypeDep of pigmyCalcTypeDeposit"
+                                                            [ngValue]="pigmyCalcTypeDep.code">
+                                                            {{pigmyCalcTypeDep.name}}
+                                                        </option>
+                                                    </select>
                                                 </div>
                                                 <div class="col-md-3 position-relative form-group">
-                                                    <label for="txtCode" class="">For monthly balance pigmy balance on </label>
-                                                    <input tabindex="16" type="text" class="form-control"
-                                                        formControlName="nominalShareGICode">
+                                                    <label for="txtCode" class="">For monthly balance pigmy balance on
+                                                    </label>
+                                                    <select class="form-control" tabindex="92"
+                                                        formControlName="pigmyMontlyBalanceType">
+                                                        <option *ngFor="let pigmyMonthlyBalanceDep of pigmyMonthlyBalanceDeposit"
+                                                            [ngValue]="pigmyMonthlyBalanceDep.code">
+                                                            {{pigmyMonthlyBalanceDep.name}}
+                                                        </option>
+                                                    </select>
                                                 </div>
                                                 <div class="col-md-3 position-relative form-group">
                                                     <label for="txtCode" class="">Balance type</label>
-                                                    <input tabindex="16" type="text" class="form-control"
-                                                        formControlName="nominalShareGICode">
+                                                    <select class="form-control" tabindex="93"
+                                                        formControlName="pigmyBalanceType">
+                                                        <option *ngFor="let pigmyBalanceTypeDep of pigmyBalanceTypeDeposit"
+                                                            [ngValue]="pigmyBalanceTypeDep.code">
+                                                            {{pigmyBalanceTypeDep.name}}
+                                                        </option>
+                                                    </select>
                                                 </div>
                                                 <div class="col-md-3 position-relative form-group">
-                                                    <label for="txtCode" class="">Min balance type - min balance betn dates </label>
+                                                    <label for="txtCode" class="">Min balance type - min balance betn
+                                                        dates </label>
                                                     <div style="display: flex;">
-                                                        <div class="col-md-3" style="padding-left: 0px !important;">
-                                                            <input tabindex="16" type="text" class="form-control"
-                                                                formControlName="nominalShareGICode">
+                                                        <div class="col-md-4" style="padding-left: 0px !important;">
+                                                            <input tabindex="94" type="text" class="form-control"
+                                                                formControlName="pigmyMinBalanceStart">
                                                         </div>
                                                         <label for="txtCode" style="margin: 7px;">To</label>
-                                                        <div class="col-md-3" style="padding-left: 0px !important;">
-                                                            <input tabindex="16" type="text" class="form-control"
-                                                                formControlName="nominalShareGICode">
+                                                        <div class="col-md-4" style="padding-left: 0px !important;">
+                                                            <input tabindex="95" type="text" class="form-control"
+                                                                formControlName="pigmyMinBalanceEnd">
                                                         </div>
                                                     </div>
                                                 </div>
@@ -822,18 +849,34 @@
                                             <div class="row">
                                                 <div class="col-md-3 position-relative form-group">
                                                     <label for="txtCode" class="">Monthly balance on</label>
-                                                    <input tabindex="16" type="text" class="form-control"
-                                                        formControlName="nominalShareGICode">
+                                                    <select class="form-control" tabindex="96"
+                                                        formControlName="recurringMonthlyBalanceType">
+                                                        <option *ngFor="let recurringMonthlyBalanceDep of recurringMonthlyBalanceDeposit"
+                                                            [ngValue]="recurringMonthlyBalanceDep.code">
+                                                            {{recurringMonthlyBalanceDep.name}}
+                                                        </option>
+                                                    </select>
                                                 </div>
                                                 <div class="col-md-3 position-relative form-group">
                                                     <label for="txtCode" class="">Balance type</label>
-                                                    <input tabindex="16" type="text" class="form-control"
-                                                        formControlName="nominalShareGICode">
+                                                    <select class="form-control" tabindex="97"
+                                                        formControlName="recurringBalanceType">
+                                                        <option *ngFor="let recurringBalanceTypeDep of recurringBalanceTypeDeposit"
+                                                            [ngValue]="recurringBalanceTypeDep.code">
+                                                            {{recurringBalanceTypeDep.name}}
+                                                        </option>
+                                                    </select>
                                                 </div>
                                                 <div class="col-md-3 position-relative form-group">
-                                                    <label for="txtCode" class="">Calculate interest for demanded installment</label>
-                                                    <input tabindex="16" type="text" class="form-control"
-                                                        formControlName="nominalShareGICode">
+                                                    <label for="txtCode" class="">Calculate interest for demanded
+                                                        installment</label>
+                                                    <select class="form-control" tabindex="98"
+                                                        formControlName="recurringCalcIntOnDemand">
+                                                        <option *ngFor="let recurringCalcIntOnDemandDep of recurringCalcIntOnDemandDeposit"
+                                                            [ngValue]="recurringCalcIntOnDemandDep.code">
+                                                            {{recurringCalcIntOnDemandDep.name}}
+                                                        </option>
+                                                    </select>
                                                 </div>
                                             </div>
                                         </div>
@@ -842,16 +885,26 @@
                                             <h5 class="card-title" style="color: #bb3fd8 !important;">FD interest
                                                 calculation</h5>
                                             <div class="row">
-                                                
+
                                                 <div class="col-md-3 position-relative form-group">
                                                     <label for="txtCode" class="">Interest calculation type</label>
-                                                    <input tabindex="16" type="text" class="form-control"
-                                                        formControlName="nominalShareGICode">
+                                                    <select class="form-control" tabindex="99"
+                                                        formControlName="fdIntCalcType">
+                                                        <option *ngFor="let fdintCalcTypeDep of fdintCalcTypeDeposit"
+                                                            [ngValue]="fdintCalcTypeDep.code">
+                                                            {{fdintCalcTypeDep.name}}
+                                                        </option>
+                                                    </select>
                                                 </div>
                                                 <div class="col-md-3 position-relative form-group">
                                                     <label for="txtCode" class="">Monthly discount rate</label>
-                                                    <input tabindex="16" type="text" class="form-control"
-                                                        formControlName="nominalShareGICode">
+                                                    <select class="form-control" tabindex="100"
+                                                        formControlName="monthlyDicountRate">
+                                                        <option *ngFor="let fdMonthlyDiscountRateDep of fdMonthlyDiscountRateDeposit"
+                                                            [ngValue]="fdMonthlyDiscountRateDep.code">
+                                                            {{fdMonthlyDiscountRateDep.name}}
+                                                        </option>
+                                                    </select>
                                                 </div>
                                             </div>
                                         </div>
@@ -862,13 +915,23 @@
                                             <div class="row">
                                                 <div class="col-md-3 position-relative form-group">
                                                     <label for="txtCode" class="">Interest calculation type</label>
-                                                    <input tabindex="16" type="text" class="form-control"
-                                                        formControlName="nominalShareGICode">
+                                                    <select class="form-control" tabindex="101"
+                                                        formControlName="reinvestmentIntCalcType">
+                                                        <option *ngFor="let riIntCalcTypeDep of riIntCalcTypeDeposit"
+                                                            [ngValue]="riIntCalcTypeDep.code">
+                                                            {{riIntCalcTypeDep.name}}
+                                                        </option>
+                                                    </select>
                                                 </div>
                                                 <div class="col-md-3 position-relative form-group">
                                                     <label for="txtCode" class="">Premature interest calculation</label>
-                                                    <input tabindex="16" type="text" class="form-control"
-                                                        formControlName="nominalShareGICode">
+                                                    <select class="form-control" tabindex="102"
+                                                        formControlName="prematureIntCalc">
+                                                        <option *ngFor="let riPrematureIntCalcDep of riPrematureIntCalcDeposit"
+                                                            [ngValue]="riPrematureIntCalcDep.code">
+                                                            {{riPrematureIntCalcDep.name}}
+                                                        </option>
+                                                    </select>
                                                 </div>
                                             </div>
                                         </div>
@@ -876,27 +939,32 @@
                                         <div>
                                             <div class="row">
                                                 <div class="col-md-6 position-relative form-group">
-                                                    <label for="txtCode" class="">Make automatic transfer entry for debit deposit interest in back office entry</label>
-                                                    <input tabindex="16" type="text" class="form-control"
-                                                        formControlName="nominalShareGICode">
+                                                    <label for="txtCode" class="">Make automatic transfer entry for
+                                                        debit deposit interest in back office entry</label>
+                                                    <select class="form-control" tabindex="103"
+                                                        formControlName="drIntAutoTransfer">
+                                                        <option *ngFor="let autoDRIntDep of autoDRIntDeposit"
+                                                            [ngValue]="autoDRIntDep.code">
+                                                            {{autoDRIntDep.name}}
+                                                        </option>
+                                                    </select>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
+                        </form>
+                    </div>
+                </div>
 
-                        </div>
+                <div class="row">
+                    <div class="col-md-6 position-relative">
+                        <button class="mt-1 btn btn-primary" (click)="saveProfile()">Submit</button>
+                        <!-- <button class="mt-1 btn btn-left-margin10 btn-secondary" (click)="clear()">Clear</button> -->
                     </div>
 
-                    <div class="row">
-                        <div class="col-md-6 position-relative">
-                            <button class="mt-1 btn btn-primary" (click)="saveProfile()">Submit</button>
-                            <button class="mt-1 btn btn-left-margin10 btn-secondary" (click)="clear()">Clear</button>
-                        </div>
-
-                    </div>
-                </form>
+                </div>
             </div>
         </div>
 
