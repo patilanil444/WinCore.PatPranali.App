@@ -29,6 +29,9 @@ import { GLInterestParameterComponent } from '../screens/masters/gl-interest-par
 import { BankProfileMasterComponent } from '../screens/masters/bank-profile-master/bank-profile-master.component';
 import { FilterPipe } from '../common/directives/filterPipe';
 import { SelectDropDownModule } from 'ngx-select-dropdown';
+import { DistrictMasterComponent } from '../screens/masters/district-master/district-master.component';
+import { DistrictMasterFormComponent } from '../screens/masters/district-master/district-master-form/district-master-form.component';
+import { DistrictMasterListComponent } from '../screens/masters/district-master/district-master-list/district-master-list.component';
 
 @NgModule({
   declarations: [
@@ -56,6 +59,9 @@ import { SelectDropDownModule } from 'ngx-select-dropdown';
     GLInterestParameterComponent,
     BankProfileMasterComponent,
     FilterPipe,
+    DistrictMasterComponent,
+    DistrictMasterFormComponent,
+    DistrictMasterListComponent,
   ],
   imports: [
     CommonModule,

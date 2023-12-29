@@ -19,6 +19,8 @@ import { DepositInterestStructureComponent } from '../screens/masters/deposit-in
 import { LoanInterestStructureComponent } from '../screens/masters/loan-interest-structure/loan-interest-structure.component';
 import { GLInterestParameterComponent } from '../screens/masters/gl-interest-parameter/gl-interest-parameter.component';
 import { BankProfileMasterComponent } from '../screens/masters/bank-profile-master/bank-profile-master.component';
+import { DistrictMasterFormComponent } from '../screens/masters/district-master/district-master-form/district-master-form.component';
+import { DistrictMasterComponent } from '../screens/masters/district-master/district-master.component';
 
 const routes: Routes = [
   {
@@ -40,6 +42,8 @@ const routes: Routes = [
       { path: 'loan-interest', component: LoanInterestStructureComponent },
       { path: 'gl-interest-parameters', component: GLInterestParameterComponent },
       { path: 'profile', component: BankProfileMasterComponent },
+      { path: 'district', component: DistrictMasterFormComponent },
+      { path: 'districts', component: DistrictMasterComponent },
       { path: '**', component: NotFoundComponent },
       { path: '', redirectTo: 'projects', pathMatch: 'full' },
     ]
