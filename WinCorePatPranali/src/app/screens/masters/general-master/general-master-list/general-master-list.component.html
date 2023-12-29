@@ -34,7 +34,7 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr *ngFor="let uiBranchGeneralMaster of uiBranchGeneralMasters| paginate: { itemsPerPage: 5, currentPage: p, totalItems: total }">
+                        <tr *ngFor="let uiBranchGeneralMaster of uiBranchGeneralMasters| paginate: { itemsPerPage: 10, currentPage: p, totalItems: total }">
                             <th scope="row">{{uiBranchGeneralMaster.id}}</th>
                             <td>{{uiBranchGeneralMaster.branchMasterName}}</td>
                             <td>

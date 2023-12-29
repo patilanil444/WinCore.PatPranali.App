@@ -24,7 +24,7 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr *ngFor="let uiBank of uiBanks| paginate: { itemsPerPage: 5, currentPage: p, totalItems: total }">
+                        <tr *ngFor="let uiBank of uiBanks| paginate: { itemsPerPage: 10, currentPage: p, totalItems: total }">
                             <th scope="row">{{uiBank.id}}</th>
                             <td>{{uiBank.name}}</td>
                             <td>{{uiBank.address}}</td>

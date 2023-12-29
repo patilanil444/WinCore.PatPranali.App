@@ -24,7 +24,7 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr *ngFor="let uiGeneralLedger of uiGeneralLedgers| paginate: { itemsPerPage: 5, currentPage: p, totalItems: total }">
+                        <tr *ngFor="let uiGeneralLedger of uiGeneralLedgers| paginate: { itemsPerPage: 10, currentPage: p, totalItems: total }">
                             <th scope="row">{{uiGeneralLedger.id}}</th>
                             <td>{{uiGeneralLedger.name}}</td>
                             <td>{{uiGeneralLedger.glGroupName}}</td>

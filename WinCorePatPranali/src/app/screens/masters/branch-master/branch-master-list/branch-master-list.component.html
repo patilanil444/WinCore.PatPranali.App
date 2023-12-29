@@ -25,7 +25,7 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr *ngFor="let uiBranch of uiBranches| paginate: { itemsPerPage: 5, currentPage: p, totalItems: total }">
+                        <tr *ngFor="let uiBranch of uiBranches| paginate: { itemsPerPage: 10, currentPage: p, totalItems: total }">
                             <th scope="row">{{uiBranch.id}}</th>
                             <td>{{uiBranch.name}}</td>
                             <td>{{uiBranch.town}}</td>
