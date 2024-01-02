@@ -32,6 +32,9 @@ import { SelectDropDownModule } from 'ngx-select-dropdown';
 import { DistrictMasterComponent } from '../screens/masters/district-master/district-master.component';
 import { DistrictMasterFormComponent } from '../screens/masters/district-master/district-master-form/district-master-form.component';
 import { DistrictMasterListComponent } from '../screens/masters/district-master/district-master-list/district-master-list.component';
+import { TahshilMasterComponent } from '../screens/masters/tahshil-master/tahshil-master.component';
+import { TahshilMasterListComponent } from '../screens/masters/tahshil-master/tahshil-master-list/tahshil-master-list.component';
+import { TahshilMasterFormComponent } from '../screens/masters/tahshil-master/tahshil-master-form/tahshil-master-form.component';
 
 @NgModule({
   declarations: [
@@ -62,6 +65,9 @@ import { DistrictMasterListComponent } from '../screens/masters/district-master/
     DistrictMasterComponent,
     DistrictMasterFormComponent,
     DistrictMasterListComponent,
+    TahshilMasterComponent,
+    TahshilMasterListComponent,
+    TahshilMasterFormComponent,
   ],
   imports: [
     CommonModule,

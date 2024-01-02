@@ -34,7 +34,7 @@ export class DistrictMasterListComponent implements OnInit {
 
   pageChangeEvent(event: number) {
     this.p = event;
-    this.getDistricts();
+   // this.getDistricts();
   }
 
 

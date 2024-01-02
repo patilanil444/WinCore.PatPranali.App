@@ -909,7 +909,12 @@
                                         District Master
                                     </a>
                                 </li>
-
+                                <li>
+                                    <a [class.mm-active]="isMenuSelected('tahsils')" (click)="configClick('tahsils')">
+                                        <i class="metismenu-icon pe-7s-next-2"></i>
+                                        Tahsil Master
+                                    </a>
+                                </li>
                                 <li>
                                     <a [class.mm-active]="isMenuSelected('master-list')" (click)="configClick('master-list')">
                                         <i class="metismenu-icon"></i>

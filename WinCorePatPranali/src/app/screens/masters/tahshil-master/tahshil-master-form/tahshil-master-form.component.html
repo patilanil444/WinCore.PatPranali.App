@@ -2,16 +2,14 @@
     <div class="col-md-12">
         <div class="main-card mb-3 card">
             <div class="card-body">
-                <form [formGroup]="districtForm" #form="ngForm">
-                    <h5 class="card-title">District</h5>
+                <form [formGroup]="tahsilForm" #form="ngForm">
+                    <h5 class="card-title">Tahsil</h5>
                     <div class="row">
                         <div class="col-md-6 position-relative form-group">
                             <label for="txtCode" class="">Code</label>
                             <input name="code" id="txtCode" tabindex="1" readonly="true" maxlength="10" placeholder="0"
                                 type="text" class="form-control" formControlName="code">
                         </div>
-                    </div>
-                    <div class="row">
                         <div class="col-md-6 position-relative form-group">
                             <label for="txtName" class="">State</label>
                             <div class="input-group">
@@ -23,11 +21,24 @@
                             </select>
                             </div>
                         </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6 position-relative form-group">
+                            <label for="txtName" class="">District</label>
+                            <div class="input-group">
+                                <select class="mb-2 form-control" tabindex="10"
+                                formControlName="districtId">
+                                <option *ngFor="let uiDistrict of uiDistricts" [ngValue]="uiDistrict.id">
+                                    {{uiDistrict.name}}
+                                </option>
+                            </select>
+                            </div>
+                        </div>
                         <div class="col-md-6 position-relative form-group">
                             <label for="txtName" class="">Name</label>
                             <input name="districtName" id="txtName" tabindex="2" placeholder="Name" type="text"
                                 class="form-control" required maxlength="100" formControlName="name" autocomplete="off"
-                                [class.is-invalid]="name.invalid && (name.dirty || name.touched)">
+                                 [class.is-invalid]="name.invalid && (name.dirty || name.touched)">
                             <div *ngIf="name.invalid && (name.dirty || name.touched)" class="invalid-feedback">
                                 <div *ngIf="name.errors?.['required']">
                                     Name is required.
@@ -38,10 +49,10 @@
 
                     <div class="row">
                         <div class="col-md-6 position-relative">
-                            <button class="mt-1 btn btn-primary" (click)="saveDistrict()">Submit</button>
+                            <button class="mt-1 btn btn-primary" (click)="saveTahsil()">Submit</button>
                             <button class="mt-1 btn btn-left-margin10 btn-secondary" (click)="clear()">Clear</button>
                             <button class="mt-1 btn btn-left-margin10 btn-alternate"
-                                (click)="configClick('districts')">District List</button>
+                                (click)="configClick('tahsils')">Tahsil List</button>
                         </div>
 
                     </div>

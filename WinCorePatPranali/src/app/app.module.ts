@@ -14,7 +14,7 @@ import { ToastrModule } from 'ngx-toastr';
   declarations: [
     AppComponent,
     LoginComponent,
-    NotFoundComponent,
+    NotFoundComponent
   ],
   imports: [
     CommonModule,
@@ -24,7 +24,7 @@ import { ToastrModule } from 'ngx-toastr';
     BrowserAnimationsModule,
     ToastrModule.forRoot({
       closeButton: true,
-      timeOut: 1500,
+      timeOut: 3000,
       progressBar: true,
       progressAnimation:'increasing'
     }),

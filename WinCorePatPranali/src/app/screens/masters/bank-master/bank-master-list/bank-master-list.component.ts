@@ -39,7 +39,7 @@ export class BankMasterListComponent {
 
   pageChangeEvent(event: number) {
     this.p = event;
-    this.getBanks();
+    //this.getBanks();
   }
 
   add(route:any)

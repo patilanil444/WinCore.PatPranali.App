@@ -21,6 +21,8 @@ import { GLInterestParameterComponent } from '../screens/masters/gl-interest-par
 import { BankProfileMasterComponent } from '../screens/masters/bank-profile-master/bank-profile-master.component';
 import { DistrictMasterFormComponent } from '../screens/masters/district-master/district-master-form/district-master-form.component';
 import { DistrictMasterComponent } from '../screens/masters/district-master/district-master.component';
+import { TahshilMasterFormComponent } from '../screens/masters/tahshil-master/tahshil-master-form/tahshil-master-form.component';
+import { TahshilMasterComponent } from '../screens/masters/tahshil-master/tahshil-master.component';
 
 const routes: Routes = [
   {
@@ -44,6 +46,8 @@ const routes: Routes = [
       { path: 'profile', component: BankProfileMasterComponent },
       { path: 'district', component: DistrictMasterFormComponent },
       { path: 'districts', component: DistrictMasterComponent },
+      { path: 'tahsil', component: TahshilMasterFormComponent },
+      { path: 'tahsils', component: TahshilMasterComponent },
       { path: '**', component: NotFoundComponent },
       { path: '', redirectTo: 'projects', pathMatch: 'full' },
     ]

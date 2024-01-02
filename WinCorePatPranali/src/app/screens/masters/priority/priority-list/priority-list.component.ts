@@ -34,7 +34,7 @@ export class PriorityListComponent {
 
   pageChangeEvent(event: number) {
     this.p = event;
-    this.getPriorities();
+    //this.getPriorities();
   }
 
   add(route:any)

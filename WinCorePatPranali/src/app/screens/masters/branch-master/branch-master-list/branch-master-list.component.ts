@@ -40,7 +40,7 @@ export class BranchMasterListComponent {
 
   pageChangeEvent(event: number) {
     this.p = event;
-    this.getBranches();
+    //this.getBranches();
   }
 
   add(route:any)

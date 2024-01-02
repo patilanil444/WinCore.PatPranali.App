@@ -39,7 +39,7 @@ export class GeneralLedgerMasterListComponent implements OnInit {
 
   pageChangeEvent(event: number) {
     this.p = event;
-    this.getGeneralLedgers();
+    //this.getGeneralLedgers();
   }
 
   add(route:any)
