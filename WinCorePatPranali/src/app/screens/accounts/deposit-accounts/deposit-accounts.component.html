@@ -1,1 +1,583 @@
-<p>deposit-accounts works!</p>
+<div class="row">
+    <div class="col-lg-12">
+
+        <div class="main-card mb-3 card">
+            <div class="card-body">
+
+                <h5 class="card-title">Deposit account opening</h5>
+                <form [formGroup]="summaryForm" #form="ngForm">
+                    <div class="row">
+                        <div class="col-md-3 position-relative">
+                            <label for="txtCode" class="">General Ledger</label>
+                            <div class="input-group">
+                                <ngx-select-dropdown [config]="config" tabindex="1" [options]="uiDepositGeneralLedgers" style="width: 100%;"
+                                formControlName="generalLedger" [multiple]="false"></ngx-select-dropdown>
+                            </div>
+                        </div>
+                    
+                        <div class="col-md-3 position-relative form-group" style="display: flex;">
+                            <div style="width:70%">
+                                <label for="txtCode" class="">A/C Number</label>
+                                <div class="input-group">
+                                    <input tabindex="4" type="text" class="form-control" formControlName="accountNumber">
+                                </div>
+                            </div>
+                            <button class="btn btn-info" tabindex="2" style="margin-left: 25px; margin-top: 30px;"
+                                (click)="showAccountInfo()">Show </button>
+                        </div>
+                        <div class="col-md-3 position-relative">
+                            <label for="txtCode" class="">Party Number</label>
+                            <div class="input-group">
+                                <input tabindex="5" type="text" class="form-control" formControlName="partyNumber">
+                            </div>
+                        </div>
+                    
+                        <div class="col-md-3 position-relative form-group">
+                            <div>
+                                <label for="txtCode" class="">Member Type</label>
+                                <div class="input-group">
+                                    <ngx-select-dropdown [config]="config" tabindex="1" 
+                                    [options]="uiDepositGeneralLedgers"
+                                    formControlName="memberType"  style="width: 100%;" [multiple]="false"></ngx-select-dropdown>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="row">
+                        <div class="col-md-3 position-relative">
+                            <label for="txtCode" class="">Name</label>
+                            <div class="input-group">
+                                <input tabindex="4" type="text" class="form-control" formControlName="name">
+                            </div>
+                        </div>
+                        <div class="col-md-3 position-relative">
+                            <label for="txtCode" class="">Address</label>
+                            <div class="input-group">
+                                <input tabindex="4" type="text" class="form-control" formControlName="address">
+                            </div>
+                        </div>
+                        <div class="col-md-3 position-relative">
+                            <label for="txtCode" class="">Phone</label>
+                            <div class="input-group">
+                                <input tabindex="4" type="text" class="form-control" formControlName="phone">
+                            </div>
+                        </div>
+                        <div class="col-md-3 position-relative">
+                            <label for="txtCode" class="">Sex</label>
+                            <div class="input-group">
+                                <input tabindex="4" type="text" class="form-control" formControlName="sex">
+                            </div>
+                        </div>
+                    </div>
+                </form>
+                <ul class="nav nav-tabs" style="margin-top: 20px;">
+                    <li class="nav-item">
+                        <a role="tab" class="nav-link active" id="tab-0" data-toggle="tab" href="#tab-content-0">
+                            <span>Details 1</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a role="tab" class="nav-link" id="tab-1" data-toggle="tab" href="#tab-content-1">
+                            <span>Details 2</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a role="tab" class="nav-link" id="tab-2" data-toggle="tab" href="#tab-content-2">
+                            <span>Nomini</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a role="tab" class="nav-link" id="tab-3" data-toggle="tab" href="#tab-content-3">
+                            <span>Joint</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a role="tab" class="nav-link" id="tab-3" data-toggle="tab" href="#tab-content-4">
+                            <span>FD Details</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a role="tab" class="nav-link" id="tab-3" data-toggle="tab" href="#tab-content-5">
+                            <span>RD Details</span>
+                        </a>
+                    </li>
+                </ul>
+
+                <div class="tab-content">
+                    <div class="tab-pane tabs-animation fade show active" id="tab-content-0" role="tabpanel">
+                        <form [formGroup]="details1Form" #form="ngForm">
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="tab-content">
+                                        <div class="row">
+                                            <div class="col-md-2 position-relative form-group">
+                                                <label for="txtCode" class="">Occupation</label>
+                                                <input tabindex="1" type="text" class="form-control"
+                                                    formControlName="occupation">
+                                            </div>
+                                            <div class="col-md-2 position-relative form-group">
+                                                <label for="txtCode" class="">Account type</label>
+                                                <input tabindex="1" type="text" class="form-control"
+                                                    formControlName="accountType">
+                                            </div>
+                                            <div class="col-md-2 position-relative form-group">
+                                                <label for="txtCode" class="">Mode of operation</label>
+                                                <input tabindex="1" type="text" class="form-control"
+                                                    formControlName="modeOfOperation">
+                                            </div>
+                                            <div class="col-md-2 position-relative form-group">
+                                                <label for="txtCode" class="">Staff/Director/Other</label>
+                                                <input tabindex="1" type="text" class="form-control"
+                                                    formControlName="staffDirectorOther">
+                                            </div>
+                                            <div class="col-md-2 position-relative form-group">
+                                                <label for="txtCode" class="">Age</label>
+                                                <input tabindex="1" type="text" class="form-control"
+                                                    formControlName="age">
+                                            </div>
+                                            <div class="col-md-2 position-relative form-group">
+                                                <label for="txtCode" class="">Birth date</label>
+                                                <input tabindex="1" type="date" class="form-control"
+                                                    formControlName="birthDate">
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-md-2 position-relative form-group">
+                                                <label for="txtCode" class="">A/C opening date</label>
+                                                <input tabindex="1" type="date" class="form-control"
+                                                    formControlName="accountOpeningDate">
+                                            </div>
+                                            <div class="col-md-2 position-relative form-group">
+                                                <label for="txtCode" class="">Last transaction date</label>
+                                                <input tabindex="1" type="date" class="form-control"
+                                                    formControlName="lastTransactionDate">
+                                            </div>
+                                            <div class="col-md-2 position-relative form-group">
+                                                <label for="txtCode" class="">Passbook date</label>
+                                                <input tabindex="1" type="date" class="form-control"
+                                                    formControlName="passbookDate">
+                                            </div>
+                                            <div class="col-md-2 position-relative form-group">
+                                                <label for="txtCode" class="">Mature date</label>
+                                                <input tabindex="1" type="date" class="form-control"
+                                                    formControlName="matureDate">
+                                            </div>
+                                            <div class="col-md-2 position-relative form-group">
+                                                <label for="txtCode" class="">Last interest date</label>
+                                                <input tabindex="1" type="date" class="form-control"
+                                                    formControlName="lastInterestDate">
+                                            </div>
+                                            <div class="col-md-2 position-relative form-group">
+                                                <label for="txtCode" class="">Dr interest date</label>
+                                                <input tabindex="1" type="date" class="form-control"
+                                                    formControlName="drInterestDate">
+                                            </div>
+                                        </div>
+                                       
+                                        <div class="row">
+                                            <div class="col-md-2 position-relative form-group">
+                                                <label for="txtCode" class="">Parent / Guardian</label>
+                                                <input tabindex="1" type="text" class="form-control"
+                                                    formControlName="guardian">
+                                            </div>
+                                            <div class="col-md-2 position-relative form-group">
+                                                <label for="txtCode" class="">Zone</label>
+                                                <input tabindex="1" type="text" class="form-control"
+                                                    formControlName="zone">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="tab-pane tabs-animation fade" id="tab-content-1" role="tabpanel">
+                        <form [formGroup]="details2Form" #form="ngForm">
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="tab-content">
+                                        <div class="row">
+                                            <div class="col-md-2 position-relative form-group">
+                                                <label for="txtCode" class="">Interest rate</label>
+                                                <input tabindex="1" type="date" class="form-control"
+                                                    formControlName="code">
+                                            </div>
+                                            <div class="col-md-2 position-relative form-group">
+                                                <label for="txtCode" class="">Ledger number</label>
+                                                <input tabindex="1" type="text" class="form-control"
+                                                    formControlName="code">
+                                            </div>
+                                            <div class="col-md-2 position-relative form-group">
+                                                <label for="txtCode" class="">Introduced by GI</label>
+                                                <input tabindex="1" type="text" class="form-control"
+                                                    formControlName="code">
+                                            </div>
+                                            <div class="col-md-2 position-relative form-group">
+                                                <label for="txtCode" class="">Introduced by A/C</label>
+                                                <input tabindex="1" type="text" class="form-control"
+                                                    formControlName="code">
+                                            </div>
+                                            <div class="col-md-2 position-relative form-group">
+                                                <label for="txtCode" class="">Additional balance</label>
+                                                <input tabindex="1" type="text" class="form-control"
+                                                    formControlName="code">
+                                            </div>
+                                            <div class="col-md-2 position-relative form-group">
+                                                <label for="txtCode" class="">Additional document</label>
+                                                <input tabindex="1" type="text" class="form-control"
+                                                    formControlName="code">
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-md-2 position-relative form-group">
+                                                <label for="txtCode" class="">Form No 60</label>
+                                                <input tabindex="1" type="text" class="form-control"
+                                                    formControlName="code">
+                                            </div>
+                                            <div class="col-md-2 position-relative form-group">
+                                                <label for="txtCode" class="">Form No 61</label>
+                                                <input tabindex="1" type="text" class="form-control"
+                                                    formControlName="code">
+                                            </div>
+                                            <div class="col-md-2 position-relative form-group">
+                                                <label for="txtCode" class="">Pan No</label>
+                                                <input tabindex="1" type="text" class="form-control"
+                                                    formControlName="code">
+                                            </div>
+                                            <div class="col-md-2 position-relative form-group">
+                                                <label for="txtCode" class="">Resolution No</label>
+                                                <input tabindex="1" type="text" class="form-control"
+                                                    formControlName="code">
+                                            </div>
+                                            <div class="col-md-4 position-relative form-group">
+                                                <label for="txtCode" class="">Memorandum and articles of
+                                                    associates</label>
+                                                <input tabindex="1" type="text" class="form-control"
+                                                    formControlName="code">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="tab-pane tabs-animation fade" id="tab-content-2" role="tabpanel">
+                        <form [formGroup]="nominiForm" #form="ngForm">
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="tab-content">
+                                        <div class="row">
+                                            <div class="col-md-2 position-relative form-group">
+                                                <label for="txtCode" class="">Nomini name</label>
+                                                <input tabindex="1" type="text" class="form-control"
+                                                    formControlName="code">
+                                            </div>
+                                            <div class="col-md-2 position-relative form-group">
+                                                <label for="txtCode" class="">Relation</label>
+                                                <input tabindex="1" type="text" class="form-control"
+                                                    formControlName="code">
+                                            </div>
+                                            <div class="col-md-2 position-relative form-group">
+                                                <label for="txtCode" class="">Age</label>
+                                                <input tabindex="1" type="text" class="form-control"
+                                                    formControlName="code">
+                                            </div>
+                                            <div class="col-md-2 position-relative form-group">
+                                                <label for="txtCode" class="">Guardian (for minor)</label>
+                                                <input tabindex="1" type="text" class="form-control"
+                                                    formControlName="code">
+                                            </div>
+                                            <div class="col-md-2 position-relative form-group">
+                                                <label for="txtCode" class="">Address</label>
+                                                <input tabindex="1" type="text" class="form-control"
+                                                    formControlName="code">
+                                            </div>
+                                            <div class="col-md-2 position-relative form-group">
+                                                <div style="display: flex; margin-top: 25px;">
+                                                    <button class="mt-1 btn btn-primary" (click)="saveAccount()"
+                                                        tabindex="23">Add</button>
+                                                    <button class="mt-1 btn btn-left-margin10 btn-secondary"
+                                                        (click)="clear()" tabindex="24">Clear</button>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="row">
+                                            <div class="col-md-12">
+                                                <table class="mb-0 table table-bordered">
+                                                    <thead>
+                                                        <tr>
+                                                            <th>#</th>
+                                                            <th>First Name</th>
+                                                            <th>Last Name</th>
+                                                            <th>Username</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        <tr>
+                                                            <th scope="row">1</th>
+                                                            <td>Mark</td>
+                                                            <td>Otto</td>
+                                                            <td>@mdo</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <th scope="row">2</th>
+                                                            <td>Jacob</td>
+                                                            <td>Thornton</td>
+                                                            <td>@fat</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <th scope="row">3</th>
+                                                            <td>Larry</td>
+                                                            <td>the Bird</td>
+                                                            <td>@twitter</td>
+                                                        </tr>
+                                                    </tbody>
+                                                </table>
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="tab-pane tabs-animation fade" id="tab-content-3" role="tabpanel">
+                        <form [formGroup]="jointForm" #form="ngForm">
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="tab-content">
+                                        <div class="row">
+                                            <div class="col-md-2 position-relative form-group">
+                                                <label for="txtCode" class="">Joint name</label>
+                                                <input tabindex="1" type="text" class="form-control"
+                                                    formControlName="code">
+                                            </div>
+                                            <div class="col-md-2 position-relative form-group">
+                                                <div style="display: flex; margin-top: 25px;">
+                                                    <button class="mt-1 btn btn-primary" (click)="saveAccount()"
+                                                        tabindex="23">Add</button>
+                                                    <button class="mt-1 btn btn-left-margin10 btn-secondary"
+                                                        (click)="clear()" tabindex="24">Clear</button>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-2">
+
+                                            </div>
+                                            <div class="col-md-6">
+                                                <label for="txtCode" class="">Operative instruction</label>
+                                                <input tabindex="1" type="text" class="form-control"
+                                                    formControlName="code">
+                                            </div>
+                                        </div>
+
+                                        <div class="row">
+                                            <div class="col-md-12">
+                                                <table class="mb-0 table table-bordered">
+                                                    <thead>
+                                                        <tr>
+                                                            <th>#</th>
+                                                            <th>First Name</th>
+                                                            <th>Last Name</th>
+                                                            <th>Username</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        <tr>
+                                                            <th scope="row">1</th>
+                                                            <td>Mark</td>
+                                                            <td>Otto</td>
+                                                            <td>@mdo</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <th scope="row">2</th>
+                                                            <td>Jacob</td>
+                                                            <td>Thornton</td>
+                                                            <td>@fat</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <th scope="row">3</th>
+                                                            <td>Larry</td>
+                                                            <td>the Bird</td>
+                                                            <td>@twitter</td>
+                                                        </tr>
+                                                    </tbody>
+                                                </table>
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="tab-pane tabs-animation fade" id="tab-content-4" role="tabpanel">
+                        <form [formGroup]="fdDetailsForm" #form="ngForm">
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="tab-content">
+                                        <div class="row">
+                                            <div class="col-md-2 position-relative form-group">
+                                                <label for="txtCode" class="">Slip No</label>
+                                                <input tabindex="1" type="text" class="form-control"
+                                                    formControlName="code">
+                                            </div>
+                                            <div class="col-md-4 position-relative form-group">
+                                                <label for="txtCode" class="">Want to Renew FD after given period automatically </label>
+                                                <input tabindex="1" type="text" class="form-control"
+                                                    formControlName="code">
+                                            </div>
+                                            <div class="col-md-2 position-relative form-group">
+                                                <label for="txtCode" class="">Opening date</label>
+                                                <input tabindex="1" type="date" class="form-control"
+                                                    formControlName="code">
+                                            </div>
+                                            <div class="col-md-2 position-relative form-group">
+                                                <label for="txtCode" class="">Renewal on</label>
+                                                <input tabindex="1" type="date" class="form-control"
+                                                    formControlName="code">
+                                            </div>
+                                            <div class="col-md-2 position-relative form-group">
+                                                <label for="txtCode" class="">Mature date</label>
+                                                <input tabindex="1" type="date" class="form-control"
+                                                    formControlName="code">
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-md-2 position-relative form-group">
+                                                <label for="txtCode" class="">Days </label>
+                                                <input tabindex="1" type="text" class="form-control"
+                                                    formControlName="code">
+                                            </div>
+                                            <div class="col-md-2 position-relative form-group">
+                                                <label for="txtCode" class="">Months</label>
+                                                <input tabindex="1" type="text" class="form-control"
+                                                    formControlName="code">
+                                            </div>
+                                            <div class="col-md-2 position-relative form-group">
+                                                <label for="txtCode" class="">Years</label>
+                                                <input tabindex="1" type="text" class="form-control"
+                                                    formControlName="code">
+                                            </div>
+                                            <div class="col-md-2 position-relative form-group">
+                                                <label for="txtCode" class="">FD amount</label>
+                                                <input tabindex="1" type="text" class="form-control"
+                                                    formControlName="code">
+                                            </div>
+                                            <div class="col-md-2 position-relative form-group">
+                                                <label for="txtCode" class="">Interest rate</label>
+                                                <input tabindex="1" type="text" class="form-control"
+                                                    formControlName="code">
+                                            </div>
+                                            <div class="col-md-2 position-relative form-group">
+                                                <label for="txtCode" class="">Payable amount</label>
+                                                <input tabindex="1" type="text" class="form-control"
+                                                    formControlName="code">
+                                            </div>
+                                            <div class="col-md-2 position-relative form-group">
+                                                <label for="txtCode" class="">FD printed for</label>
+                                                <div class="input-group">
+                                                    <input tabindex="1" type="text" class="form-control"
+                                                        formControlName="code">
+                                                    <div class="input-group-append"><span class="input-group-text">Times</span></div>
+                                                </div>
+                                            </div>
+                                           
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="tab-pane tabs-animation fade" id="tab-content-5" role="tabpanel">
+                        <form [formGroup]="rdDetailsForm" #form="ngForm">
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="tab-content">
+                                        <div class="row">
+                                            <div class="col-md-2 position-relative form-group">
+                                                <label for="txtCode" class="">Installment type </label>
+                                                <input tabindex="1" type="text" class="form-control"
+                                                    formControlName="code">
+                                            </div>
+                                            <div class="col-md-2 position-relative form-group">
+                                                <label for="txtCode" class="">Installment amount</label>
+                                                <input tabindex="1" type="text" class="form-control"
+                                                    formControlName="code">
+                                            </div>
+                                            <div class="col-md-2 position-relative form-group">
+                                                <label for="txtCode" class="">Opening date</label>
+                                                <input tabindex="1" type="date" class="form-control"
+                                                    formControlName="code">
+                                            </div>
+                                            <div class="col-md-2 position-relative form-group">
+                                                <label for="txtCode" class="">No. of installments</label>
+                                                <input tabindex="1" type="text" class="form-control"
+                                                    formControlName="code">
+                                            </div>
+                                            <div class="col-md-2 position-relative form-group">
+                                                <label for="txtCode" class="">Interest rate</label>
+                                                <input tabindex="1" type="text" class="form-control"
+                                                    formControlName="code">
+                                            </div>
+                                            
+                                            <div class="col-md-2 position-relative form-group">
+                                                <label for="txtCode" class="">Closing date</label>
+                                                <input tabindex="1" type="date" class="form-control"
+                                                    formControlName="code">
+                                            </div>
+                                           
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-md-2 position-relative form-group">
+                                                <label for="txtCode" class="">Payable amount </label>
+                                                <input tabindex="1" type="text" class="form-control"
+                                                    formControlName="code">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+
+                <div class="divider" style="margin-bottom: 0.5rem !important"></div>
+                <form [formGroup]="todaysStatusForm" #form="ngForm">
+                    <div class="row">
+                        <div class="col-md-2 position-relative form-group">
+                            <h5 class="card-title" style="margin-top: 35px; color: #bb3fd8 !important;">Todays Status
+                            </h5>
+                        </div>
+                        <div class="col-md-2 position-relative form-group">
+                            <label for="txtCode" class="">Balance</label>
+                            <input tabindex="9" type="text" class="form-control" formControlName="balance">
+                        </div>
+                        <div class="col-md-2 position-relative form-group">
+                            <label for="txtCode" class="">Interest</label>
+                            <input tabindex="9" type="text" class="form-control" formControlName="interest">
+                        </div>
+                        <div class="col-md-2 position-relative form-group">
+                            <label for="txtCode" class="">Authorised by</label>
+                            <input tabindex="9" type="text" class="form-control" formControlName="authorisedBy">
+                        </div>
+                        <div class="col-md-2 position-relative form-group">
+                            <label for="txtCode" class="">A/C close on</label>
+                            <input tabindex="9" type="date" class="form-control" formControlName="accountCloseOn">
+                        </div>
+                    </div>
+                </form>
+                <div class="row">
+                    <div class="col-md-6 position-relative">
+                        <button class="mt-1 btn btn-primary" (click)="saveAccount()" tabindex="23">Submit</button>
+                        <button class="mt-1 btn btn-left-margin10 btn-secondary" (click)="clear()"
+                            tabindex="24">Clear</button>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+    </div>
+</div>
