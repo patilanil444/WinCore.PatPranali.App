@@ -70,6 +70,7 @@ export enum UiEnumGeneralMaster {
 	GoldArticleMaster = 11,
 	DirectorMaster = 12,
 	SanctionByMaster = 13,
-	PartyGroupMaster = 14,
-    ScheduleMaster = 15
+	CustomerGroupMaster = 14,
+    ScheduleMaster = 15,
+    StateMaster = 16
 }

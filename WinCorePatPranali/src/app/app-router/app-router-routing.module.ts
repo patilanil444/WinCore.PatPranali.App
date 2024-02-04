@@ -23,6 +23,8 @@ import { DistrictMasterFormComponent } from '../screens/masters/district-master/
 import { DistrictMasterComponent } from '../screens/masters/district-master/district-master.component';
 import { TahshilMasterFormComponent } from '../screens/masters/tahshil-master/tahshil-master-form/tahshil-master-form.component';
 import { TahshilMasterComponent } from '../screens/masters/tahshil-master/tahshil-master.component';
+import { CustomerFormComponent } from '../screens/customers/customer-form/customer-form.component';
+import { CustomerSearchComponent } from '../screens/customers/customer-search/customer-search.component';
 
 const routes: Routes = [
   {
@@ -48,6 +50,8 @@ const routes: Routes = [
       { path: 'districts', component: DistrictMasterComponent },
       { path: 'tahsil', component: TahshilMasterFormComponent },
       { path: 'tahsils', component: TahshilMasterComponent },
+      { path: 'customer', component: CustomerFormComponent },
+      { path: 'customer-search', component: CustomerSearchComponent },
       { path: '**', component: NotFoundComponent },
       { path: '', redirectTo: 'projects', pathMatch: 'full' },
     ]

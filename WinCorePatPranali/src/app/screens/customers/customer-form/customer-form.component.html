@@ -1,0 +1,642 @@
+<div class="row">
+    <div class="col-lg-12">
+
+        <div class="main-card mb-3 card">
+            <div class="card-body">
+
+                <h5 class="card-title">Customers</h5>
+                <form [formGroup]="customerForm" #form="ngForm">
+                    <div class="row">
+                        <div class="col-md-3 position-relative">
+                            <label for="txtCode" class="">Customer Code</label>
+                            <div class="input-group">
+                                <input tabindex="1" type="text" class="form-control" readonly
+                                    formControlName="customerCode">
+                            </div>
+                        </div>
+
+                    </div>
+                </form>
+                <ul class="nav nav-tabs" style="margin-top: 20px;">
+                    <li class="nav-item">
+                        <a role="tab" class="nav-link active" id="tab-0" data-toggle="tab" href="#tab-content-0">
+                            <span>Personal Details</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a role="tab" class="nav-link" id="tab-1" data-toggle="tab" href="#tab-content-1">
+                            <span>Address</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a role="tab" class="nav-link" id="tab-2" data-toggle="tab" href="#tab-content-2">
+                            <span>Nomini</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a role="tab" class="nav-link" id="tab-3" data-toggle="tab" href="#tab-content-3">
+                            <span>KYC Documents</span>
+                        </a>
+                    </li>
+                </ul>
+
+                <div class="tab-content">
+                    <div class="tab-pane tabs-animation fade show active" id="tab-content-0" role="tabpanel">
+                        <form [formGroup]="personalDetailsForm" #form="ngForm">
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="tab-content">
+                                        <div class="row">
+                                            <div class="col-md-2 position-relative">
+                                                <label for="txtCode" class="">Title</label>
+                                                <select class="mb-2 form-control" 
+                                                    tabindex="2" formControlName="personalTitle">
+                                                    <option *ngFor="let uiTitle of uiTitles"
+                                                        [ngValue]="uiTitle.code">
+                                                        {{uiTitle.name}}
+                                                    </option>
+                                                </select>
+                                            </div>
+                                            <div class="col-md-2 position-relative">
+                                                <label for="txtCode" class="">First name</label>
+                                                <input tabindex="3" type="text" class="form-control"
+                                                    formControlName="personalFirstName">
+                                            </div>
+                                            <div class="col-md-2 position-relative">
+                                                <label for="txtCode" class="">Middle name</label>
+                                                <input tabindex="4" type="text" class="form-control"
+                                                    formControlName="personalMiddleName">
+                                            </div>
+                                            <div class="col-md-2 position-relative">
+                                                <label for="txtCode" class="">Last name</label>
+                                                <input tabindex="5" type="text" class="form-control"
+                                                    formControlName="personalLastName">
+                                            </div>
+                                            <div class="col-md-2 position-relative form-group">
+                                                <label for="txtCode" class="">Gender</label>
+                                                <select class="mb-2 form-control" 
+                                                    tabindex="6" formControlName="personalGender">
+                                                    <option *ngFor="let uiGender of uiGenders" [ngValue]="uiGender.code">
+                                                        {{uiGender.name}}
+                                                    </option>
+                                                </select>
+                                            </div>
+                                            <div class="col-md-2 position-relative">
+                                                <label for="txtCode" class="">Group</label>
+                                                <select class="mb-2 form-control"
+                                                    tabindex="7" formControlName="personalGroup">
+                                                    <option *ngFor="let uiCustomerGroup of uiCustomerGroups"
+                                                        [ngValue]="uiCustomerGroup.id">
+                                                        {{uiCustomerGroup.branchMasterName}}
+                                                    </option>
+                                                </select>
+                                            </div>
+
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-md-2 position-relative form-group">
+                                                <label for="txtCode" class="">Type</label>
+                                                <select class="mb-2 form-control" 
+                                                    tabindex="8" formControlName="personalCustomerType">
+                                                    <option *ngFor="let uiCustomerType of uiCustomerTypes"
+                                                        [ngValue]="uiCustomerType.code">
+                                                        {{uiCustomerType.name}}
+                                                    </option>
+                                                </select>
+                                            </div>
+                                            <div class="col-md-2 position-relative form-group">
+                                                <label for="txtCode" class="">Occupation</label>
+                                                <select class="mb-2 form-control" 
+                                                    tabindex="9" formControlName="personalOccupation">
+                                                    <option *ngFor="let uiOccupation of uiOccupations"
+                                                        [ngValue]="uiOccupation.id">
+                                                        {{uiOccupation.branchMasterName}}
+                                                    </option>
+                                                </select>
+                                            </div>
+                                            <div class="col-md-2 position-relative form-group">
+                                                <label for="txtCode" class="">Marital Status</label>
+                                                <select class="mb-2 form-control" 
+                                                    tabindex="10" formControlName="personalMaritalStatus">
+                                                    <option *ngFor="let uiMaritalStatus of uiMaritalStatuses"
+                                                        [ngValue]="uiMaritalStatus.code">
+                                                        {{uiMaritalStatus.name}}
+                                                    </option>
+                                                </select>
+                                            </div>
+                                            <div class="col-md-2 position-relative form-group">
+                                                <label for="txtCode" class="">Status</label>
+                                                <select class="mb-2 form-control" 
+                                                    tabindex="11" formControlName="personalStatus">
+                                                    <option *ngFor="let uiStatus of uiStatuses"
+                                                        [ngValue]="uiStatus.code">
+                                                        {{uiStatus.name}}
+                                                    </option>
+                                                </select>
+                                            </div>
+                                            <div class="col-md-2 position-relative form-group">
+                                                <label for="txtCode" class="">Date of birth</label>
+                                                <input tabindex="12" type="date" class="form-control"
+                                                (change)="onPersonalDOBChange($event)" 
+                                                formControlName="personalDateOfBirth"
+                                                [max]="maxDate | date:'yyyy-MM-dd'">
+                                            </div>
+                                            <div class="col-md-2 position-relative form-group">
+                                                <label for="txtCode" class="">Age</label>
+                                                <input tabindex="13" type="text" class="form-control"
+                                                    formControlName="personalAge">
+                                            </div>
+                                        </div>
+
+                                        <div class="row">
+                                            <div class="col-md-2 position-relative form-group">
+                                                <label for="txtCode" class="">PAN</label>
+                                                <input tabindex="14" type="text" class="form-control"
+                                                    formControlName="personalPAN" style="text-transform:uppercase">
+                                            </div>
+                                            <div class="col-md-2 position-relative form-group">
+                                                <label for="txtCode" class="">Aadhar number</label>
+                                                <input tabindex="15" type="text" class="form-control"
+                                                    formControlName="personalAadhar" style="text-transform:uppercase">
+                                            </div>
+                                            <div class="col-md-2 position-relative form-group">
+                                                <label for="txtCode" class="">Phone</label>
+                                                <input tabindex="31" type="text" class="form-control"
+                                                    formControlName="personalPhone">
+                                            </div>
+                                            <div class="col-md-2 position-relative form-group">
+                                                <label for="txtCode" class="">Email</label>
+                                                <input tabindex="32" type="email" class="form-control"
+                                                formControlName="personalEmail">
+                                            </div>
+                                            <div class="col-md-2 position-relative form-group">
+                                                <label for="txtCode" class="">Education</label>
+                                                <select class="mb-2 form-control" 
+                                                    tabindex="16" formControlName="personalEducation">
+                                                    <option *ngFor="let uiEducation of uiEducations" [ngValue]="uiEducation.code">
+                                                        {{uiEducation.name}}
+                                                    </option>
+                                                </select>
+                                            </div>
+                                            <div class="col-md-2 position-relative form-group">
+                                                <label for="txtCode" class="">TDS applicable</label>
+                                                <select class="mb-2 form-control" 
+                                                    tabindex="17" formControlName="personalTDSApplicable">
+                                                    <option *ngFor="let uiTdsApplicable of uiTdsApplicables"
+                                                        [ngValue]="uiTdsApplicable.code">
+                                                        {{uiTdsApplicable.name}}
+                                                    </option>
+                                                </select>
+                                            </div>
+                                            
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-md-2 position-relative form-group">
+                                                <label for="txtCode" class="">TDS printing</label>
+                                                <select class="mb-2 form-control"
+                                                    tabindex="18" formControlName="personalTDSPrinting">
+                                                    <option *ngFor="let uiTdsPrinting of uiTdsPrintings"
+                                                        [ngValue]="uiTdsPrinting.code">
+                                                        {{uiTdsPrinting.name}}
+                                                    </option>
+                                                </select>
+                                            </div>
+                                            <div class="col-md-2 position-relative form-group">
+                                                <label for="txtCode" class="">Rate</label>
+                                                <input tabindex="19" type="text" class="form-control"
+                                                    formControlName="personalTDSRate">
+                                            </div>
+                                            <div class="col-md-2 position-relative form-group">
+                                                <label for="txtCode" class="">Form 60</label>
+                                                <select class="mb-2 form-control" 
+                                                    tabindex="20" formControlName="personalForm60">
+                                                    <option *ngFor="let uiForm60 of uiForm60YN"
+                                                        [ngValue]="uiForm60.code">
+                                                        {{uiForm60.name}}
+                                                    </option>
+                                                </select>
+                                            </div>
+                                            <div class="col-md-2 position-relative form-group">
+                                                <label for="txtCode" class="">Form 61</label>
+                                                <select class="mb-2 form-control" 
+                                                    tabindex="21" formControlName="personalForm61">
+                                                    <option *ngFor="let uiForm61 of uiForm61YN"
+                                                        [ngValue]="uiForm61.code">
+                                                        {{uiForm61.name}}
+                                                    </option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="tab-pane tabs-animation fade" id="tab-content-1" role="tabpanel">
+                        <form [formGroup]="addressForm" #form="ngForm">
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="tab-content">
+                                        <div class="row">
+                                            <div class="col-md-2 position-relative form-group">
+                                                <label for="txtCode" class="">Address Type</label>
+                                                <select class="mb-2 form-control" 
+                                                    tabindex="22" formControlName="addressType">
+                                                    <option *ngFor="let uiAddressType of uiAddressTypes"
+                                                        [ngValue]="uiAddressType.code">
+                                                        {{uiAddressType.name}}
+                                                    </option>
+                                                </select>
+                                            </div>
+                                            <div class="col-md-2 position-relative form-group">
+                                                <label for="txtCode" class="">Building/Flat/House No.</label>
+                                                <input tabindex="23" type="text" class="form-control"
+                                                    formControlName="addressBuilding">
+                                            </div>
+                                            <div class="col-md-2 position-relative form-group">
+                                                <label for="txtCode" class="">Street</label>
+                                                <input tabindex="24" type="text" class="form-control"
+                                                    formControlName="addressStreet">
+                                            </div>
+                                            <div class="col-md-2 position-relative form-group">
+                                                <label for="txtCode" class="">Landmark</label>
+                                                <input tabindex="25" type="text" class="form-control"
+                                                    formControlName="addressLandmark">
+                                            </div>
+                                            <div class="col-md-2 position-relative form-group">
+                                                <label for="txtCode" class="">City/Town</label>
+                                                <input tabindex="26" type="text" class="form-control"
+                                                    formControlName="addressCity">
+                                            </div>
+                                            <div class="col-md-2 position-relative form-group">
+                                                <label for="txtCode" class="">State</label>
+                                                <select class="mb-2 form-control" (change)="onAddressStateChange($event)" 
+                                                    tabindex="27" formControlName="addressState">
+                                                    <option *ngFor="let uiAddressState of uiAddressStates"
+                                                        [ngValue]="uiAddressState.id">
+                                                        {{uiAddressState.name}}
+                                                    </option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+
+                                            <div class="col-md-2 position-relative form-group">
+                                                <label for="txtCode" class="">District</label>
+                                                <select class="mb-2 form-control" (change)="onAddressDistrictChange($event)"
+                                                    tabindex="28" formControlName="addressDistrict">
+                                                    <option *ngFor="let uiAddressDistrict of uiAddressDistricts"
+                                                        [ngValue]="uiAddressDistrict.id">
+                                                        {{uiAddressDistrict.name}}
+                                                    </option>
+                                                </select>
+                                            </div>
+
+                                            <div class="col-md-2 position-relative form-group">
+                                                <label for="txtCode" class="">Tahsil</label>
+                                                <select class="mb-2 form-control" 
+                                                    tabindex="29" formControlName="addressTahsil">
+                                                    <option *ngFor="let uiAddressTahshil of uiAddressTahshils"
+                                                        [ngValue]="uiAddressTahshil.id">
+                                                        {{uiAddressTahshil.name}}
+                                                    </option>
+                                                </select>
+                                            </div>
+
+                                            <div class="col-md-2 position-relative form-group">
+                                                <label for="txtCode" class="">Pincode</label>
+                                                <input tabindex="30" type="text" class="form-control"
+                                                    formControlName="addressPincode">
+                                            </div>
+                                            <!-- <div class="col-md-2 position-relative form-group">
+                                                <label for="txtCode" class="">Phone</label>
+                                                <input tabindex="31" type="text" class="form-control"
+                                                    formControlName="addressPhone">
+                                            </div>
+                                            <div class="col-md-2 position-relative form-group">
+                                                <label for="txtCode" class="">Email</label>
+                                                <input tabindex="32" type="email" class="form-control"
+                                                formControlName="addressEmail">
+                                            </div> -->
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-md-3 position-relative form-group">
+                                                <button class="mt-1 btn btn-info" (click)="addAddress()" tabindex="23">Add</button>
+                                                <button class="mt-1 btn btn-left-margin10 btn-secondary" (click)="clearAddress()" tabindex="23">Clear</button>
+                                            </div>
+                                        </div>
+
+                                        <table class="mb-0 table table-striped">
+                                            <thead>
+                                                <tr>
+                                                    <th width="20%">Address Type</th>
+                                                    <th width="20%">Address</th>
+                                                    <th width="20%">City</th>
+                                                    <th width="20%">District</th>
+                                                    <th width="20%">Actions</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr
+                                                    *ngFor="let uiAddress of uiAddresses | paginate: { itemsPerPage: 10, currentPage: p_address, totalItems: total_address }; let ind = index">
+                                                    <td>{{uiAddress.addressTypeName}}</td>
+                                                    <td>{{uiAddress.address}}</td>
+                                                    <td>{{uiAddress.city}}</td>
+                                                    <td>{{uiAddress.districtName}}</td>
+                                                    <td>
+                                                        <div class="widget-content-right">
+                                                            <button type="button" title="Edit record"
+                                                                class="btn-shadow btn btn-info btn-actions"
+                                                                (click)="editAddress(uiAddress, ind)">
+                                                                <span class="btn-icon-wrapper opacity-10">
+                                                                    <i class="fa fa-edit fa-w-10"></i>
+                                                                </span>
+                                                            </button>
+                                                            <button type="button" title="Delete record"
+                                                                class="btn-shadow btn btn-danger btn-actions"
+                                                                data-toggle="modal" data-target="#deleteModal"
+                                                                (click)="deleteAddress(uiAddress, ind)">
+                                                                <span class="btn-icon-wrapper opacity-10">
+                                                                    <i class="fa fa-trash fa-w-20"></i>
+                                                                </span>
+                                                            </button>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                                <tr *ngIf="uiAddresses.length==0">
+                                                    <td colspan="5">No records found..</td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="tab-pane tabs-animation fade" id="tab-content-2" role="tabpanel">
+                        <form [formGroup]="nominiForm" #form="ngForm">
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="tab-content">
+                                        <div class="row">
+                                            <div class="col-md-2 position-relative form-group">
+                                                <label for="txtCode" class="">Title</label>
+                                                <select class="mb-2 form-control" 
+                                                    tabindex="33" formControlName="nominiTitle">
+                                                    <option *ngFor="let uiTitle of uiTitles"
+                                                        [ngValue]="uiTitle.code">
+                                                        {{uiTitle.name}}
+                                                    </option>
+                                                </select>
+                                            </div>
+                                            <div class="col-md-2 position-relative form-group">
+                                                <label for="txtCode" class="">First name</label>
+                                                <input tabindex="34" type="text" class="form-control"
+                                                    formControlName="nominiFirstName">
+                                            </div>
+                                            <div class="col-md-2 position-relative form-group">
+                                                <label for="txtCode" class="">Middle name</label>
+                                                <input tabindex="35" type="text" class="form-control"
+                                                    formControlName="nominiMiddleName">
+                                            </div>
+                                            <div class="col-md-2 position-relative form-group">
+                                                <label for="txtCode" class="">Last name</label>
+                                                <input tabindex="36" type="text" class="form-control"
+                                                    formControlName="nominiLastName">
+                                            </div>
+                                            <div class="col-md-2 position-relative form-group">
+                                                <label for="txtCode" class="">Relation</label>
+                                                <select class="mb-2 form-control" 
+                                                    tabindex="37" formControlName="nominiRelation">
+                                                    <option *ngFor="let uiRelation of uiRelations"
+                                                        [ngValue]="uiRelation.id">
+                                                        {{uiRelation.branchMasterName}}
+                                                    </option>
+                                                </select>
+                                            </div>
+                                            <div class="col-md-2 position-relative form-group">
+                                                <label for="txtCode" class="">Guardian (for minor)</label>
+                                                <input tabindex="38" type="text" class="form-control"
+                                                    formControlName="nominiGuardian">
+                                            </div>
+
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-md-2 position-relative form-group">
+                                                <label for="txtCode" class="">Nomini Percentage</label>
+                                                <div class="input-group">
+                                                    <input tabindex="39" type="text" class="form-control"
+                                                        formControlName="nominiPercentage">
+                                                    <div class="input-group-append"><span
+                                                            class="input-group-text">%</span></div>
+                                                </div>
+
+                                            </div>
+                                            <div class="col-md-2 position-relative form-group">
+                                                <label for="txtCode" class="">Date of birth</label>
+                                                <input tabindex="40" type="date" class="form-control"
+                                                (change)="onNominDOBChange($event)" 
+                                                [max]="maxDate | date:'yyyy-MM-dd'"
+                                                formControlName="nominiDateOfBirth">
+                                            </div>
+                                            <div class="col-md-2 position-relative form-group">
+                                                <label for="txtCode" class="">Age</label>
+                                                <input tabindex="41" type="text" class="form-control"
+                                                    formControlName="nominiAge">
+                                            </div>
+
+                                            <div class="col-md-2 position-relative form-group">
+                                                <label for="txtCode" class="">Building/Flat/House No.</label>
+                                                <input tabindex="42" type="text" class="form-control"
+                                                    formControlName="nominiBuilding">
+                                            </div>
+                                            <div class="col-md-2 position-relative form-group">
+                                                <label for="txtCode" class="">Street</label>
+                                                <input tabindex="43" type="text" class="form-control"
+                                                    formControlName="nominiStreet">
+                                            </div>
+                                            <div class="col-md-2 position-relative form-group">
+                                                <label for="txtCode" class="">City/Town</label>
+                                                <input tabindex="44" type="text" class="form-control"
+                                                    formControlName="nominiCity">
+                                            </div>
+                                        </div>
+                                        <div class="row">
+
+                                            <div class="col-md-2 position-relative form-group">
+                                                <label for="txtCode" class="">State</label>
+                                                <select class="mb-2 form-control" (change)="onNominiStateChange($event)" 
+                                                    tabindex="45" formControlName="nominiState">
+                                                    <option *ngFor="let uiNominiState of uiNominiStates"
+                                                        [ngValue]="uiNominiState.id">
+                                                        {{uiNominiState.name}}
+                                                    </option>
+                                                </select>
+                                            </div>
+                                            <div class="col-md-2 position-relative form-group">
+                                                <label for="txtCode" class="">District</label>
+                                                <select class="mb-2 form-control" (change)="onNominiDistrictChange($event)"
+                                                    tabindex="46" formControlName="nominiDistrict">
+                                                    <option *ngFor="let uiNominiDistrict of uiNominiDistricts"
+                                                        [ngValue]="uiNominiDistrict.id">
+                                                        {{uiNominiDistrict.name}}
+                                                    </option>
+                                                </select>
+                                            </div>
+                                            <div class="col-md-2 position-relative form-group">
+                                                <label for="txtCode" class="">Tahsil</label>
+                                                <select class="mb-2 form-control" 
+                                                    tabindex="47" formControlName="nominiTahsil">
+                                                    <option *ngFor="let uiNominiTahshil of uiNominiTahshils"
+                                                        [ngValue]="uiNominiTahshil.id">
+                                                        {{uiNominiTahshil.name}}
+                                                    </option>
+                                                </select>
+                                            </div>
+                                            <div class="col-md-2 position-relative form-group">
+                                                <label for="txtCode" class="">Pincode</label>
+                                                <input tabindex="48" type="text" class="form-control"
+                                                    formControlName="nominiPincode">
+                                            </div>
+                                            <div class="col-md-2 position-relative form-group">
+                                                <label for="txtCode" class="">Phone</label>
+                                                <input tabindex="49" type="text" class="form-control"
+                                                    formControlName="nominiPhone">
+                                            </div>
+                                            <div class="col-md-2 position-relative form-group">
+                                                <label for="txtCode" class="">Email</label>
+                                                <input tabindex="50" type="text" class="form-control"
+                                                    formControlName="nominiEmail">
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-md-3 position-relative form-group">
+                                                <button class="mt-1 btn btn-info" (click)="addNomini()"
+                                                    tabindex="51">Add</button>
+                                                    <button class="mt-1 btn btn-left-margin10 btn-secondary" (click)="clearNomini()"
+                                                    tabindex="52">Clear</button>
+                                            </div>
+                                        </div>
+
+                                        <table class="mb-0 table table-striped">
+                                            <thead>
+                                                <tr>
+                                                    <th width="20%">Name</th>
+                                                    <th width="15%">Relation</th>
+                                                    <th width="15%">Percentage</th>
+                                                    <th width="15%">District</th>
+                                                    <th width="15%">Phone</th>
+                                                    <th width="15%">Actions</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr
+                                                    *ngFor="let uiNomini of uiNominis | paginate: { itemsPerPage: 10, currentPage: p_nomini, totalItems: total_nomini }; let ind = index">
+                                                    <td>{{uiNomini.firstName}} {{uiNomini.middleName}} {{uiNomini.lastName}}</td>
+                                                    <td>{{uiNomini.relationName}}</td>
+                                                    <td>{{uiNomini.percentage}}</td>
+                                                    <td>{{uiNomini.districtName}}</td>
+                                                    <td>{{uiNomini.phone}}</td>
+                                                    <td>
+                                                        <div class="widget-content-right">
+                                                            <button type="button" title="Edit record"
+                                                                class="btn-shadow btn btn-info btn-actions"
+                                                                (click)="editNomini(uiNomini, ind)">
+                                                                <span class="btn-icon-wrapper opacity-10">
+                                                                    <i class="fa fa-edit fa-w-10"></i>
+                                                                </span>
+                                                            </button>
+                                                            <button type="button" title="Delete record"
+                                                                class="btn-shadow btn btn-danger btn-actions"
+                                                                data-toggle="modal" data-target="#deleteModal"
+                                                                (click)="deleteNomini(uiNomini, ind)">
+                                                                <span class="btn-icon-wrapper opacity-10">
+                                                                    <i class="fa fa-trash fa-w-20"></i>
+                                                                </span>
+                                                            </button>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                                <tr *ngIf="uiNominis.length==0">
+                                                    <td colspan="6">No records found..</td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="tab-pane tabs-animation fade" id="tab-content-3" role="tabpanel">
+                        <form [formGroup]="documentsForm" #form="ngForm">
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="tab-content">
+                                        <div class="row">
+                                            <div class="col-md-2 position-relative form-group">
+                                                <label for="txtCode" class="">Select document to add</label>
+                                                <select class="mb-2 form-control"
+                                                    tabindex="53" formControlName="documentSelect">
+                                                    <option *ngFor="let uiDocumentType of uiDocumentTypes"
+                                                        [ngValue]="uiDocumentType.code">
+                                                        {{uiDocumentType.name}}
+                                                    </option>
+                                                </select>
+                                            </div>
+                                            <div class="col-md-2 position-relative form-group">
+                                                <button class="mt-1 btn btn-info" style="margin-top: 30px !important"  tabindex="54" 
+                                                (click)="addDocument()">
+                                                    Add
+                                                </button>
+                                            </div>
+                                            
+                                        </div>
+
+                                        <div class="row" *ngFor="let uiDocument of uiDocuments; let ind = index">
+                                            <div class="col-md-12 position-relative form-group">
+                                                <table class="mb-0 table table-striped">
+                                                    <tr>
+                                                        <td width="10%">{{uiDocument.documentName}}</td>
+                                                        <td width="40%">
+                                                            <input tabindex="1" type="file" class="form-control"
+                                                                (change)="uploadDocument($event, ind, uiDocument.documentKey)">
+                                                                {{uiDocument.filePath}}
+                                                        </td>
+                                                        <td width="5%"><button class="mt-1 btn btn-info">
+                                                                Upload
+                                                            </button></td>
+                                                        <td width="5%"> <button class="mt-1 btn btn-info" (click)="deleteDocument(ind)">
+                                                                Delete
+                                                            </button></td>
+                                                        <td width="15%">
+                                                            Upload Percent: {{percentDone}}%
+                                                        </td>
+                                                        <td width="25%">
+                                                            <ng-container *ngIf="uploadSuccess">
+                                                                Upload Successful
+                                                            </ng-container>
+                                                        </td>
+                                                    </tr>
+                                                </table>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+
+                <div class="divider" style="margin-bottom: 0.5rem !important"></div>
+
+                <div class="row">
+                    <div class="col-md-6 position-relative">
+                        <button class="mt-1 btn btn-primary" (click)="saveCustomer()" tabindex="23">Submit</button>
+                        <button class="mt-1 btn btn-left-margin10 btn-secondary" (click)="clear()"
+                            tabindex="24">Clear</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

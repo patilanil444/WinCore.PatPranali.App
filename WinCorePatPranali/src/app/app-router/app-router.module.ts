@@ -35,6 +35,8 @@ import { DistrictMasterListComponent } from '../screens/masters/district-master/
 import { TahshilMasterComponent } from '../screens/masters/tahshil-master/tahshil-master.component';
 import { TahshilMasterListComponent } from '../screens/masters/tahshil-master/tahshil-master-list/tahshil-master-list.component';
 import { TahshilMasterFormComponent } from '../screens/masters/tahshil-master/tahshil-master-form/tahshil-master-form.component';
+import { CustomerFormComponent } from '../screens/customers/customer-form/customer-form.component';
+import { CustomerSearchComponent } from '../screens/customers/customer-search/customer-search.component';
 
 @NgModule({
   declarations: [
@@ -68,6 +70,8 @@ import { TahshilMasterFormComponent } from '../screens/masters/tahshil-master/ta
     TahshilMasterComponent,
     TahshilMasterListComponent,
     TahshilMasterFormComponent,
+    CustomerFormComponent,
+    CustomerSearchComponent
   ],
   imports: [
     CommonModule,

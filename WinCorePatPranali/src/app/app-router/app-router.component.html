@@ -493,11 +493,52 @@
 
                         <li class="app-sidebar__heading">
                             <a href="#">
+                                <i class="metismenu-icon pe-7s-user icon-gradient bg-love-kiss"></i>
+                                Customers
+                                <i class="metismenu-state-icon pe-7s-angle-down caret-left"></i>
+                            </a>
+                            <ul>
+                                <li>
+                                    <a class="nav-link nav-link-menu" [class.mm-active]="isMenuSelected('customer-search')" (click)="configClick('customer-search')">
+                                        <i class="metismenu-icon pe-7s-star"></i>
+                                       Search Customer
+                                    </a>
+                                </li>
+                                <li>
+                                    <a class="nav-link nav-link-menu" [class.mm-active]="isMenuSelected('customer')" (click)="configClick('customer')">
+                                        <i class="metismenu-icon pe-7s-star"></i>
+                                       New Customer
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="#">
+                                        <i class="metismenu-icon pe-7s-add-user"></i>
+                                        Members
+                                    </a>
+                                </li>
+                            </ul>
+
+                        </li>
+                        <li class="app-sidebar__heading">
+                            <a href="#">
                                 <i class="metismenu-icon pe-7s-note2 icon-gradient bg-love-kiss"></i>
                                 Accounts
                                 <i class="metismenu-state-icon pe-7s-angle-down caret-left"></i>
                             </a>
                             <ul>
+                                <li>
+                                    <a href="#">
+                                        <i class="metismenu-icon pe-7s-star"></i>
+                                       Customers
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="#">
+                                        <i class="metismenu-icon pe-7s-add-user"></i>
+                                        Members
+                                    </a>
+                                </li>
+                                
                                 <li>
                                     <a [class.mm-active]="isMenuSelected('deposit-accounts')" (click)="configClick('deposit-accounts')">
                                         <i class="metismenu-icon pe-7s-next-2"></i>
@@ -516,18 +557,7 @@
                                         Other Accounts
                                     </a>
                                 </li>
-                                <li>
-                                    <a href="#">
-                                        <i class="metismenu-icon pe-7s-add-user"></i>
-                                        Members
-                                    </a>
-                                </li>
-                                <li>
-                                    <a href="#">
-                                        <i class="metismenu-icon pe-7s-star"></i>
-                                        Party Master
-                                    </a>
-                                </li>
+                                
                                 <li>
                                     <a href="#">
                                         <i class="metismenu-icon pe-7s-science"></i>
