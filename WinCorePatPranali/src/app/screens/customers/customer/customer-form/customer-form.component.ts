@@ -4,9 +4,10 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ToastrService } from 'ngx-toastr';
 import { CustomerDeclarations } from 'src/app/common/customer-declarations';
 import { IGeneralDTO, UiEnumGeneralMaster } from 'src/app/common/models/common-ui-models';
-import { CustomerService } from 'src/app/services/customers/customer.service';
+import { CustomerService } from 'src/app/services/customers/customer/customer.service';
 import { SharedService } from 'src/app/services/shared.service';
 import { GeneralMasterService } from 'src/app/services/masters/general-master/general-master.service';
+import { Router } from '@angular/router';
 
 interface ICustomerModel {
   Id: number;
@@ -144,7 +145,7 @@ export class CustomerFormComponent implements OnInit {
   dto: IGeneralDTO = {} as IGeneralDTO;
 
 
-  constructor(private _customerService: CustomerService, private _sharedService: SharedService,
+  constructor(private router: Router, private _customerService: CustomerService, private _sharedService: SharedService,
     private _generalMasterService: GeneralMasterService, private _toastrService: ToastrService) { }
 
   ngOnInit(): void {
@@ -624,6 +625,15 @@ export class CustomerFormComponent implements OnInit {
     this.clearAddress();
     this.clearNomini();
     this.clearDocuments();
+  }
+
+  searchCustomer() {
+    this.configClick("customer-search");
+  }
+
+  configClick(routeValue: string) {
+    sessionStorage.setItem("configMenu", routeValue);
+    this.router.navigate(['/app/' + routeValue]);
   }
 
   clearPersonalDetails() {

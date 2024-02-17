@@ -3,7 +3,7 @@ import { FormControl, FormGroup } from '@angular/forms';
 import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { IGeneralDTO } from 'src/app/common/models/common-ui-models';
-import { CustomerService } from 'src/app/services/customers/customer.service';
+import { CustomerService } from 'src/app/services/customers/customer/customer.service';
 
 @Component({
   selector: 'app-customer-search',
@@ -138,6 +138,12 @@ export class CustomerSearchComponent implements OnInit {
   cancelDelete()
   {
     this._customerService.customerIdToDelete = -1;
+  }
+
+  addNewCustomer()
+  {
+    this._customerService.customerIdToDelete = -1;
+    this.configClick("customer");
   }
 
   configClick(routeValue: string) {

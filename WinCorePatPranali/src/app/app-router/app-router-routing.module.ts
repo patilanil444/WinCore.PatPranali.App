@@ -23,8 +23,10 @@ import { DistrictMasterFormComponent } from '../screens/masters/district-master/
 import { DistrictMasterComponent } from '../screens/masters/district-master/district-master.component';
 import { TahshilMasterFormComponent } from '../screens/masters/tahshil-master/tahshil-master-form/tahshil-master-form.component';
 import { TahshilMasterComponent } from '../screens/masters/tahshil-master/tahshil-master.component';
-import { CustomerFormComponent } from '../screens/customers/customer-form/customer-form.component';
-import { CustomerSearchComponent } from '../screens/customers/customer-search/customer-search.component';
+import { CustomerFormComponent } from '../screens/customers/customer/customer-form/customer-form.component';
+import { CustomerSearchComponent } from '../screens/customers/customer/customer-search/customer-search.component';
+import { MemberSearchComponent } from '../screens/customers/member/member-search/member-search.component';
+import { MemberFormComponent } from '../screens/customers/member/member-form/member-form.component';
 
 const routes: Routes = [
   {
@@ -52,6 +54,8 @@ const routes: Routes = [
       { path: 'tahsils', component: TahshilMasterComponent },
       { path: 'customer', component: CustomerFormComponent },
       { path: 'customer-search', component: CustomerSearchComponent },
+      { path: 'member-list', component: MemberSearchComponent },
+      { path: 'member', component: MemberFormComponent },
       { path: '**', component: NotFoundComponent },
       { path: '', redirectTo: 'projects', pathMatch: 'full' },
     ]

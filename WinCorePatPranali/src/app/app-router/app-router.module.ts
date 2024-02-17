@@ -35,8 +35,10 @@ import { DistrictMasterListComponent } from '../screens/masters/district-master/
 import { TahshilMasterComponent } from '../screens/masters/tahshil-master/tahshil-master.component';
 import { TahshilMasterListComponent } from '../screens/masters/tahshil-master/tahshil-master-list/tahshil-master-list.component';
 import { TahshilMasterFormComponent } from '../screens/masters/tahshil-master/tahshil-master-form/tahshil-master-form.component';
-import { CustomerFormComponent } from '../screens/customers/customer-form/customer-form.component';
-import { CustomerSearchComponent } from '../screens/customers/customer-search/customer-search.component';
+import { CustomerFormComponent } from '../screens/customers/customer/customer-form/customer-form.component';
+import { CustomerSearchComponent } from '../screens/customers/customer/customer-search/customer-search.component';
+import { MemberSearchComponent } from '../screens/customers/member/member-search/member-search.component';
+import { MemberFormComponent } from '../screens/customers/member/member-form/member-form.component';
 
 @NgModule({
   declarations: [
@@ -71,7 +73,9 @@ import { CustomerSearchComponent } from '../screens/customers/customer-search/cu
     TahshilMasterListComponent,
     TahshilMasterFormComponent,
     CustomerFormComponent,
-    CustomerSearchComponent
+    CustomerSearchComponent,
+    MemberSearchComponent,
+    MemberFormComponent,
   ],
   imports: [
     CommonModule,

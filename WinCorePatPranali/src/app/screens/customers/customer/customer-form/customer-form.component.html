@@ -8,7 +8,7 @@
                 <form [formGroup]="customerForm" #form="ngForm">
                     <div class="row">
                         <div class="col-md-3 position-relative">
-                            <label for="txtCode" class="">Customer Code</label>
+                            <label for="txtCode" class="">Customer number</label>
                             <div class="input-group">
                                 <input tabindex="1" type="text" class="form-control" readonly
                                     formControlName="customerCode">
@@ -423,7 +423,7 @@
                                         </div>
                                         <div class="row">
                                             <div class="col-md-2 position-relative form-group">
-                                                <label for="txtCode" class="">Nomini Percentage</label>
+                                                <label for="txtCode" class="">Nomini share percentage</label>
                                                 <div class="input-group">
                                                     <input tabindex="39" type="text" class="form-control"
                                                         formControlName="nominiPercentage">
@@ -634,6 +634,8 @@
                         <button class="mt-1 btn btn-primary" (click)="saveCustomer()" tabindex="23">Submit</button>
                         <button class="mt-1 btn btn-left-margin10 btn-secondary" (click)="clear()"
                             tabindex="24">Clear</button>
+                        <button class="mt-1 btn btn-left-margin10 btn-alternate" (click)="searchCustomer()"
+                            tabindex="24">Search Customer</button>
                     </div>
                 </div>
             </div>

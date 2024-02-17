@@ -7,49 +7,50 @@
                 <h5 class="card-title">Search customer</h5>
                 <form [formGroup]="searchForm" #form="ngForm">
                     <div class="row">
-                        <div class="col-md-2 position-relative">
+                        <div class="col-md-3 position-relative">
                             <div class="input-group">
-                                <input tabindex="4" type="number" class="form-control" placeholder="Customer number"
-                                formControlName="customerNumber">
+                                <input tabindex="4" type="text" class="form-control" placeholder="Search customer name"
+                                autocomplete="off"  formControlName="customerName">
                             </div>
                         </div>
-                        <div class="col-md-2 position-relative">
+                        <div class="col-md-3 position-relative">
                             <div class="input-group">
-                                <input tabindex="4" type="text" class="form-control" placeholder="Name"
-                                 formControlName="customerName">
+                                <input tabindex="3" type="number" class="form-control"
+                                autocomplete="off" placeholder="Search customer number" formControlName="customerNumber">
+                            </div>
+                        </div>
+
+                        <div class="col-md-2 position-relative form-group">
+                            <div class="input-group">
+                                <input tabindex="5" type="text" class="form-control" placeholder="Search PAN"
+                                autocomplete="off"  formControlName="customerPAN" style="text-transform:uppercase">
                             </div>
                         </div>
                         <div class="col-md-2 position-relative form-group">
-                            <div>
-                                <div class="input-group">
-                                    <input tabindex="5" type="text" class="form-control" placeholder="PAN"
-                                     formControlName="customerPAN" style="text-transform:uppercase">
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-2 position-relative form-group">
-                            <div>
-                                <div class="input-group">
-                                    <input tabindex="5" type="text" class="form-control" placeholder="Aadhar"
-                                     formControlName="customerAadhar" style="text-transform:uppercase">
-                                </div>
+                            <div class="input-group">
+                                <input tabindex="5" type="text" class="form-control" placeholder="Search Aadhar"
+                                autocomplete="off"  formControlName="customerAadhar" style="text-transform:uppercase">
                             </div>
                         </div>
                         <div class="col-md-2 position-relative">
                             <div class="input-group">
-                                <input tabindex="5" type="text" class="form-control" placeholder="Phone"
-                                 formControlName="customerPhone">
+                                <input tabindex="5" type="text" class="form-control" placeholder="Search phone"
+                                autocomplete="off"   formControlName="customerPhone">
                             </div>
                         </div>
-                        <div class="col-md-2 position-relative form-group">
-                            <button class="btn btn-info" tabindex="2"  
-                            (click)="searchCustomer()"><i class="fa fa-search"></i>   Search</button>
-                            <button class="btn btn-left-margin10 btn-secondary" tabindex="2"
-                            (click)="clear()"> Clear</button>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12 position-relative form-group" style="float: right !important">
+                           
+                            <button class="btn btn-left-margin10 btn-secondary" style="float: right;" tabindex="2" (click)="clear()">
+                                Clear</button>
+                            <button class="btn btn-left-margin10 btn-warning" style="float: right;" tabindex="2" (click)="addNewCustomer()"><i
+                                    class="fa fa-plus"></i> Add New Customer </button>
+                                    <button class="btn btn-info" style="float: right;" tabindex="2" (click)="searchCustomer()"><i
+                                        class="fa fa-search"></i> Search</button>
                         </div>
                     </div>
                 </form>
-                <div class="divider" style="margin-bottom: 0.5rem !important"></div>
                 <div class="row" style="margin-bottom: 10px;">
                     <div class="col-lg-12">
                         <table class="mb-0 table table-striped">
@@ -65,17 +66,19 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr *ngFor="let uiCustomer of uiCustomers | paginate: { itemsPerPage: 10, currentPage: p, totalItems: total }">
+                                <tr
+                                    *ngFor="let uiCustomer of uiCustomers | paginate: { itemsPerPage: 10, currentPage: p, totalItems: total }">
                                     <th scope="row">{{uiCustomer.id}}</th>
                                     <td>{{uiCustomer.firstName}} {{uiCustomer.middleName}} {{uiCustomer.lastName}}</td>
                                     <td>{{uiCustomer.pan}}</td>
                                     <td>{{uiCustomer.aadhar}}</td>
                                     <td>{{uiCustomer.phone}}</td>
                                     <td>
-                                        <div class="badge" [ngClass]="{'badge-danger': uiCustomer.status==='Deleted', 'badge-success' : uiCustomer.status=== 'Active', 'badge-warning' : uiCustomer.status=== 'In-Active'}">
+                                        <div class="badge"
+                                            [ngClass]="{'badge-danger': uiCustomer.status==='Deleted', 'badge-success' : uiCustomer.status=== 'Active', 'badge-warning' : uiCustomer.status=== 'In-Active'}">
                                             {{uiCustomer.status}}
                                         </div>
-                                       
+
                                     </td>
                                     <td>
                                         <div class="widget-content-right">
@@ -95,26 +98,25 @@
                                         </div>
                                     </td>
                                 </tr>
-                                <tr *ngIf="uiCustomers.length==0" >
+                                <tr *ngIf="uiCustomers.length==0">
                                     <td colspan="7">No records found..</td>
                                 </tr>
                             </tbody>
                         </table>
                     </div>
                 </div>
-               
+
                 <div class="d-flex justify-content-center">
                     <pagination-controls (pageChange)="pageChangeEvent($event)"></pagination-controls>
-                  </div>
+                </div>
             </div>
         </div>
 
     </div>
 </div>
 
-<div id="deleteModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" 
-aria-hidden="true"
-    data-backdrop="false">
+<div id="deleteModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+    aria-hidden="true" data-backdrop="false">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
