@@ -1,6 +1,13 @@
-export class UiValueType
+export class UiValueType {
+    //public description: string;
+    constructor(public id: number, public name: string) {
+        //this.description = id + "-" + name;
+    }
+}
+
+export class UiStaticType
 {
-    constructor(public id: number, public name: string)
+    constructor(public id: number,public code: string, public name: string)
         {   }
 }
 
@@ -63,6 +70,7 @@ export enum UiEnumGeneralMaster {
 	GoldArticleMaster = 11,
 	DirectorMaster = 12,
 	SanctionByMaster = 13,
-	PartyGroupMaster = 14,
-    ScheduleMaster = 15
+	CustomerGroupMaster = 14,
+    ScheduleMaster = 15,
+    StateMaster = 16
 }

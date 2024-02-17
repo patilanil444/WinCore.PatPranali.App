@@ -5,6 +5,7 @@ import { AppRouterComponent } from './app-router.component';
 import { HomeComponent } from '../home/home.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NgxPaginationModule } from 'ngx-pagination';
+import { BsDatepickerModule } from 'ngx-bootstrap/datepicker'
 import { DepositAccountsComponent } from '../screens/accounts/deposit-accounts/deposit-accounts.component';
 import { LoanAccountsComponent } from '../screens/accounts/loan-accounts/loan-accounts.component';
 import { PriorityFormComponent } from '../screens/masters/priority/priority-form/priority-form.component';
@@ -26,7 +27,18 @@ import { DepositInterestStructureComponent } from '../screens/masters/deposit-in
 import { LoanInterestStructureComponent } from '../screens/masters/loan-interest-structure/loan-interest-structure.component';
 import { GLInterestParameterComponent } from '../screens/masters/gl-interest-parameter/gl-interest-parameter.component';
 import { BankProfileMasterComponent } from '../screens/masters/bank-profile-master/bank-profile-master.component';
-
+import { FilterPipe } from '../common/directives/filterPipe';
+import { SelectDropDownModule } from 'ngx-select-dropdown';
+import { DistrictMasterComponent } from '../screens/masters/district-master/district-master.component';
+import { DistrictMasterFormComponent } from '../screens/masters/district-master/district-master-form/district-master-form.component';
+import { DistrictMasterListComponent } from '../screens/masters/district-master/district-master-list/district-master-list.component';
+import { TahshilMasterComponent } from '../screens/masters/tahshil-master/tahshil-master.component';
+import { TahshilMasterListComponent } from '../screens/masters/tahshil-master/tahshil-master-list/tahshil-master-list.component';
+import { TahshilMasterFormComponent } from '../screens/masters/tahshil-master/tahshil-master-form/tahshil-master-form.component';
+import { CustomerFormComponent } from '../screens/customers/customer/customer-form/customer-form.component';
+import { CustomerSearchComponent } from '../screens/customers/customer/customer-search/customer-search.component';
+import { MemberSearchComponent } from '../screens/customers/member/member-search/member-search.component';
+import { MemberFormComponent } from '../screens/customers/member/member-form/member-form.component';
 
 @NgModule({
   declarations: [
@@ -53,13 +65,27 @@ import { BankProfileMasterComponent } from '../screens/masters/bank-profile-mast
     LoanInterestStructureComponent,
     GLInterestParameterComponent,
     BankProfileMasterComponent,
+    FilterPipe,
+    DistrictMasterComponent,
+    DistrictMasterFormComponent,
+    DistrictMasterListComponent,
+    TahshilMasterComponent,
+    TahshilMasterListComponent,
+    TahshilMasterFormComponent,
+    CustomerFormComponent,
+    CustomerSearchComponent,
+    MemberSearchComponent,
+    MemberFormComponent,
   ],
   imports: [
     CommonModule,
     ReactiveFormsModule,
     FormsModule,
     AppRouterRoutingModule,
-    NgxPaginationModule
-  ]
+    NgxPaginationModule,
+    BsDatepickerModule.forRoot(),
+    SelectDropDownModule,
+  ],
+  providers: [],// Toastr providers
 })
 export class AppRouterModule { }

@@ -9,6 +9,8 @@ import { IGeneralDTO } from 'src/app/common/models/common-ui-models';
 })
 export class BankMasterService {
   serviceBaseURL = "";
+
+  bankIdToDelete = -1;
   constructor(private http: HttpClient) { }
 
   private dto = new BehaviorSubject<IGeneralDTO>({} as IGeneralDTO);
@@ -41,6 +43,6 @@ export class BankMasterService {
 
   deleteBank(id: number): any {
     let options = GlobleDeclarations.getHeaderOptions();
-    return this.http.post(GlobleDeclarations.apiBaseURL + "api/bank/delete-bank?id=" + id, options);
+    return this.http.delete(GlobleDeclarations.apiBaseURL + "api/bank/delete-bank?id=" + id, options);
   }
 }

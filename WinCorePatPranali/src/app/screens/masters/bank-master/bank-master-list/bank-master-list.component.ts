@@ -1,5 +1,6 @@
 import { Component, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
+import { ToastrService } from 'ngx-toastr';
 import { IGeneralDTO } from 'src/app/common/models/common-ui-models';
 import { BankMasterService } from 'src/app/services/masters/bank-master/bank-master.service';
 import { SharedService } from 'src/app/services/shared.service';
@@ -11,12 +12,11 @@ import { SharedService } from 'src/app/services/shared.service';
 })
 export class BankMasterListComponent {
 
-  @ViewChild('deleteModal') deleteModel:any
   uiBanks: any[] = [];
   p: number = 1;
   total: number = 0;
   constructor(private router: Router, private _bankMasterService: BankMasterService,
-    private _sharedService: SharedService) { }
+    private _sharedService: SharedService, private _toastrService: ToastrService) { }
 
   ngOnInit(): void {
     this.getBanks();
@@ -39,7 +39,7 @@ export class BankMasterListComponent {
 
   pageChangeEvent(event: number) {
     this.p = event;
-    this.getBanks();
+    //this.getBanks();
   }
 
   add(route:any)
@@ -78,11 +78,28 @@ export class BankMasterListComponent {
 
   delete(uiBank: any) {
     if (uiBank.id > 0) {
-      alert("Hi");
-      //this.deleteModel.open();
-      ///this.deleteModel.nativeElement.className = 'modal fade show';
-      // TODO: confirmation for delete 
+      this._bankMasterService.bankIdToDelete = uiBank.id;
     }
+  }
+
+  onDelete()
+  {
+    let bankIdToDelete = this._bankMasterService.bankIdToDelete;
+    if (bankIdToDelete > 0) {
+      this._bankMasterService.deleteBank(bankIdToDelete).subscribe((data: any) => {
+        console.log(data);
+        if (data) {
+          // show message
+          this._toastrService.success('Bank deleted.', 'Success!');
+          this.getBanks();
+        }
+      })
+    }
+  }
+
+  cancelDelete()
+  {
+    this._bankMasterService.bankIdToDelete = -1;
   }
 
   configClick(routeValue: string) {

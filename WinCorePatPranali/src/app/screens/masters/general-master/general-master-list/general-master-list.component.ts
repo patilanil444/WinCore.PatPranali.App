@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
+import { ToastrService } from 'ngx-toastr';
 import { IGeneralMasterDTO } from 'src/app/common/models/common-ui-models';
 import { GeneralMasterService } from 'src/app/services/masters/general-master/general-master.service';
 import { SharedService } from 'src/app/services/shared.service';
@@ -18,7 +19,7 @@ export class GeneralMasterListComponent {
 
   masterId: number = 0;
   constructor(private router: Router, private _generalMasterService: GeneralMasterService,
-    private _sharedService: SharedService) { }
+    private _sharedService: SharedService, private _toastrService: ToastrService) { }
 
   ngOnInit(): void {
     this.getMasters();
@@ -88,13 +89,30 @@ export class GeneralMasterListComponent {
     this.configClick("general-master");
   }
 
-  delete(uiBank: any) {
-    if (uiBank.id > 0) {
-      alert("Hi");
-      //this.deleteModel.open();
-      ///this.deleteModel.nativeElement.className = 'modal fade show';
-      // TODO: confirmation for delete 
+  delete(uiGeneralMaster: any) {
+    if (uiGeneralMaster.id > 0) {
+      this._generalMasterService.generalMasterIdToDelete = uiGeneralMaster.id; 
     }
+  }
+
+  onDelete()
+  {
+    let generalMasterIdToDelete = this._generalMasterService.generalMasterIdToDelete;
+    if (generalMasterIdToDelete > 0) {
+      this._generalMasterService.deleteGeneralMaster(generalMasterIdToDelete).subscribe((data: any) => {
+        console.log(data);
+        if (data) {
+          // show message
+          this._toastrService.success('General master deleted.', 'Success!');
+          this.getBranchGeneralMasters();
+        }
+      })
+    }
+  }
+
+  cancelDelete()
+  {
+    this._generalMasterService.generalMasterIdToDelete = -1;
   }
 
   configClick(routeValue: string) {

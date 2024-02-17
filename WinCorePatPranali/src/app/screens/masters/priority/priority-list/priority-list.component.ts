@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
+import { ToastrService } from 'ngx-toastr';
 import { IGeneralDTO } from 'src/app/common/models/common-ui-models';
 import { PriorityMasterService } from 'src/app/services/masters/priority-master/priority-master.service';
 import { SharedService } from 'src/app/services/shared.service';
@@ -15,7 +16,7 @@ export class PriorityListComponent {
   p: number = 1;
   total: number = 0;
   constructor(private router: Router, private _priorityMasterService: PriorityMasterService,
-    private _sharedService: SharedService) { }
+    private _sharedService: SharedService, private _toastrService: ToastrService) { }
 
   ngOnInit(): void {
     this.getPriorities();
@@ -33,7 +34,7 @@ export class PriorityListComponent {
 
   pageChangeEvent(event: number) {
     this.p = event;
-    this.getPriorities();
+    //this.getPriorities();
   }
 
   add(route:any)
@@ -70,11 +71,28 @@ export class PriorityListComponent {
 
   delete(uiPriority: any) {
     if (uiPriority.id > 0) {
-      alert("Hi");
-      //this.deleteModel.open();
-      ///this.deleteModel.nativeElement.className = 'modal fade show';
-      // TODO: confirmation for delete 
+      this._priorityMasterService.priorityIdToDelete = uiPriority.id;
     }
+  }
+
+  onDelete()
+  {
+    let priorityIdToDelete = this._priorityMasterService.priorityIdToDelete;
+    if (priorityIdToDelete > 0) {
+      this._priorityMasterService.deletePriority(priorityIdToDelete).subscribe((data: any) => {
+        console.log(data);
+        if (data) {
+          this._toastrService.success('Priority deleted.', 'Success!');
+          // show message
+          this.getPriorities();
+        }
+      })
+    }
+  }
+
+  cancelDelete()
+  {
+    this._priorityMasterService.priorityIdToDelete = -1;
   }
 
   configClick(routeValue: string) {

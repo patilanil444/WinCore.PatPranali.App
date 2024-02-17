@@ -3,213 +3,350 @@
 
         <div class="main-card mb-3 card">
             <div class="card-body">
-                <h5 class="card-title">Interest Parameter for general ledger</h5>
+                <form [formGroup]="glForm" #form="ngForm">
 
-                <div class="row">
-                    <div class="col-md-3 position-relative">
-                        <label for="txtCode" class="">General Ledger</label>
-                        <select class="form-control" name="masterList" [(ngModel)]="generalLedgerId" tabindex="1">
-                            <option *ngFor="let uiGeneralLedger of uiGeneralLedgers" [ngValue]="uiGeneralLedger.id">
-                                {{uiGeneralLedger.name}}
-                            </option>
-                        </select>
-                    </div>
-                    <div class="col-md-3 position-relative form-group">
-                        <button class="btn btn-info" style="margin-top: 30px;" (click)="showInfo()">Show
-                        </button>
-                    </div>
-                    <div class="col-md-3 position-relative">
-                        <label for="txtCode" class="">Group</label>
-                        <div class="input-group">
-                            <input tabindex="2" readonly type="text" class="form-control">
-                        </div>
-                    </div>
-                    <div class="col-md-3 position-relative">
-                        <label for="txtCode" class="">Type of Account</label>
-                        <div class="input-group">
-                            <input tabindex="2" readonly type="text" class="form-control">
-                        </div>
-                    </div>
-                </div>
-                
-                <div class="divider"></div>
 
-                <div class="row">
-                    <div class="col-md-3 position-relative">
-                        <label for="txtCode" class="">Interest Posting</label>
-                        <select class="form-control" name="masterList" [(ngModel)]="generalLedgerId" tabindex="1">
-                            <option *ngFor="let uiGeneralLedger of uiGeneralLedgers" [ngValue]="uiGeneralLedger.id">
-                                {{uiGeneralLedger.name}}
-                            </option>
-                        </select>
-                    </div>
-                    <div class="col-md-3 position-relative">
-                        <label for="txtCode" class="">Add Interest to Balance</label>
-                        <select class="form-control" name="masterList" [(ngModel)]="generalLedgerId" tabindex="1">
-                            <option *ngFor="let uiGeneralLedger of uiGeneralLedgers" [ngValue]="uiGeneralLedger.id">
-                                {{uiGeneralLedger.name}}
-                            </option>
-                        </select>
-                    </div>
-                    <div class="col-md-3 position-relative">
-                        <label for="txtCode" class="">Receivable/ Payable</label>
-                        <select class="form-control" name="masterList" [(ngModel)]="generalLedgerId" tabindex="1">
-                            <option *ngFor="let uiGeneralLedger of uiGeneralLedgers" [ngValue]="uiGeneralLedger.id">
-                                {{uiGeneralLedger.name}}
-                            </option>
-                        </select>
-                    </div>
-                    <div class="col-md-3 position-relative">
-                        <label for="txtCode" class="">Received/ Paid</label>
-                        <select class="form-control" name="masterList" [(ngModel)]="generalLedgerId" tabindex="1">
-                            <option *ngFor="let uiGeneralLedger of uiGeneralLedgers" [ngValue]="uiGeneralLedger.id">
-                                {{uiGeneralLedger.name}}
-                            </option>
-                        </select>
-                    </div>
-                </div>
-                <div class="divider"></div>
-                <div class="row">
-                    <div class="col-md-3 position-relative">
-                        <label for="txtCode" class="">Rate for Staff</label>
-                        <select class="form-control" name="masterList" [(ngModel)]="generalLedgerId" tabindex="1">
-                            <option *ngFor="let uiGeneralLedger of uiGeneralLedgers" [ngValue]="uiGeneralLedger.id">
-                                {{uiGeneralLedger.name}}
-                            </option>
-                        </select>
-                    </div>
-                    <div class="col-md-3 position-relative">
-                        <label for="txtCode" class="">Rate for Female</label>
-                        <select class="form-control" name="masterList" [(ngModel)]="generalLedgerId" tabindex="1">
-                            <option *ngFor="let uiGeneralLedger of uiGeneralLedgers" [ngValue]="uiGeneralLedger.id">
-                                {{uiGeneralLedger.name}}
-                            </option>
-                        </select>
-                    </div>
-                    <div class="col-md-3 position-relative">
-                        <label for="txtCode" class="">Rate for Senior Citizen</label>
-                        <select class="form-control" name="masterList" [(ngModel)]="generalLedgerId" tabindex="1">
-                            <option *ngFor="let uiGeneralLedger of uiGeneralLedgers" [ngValue]="uiGeneralLedger.id">
-                                {{uiGeneralLedger.name}}
-                            </option>
-                        </select>
-                    </div>
-                </div>
-                <div class="row" style="margin-top: 10px;">
-                    <div class="col-md-3 position-relative">
-                        <div class="input-group">
-                            <input tabindex="2" readonly type="text" class="form-control">
-                            <div class="input-group-append"><span class="input-group-text">%</span></div>
+                    <h5 class="card-title">Interest Parameter for general ledger</h5>
+
+                    <div class="row">
+                        <div class="col-md-3 position-relative">
+                            <label for="txtCode" class="">General Ledger</label>
+                            <div class="input-group">
+                                <ngx-select-dropdown [config]="config" tabindex="1" [options]="uiGeneralLedgers"
+                                    style="width: 100%;" [multiple]="false"
+                                    formControlName="generalLedger"></ngx-select-dropdown>
+
+                            </div>
+                        </div>
+                        <div class="col-md-3 position-relative form-group" style="display: flex;">
+                            <button class="btn btn-info" tabindex="2" style="margin-top: 30px;"
+                                (click)="showGLInfo()">Show
+                            </button>
+                            <div style="margin-left: 25px;">
+                                <label for="txtCode" class="">Code</label>
+                                <div class="input-group">
+                                    <input tabindex="3" readonly type="text" class="form-control"
+                                        formControlName="code">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-3 position-relative">
+                            <label for="txtCode" class="">Group</label>
+                            <div class="input-group">
+                                <input tabindex="4" readonly type="text" class="form-control" formControlName="group">
+                            </div>
+                        </div>
+                        <div class="col-md-3 position-relative">
+                            <label for="txtCode" class="">Type of Account</label>
+                            <div class="input-group">
+                                <input tabindex="5" readonly type="text" class="form-control"
+                                    formControlName="typeOfAccount">
+                            </div>
                         </div>
                     </div>
-                    <div class="col-md-3 position-relative">
-                        <div class="input-group">
-                            <input tabindex="2" readonly type="text" class="form-control">
-                            <div class="input-group-append"><span class="input-group-text">%</span></div>
-                        </div>
-                    </div>
-                    <div class="col-md-3 position-relative">
-                        <div class="input-group">
-                            <input tabindex="2" readonly type="text" class="form-control">
-                            <div class="input-group-append"><span class="input-group-text">%</span></div>
-                        </div>
-                    </div>
-                </div>
-                <div class="divider"></div>
-                <div class="row">
-                    <div class="col-md-6 position-relative">
-                        <label for="txtCode" class="">Calculate interest after maturity at the time of</label>
-                        <div style="display: flex;">
-                            <select class="form-control" name="masterList" [(ngModel)]="generalLedgerId" tabindex="1">
-                                <option *ngFor="let uiGeneralLedger of uiGeneralLedgers" [ngValue]="uiGeneralLedger.id">
-                                    {{uiGeneralLedger.name}}
-                                </option>
-                            </select>
-                            <select class="form-control" name="masterList" [(ngModel)]="generalLedgerId" tabindex="1" style="margin-left: 30px;">
-                                <option *ngFor="let uiGeneralLedger of uiGeneralLedgers" [ngValue]="uiGeneralLedger.id">
-                                    {{uiGeneralLedger.name}}
+
+                    <div class="divider"></div>
+
+                    <div class="row">
+                        <div class="col-md-3 position-relative">
+                            <label for="txtCode" class="">Interest Posting</label>
+                            <select class="form-control" name="masterList" tabindex="6"
+                                formControlName="interestPosting">
+                                <option *ngFor="let interestPosting of interestPostings"
+                                    [ngValue]="interestPosting.code">
+                                    {{interestPosting.name}}
                                 </option>
                             </select>
                         </div>
-                    </div>
-                    <div class="col-md-6 position-relative">
-                        <label for="txtCode" class="">Calculate Provision</label>
-                        <div style="display: flex;">
-                            <select class="form-control" name="masterList" [(ngModel)]="generalLedgerId" tabindex="1">
+                        <div class="col-md-3 position-relative">
+                            <label for="txtCode" class="">Add Interest to Balance</label>
+                            <select class="form-control" name="masterList" tabindex="7"
+                                formControlName="addIntToBalance">
+                                <option *ngFor="let addInterest of addInterestToBal" [ngValue]="addInterest.code">
+                                    {{addInterest.name}}
+                                </option>
+                            </select>
+                        </div>
+                        <div class="col-md-3 position-relative">
+                            <label for="txtCode" class="">Receivable/ Payable GL</label>
+                            <div class="input-group">
+
+                                <!-- <input tabindex="3" type="text" class="form-control"
+                                    placeholder="Search by code or name.." formControlName="receivable"> -->
+                                <ngx-select-dropdown [config]="config" tabindex="1" [options]="uiReceivableGLs"
+                                    style="width: 100%;" [multiple]="false"
+                                    formControlName="receivable"></ngx-select-dropdown>
+                            </div>
+                            <!-- <select class="form-control" name="masterList" tabindex="8"
+                                formControlName="receivable">
                                 <option *ngFor="let uiGeneralLedger of uiGeneralLedgers" [ngValue]="uiGeneralLedger.id">
                                     {{uiGeneralLedger.name}}
                                 </option>
-                            </select>
-                            <select class="form-control" name="masterList" [(ngModel)]="generalLedgerId" tabindex="1" style="margin-left: 30px;">
+                            </select> -->
+                        </div>
+                        <div class="col-md-3 position-relative">
+                            <label for="txtCode" class="">Received/ Paid GL</label>
+                            <div class="input-group">
+                                <!-- <input tabindex="3" type="text" class="form-control"
+                                    placeholder="Search by code or name.." formControlName="received"> -->
+                                <ngx-select-dropdown [config]="config" tabindex="1" [options]="uiReceivedGLs"
+                                    style="width: 100%;" [multiple]="false"
+                                    formControlName="received"></ngx-select-dropdown>
+                            </div>
+                            <!-- <select class="form-control" name="masterList" tabindex="9"
+                                formControlName="received">
                                 <option *ngFor="let uiGeneralLedger of uiGeneralLedgers" [ngValue]="uiGeneralLedger.id">
                                     {{uiGeneralLedger.name}}
+                                </option>
+                            </select> -->
+                        </div>
+                    </div>
+                    <div class="divider"></div>
+                    <div class="row">
+                        <div class="col-md-3 position-relative">
+                            <label for="txtCode" class="">Rate for Staff</label>
+                            <select class="form-control" name="masterList" tabindex="10"
+                                (change)="onStaffRateChange($event)" formControlName="rateForStaffYN">
+                                <option *ngFor="let rateForSpecial of rateForSpecials" [ngValue]="rateForSpecial.code">
+                                    {{rateForSpecial.name}}
+                                </option>
+                            </select>
+                        </div>
+                        <div class="col-md-3 position-relative">
+                            <label for="txtCode" class="">Rate for Female</label>
+                            <select class="form-control" name="masterList" tabindex="12"
+                                (change)="onFemaleRateChange($event)" formControlName="rateForFemaleYN">
+                                <option *ngFor="let rateForSpecial of rateForSpecials" [ngValue]="rateForSpecial.code">
+                                    {{rateForSpecial.name}}
+                                </option>
+                            </select>
+                        </div>
+                        <div class="col-md-3 position-relative">
+                            <label for="txtCode" class="">Rate for Senior citizen</label>
+                            <select class="form-control" name="masterList" tabindex="14"
+                                (change)="onSeniorRateChange($event)" formControlName="rateForSeniorYN">
+                                <option *ngFor="let rateForSpecial of rateForSpecials" [ngValue]="rateForSpecial.code">
+                                    {{rateForSpecial.name}}
                                 </option>
                             </select>
                         </div>
                     </div>
-                </div>
+                    <div class="row" style="margin-top: 10px;">
+                        <div class="col-md-3 position-relative">
+                            <div class="input-group">
+                                <input tabindex="11" type="text" class="form-control" formControlName="rateForStaff">
+                                <div class="input-group-append"><span class="input-group-text">%</span></div>
+                            </div>
+                        </div>
+                        <div class="col-md-3 position-relative">
+                            <div class="input-group">
+                                <input tabindex="13" type="text" class="form-control" formControlName="rateForFemale">
+                                <div class="input-group-append"><span class="input-group-text">%</span></div>
+                            </div>
+                        </div>
+                        <div class="col-md-3 position-relative">
+                            <div class="input-group">
+                                <input tabindex="15" type="text" class="form-control" formControlName="rateForSenior">
+                                <div class="input-group-append"><span class="input-group-text">%</span></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="divider"></div>
+                        <div id="depositSection" [hidden]="isDepositEnabled">
 
-                <div class="row">
-                    <div class="col-md-3 position-relative">
-                        <label for="txtCode" class="">Calculate Payble</label>
-                        <select class="form-control" name="masterList" [(ngModel)]="generalLedgerId" tabindex="1">
-                            <option *ngFor="let uiGeneralLedger of uiGeneralLedgers" [ngValue]="uiGeneralLedger.id">
-                                {{uiGeneralLedger.name}}
-                            </option>
-                        </select>
-                    </div>
-                    <div class="col-md-3 position-relative">
-                        <label for="txtCode" class="">Installment Penal</label>
-                        <select class="form-control" name="masterList" [(ngModel)]="generalLedgerId" tabindex="1">
-                            <option *ngFor="let uiGeneralLedger of uiGeneralLedgers" [ngValue]="uiGeneralLedger.id">
-                                {{uiGeneralLedger.name}}
-                            </option>
-                        </select>
-                    </div>
-                    <div class="col-md-3 position-relative">
-                        <label for="txtCode" class="">RI Cumulative</label>
-                        <select class="form-control" name="masterList" [(ngModel)]="generalLedgerId" tabindex="1">
-                            <option *ngFor="let uiGeneralLedger of uiGeneralLedgers" [ngValue]="uiGeneralLedger.id">
-                                {{uiGeneralLedger.name}}
-                            </option>
-                        </select>
-                    </div>
-                </div>
-               
-                <div class="divider"></div>
+                            <div class="row">
+                                <div class="col-md-3 position-relative">
+                                    <label for="txtCode" class="">Calculate interest after</label>
+                                    <select class="form-control" name="masterList" tabindex="16"
+                                        formControlName="calculateIntAfterMaturity1">
+                                        <option *ngFor="let calculateInterest of calculateInterestAfter"
+                                            [ngValue]="calculateInterest.code">
+                                            {{calculateInterest.name}}
+                                        </option>
+                                    </select>
+                                </div>
+                                <div class="col-md-3 position-relative">
+                                    <label for="txtCode" class="">Maturity at the time of</label>
+                                    <select class="form-control" name="masterList" tabindex="17"
+                                        formControlName="calculateIntAfterMaturity2">
+                                        <option *ngFor="let maturity of maturityAtTheTimeOf" [ngValue]="maturity.code">
+                                            {{maturity.name}}
+                                        </option>
+                                    </select>
+                                </div>
+                                <div class="col-md-6 position-relative">
+                                    <label for="txtCode" class="">Calculate Provision</label>
+                                    <div style="display: flex;">
+                                        <select class="form-control" name="masterList" tabindex="18"
+                                            formControlName="calculateProvision1">
+                                            <option *ngFor="let calculateProv of calculateProvision01"
+                                                [ngValue]="calculateProv.code">
+                                                {{calculateProv.name}}
+                                            </option>
+                                        </select>
+                                        <select class="form-control" name="masterList" tabindex="19"
+                                            formControlName="calculateProvision2" style="margin-left: 30px;">
+                                            <option *ngFor="let calculateProv of calculateProvision02"
+                                                [ngValue]="calculateProv.code">
+                                                {{calculateProv.name}}
+                                            </option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
 
-                <div class="row">
-                    <div class="col-md-6 position-relative">
-                        <button class="mt-1 btn btn-primary" (click)="saveParameter()">Submit</button>
-                        <button class="mt-1 btn btn-left-margin10 btn-secondary" (click)="clear()">Clear</button>
-                    </div>
+                            <div class="row" style="margin-top: 10px">
+                                <div class="col-md-3 position-relative form-group">
+                                    <label for="txtCode" class="">Calculate Payable</label>
+                                    <div class="input-group">
+                                        <select class="form-control" name="masterList" tabindex="20"
+                                            formControlName="calculatePayble">
+                                            <option *ngFor="let calculatePay of calculatePayable"
+                                                [ngValue]="calculatePay.code">
+                                                {{calculatePay.name}}
+                                            </option>
+                                        </select>
+                                    </div>
 
-                </div>
+                                </div>
+                                <div class="col-md-3 position-relative form-group">
+                                    <label for="txtCode" class="">Payable Amount</label>
+                                    <div class="input-group" >
+                                        <div class="input-group-prepend"><span class="input-group-text">₹</span></div>
+                                        <input tabindex="15" type="text" class="form-control" formControlName="calculatePaybleAmount">
+                                        <!-- [class.is-invalid]="calculatePaybleAmount.invalid && (calculatePaybleAmount.dirty || calculatePaybleAmount.touched)" -->
+                                        <!-- <div *ngIf="calculatePaybleAmount.invalid && (calculatePaybleAmount.dirty || calculatePaybleAmount.touched)" class="invalid-feedback">
+                                            <div *ngIf="calculatePaybleAmount.errors?.['required']">
+                                                Payable amount required.
+                                            </div>
+                                        </div> -->
+                                    </div>
+                                </div>
+                                <div class="col-md-3 position-relative form-group">
+                                    <label for="txtCode" class="">Installment Penal</label>
+                                    <div class="input-group">
+                                        <select class="form-control" name="masterList" tabindex="21"
+                                            formControlName="installmantPenalDeposit">
+                                            <option *ngFor="let installmentP of installmentPenal"
+                                                [ngValue]="installmentP.code">
+                                                {{installmentP.name}}
+                                            </option>
+                                        </select>
+                                    </div>
+
+                                </div>
+                                <div class="col-md-3 position-relative form-group">
+                                    <label for="txtCode" class="">RI Cumulative</label>
+                                    <div class="input-group">
+                                        <select class="form-control" name="masterList" tabindex="22"
+                                            formControlName="riCumulative">
+                                            <option *ngFor="let riCumulate of riCumulative01"
+                                                [ngValue]="riCumulate.code">
+                                                {{riCumulate.name}}
+                                            </option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div id="loanSection" [hidden]="isLoanEnabled">
+                            <div class="row">
+                                <div class="col-md-3 position-relative">
+                                    <label for="txtCode" class="">Installment Penal</label>
+                                    <select class="form-control" name="masterList" tabindex="16"
+                                        formControlName="installmantPenalForLoan">
+                                        <option *ngFor="let installmentP of installmentPenal"
+                                            [ngValue]="installmentP.code">
+                                            {{installmentP.name}}
+                                        </option>
+                                    </select>
+                                </div>
+                                <div class="col-md-3 position-relative">
+                                    <label for="txtCode" class="">After</label>
+                                    <input tabindex="15" type="text" class="form-control"
+                                        formControlName="installmantPenalAftertext">
+
+                                </div>
+                                <div class="col-md-3 position-relative">
+                                    <select class="form-control" name="masterList" tabindex="17"
+                                        style="margin-top: 25px;" formControlName="installmantPenalAfter">
+                                        <option *ngFor="let installmentPenalA of installmentPenalAfter"
+                                            [ngValue]="installmentPenalA.code">
+                                            {{installmentPenalA.name}}
+                                        </option>
+                                    </select>
+                                </div>
+                                <div class="col-md-3 position-relative">
+                                    <label for="txtCode" class="">Interest calculation type</label>
+                                    <select class="form-control" name="masterList" tabindex="17"
+                                        formControlName="interestCalculationTypeForLoan">
+                                        <option *ngFor="let interestCalculationT of interestCalculationType"
+                                            [ngValue]="interestCalculationT.code">
+                                            {{interestCalculationT.name}}
+                                        </option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="row" style="margin-top: 10px;">
+                                <div class="col-md-3 position-relative">
+                                    <label for="txtCode" class="">Interest after maturity</label>
+                                    <div style="display: flex;">
+                                        <select class="form-control" name="masterList" tabindex="18"
+                                            formControlName="interestAfterMaturityForLoan">
+                                            <option *ngFor="let interestAfterMature of interestAfterMaturity"
+                                                [ngValue]="interestAfterMature.code">
+                                                {{interestAfterMature.name}}
+                                            </option>
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-3 position-relative">
+                                    <input tabindex="15" type="text" class="form-control" style="margin-top: 25px;"
+                                        formControlName="interestAfterMaturityForLoanText">
+                                </div>
+                                <div class="col-md-3 position-relative form-group">
+                                    <label for="txtCode" class="">Installment Calculation</label>
+                                    <div class="input-group">
+                                        <select class="form-control" name="masterList" tabindex="20"
+                                            formControlName="installmentCalculationForLoan">
+                                            <option *ngFor="let installmentCalculate of installmentCalculation"
+                                                [ngValue]="installmentCalculate.code">
+                                                {{installmentCalculate.name}}
+                                            </option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-md-3 position-relative form-group">
+                                    <label for="txtCode" class="">Calculate extra interest for CC above limit</label>
+                                    <div class="input-group">
+                                        <select class="form-control" name="masterList" tabindex="21"
+                                            formControlName="extraInterestForCCForLoan">
+                                            <option *ngFor="let extraInterest of extraInterestForCC"
+                                                [ngValue]="extraInterest.code">
+                                                {{extraInterest.name}}
+                                            </option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+
+                    <div class="divider"></div>
+
+                    <div class="row">
+                        <div class="col-md-6 position-relative">
+                            <button class="mt-1 btn btn-primary" (click)="saveParameter()" tabindex="23">Submit</button>
+                            <button class="mt-1 btn btn-left-margin10 btn-secondary" (click)="clear()"
+                                tabindex="24">Clear</button>
+                        </div>
+
+                    </div>
+                </form>
             </div>
         </div>
 
     </div>
 </div>
-
-
-<!-- <div id="deleteModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" 
-aria-hidden="true"
-    data-backdrop="false">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">Delete</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body">
-                <p class="mb-0">Are you sure do you want to delete?</p>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-danger">Yes</button>
-                <button type="button" class="btn btn-primary" data-dismiss="modal">No</button>
-            </div>
-        </div>
-    </div>
-</div> -->

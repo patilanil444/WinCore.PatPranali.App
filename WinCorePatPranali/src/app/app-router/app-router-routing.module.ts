@@ -19,6 +19,14 @@ import { DepositInterestStructureComponent } from '../screens/masters/deposit-in
 import { LoanInterestStructureComponent } from '../screens/masters/loan-interest-structure/loan-interest-structure.component';
 import { GLInterestParameterComponent } from '../screens/masters/gl-interest-parameter/gl-interest-parameter.component';
 import { BankProfileMasterComponent } from '../screens/masters/bank-profile-master/bank-profile-master.component';
+import { DistrictMasterFormComponent } from '../screens/masters/district-master/district-master-form/district-master-form.component';
+import { DistrictMasterComponent } from '../screens/masters/district-master/district-master.component';
+import { TahshilMasterFormComponent } from '../screens/masters/tahshil-master/tahshil-master-form/tahshil-master-form.component';
+import { TahshilMasterComponent } from '../screens/masters/tahshil-master/tahshil-master.component';
+import { CustomerFormComponent } from '../screens/customers/customer/customer-form/customer-form.component';
+import { CustomerSearchComponent } from '../screens/customers/customer/customer-search/customer-search.component';
+import { MemberSearchComponent } from '../screens/customers/member/member-search/member-search.component';
+import { MemberFormComponent } from '../screens/customers/member/member-form/member-form.component';
 
 const routes: Routes = [
   {
@@ -40,6 +48,14 @@ const routes: Routes = [
       { path: 'loan-interest', component: LoanInterestStructureComponent },
       { path: 'gl-interest-parameters', component: GLInterestParameterComponent },
       { path: 'profile', component: BankProfileMasterComponent },
+      { path: 'district', component: DistrictMasterFormComponent },
+      { path: 'districts', component: DistrictMasterComponent },
+      { path: 'tahsil', component: TahshilMasterFormComponent },
+      { path: 'tahsils', component: TahshilMasterComponent },
+      { path: 'customer', component: CustomerFormComponent },
+      { path: 'customer-search', component: CustomerSearchComponent },
+      { path: 'member-list', component: MemberSearchComponent },
+      { path: 'member', component: MemberFormComponent },
       { path: '**', component: NotFoundComponent },
       { path: '', redirectTo: 'projects', pathMatch: 'full' },
     ]

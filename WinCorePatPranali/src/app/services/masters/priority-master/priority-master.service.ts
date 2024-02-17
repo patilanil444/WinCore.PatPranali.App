@@ -9,6 +9,8 @@ import { IGeneralDTO } from 'src/app/common/models/common-ui-models';
 })
 export class PriorityMasterService {
   serviceBaseURL = "";
+  priorityIdToDelete = -1;
+
   constructor(private http: HttpClient) { }
 
   private dto = new BehaviorSubject<IGeneralDTO>({} as IGeneralDTO);
@@ -42,6 +44,6 @@ export class PriorityMasterService {
 
   deletePriority(id: number): any {
     let options = GlobleDeclarations.getHeaderOptions();
-    return this.http.post(GlobleDeclarations.apiBaseURL + "api/priority/delete-priority?id=" + id, options);
+    return this.http.delete(GlobleDeclarations.apiBaseURL + "api/priority/delete-priority?id=" + id, options);
   }
 }

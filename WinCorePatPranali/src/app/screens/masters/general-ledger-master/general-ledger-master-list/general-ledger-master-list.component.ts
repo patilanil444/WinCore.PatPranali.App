@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { ToastrService } from 'ngx-toastr';
 import { IGeneralLedgerDTO } from 'src/app/common/models/common-ui-models';
 import { GeneralLedgerService } from 'src/app/services/masters/general-ledger/general-ledger.service';
 import { SharedService } from 'src/app/services/shared.service';
@@ -15,7 +16,7 @@ export class GeneralLedgerMasterListComponent implements OnInit {
   p: number = 1;
   total: number = 0;
   constructor(private router: Router, private _generalLedgerService: GeneralLedgerService,
-    private _sharedService: SharedService) { }
+    private _sharedService: SharedService, private _toastrService: ToastrService) { }
 
   ngOnInit(): void {
     this.getGeneralLedgers();
@@ -28,8 +29,8 @@ export class GeneralLedgerMasterListComponent implements OnInit {
         this.uiGeneralLedgers = data.data.data;
         this.total = this.uiGeneralLedgers.length;
         if (this.uiGeneralLedgers) {
-          this.uiGeneralLedgers.map((bank, i) => {
-            bank.hasBranchesYN = bank.hasBranches ? "Yes" : "No";
+          this.uiGeneralLedgers.map((ledger, i) => {
+            ledger.hasBranchesYN = ledger.hasBranches ? "Yes" : "No";
           });
         }
       }
@@ -38,7 +39,7 @@ export class GeneralLedgerMasterListComponent implements OnInit {
 
   pageChangeEvent(event: number) {
     this.p = event;
-    this.getGeneralLedgers();
+    //this.getGeneralLedgers();
   }
 
   add(route:any)
@@ -75,11 +76,28 @@ export class GeneralLedgerMasterListComponent implements OnInit {
 
   delete(uiGeneralLedger: any) {
     if (uiGeneralLedger.id > 0) {
-      alert("Hi");
-      //this.deleteModel.open();
-      ///this.deleteModel.nativeElement.className = 'modal fade show';
-      // TODO: confirmation for delete 
+      this._generalLedgerService.generalLedgerIdToDelete = uiGeneralLedger.id;
     }
+  }
+
+  onDelete()
+  {
+    let generalLedgerIdToDelete = this._generalLedgerService.generalLedgerIdToDelete;
+    if (generalLedgerIdToDelete > 0) {
+      this._generalLedgerService.deleteGeneralLedger(generalLedgerIdToDelete).subscribe((data: any) => {
+        console.log(data);
+        if (data) {
+          // show message
+          this._toastrService.success('General ledger deleted.', 'Success!');
+          this.getGeneralLedgers();
+        }
+      })
+    }
+  }
+
+  cancelDelete()
+  {
+    this._generalLedgerService.generalLedgerIdToDelete = -1;
   }
 
   configClick(routeValue: string) {

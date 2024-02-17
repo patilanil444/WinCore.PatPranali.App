@@ -2,6 +2,7 @@ import { formatDate } from '@angular/common';
 import { Component } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
+import { ToastrService } from 'ngx-toastr';
 import { IGeneralDTO } from 'src/app/common/models/common-ui-models';
 import { BranchMasterService } from 'src/app/services/masters/branch-master/branch-master.service';
 import { SharedService } from 'src/app/services/shared.service';
@@ -44,7 +45,8 @@ export class BranchMasterFormComponent {
   uiTahshils:any[] = [];
 
   constructor(private router: Router, private route: ActivatedRoute,
-    private _branchMasterService: BranchMasterService, private _sharedService:SharedService) {
+    private _branchMasterService: BranchMasterService, private _sharedService:SharedService,
+    private _toastrService: ToastrService) {
   }
 
   ngOnInit(): void {
@@ -180,6 +182,7 @@ export class BranchMasterFormComponent {
           console.log(data);
           if (data) {
             if (data.statusCode == 200 && data.data.data == 1) {
+              this._toastrService.success('Branch added.', 'Success!');
               this.configClick("branches");
             }
           }
@@ -191,6 +194,7 @@ export class BranchMasterFormComponent {
           console.log(data);
           if (data) {
             if (data.statusCode == 200 && data.data.data == 1) {
+              this._toastrService.success('Branch updated.', 'Success!');
               this.configClick("branches");
             }
           }

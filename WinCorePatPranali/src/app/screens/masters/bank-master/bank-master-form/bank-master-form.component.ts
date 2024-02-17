@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
+import { ToastrService } from 'ngx-toastr';
 import { IGeneralDTO, UiValueType } from 'src/app/common/models/common-ui-models';
 import { BankMasterService } from 'src/app/services/masters/bank-master/bank-master.service';
 import { SharedService } from 'src/app/services/shared.service';
@@ -33,7 +34,7 @@ export class BankMasterFormComponent {
 
   constructor(private router: Router, private route: ActivatedRoute,
     private _bankMasterService: BankMasterService,
-    private _sharedService: SharedService) {
+    private _sharedService: SharedService, private _toastrService: ToastrService) {
 
   }
 
@@ -119,6 +120,7 @@ export class BankMasterFormComponent {
           console.log(data);
           if (data) {
             if (data.statusCode == 200 && data.data.data == 1) {
+              this._toastrService.success('Bank added.', 'Success!');
               this.configClick("banks");
             }
           }
@@ -129,6 +131,7 @@ export class BankMasterFormComponent {
           console.log(data);
           if (data) {
             if (data.statusCode == 200 && data.data.data == 1) {
+              this._toastrService.success('Bank updated.', 'Success!');
               this.configClick("banks");
             }
           }

@@ -493,6 +493,28 @@
 
                         <li class="app-sidebar__heading">
                             <a href="#">
+                                <i class="metismenu-icon pe-7s-user icon-gradient bg-love-kiss"></i>
+                                Customers
+                                <i class="metismenu-state-icon pe-7s-angle-down caret-left"></i>
+                            </a>
+                            <ul>
+                                <li>
+                                    <a class="nav-link nav-link-menu" [class.mm-active]="isMenuSelected('customer-search')" (click)="configClick('customer-search')">
+                                        <i class="metismenu-icon pe-7s-star"></i>
+                                       Customers
+                                    </a>
+                                </li>
+                                <li>
+                                    <a class="nav-link nav-link-menu" [class.mm-active]="isMenuSelected('member-list')" (click)="configClick('member-list')">
+                                        <i class="metismenu-icon pe-7s-add-user"></i>
+                                        Members
+                                    </a>
+                                </li>
+                            </ul>
+
+                        </li>
+                        <li class="app-sidebar__heading">
+                            <a href="#">
                                 <i class="metismenu-icon pe-7s-note2 icon-gradient bg-love-kiss"></i>
                                 Accounts
                                 <i class="metismenu-state-icon pe-7s-angle-down caret-left"></i>
@@ -516,18 +538,7 @@
                                         Other Accounts
                                     </a>
                                 </li>
-                                <li>
-                                    <a href="#">
-                                        <i class="metismenu-icon pe-7s-add-user"></i>
-                                        Members
-                                    </a>
-                                </li>
-                                <li>
-                                    <a href="#">
-                                        <i class="metismenu-icon pe-7s-star"></i>
-                                        Party Master
-                                    </a>
-                                </li>
+                                
                                 <li>
                                     <a href="#">
                                         <i class="metismenu-icon pe-7s-science"></i>
@@ -887,71 +898,69 @@
                             <ul>
                                 <li>
                                     <a [class.mm-active]="isMenuSelected('banks')" (click)="configClick('banks')">
-                                        <i class="metismenu-icon pe-7s-add-user"></i>
+                                        <i class="metismenu-icon"></i>
                                         Bank Master
                                     </a>
                                 </li>
                                 <li>
                                     <a [class.mm-active]="isMenuSelected('branches')" (click)="configClick('branches')">
-                                        <i class="metismenu-icon pe-7s-plugin"></i>
+                                        <i class="metismenu-icon"></i>
                                         Branch Master
                                     </a>
                                 </li>
                                 <li>
                                     <a [class.mm-active]="isMenuSelected('priorities')" (click)="configClick('priorities')">
-                                        <i class="metismenu-icon pe-7s-next-2"></i>
+                                        <i class="metismenu-icon"></i>
                                         Priority Master
                                     </a>
                                 </li>
                                 <li>
+                                    <a [class.mm-active]="isMenuSelected('districts')" (click)="configClick('districts')">
+                                        <i class="metismenu-icon pe-7s-next-2"></i>
+                                        District Master
+                                    </a>
+                                </li>
+                                <li>
+                                    <a [class.mm-active]="isMenuSelected('tahsils')" (click)="configClick('tahsils')">
+                                        <i class="metismenu-icon pe-7s-next-2"></i>
+                                        Tahsil Master
+                                    </a>
+                                </li>
+                                <li>
                                     <a [class.mm-active]="isMenuSelected('master-list')" (click)="configClick('master-list')">
-                                        <i class="metismenu-icon pe-7s-back-2"></i>
+                                        <i class="metismenu-icon"></i>
                                         General Master
                                     </a>
                                 </li>
                                 <li>
                                     <a [class.mm-active]="isMenuSelected('general-ledger-list')" (click)="configClick('general-ledger-list')">
-                                        <i class="metismenu-icon pe-7s-note2"></i>
+                                        <i class="metismenu-icon"></i>
                                         General Ledger Master
                                     </a>
                                 </li>
                                 <li>
                                     <a [class.mm-active]="isMenuSelected('gl-interest-parameters')" (click)="configClick('gl-interest-parameters')">
-                                        <i class="metismenu-icon pe-7s-note2"></i>
-                                        General Ledger Interest Param..
+                                        <i class="metismenu-icon"></i>
+                                        General Ledger Interest Parameters
                                     </a>
                                 </li>
                                 <li>
                                     <a [class.mm-active]="isMenuSelected('deposit-interest')" (click)="configClick('deposit-interest')">
-                                        <i class="metismenu-icon pe-7s-note2"></i>
+                                        <i class="metismenu-icon"></i>
                                         Deposit Interest Rate Structure
                                     </a>
                                 </li>
                                 <li>
                                     <a [class.mm-active]="isMenuSelected('loan-interest')" (click)="configClick('loan-interest')">
-                                        <i class="metismenu-icon pe-7s-note2"></i>
+                                        <i class="metismenu-icon"></i>
                                         Loan Internet Rate Structure
                                     </a>
                                 </li>
                                
                                 <li>
                                     <a [class.mm-active]="isMenuSelected('profile')" (click)="configClick('profile')">
-                                        <i class="metismenu-icon pe-7s-note2"></i>
-                                        Bank Profile Master
-                                    </a>
-                                </li>
-
-                                
-                                <li>
-                                    <a href="#">
-                                        <i class="metismenu-icon pe-7s-note2"></i>
-                                        NPA Master
-                                    </a>
-                                </li>
-                                <li>
-                                    <a href="#">
-                                        <i class="metismenu-icon pe-7s-note2"></i>
-                                        Print
+                                        <i class="metismenu-icon"></i>
+                                        Branch Profile Master
                                     </a>
                                 </li>
                             </ul>
