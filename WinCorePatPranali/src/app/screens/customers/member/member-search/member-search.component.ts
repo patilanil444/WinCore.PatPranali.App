@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
+import { IGeneralDTO } from 'src/app/common/models/common-ui-models';
 import { MemberService } from 'src/app/services/customers/member/member.service';
 
 @Component({
@@ -31,22 +32,40 @@ export class MemberSearchComponent implements OnInit {
 
   edit(uiMember: any)
   {
+    let dtObject: IGeneralDTO = {
+      route: "member",
+      action: "editRecord",
+      id: uiMember.id,
+      maxId: 0,
+    }
+    this._memberService.setDTO(dtObject);
 
+    this.configClick("member");
   }
 
-  delete(uiMember: any)
+  delete(uiMember:any)
   {
-
+    if (uiMember.id > 0) {
+      this._memberService.memberIdToDelete = uiMember.id;
+    }
   }
-
   onDelete()
   {
-
+    let memberIdToDelete = this._memberService.memberIdToDelete;
+    if (memberIdToDelete > 0) {
+      this._memberService.deleteMember(memberIdToDelete).subscribe((data: any) => {
+        console.log(data);
+        if (data) {
+          this._toastrService.success('Member deleted.', 'Success!');
+          this.searchMember();
+        }
+      })
+    }
   }
 
   cancelDelete()
   {
-
+    this._memberService.memberIdToDelete = -1;
   }
 
   clear()
@@ -76,18 +95,19 @@ export class MemberSearchComponent implements OnInit {
 
      this._memberService.getMembersOnSearch(memberSearchModel).subscribe((data: any) => {
        if (data!=null && data.data.data !=null) {
-         let customers = data.data.data;
-         if (customers!=null && customers.length>0) {
-           this.uiMembers = customers.map((cust: any) => (
+         let members = data.data.data;
+         if (members!=null && members.length>0) {
+           this.uiMembers = members.map((member: any) => (
              { 
-               id: cust.id,
-               firstName: cust.firstName,
-               middleName: cust.middleName,
-               lastName: cust.lastName,
-               pan: cust.pan,
-               aadhar: cust.aadhar,
-               phone: cust.phone,
-               status: this.getMemberStatus(cust.status) 
+               id: member.id,
+               firstName: member.firstName,
+               middleName: member.middleName,
+               lastName: member.lastName,
+               phone: member.phone,
+               gender: member.gender,
+               numOfShares: member.numOfShares,
+               email: member.email,
+               status: this.getMemberStatus(member.status) 
              })) 
          }
        }
@@ -115,6 +135,8 @@ export class MemberSearchComponent implements OnInit {
 
   addNewMember()
   {
+    this._memberService.memberIdToDelete = -1;
+    this._memberService.setDTO({});
     this.configClick("member");
   }
 

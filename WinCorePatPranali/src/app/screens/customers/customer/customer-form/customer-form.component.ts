@@ -8,6 +8,8 @@ import { CustomerService } from 'src/app/services/customers/customer/customer.se
 import { SharedService } from 'src/app/services/shared.service';
 import { GeneralMasterService } from 'src/app/services/masters/general-master/general-master.service';
 import { Router } from '@angular/router';
+import { MemberService } from 'src/app/services/customers/member/member.service';
+import { NgxDropdownConfig } from 'ngx-select-dropdown';
 
 interface ICustomerModel {
   Id: number;
@@ -31,6 +33,7 @@ interface ICustomerModel {
   TDSRate: number;
   Form60: string;
   Form61: string;
+  MemberId: number;
   Status: string;
   BranchId: number;
   Addresses: any[];
@@ -85,6 +88,8 @@ export interface UiDocument {
   documentKey: string,
   documentName: string,
   filePath: string,
+  uploadSuccess: false,
+  percentDone: 0
 }
 
 @Component({
@@ -93,6 +98,21 @@ export interface UiDocument {
   styleUrls: ['./customer-form.component.css']
 })
 export class CustomerFormComponent implements OnInit {
+
+  config: NgxDropdownConfig = {
+    displayKey: "name",
+    height: "auto",
+    search: true,
+    placeholder: "Select member",
+    searchPlaceholder: "Search member by name...",
+    limitTo: 0,
+    customComparator: undefined,
+    noResultsFound: "No results found",
+    moreText: "more",
+    clearOnSelection: false,
+    inputDirection: "ltr",
+    enableSelectAll: false,
+  };
 
   customerForm!: FormGroup;
   personalDetailsForm!: FormGroup;
@@ -142,10 +162,13 @@ export class CustomerFormComponent implements OnInit {
   uiNominis: any[] = [];
   uiDocuments: any[] = [];
 
+  uiMembers: any[] = [];
+
   dto: IGeneralDTO = {} as IGeneralDTO;
 
 
-  constructor(private router: Router, private _customerService: CustomerService, private _sharedService: SharedService,
+  constructor(private router: Router, private _customerService: CustomerService, 
+    private _sharedService: SharedService, private _memberService: MemberService, 
     private _generalMasterService: GeneralMasterService, private _toastrService: ToastrService) { }
 
   ngOnInit(): void {
@@ -190,7 +213,8 @@ export class CustomerFormComponent implements OnInit {
       personalTDSPrinting: new FormControl(this.uiTdsPrintings[0].code, [Validators.required]),
       personalTDSRate: new FormControl("", [Validators.required]),
       personalForm60: new FormControl(this.uiForm60YN[0].code, []),
-      personalForm61: new FormControl(this.uiForm61YN[0].code, [])
+      personalForm61: new FormControl(this.uiForm61YN[0].code, []),
+      personalMember: new FormControl("", []),
     });
 
     this.addressForm = new FormGroup({
@@ -307,13 +331,10 @@ export class CustomerFormComponent implements OnInit {
             if (data.statusCode == 200 && data.data.data) {
               var customer = data.data.data;
 
-              // let tahshils = this.uiAllTahshils.filter((d: any) => d.districtId == customer.districtId);
-              // if (tahshils) {
-              //   this.uiAddressTahshils = tahshils;
-              // }
+              let member = this.uiMembers.filter((d: any) => d.id == customer.memberId);
 
               this.customerForm.patchValue({
-                code: customer.id,
+                customerCode: customer.id,
               });
 
               this.personalDetailsForm.patchValue({
@@ -340,6 +361,7 @@ export class CustomerFormComponent implements OnInit {
                 personalTDSRate: customer.tdsRate,
                 personalForm60: customer.form60,
                 personalForm61: customer.form61,
+                personalMember: member ? member[0].firstName + " " + member[0].middleName + " " + member[0].lastName : ""
               });
 
               if (customer.addresses) {
@@ -412,7 +434,22 @@ export class CustomerFormComponent implements OnInit {
                     if (relations) {
                       if (relations.statusCode == 200 && relations.data.data) {
                         this.uiRelations = relations.data.data;
-                        resolve(true);
+
+                        this._memberService.getAllMembers(this._sharedService.applicationUser.branchId).subscribe((members: any) => {
+                          if (members) {
+                            if (members.statusCode == 200 && members.data.data) {
+                              
+                              if (members.data.data) {
+                                this.uiMembers = members.data.data.map((member: any) => ({
+                                  ...member,
+                                  name: member.firstName + " " + member.middleName + " " + member.lastName
+                                }));
+                              }
+                              resolve(true);
+                            }
+                          }
+                        })
+
                       }
                     }
                   })
@@ -429,6 +466,15 @@ export class CustomerFormComponent implements OnInit {
   onClick(section: string): void { 
     window.location.hash = '';
     window.location.hash = section;
+  }
+
+  selectMember(memberEvent:any)
+  {
+    if (memberEvent && memberEvent.value.id > 0) {
+      this.addressForm.patchValue({
+        personalMember: memberEvent.value.id
+      });
+    }
   }
 
   calculateAge(dateOfBirth: any) { // birthday is a date
@@ -549,11 +595,11 @@ export class CustomerFormComponent implements OnInit {
       this._toastrService.error('Personal details has errors.', 'Error!');
       return;
     }
-    if (!this.validAddressForm()) {
+    if (this.uiAddresses.length == 0) {
       this._toastrService.error('Address details has errors.', 'Error!');
       return;
     }
-    if (!this.validNominiForm()) {
+    if (this.uiNominis.length == 0) {
       this._toastrService.error('Nomini details has errors.', 'Error!');
       return;
     }
@@ -586,6 +632,7 @@ export class CustomerFormComponent implements OnInit {
     customerModel.TDSRate = this.personalTDSRate.value.toString();
     customerModel.Form60 = this.personalForm60.value.toString();
     customerModel.Form61 = this.personalForm61.value.toString();
+    customerModel.MemberId = this.personalMember.value.id.toString();
     customerModel.Status = this.personalStatus.value.toString();
     customerModel.BranchId = this._sharedService.applicationUser.branchId;
     customerModel.Addresses = this.uiAddresses;
@@ -949,8 +996,10 @@ export class CustomerFormComponent implements OnInit {
     uiDocument.documentName = this.uiDocumentTypes.filter(d => d.code == uiDocument.documentKey)[0].name;
     uiDocument.filePath = "";
     uiDocument.id = 0;
+    uiDocument.uploadSuccess = false;
+    uiDocument.percentDone = 0;
     this.uiDocuments.push(uiDocument);
-
+    
   }
 
   deleteDocument(index: number) {
@@ -962,11 +1011,8 @@ export class CustomerFormComponent implements OnInit {
     this.uiDocuments = [];
   }
 
-  percentDone: number = 0;
-  uploadSuccess: boolean = false;
+
   uploadDocument(event: any, index: number, documentKey: string) {
-    this.uploadSuccess = false;
-    this.percentDone = 0;
     this.uploadAndProgressSingle(event.target.files[0], index, documentKey);
   }
 
@@ -980,8 +1026,8 @@ export class CustomerFormComponent implements OnInit {
     this._customerService.uploadDocument(formData).subscribe((data: any) => {
       let result = data.data.data;
       if (result.includes(file.name)) {
-        this.uploadSuccess = true;
-        this.percentDone = 100;
+        this.uiDocuments[index].uploadSuccess = true;
+        this.uiDocuments[index].percentDone = 100;
       }
 
       this.uiDocuments[index].filePath = file.name;
@@ -1057,6 +1103,9 @@ export class CustomerFormComponent implements OnInit {
   }
   get personalForm60() {
     return this.personalDetailsForm.get('personalForm60')!;
+  }
+  get personalMember() {
+    return this.personalDetailsForm.get('personalMember')!;
   }
   get personalForm61() {
     return this.personalDetailsForm.get('personalForm61')!;

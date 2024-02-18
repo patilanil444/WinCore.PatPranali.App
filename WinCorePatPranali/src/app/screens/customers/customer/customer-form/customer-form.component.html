@@ -59,17 +59,17 @@
                                             </div>
                                             <div class="col-md-2 position-relative">
                                                 <label for="txtCode" class="">First name</label>
-                                                <input tabindex="3" type="text" class="form-control"
+                                                <input tabindex="3" type="text" class="form-control" title="First name"
                                                     formControlName="personalFirstName">
                                             </div>
                                             <div class="col-md-2 position-relative">
                                                 <label for="txtCode" class="">Middle name</label>
-                                                <input tabindex="4" type="text" class="form-control"
+                                                <input tabindex="4" type="text" class="form-control" title="Middle name"
                                                     formControlName="personalMiddleName">
                                             </div>
                                             <div class="col-md-2 position-relative">
                                                 <label for="txtCode" class="">Last name</label>
-                                                <input tabindex="5" type="text" class="form-control"
+                                                <input tabindex="5" type="text" class="form-control" title="Last name"
                                                     formControlName="personalLastName">
                                             </div>
                                             <div class="col-md-2 position-relative form-group">
@@ -143,7 +143,7 @@
                                             </div>
                                             <div class="col-md-2 position-relative form-group">
                                                 <label for="txtCode" class="">Age</label>
-                                                <input tabindex="13" type="text" class="form-control"
+                                                <input tabindex="13" type="text" class="form-control" title="Age"
                                                     formControlName="personalAge">
                                             </div>
                                         </div>
@@ -151,22 +151,22 @@
                                         <div class="row">
                                             <div class="col-md-2 position-relative form-group">
                                                 <label for="txtCode" class="">PAN</label>
-                                                <input tabindex="14" type="text" class="form-control"
+                                                <input tabindex="14" type="text" class="form-control" title="PAN"
                                                     formControlName="personalPAN" style="text-transform:uppercase">
                                             </div>
                                             <div class="col-md-2 position-relative form-group">
                                                 <label for="txtCode" class="">Aadhar number</label>
-                                                <input tabindex="15" type="text" class="form-control"
+                                                <input tabindex="15" type="text" class="form-control" title="Aadhar"
                                                     formControlName="personalAadhar" style="text-transform:uppercase">
                                             </div>
                                             <div class="col-md-2 position-relative form-group">
                                                 <label for="txtCode" class="">Phone</label>
-                                                <input tabindex="31" type="text" class="form-control"
+                                                <input tabindex="31" type="text" class="form-control" title="Phone"
                                                     formControlName="personalPhone">
                                             </div>
                                             <div class="col-md-2 position-relative form-group">
                                                 <label for="txtCode" class="">Email</label>
-                                                <input tabindex="32" type="email" class="form-control"
+                                                <input tabindex="32" type="email" class="form-control" title="Email"
                                                 formControlName="personalEmail">
                                             </div>
                                             <div class="col-md-2 position-relative form-group">
@@ -203,7 +203,7 @@
                                             </div>
                                             <div class="col-md-2 position-relative form-group">
                                                 <label for="txtCode" class="">Rate</label>
-                                                <input tabindex="19" type="text" class="form-control"
+                                                <input tabindex="19" type="text" class="form-control" title="TDS Rate"
                                                     formControlName="personalTDSRate">
                                             </div>
                                             <div class="col-md-2 position-relative form-group">
@@ -225,6 +225,12 @@
                                                         {{uiForm61.name}}
                                                     </option>
                                                 </select>
+                                            </div>
+                                            <div class="col-md-4 position-relative form-group">
+                                                <label for="txtCode" class="">Member</label>
+                                                <ngx-select-dropdown [config]="config" tabindex="10" (change)="selectMember($event)"
+                                                    [options]="uiMembers" style="width: 100%;" [multiple]="false"
+                                                    formControlName="personalMember"></ngx-select-dropdown>
                                             </div>
                                         </div>
                                     </div>
@@ -250,22 +256,22 @@
                                             </div>
                                             <div class="col-md-2 position-relative form-group">
                                                 <label for="txtCode" class="">Building/Flat/House No.</label>
-                                                <input tabindex="23" type="text" class="form-control"
+                                                <input tabindex="23" type="text" class="form-control" title="Address"
                                                     formControlName="addressBuilding">
                                             </div>
                                             <div class="col-md-2 position-relative form-group">
                                                 <label for="txtCode" class="">Street</label>
-                                                <input tabindex="24" type="text" class="form-control"
+                                                <input tabindex="24" type="text" class="form-control" title="Street"
                                                     formControlName="addressStreet">
                                             </div>
                                             <div class="col-md-2 position-relative form-group">
                                                 <label for="txtCode" class="">Landmark</label>
-                                                <input tabindex="25" type="text" class="form-control"
+                                                <input tabindex="25" type="text" class="form-control" title="Landmark"
                                                     formControlName="addressLandmark">
                                             </div>
                                             <div class="col-md-2 position-relative form-group">
                                                 <label for="txtCode" class="">City/Town</label>
-                                                <input tabindex="26" type="text" class="form-control"
+                                                <input tabindex="26" type="text" class="form-control" title="City/Town"
                                                     formControlName="addressCity">
                                             </div>
                                             <div class="col-md-2 position-relative form-group">
@@ -305,7 +311,7 @@
 
                                             <div class="col-md-2 position-relative form-group">
                                                 <label for="txtCode" class="">Pincode</label>
-                                                <input tabindex="30" type="text" class="form-control"
+                                                <input tabindex="30" type="text" class="form-control" title="Pincode"
                                                     formControlName="addressPincode">
                                             </div>
                                             <!-- <div class="col-md-2 position-relative form-group">
@@ -322,7 +328,7 @@
                                         <div class="row">
                                             <div class="col-md-3 position-relative form-group">
                                                 <button class="mt-1 btn btn-info" (click)="addAddress()" tabindex="23">Add</button>
-                                                <button class="mt-1 btn btn-left-margin10 btn-secondary" (click)="clearAddress()" tabindex="23">Clear</button>
+                                                <button class="mt-1 btn btn-left-margin10 btn-danger" (click)="clearAddress()" tabindex="23">Clear</button>
                                             </div>
                                         </div>
 
@@ -391,17 +397,17 @@
                                             </div>
                                             <div class="col-md-2 position-relative form-group">
                                                 <label for="txtCode" class="">First name</label>
-                                                <input tabindex="34" type="text" class="form-control"
+                                                <input tabindex="34" type="text" class="form-control" title="First name"
                                                     formControlName="nominiFirstName">
                                             </div>
                                             <div class="col-md-2 position-relative form-group">
                                                 <label for="txtCode" class="">Middle name</label>
-                                                <input tabindex="35" type="text" class="form-control"
+                                                <input tabindex="35" type="text" class="form-control" title="Middle name"
                                                     formControlName="nominiMiddleName">
                                             </div>
                                             <div class="col-md-2 position-relative form-group">
                                                 <label for="txtCode" class="">Last name</label>
-                                                <input tabindex="36" type="text" class="form-control"
+                                                <input tabindex="36" type="text" class="form-control" title="Last name"
                                                     formControlName="nominiLastName">
                                             </div>
                                             <div class="col-md-2 position-relative form-group">
@@ -416,7 +422,7 @@
                                             </div>
                                             <div class="col-md-2 position-relative form-group">
                                                 <label for="txtCode" class="">Guardian (for minor)</label>
-                                                <input tabindex="38" type="text" class="form-control"
+                                                <input tabindex="38" type="text" class="form-control" title="Guardian"
                                                     formControlName="nominiGuardian">
                                             </div>
 
@@ -425,7 +431,7 @@
                                             <div class="col-md-2 position-relative form-group">
                                                 <label for="txtCode" class="">Nomini share percentage</label>
                                                 <div class="input-group">
-                                                    <input tabindex="39" type="text" class="form-control"
+                                                    <input tabindex="39" type="text" class="form-control" title="Percentage"
                                                         formControlName="nominiPercentage">
                                                     <div class="input-group-append"><span
                                                             class="input-group-text">%</span></div>
@@ -441,23 +447,23 @@
                                             </div>
                                             <div class="col-md-2 position-relative form-group">
                                                 <label for="txtCode" class="">Age</label>
-                                                <input tabindex="41" type="text" class="form-control"
+                                                <input tabindex="41" type="text" class="form-control" title="Age"
                                                     formControlName="nominiAge">
                                             </div>
 
                                             <div class="col-md-2 position-relative form-group">
                                                 <label for="txtCode" class="">Building/Flat/House No.</label>
-                                                <input tabindex="42" type="text" class="form-control"
+                                                <input tabindex="42" type="text" class="form-control" title="Address"
                                                     formControlName="nominiBuilding">
                                             </div>
                                             <div class="col-md-2 position-relative form-group">
                                                 <label for="txtCode" class="">Street</label>
-                                                <input tabindex="43" type="text" class="form-control"
+                                                <input tabindex="43" type="text" class="form-control" title="Street"
                                                     formControlName="nominiStreet">
                                             </div>
                                             <div class="col-md-2 position-relative form-group">
                                                 <label for="txtCode" class="">City/Town</label>
-                                                <input tabindex="44" type="text" class="form-control"
+                                                <input tabindex="44" type="text" class="form-control" title="City/Town"
                                                     formControlName="nominiCity">
                                             </div>
                                         </div>
@@ -495,25 +501,25 @@
                                             </div>
                                             <div class="col-md-2 position-relative form-group">
                                                 <label for="txtCode" class="">Pincode</label>
-                                                <input tabindex="48" type="text" class="form-control"
+                                                <input tabindex="48" type="text" class="form-control" title="Pincode"
                                                     formControlName="nominiPincode">
                                             </div>
                                             <div class="col-md-2 position-relative form-group">
                                                 <label for="txtCode" class="">Phone</label>
-                                                <input tabindex="49" type="text" class="form-control"
+                                                <input tabindex="49" type="text" class="form-control" title="Phone"
                                                     formControlName="nominiPhone">
                                             </div>
                                             <div class="col-md-2 position-relative form-group">
                                                 <label for="txtCode" class="">Email</label>
-                                                <input tabindex="50" type="text" class="form-control"
+                                                <input tabindex="50" type="text" class="form-control" title="Email"
                                                     formControlName="nominiEmail">
                                             </div>
                                         </div>
                                         <div class="row">
                                             <div class="col-md-3 position-relative form-group">
                                                 <button class="mt-1 btn btn-info" (click)="addNomini()"
-                                                    tabindex="51">Add</button>
-                                                    <button class="mt-1 btn btn-left-margin10 btn-secondary" (click)="clearNomini()"
+                                                    tabindex="51">Save</button>
+                                                    <button class="mt-1 btn btn-left-margin10 btn-danger" (click)="clearNomini()"
                                                     tabindex="52">Clear</button>
                                             </div>
                                         </div>
@@ -600,7 +606,7 @@
                                                         <td width="40%">
                                                             <input tabindex="1" type="file" class="form-control"
                                                                 (change)="uploadDocument($event, ind, uiDocument.documentKey)">
-                                                                {{uiDocument.filePath}}
+                                                               
                                                         </td>
                                                         <td width="5%"><button class="mt-1 btn btn-info">
                                                                 Upload
@@ -609,12 +615,18 @@
                                                                 Delete
                                                             </button></td>
                                                         <td width="15%">
-                                                            Upload Percent: {{percentDone}}%
+                                                            Upload Percent: {{uiDocument.percentDone}}%
                                                         </td>
                                                         <td width="25%">
-                                                            <ng-container *ngIf="uploadSuccess">
+                                                            <ng-container *ngIf="uiDocument.uploadSuccess">
                                                                 Upload Successful
                                                             </ng-container>
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td></td>
+                                                        <td colspan="5">
+                                                            {{uiDocument.filePath}}
                                                         </td>
                                                     </tr>
                                                 </table>
@@ -632,9 +644,9 @@
                 <div class="row">
                     <div class="col-md-6 position-relative">
                         <button class="mt-1 btn btn-primary" (click)="saveCustomer()" tabindex="23">Submit</button>
-                        <button class="mt-1 btn btn-left-margin10 btn-secondary" (click)="clear()"
+                        <button class="mt-1 btn btn-left-margin10 btn-danger" (click)="clear()"
                             tabindex="24">Clear</button>
-                        <button class="mt-1 btn btn-left-margin10 btn-alternate" (click)="searchCustomer()"
+                        <button class="mt-1 btn btn-left-margin10 btn-secondary" (click)="searchCustomer()"
                             tabindex="24">Search Customer</button>
                     </div>
                 </div>

@@ -2,7 +2,7 @@
     <div class="col-lg-12">
         <div class="main-card mb-3 card">
             <div class="card-body">
-                <h5 class="card-title">Members</h5>
+                <h5 class="card-title">Search Member</h5>
                 <form [formGroup]="searchForm" #form="ngForm">
                     <div class="row">
                         <div class="col-md-3 position-relative">
@@ -34,7 +34,7 @@
                     </div>
                     <div class="row">
                         <div class="col-md-12 position-relative form-group">
-                            <button class="btn btn-left-margin10 btn-secondary" style="float: right;" tabindex="2" (click)="clear()">
+                            <button class="btn btn-left-margin10 btn-danger" style="float: right;" tabindex="2" (click)="clear()">
                                 Clear</button>
                             <button class="btn btn-left-margin10 btn-warning" style="float: right;" tabindex="2" (click)="addNewMember()"><i
                                     class="fa fa-plus"></i> Add New Member </button>
@@ -52,9 +52,11 @@
                             <thead>
                                 <tr>
                                     <th width="15%">Member number</th>
-                                    <th width="30%">Name</th>
+                                    <th width="25%">Name</th>
                                     <th width="10%">Phone</th>
-                                    <th width="10%">Gender</th>
+                                    <th width="12%">Number of shares</th>
+                                    <th width="18%">Email</th>
+                                    <th width="10%">Status</th>
                                     <th width="10%">Actions</th>
                                 </tr>
                             </thead>
@@ -63,8 +65,15 @@
                                     *ngFor="let uiMember of uiMembers | paginate: { itemsPerPage: 10, currentPage: p, totalItems: total }">
                                     <th scope="row">{{uiMember.id}}</th>
                                     <td>{{uiMember.firstName}} {{uiMember.middleName}} {{uiMember.lastName}}</td>
-                                    <td>{{uiMember.pan}}</td>
-                                    <td>{{uiMember.aadhar}}</td>
+                                    <td>{{uiMember.phone}}</td>
+                                    <td>{{uiMember.numOfShares}}</td>
+                                    <td>{{uiMember.email}}</td>
+                                    <td>
+                                        <div class="badge"
+                                            [ngClass]="{'badge-danger': uiMember.status==='Deleted', 'badge-success' : uiMember.status=== 'Active', 'badge-warning' : uiMember.status=== 'In-Active'}">
+                                            {{uiMember.status}}
+                                        </div>
+                                    </td>
                                     <td>
                                         <div class="widget-content-right">
                                             <button type="button" title="Edit record"
@@ -89,7 +98,7 @@
                             </tbody>
                         </table>
                     </div>
-                    <div class="d-flex justify-content-center">
+                    <div class="d-flex justify-content-center" style="margin-top: 10px;">
                         <pagination-controls (pageChange)="pageChangeEvent($event)"></pagination-controls>
                     </div>
                 </div>
