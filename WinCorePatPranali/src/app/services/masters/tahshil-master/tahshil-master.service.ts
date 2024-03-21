@@ -24,26 +24,26 @@ export class TahshilMasterService {
 
   getTahsils() {
     let options = GlobleDeclarations.getHeaderOptions();
-    return this.http.get(GlobleDeclarations.apiBaseURL + "api/tahshil/tahshils", options);
+    return this.http.get(GlobleDeclarations.apiBaseURL + "api/master/talukas", options);
   }
 
   getTahsil(id: number): any {
     let options = GlobleDeclarations.getHeaderOptions();
-    return this.http.get(GlobleDeclarations.apiBaseURL + "api/tahshil/tahshil?id=" + id, options);
+    return this.http.get(GlobleDeclarations.apiBaseURL + "api/master/taluka?id=" + id, options);
   }
 
   createTahsil(tahshilModel: any): any {
     let options = GlobleDeclarations.getHeaderOptions();
-    return this.http.post(GlobleDeclarations.apiBaseURL + "api/tahshil/create-tahshil", tahshilModel, options);
+    return this.http.post(GlobleDeclarations.apiBaseURL + "api/master/create-taluka", tahshilModel, options);
   }
 
   updateTahsil(id: number, tahshilModel: any): any {
     let options = GlobleDeclarations.getHeaderOptions();
-    return this.http.post(GlobleDeclarations.apiBaseURL + "api/tahshil/update-tahshil?id=" + id, tahshilModel, options);
+    return this.http.post(GlobleDeclarations.apiBaseURL + "api/master/update-taluka?id=" + id, tahshilModel, options);
   }
 
   deleteTahsil(id: number): any {
     let options = GlobleDeclarations.getHeaderOptions();
-    return this.http.delete(GlobleDeclarations.apiBaseURL + "api/tahshil/delete-tahshil?id=" + id, options);
+    return this.http.delete(GlobleDeclarations.apiBaseURL + "api/master/delete-taluka?id=" + id, options);
   }
 }

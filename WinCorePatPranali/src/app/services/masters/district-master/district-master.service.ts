@@ -24,26 +24,26 @@ export class DistrictMasterService {
 
   getDistricts() {
     let options = GlobleDeclarations.getHeaderOptions();
-    return this.http.get(GlobleDeclarations.apiBaseURL + "api/district/districts", options);
+    return this.http.get(GlobleDeclarations.apiBaseURL + "api/master/districts", options);
   }
 
   getDistrict(id: number): any {
     let options = GlobleDeclarations.getHeaderOptions();
-    return this.http.get(GlobleDeclarations.apiBaseURL + "api/district/district?id=" + id, options);
+    return this.http.get(GlobleDeclarations.apiBaseURL + "api/master/district?id=" + id, options);
   }
 
   createDistrict(districtModel: any): any {
     let options = GlobleDeclarations.getHeaderOptions();
-    return this.http.post(GlobleDeclarations.apiBaseURL + "api/district/create-district", districtModel, options);
+    return this.http.post(GlobleDeclarations.apiBaseURL + "api/master/create-district", districtModel, options);
   }
 
   updateDistrict(id: number, districtModel: any): any {
     let options = GlobleDeclarations.getHeaderOptions();
-    return this.http.post(GlobleDeclarations.apiBaseURL + "api/district/update-district?id=" + id, districtModel, options);
+    return this.http.post(GlobleDeclarations.apiBaseURL + "api/master/update-district?id=" + id, districtModel, options);
   }
 
   deleteDistrict(id: number): any {
     let options = GlobleDeclarations.getHeaderOptions();
-    return this.http.delete(GlobleDeclarations.apiBaseURL + "api/district/delete-district?id=" + id, options);
+    return this.http.delete(GlobleDeclarations.apiBaseURL + "api/master/delete-district?id=" + id, options);
   }
 }

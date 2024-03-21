@@ -29,9 +29,9 @@ export class BranchMasterListComponent {
       if (data) {
         this.uiBranches = data.data.data;
         this.total = this.uiBranches.length;
-        if (this.uiBranches) {
+        if (this.uiBranches && this.uiBranches.length) {
           this.uiBranches.map((branch, i) => {
-            branch.hasBranchesYN = branch.hasBranches ? "Yes" : "No";
+            branch.activeText = branch.active == 1 ? "Active" : "InActive";
           });
         }
       }
@@ -67,7 +67,7 @@ export class BranchMasterListComponent {
     let dtObject: IGeneralDTO = {
       route: "general-ledger",
       action: "editRecord",
-      id: uiBranch.id,
+      id: uiBranch.branchCode,
       maxId: 0,
     }
     this._branchMasterService.setDTO(dtObject);
@@ -76,8 +76,8 @@ export class BranchMasterListComponent {
   }
 
   delete(uiBranch: any) {
-    if (uiBranch.id > 0) {
-      this._branchMasterService.branchIdToDelete = uiBranch.id;
+    if (uiBranch.branchCode > 0) {
+      this._branchMasterService.branchIdToDelete = uiBranch.branchCode;
     }
   }
 

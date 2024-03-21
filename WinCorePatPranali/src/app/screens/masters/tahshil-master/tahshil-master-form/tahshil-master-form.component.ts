@@ -8,9 +8,11 @@ import { SharedService } from 'src/app/services/shared.service';
 
 interface ITahsilServerModel
 {
-  Name: string;
+  TalukaName: string;
   StateId: number;
   DistrictId: number;
+  CreatedBy: string;
+  UpdatedBy: string;
 }
 
 @Component({
@@ -30,7 +32,9 @@ export class TahshilMasterFormComponent implements OnInit {
   isAddMode!: boolean;
 
   uiStates: any[] = [];
+  uiAllDistricts: any[] = [];
   uiDistricts: any[] = [];
+
 
   constructor(private router: Router, private route: ActivatedRoute,
     private _tahsilMasterService: TahshilMasterService,
@@ -41,13 +45,21 @@ export class TahshilMasterFormComponent implements OnInit {
   ngOnInit(): void {
 
     this.uiStates = this._sharedService.uiAllStates;
-    this.uiDistricts = this._sharedService.uiAllDistricts;
+    this.uiAllDistricts  = this._sharedService.uiAllDistricts;
+    this.uiDistricts = [];
+    let districtId = 0;
+
+    let districts = this.uiAllDistricts.filter((d: any) => d.stateId == this.uiStates[0].id);
+    if (districts && districts.length) {
+      this.uiDistricts = districts;
+      districtId = this.uiDistricts[0].id;
+    }
 
     this.tahsilForm = new FormGroup({
       code: new FormControl("", []),
       name: new FormControl("", [Validators.required]),
       stateId: new FormControl(this.uiStates[0].id, [Validators.required]),
-      districtId: new FormControl(this.uiDistricts[0].id, [Validators.required])
+      districtId: new FormControl(districtId, [Validators.required])
     });
 
     this._tahsilMasterService.getDTO().subscribe(obj => this.dto = obj);
@@ -68,9 +80,16 @@ export class TahshilMasterFormComponent implements OnInit {
           if (data) {
             if (data.statusCode == 200 && data.data.data) {
               var tahsil = data.data.data;
+              if (tahsil) {
+                let stateId = tahsil.stateId;
+                let districts = this.uiAllDistricts.filter((d: any) => d.stateId == stateId);
+                if (districts && districts.length) {
+                  this.uiDistricts = districts;
+                }
+              }
               this.tahsilForm.patchValue({
                 code: tahsil.id,
-                name: tahsil.name,
+                name: tahsil.talukaName,
                 stateId: tahsil.stateId,
                 districtId: tahsil.districtId
               });
@@ -79,6 +98,22 @@ export class TahshilMasterFormComponent implements OnInit {
         })
       }
     }
+  }
+
+  onStateChange(event: any) {
+    let targetValue = event.target.value;
+    let stateId = targetValue.split(":");
+    if (stateId) {
+      this.uiDistricts = [];
+      let districts = this.uiAllDistricts.filter((d: any) => d.stateId == parseInt(stateId[1]));
+      if (districts && districts.length) {
+        this.uiDistricts = districts;
+        this.tahsilForm.patchValue({
+          districtId: this.uiDistricts[0].id
+        });
+      }
+    }
+
   }
 
   get name() {
@@ -97,16 +132,19 @@ export class TahshilMasterFormComponent implements OnInit {
     if (this.validateForm()) {
       let tahsilModel = {} as ITahsilServerModel;
 
-      tahsilModel.Name = this.name.value.toString();
+      tahsilModel.TalukaName = this.name.value.toString();
       tahsilModel.StateId = this.stateId.value.toString();
       tahsilModel.DistrictId = this.districtId.value.toString();
+      tahsilModel.CreatedBy = "";
+      tahsilModel.UpdatedBy = "";
+
       console.log(tahsilModel);
 
       if (this.isAddMode) {
         this._tahsilMasterService.createTahsil(tahsilModel).subscribe((data: any) => {
           console.log(data);
           if (data) {
-            if (data.statusCode == 200 && data.data.data == 1) {
+            if (data.statusCode == 200 && data.data.data > 1) {
               this.toastrService.success('Tahsil added.', 'Success!');
               this.configClick("tahsils");
             }
@@ -118,14 +156,13 @@ export class TahshilMasterFormComponent implements OnInit {
         this._tahsilMasterService.updateTahsil(this.dto.id, tahsilModel).subscribe((data: any) => {
           console.log(data);
           if (data) {
-            if (data.statusCode == 200 && data.data.data == 1) {
+            if (data.statusCode == 200 && data.data.data > 1) {
               this.toastrService.success('Tahsil updated.', 'Success!');
               this.configClick("tahsils");
             }
           }
         })
       }
-
     }
   }
 

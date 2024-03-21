@@ -7,13 +7,15 @@ import { IGeneralMasterDTO, UiUser } from 'src/app/common/models/common-ui-model
 })
 export class SharedService {
 
-  public applicationUser: UiUser = new UiUser(1, 1);
+  public applicationUser: UiUser = new UiUser(1, 1, "TempUser");
 
   public uiAllStates = [];
   public uiAllDistricts = [];
   public uiAllTahshils = [];
+  public uiAllVillages = [];
   public uiGLGroups = [];
   public uiTypeOfAccounts = [];
+  public uiCurrencies = [];
 
   constructor() { }
 

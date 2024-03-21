@@ -5,27 +5,33 @@
                 <form [formGroup]="bankForm" #form="ngForm">
                     <h5 class="card-title">Bank</h5>
                     <div class="row">
-                        <div class="col-md-6 position-relative form-group">
+                        <!-- <div class="col-md-6 position-relative form-group">
                             <label class="">Code</label>
                             <input name="code" id="txtCode" tabindex="1" readonly="true" placeholder="0" type="text"
                             formControlName="code"  class="form-control">
-                        </div>
+                        </div> -->
                         <div class="col-md-6 position-relative form-group">
-                            <label class="">Name</label>
-                            <input type="text" tabindex="2" autocomplete="off" placeholder="Bank Name" id="txtName" 
-                                class="form-control" formControlName="name" required maxlength="50"
-                                [class.is-invalid]="name.invalid && (name.dirty || name.touched)">
+                            <label class="">Bank name</label>
+                            <input type="text" tabindex="2" autocomplete="off" placeholder="Bank name" id="txtName" 
+                                class="form-control" formControlName="bankName" required maxlength="50"
+                                [class.is-invalid]="bankName.invalid && (bankName.dirty || bankName.touched)">
 
-                            <div *ngIf="name.invalid && (name.dirty || name.touched)" class="invalid-feedback">
-                                <div *ngIf="name.errors?.['required']">
-                                    Bank Name is required.
+                            <div *ngIf="bankName.invalid && (bankName.dirty || bankName.touched)" class="invalid-feedback">
+                                <div *ngIf="bankName.errors?.['required']">
+                                    Bank name is required.
                                 </div>
                             </div>
                         </div>
+                        <div class="col-md-6 position-relative form-group">
+                            <label class="">Local name</label>
+                            <input type="text" tabindex="2" autocomplete="off" placeholder="Bank name in local language " id="txtName" 
+                                class="form-control" formControlName="localName" required maxlength="50">
+                        </div>
+                        
                     </div>
 
                     <div class="row">
-                        <div class="col-md-6 position-relative form-group">
+                        <div class="col-md-12 position-relative form-group">
                             <label class="">Address</label>
                             <div class="input-group">
                                 <input placeholder="Address" id="txtAddress" tabindex="3" maxlength="100" type="text" autocomplete="off"
@@ -38,41 +44,11 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="col-md-6 position-relative form-group">
-                            <label class="">Description</label>
-                            <input placeholder="Description" type="text" class="form-control" tabindex="4" autocomplete="off"
-                             id="txtDesc" maxlength="100" formControlName="description"
-                             [class.is-invalid]="description.invalid && (description.dirty || description.touched)">
-                             <div *ngIf="description.invalid && (description.dirty || description.touched)" class="invalid-feedback">
-                                <div *ngIf="description.errors?.['required']">
-                                    Description is required.
-                                </div>
-                            </div>
-                        </div>
                     </div>
-                    <div class="row">
-                        <div class="col-md-6 position-relative">
-                            <label class="">Has branch</label>
-                            <select class="mb-2 form-control" formControlName="hasBranch">
-                                <option *ngFor="let branch of hBranchs" [ngValue]="branch.id">
-                                    {{branch.name}}
-                                </option>
-                            </select>
-                        </div>
-                        <div class="col-md-6 position-relative">
-                            <label class="">General Ledger</label>
-                            <select class="mb-2 form-control" formControlName="generalLeadger">
-                                <option *ngFor="let generalLeadger of generalLeadgers" [ngValue]="generalLeadger.id">
-                                        {{generalLeadger.name}}
-                                </option>
-                            </select>
-                        </div>
-                    </div>
-
                     <div class="row">
                         <div class="col-md-6 position-relative">
                             <button type="button" class="mt-1 btn btn-primary" tabindex="7" (click)="saveBank()">Submit</button>
-                            <button class="mt-1 btn btn-left-margin10 btn-danger" (click)="clear()">Clear</button>
+                            <!-- <button class="mt-1 btn btn-left-margin10 btn-danger" (click)="clear()">Clear</button> -->
                             <button class="mt-1 btn btn-left-margin10 btn-secondary" (click)="configClick('banks')">Bank
                                 List</button>
                         </div>

@@ -47,16 +47,27 @@ export class BranchMasterService {
 
   getStates() {
     let options = GlobleDeclarations.getHeaderOptions();
-    return this.http.get(GlobleDeclarations.apiBaseURL + "api/common/states", options);
+    return this.http.get(GlobleDeclarations.apiBaseURL + "api/master/states", options);
   }
 
   getDistricts() {
     let options = GlobleDeclarations.getHeaderOptions();
-    return this.http.get(GlobleDeclarations.apiBaseURL + "api/common/districts", options);
+    return this.http.get(GlobleDeclarations.apiBaseURL + "api/master/districts", options);
   }
 
   getTahshils() {
     let options = GlobleDeclarations.getHeaderOptions();
-    return this.http.get(GlobleDeclarations.apiBaseURL + "api/common/tahshils", options);
+    return this.http.get(GlobleDeclarations.apiBaseURL + "api/master/talukas", options);
   }
+
+  getVillages() {
+    let options = GlobleDeclarations.getHeaderOptions();
+    return this.http.get(GlobleDeclarations.apiBaseURL + "api/master/villages", options);
+  }
+
+  getCurrencies() {
+    let options = GlobleDeclarations.getHeaderOptions();
+    return this.http.get(GlobleDeclarations.apiBaseURL + "api/master/currencies", options);
+  }
+  
 }

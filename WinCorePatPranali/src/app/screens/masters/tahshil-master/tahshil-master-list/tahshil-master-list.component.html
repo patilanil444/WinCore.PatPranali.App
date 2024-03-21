@@ -14,7 +14,7 @@
                 <table class="mb-0 table table-striped">
                     <thead>
                         <tr>
-                            <th width="5%">#</th>
+                            <!-- <th width="5%">#</th> -->
                             <th width="30%">Tahsil</th>
                             <th width="25%">District</th>
                             <th width="25%">State</th>
@@ -23,8 +23,8 @@
                     </thead>
                     <tbody>
                         <tr *ngFor="let uiTahshil of uiTahshils | paginate: { itemsPerPage: 10, currentPage: p, totalItems: total }">
-                            <th scope="row">{{uiTahshil.id}}</th>
-                            <td>{{uiTahshil.name}}</td>
+                            <!-- <th scope="row">{{uiTahshil.id}}</th> -->
+                            <td>{{uiTahshil.talukaName}}</td>
                             <td>{{uiTahshil.districtName}}</td>
                             <td>{{uiTahshil.stateName}}</td>
                             <td>

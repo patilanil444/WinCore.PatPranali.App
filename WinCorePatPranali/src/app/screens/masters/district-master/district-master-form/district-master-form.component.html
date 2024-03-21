@@ -4,13 +4,13 @@
             <div class="card-body">
                 <form [formGroup]="districtForm" #form="ngForm">
                     <h5 class="card-title">District</h5>
-                    <div class="row">
+                    <!-- <div class="row">
                         <div class="col-md-6 position-relative form-group">
                             <label for="txtCode" class="">Code</label>
                             <input name="code" id="txtCode" tabindex="1" readonly="true" maxlength="10" placeholder="0"
                                 type="text" class="form-control" formControlName="code">
                         </div>
-                    </div>
+                    </div> -->
                     <div class="row">
                         <div class="col-md-6 position-relative form-group">
                             <label for="txtName" class="">State</label>
@@ -18,7 +18,7 @@
                                 <select class="mb-2 form-control" tabindex="10"
                                 formControlName="stateId">
                                 <option *ngFor="let uiState of uiStates" [ngValue]="uiState.id">
-                                    {{uiState.name}}
+                                    {{uiState.stateName}}
                                 </option>
                             </select>
                             </div>

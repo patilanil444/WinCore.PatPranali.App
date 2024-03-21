@@ -15,30 +15,32 @@
                 <table class="mb-0 table table-striped">
                     <thead>
                         <tr>
-                            <th width="5%">#</th>
-                            <th width="20%">Name</th>
-                            <th width="20%">Address</th>
-                            <th width="20%">Has Branches</th>
-                            <th width="20%">General Ledger</th>
-                            <th width="15%">Actions</th>
+                            <th width="40%">Name</th>
+                            <th width="40%">Address</th>
+                            <th width="10%">Status</th>
+                            <th width="10%">Actions</th>
                         </tr>
                     </thead>
                     <tbody>
                         <tr *ngFor="let uiBank of uiBanks| paginate: { itemsPerPage: 10, currentPage: p, totalItems: total }">
-                            <th scope="row">{{uiBank.id}}</th>
-                            <td>{{uiBank.name}}</td>
+                            <td>{{uiBank.bankName}}</td>
                             <td>{{uiBank.address}}</td>
-                            <td>{{uiBank.hasBranchesYN}}</td>
-                            <td>{{uiBank.glId}}</td>
+                            <td>
+                                <div class="badge"
+                                    [ngClass]="{'badge-danger': uiBank.active === 0, 'badge-success' : uiBank.active === 1, 'badge-warning' : uiBank.active === 2 }">
+                                    {{uiBank.activeText}}
+                                </div>
+
+                            </td>
                             <td>
                                 <div class="widget-content-right">
-                                    <button type="button" title="Edit record"
+                                    <button type="button" title="Edit record" [disabled]="uiBank.active === 0"
                                         class="btn-shadow btn btn-info btn-actions" (click)="edit(uiBank)">
                                         <span class="btn-icon-wrapper opacity-10">
                                             <i class="fa fa-edit fa-w-10"></i>
                                         </span>
                                     </button>
-                                    <button type="button" title="Delete record"
+                                    <button type="button" title="Delete record" [disabled]="uiBank.active === 0"
                                         class="btn-shadow btn btn-danger btn-actions" data-toggle="modal"
                                         data-target="#deleteModal" (click)="delete(uiBank)">
                                         <span class="btn-icon-wrapper opacity-10">

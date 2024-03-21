@@ -5,14 +5,14 @@
                 <form [formGroup]="branchForm" #form="ngForm">
                     <h5 class="card-title">Branch</h5>
                     <div class="row">
-                        <div class="col-md-6 position-relative form-group">
+                        <!-- <div class="col-md-6 position-relative form-group">
                             <label class="">Code</label>
                             <input name="code" id="txtCode" tabindex="1" readonly="true" placeholder="0" type="text"
                                 class="form-control" formControlName="code">
-                        </div>
+                        </div> -->
 
-                        <div class="col-md-6 position-relative form-group">
-                            <label class="">Name</label>
+                        <div class="col-md-3 position-relative form-group">
+                            <label class="">Branch Name</label>
                             <input type="text" id="txtName" autocomplete="off" tabindex="2" placeholder="Branch Name"
                                 class="form-control" formControlName="name" required maxlength="50"
                                 [class.is-invalid]="name.invalid && (name.dirty || name.touched)">
@@ -22,13 +22,16 @@
                                 </div>
                             </div>
                         </div>
-                    </div>
-
-                    <div class="row">
-                        <div class="col-md-6 position-relative form-group">
+                        <div class="col-md-3 position-relative form-group">
+                            <label class="">Local Name</label>
+                            <input type="text" id="txtName" autocomplete="off" tabindex="3" placeholder="Local language name"
+                                class="form-control" formControlName="name" required maxlength="50"
+                               >
+                        </div>
+                        <div class="col-md-3 position-relative form-group">
                             <label class="">Address</label>
                             <div class="input-group">
-                                <input placeholder="Branch Address" id="txtAddress" tabindex="3" type="text" maxlength="100"
+                                <input placeholder="Branch Address" id="txtAddress" tabindex="4" type="text" maxlength="100"
                                     autocomplete="off" class="form-control" required maxlength="150"
                                     formControlName="address"
                                     [class.is-invalid]="address.invalid && (address.dirty || address.touched)">
@@ -40,11 +43,28 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="col-md-6 position-relative form-group">
+                        <div class="col-md-3 position-relative form-group">
+                            <label class="">Zipcode</label>
+                            <div class="input-group">
+                                <input placeholder="Zipcode" tabindex="5" type="text" maxlength="20" class="form-control"
+                                    required maxlength="150" formControlName="zipCode" autocomplete="off"
+                                    [class.is-invalid]="zipCode.invalid && (zipCode.dirty || zipCode.touched)">
+                                <div *ngIf="zipCode.invalid && (zipCode.dirty || zipCode.touched)" class="invalid-feedback">
+                                    <div *ngIf="zipCode.errors?.['required']">
+                                        ZipCode is required.
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-3 position-relative form-group">
                             <label class="">Phone</label>
                             <div class="input-group">
-                                <input placeholder="Branch Phone" tabindex="4" type="text" maxlength="20" class="form-control"
-                                    required maxlength="150" formControlName="phone"
+                                <input placeholder="Branch Phone" tabindex="6" type="text" maxlength="20" class="form-control"
+                                    required maxlength="150" formControlName="phone" autocomplete="off"
                                     [class.is-invalid]="phone.invalid && (phone.dirty || phone.touched)">
                                 <div *ngIf="phone.invalid && (phone.dirty || phone.touched)" class="invalid-feedback">
                                     <div *ngIf="phone.errors?.['required']">
@@ -53,13 +73,11 @@
                                 </div>
                             </div>
                         </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-md-6 position-relative form-group">
+                        <div class="col-md-3 position-relative form-group">
                             <label class="">Email</label>
                             <div class="input-group">
-                                <input placeholder="Branch Email" tabindex="5" type="email" maxlength="20" class="form-control"
-                                    required maxlength="50" formControlName="email"
+                                <input placeholder="Branch Email" tabindex="7" type="email" maxlength="20" class="form-control"
+                                    required maxlength="50" formControlName="email" autocomplete="off"
                                     [class.is-invalid]="email.invalid && (email.dirty || email.touched)">
                                 <div *ngIf="email.invalid && (email.dirty || email.touched)" class="invalid-feedback">
                                     <div *ngIf="email.errors?.['required']">
@@ -68,10 +86,10 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="col-md-6 position-relative form-group">
+                        <div class="col-md-3 position-relative form-group">
                             <label for="txtName" class="">Opening Date</label>
                             <div class="input-group">
-                                <input tabindex="6" type="date" class="form-control" required
+                                <input tabindex="8" type="date" class="form-control" required
                                     formControlName="openingDate"
                                     [class.is-invalid]="openingDate.invalid && (openingDate.dirty || openingDate.touched)">
                                 <div *ngIf="openingDate.invalid && (openingDate.dirty || openingDate.touched)"
@@ -82,68 +100,176 @@
                                 </div>
                             </div>
                         </div>
-                    </div>
-                    <div class="row">
-                        
-                        <div class="col-md-6 position-relative form-group">
-                            <label class="">Distance From Head Office</label>
+
+                        <div class="col-md-3 position-relative form-group">
+                            <label class="">HO</label>
                             <div class="input-group">
-                                <input placeholder="Distance in KM" tabindex="7" type="text" maxlength="10"
-                                    class="form-control" formControlName="distance">
+                                <select class="mb-2 form-control" tabindex="9" formControlName="ho">
+                                    <option *ngFor="let uiHO of uiHOYN" [ngValue]="uiHO.code">
+                                        {{uiHO.name}}
+                                    </option>
+                                </select>
                             </div>
                         </div>
-                        <div class="col-md-6 position-relative form-group">
-                            <label class="">Town</label>
+                    </div>
+                   
+                    <div class="row">
+                        <div class="col-md-3 position-relative form-group">
+                            <label class="">Clearing</label>
                             <div class="input-group">
-                                <input placeholder="Town/City/Village" tabindex="8" type="text" class="form-control"
-                                    required maxlength="50" formControlName="town"
-                                    [class.is-invalid]="town.invalid && (town.dirty || town.touched)">
-                                <div *ngIf="town.invalid && (town.dirty || town.touched)" class="invalid-feedback">
-                                    <div *ngIf="town.errors?.['required']">
-                                        Town is required.
-                                    </div>
-                                </div>
+                                <select class="mb-2 form-control" tabindex="10" formControlName="clearing">
+                                    <option *ngFor="let uiClearing of uiClearingYN" [ngValue]="uiClearing.code">
+                                        {{uiClearing.name}}
+                                    </option>
+                                </select>
+                            </div>
+                        </div>
+                        
+                        <div class="col-md-3 position-relative form-group">
+                            <label class="">Regional language</label>
+                            <div class="input-group">
+                                <select class="mb-2 form-control" tabindex="11" formControlName="regionalLanguage">
+                                    <option *ngFor="let uiRegional of uiRegionalLang" [ngValue]="uiRegional.code">
+                                        {{uiRegional.name}}
+                                    </option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-md-3 position-relative form-group">
+                            <label class="">Daily Authorisation</label>
+                            <div class="input-group">
+                                <select class="mb-2 form-control" tabindex="12" formControlName="dailyAuthorisation">
+                                    <option *ngFor="let uiDailyAuth of uiDailyAuthYN" [ngValue]="uiDailyAuth.code">
+                                        {{uiDailyAuth.name}}
+                                    </option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-md-3 position-relative form-group">
+                            <label class="">Software Type</label>
+                            <div class="input-group">
+                                <select class="mb-2 form-control" tabindex="13" formControlName="softwareType">
+                                    <option *ngFor="let uiSoftwareTyp of uiSoftwareType" [ngValue]="uiSoftwareTyp.code">
+                                        {{uiSoftwareTyp.name}}
+                                    </option>
+                                </select>
                             </div>
                         </div>
                     </div>
 
                     <div class="row">
                       
-                        <div class="col-md-6 position-relative form-group">
-                            <label class="">SZone</label>
+                        <div class="col-md-3 position-relative form-group">
+                            <label class="">Clearing Member</label>
                             <div class="input-group">
-                                <input placeholder="Zone" tabindex="9" type="text" maxlength="10" class="form-control"
-                                    formControlName="zone">
+                                <select class="mb-2 form-control" tabindex="14" formControlName="clearingMember">
+                                    <option *ngFor="let uiClearingMember of uiClearingMemberYN" [ngValue]="uiClearingMember.code">
+                                        {{uiClearingMember.name}}
+                                    </option>
+                                </select>
                             </div>
                         </div>
-                        <div class="col-md-6 position-relative">
+                        <div class="col-md-3 position-relative form-group">
+                            <label class="">Cashier Transactions</label>
+                            <div class="input-group">
+                                <select class="mb-2 form-control" tabindex="15" formControlName="cashyn">
+                                    <option *ngFor="let uiCashierTransaction of uiCashierTransactionsYN" [ngValue]="uiCashierTransaction.code">
+                                        {{uiCashierTransaction.name}}
+                                    </option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-md-3 position-relative form-group">
+                            <label class="">Officer manager name</label>
+                            <div class="input-group">
+                                <input placeholder="Manager name" tabindex="16" type="text" maxlength="10" class="form-control"
+                                autocomplete="off" formControlName="officerManagerName"
+                                [class.is-invalid]="officerManagerName.invalid && (officerManagerName.dirty || officerManagerName.touched)">
+                                <div *ngIf="officerManagerName.invalid && (officerManagerName.dirty || officerManagerName.touched)"
+                                    class="invalid-feedback">
+                                    <div *ngIf="officerManagerName.errors?.['required']">
+                                        Manager name is required.
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-3 position-relative form-group">
+                            <label class="">Cashier clerk name</label>
+                            <div class="input-group">
+                                <input placeholder="Clerk name" tabindex="17" type="text" maxlength="10" class="form-control"
+                                autocomplete="off" formControlName="cashierClerkName"
+                                [class.is-invalid]="cashierClerkName.invalid && (cashierClerkName.dirty || cashierClerkName.touched)">
+                                <div *ngIf="cashierClerkName.invalid && (cashierClerkName.dirty || cashierClerkName.touched)"
+                                    class="invalid-feedback">
+                                    <div *ngIf="cashierClerkName.errors?.['required']">
+                                        Clerk name is required.
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-3 position-relative form-group">
+                            <label class="">MICR Code</label>
+                            <div class="input-group">
+                                <input placeholder="MICR Code" tabindex="18" type="text" maxlength="10" class="form-control"
+                                autocomplete="off" formControlName="micrCode"
+                                [class.is-invalid]="micrCode.invalid && (micrCode.dirty || micrCode.touched)">
+                                <div *ngIf="micrCode.invalid && (micrCode.dirty || micrCode.touched)"
+                                    class="invalid-feedback">
+                                    <div *ngIf="micrCode.errors?.['required']">
+                                        MICR code is required.
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-3 position-relative form-group">
+                            <label class="">Contact Person</label>
+                            <div class="input-group">
+                                <input placeholder="Contact Person" tabindex="19" type="text" maxlength="10" 
+                                class="form-control" autocomplete="off"
+                                    formControlName="contactPerson">
+                            </div>
+                        </div>
+
+                        <div class="col-md-3 position-relative form-group">
+                            <label class="">Currency</label>
+                            <div class="input-group">
+                                <select class="mb-2 form-control" tabindex="20" formControlName="currency">
+                                    <option *ngFor="let uiCurrency of uiCurrencies" [ngValue]="uiCurrency.currencyId">
+                                        {{uiCurrency.currencyName}}
+                                    </option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-md-3 position-relative">
                             <label class="">State</label>
-                            <select class="mb-2 form-control" tabindex="10" (change)="onStateChange($event)"
+                            <select class="mb-2 form-control" tabindex="21" (change)="onStateChange($event)"
                                 formControlName="stateId">
                                 <option *ngFor="let uiState of uiStates" [ngValue]="uiState.id">
-                                    {{uiState.name}}
+                                    {{uiState.stateName}}
                                 </option>
                             </select>
                         </div>
                     </div>
-
                     <div class="row">
-                       
-                        <div class="col-md-6 position-relative">
+                        
+                        <div class="col-md-3 position-relative">
                             <label class="">District</label>
-                            <select class="mb-2 form-control" tabindex="11" (change)="onDistrictChange($event)"
+                            <select class="mb-2 form-control" tabindex="22" (change)="onDistrictChange($event)"
                                 formControlName="districtId">
                                 <option *ngFor="let uiDistrict of uiDistricts" [ngValue]="uiDistrict.id">
-                                    {{uiDistrict.name}}
+                                    {{uiDistrict.districtName}}
                                 </option>
                             </select>
                         </div>
-                        <div class="col-md-6 position-relative">
+                        <div class="col-md-3 position-relative">
                             <label class="">Tahsil</label>
-                            <select class="mb-2 form-control" formControlName="tahshilId" tabindex="12"
+                            <select class="mb-2 form-control" formControlName="tahshilId" tabindex="23"
                                 formControlName="tahshilId">
                                 <option *ngFor="let uiTahshil of uiTahshils" [ngValue]="uiTahshil.id">
-                                    {{uiTahshil.name}}
+                                    {{uiTahshil.talukaName}}
                                 </option>
                             </select>
                         </div>
@@ -151,7 +277,7 @@
 
                     <div class="row">
                         <div class="col-md-6 position-relative">
-                            <button class="mt-1 btn btn-primary" tabindex="12" (click)="saveBranch()">Submit</button>
+                            <button class="mt-1 btn btn-primary" tabindex="24" (click)="saveBranch()">Submit</button>
                             <button class="mt-1 btn btn-left-margin10 btn-danger" (click)="clear()">Clear</button>
                             <button class="mt-1 btn btn-left-margin10 btn-secondary"
                                 (click)="configClick('branches')">Branch List</button>

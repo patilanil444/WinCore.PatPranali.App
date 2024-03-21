@@ -26,7 +26,7 @@ export enum NodeType{
 
 export class UiUser
 {
-    constructor(public id: number, public branchId: number, )
+    constructor(public id: number, public branchId: number, public userName: string )
         {   }
 }
 

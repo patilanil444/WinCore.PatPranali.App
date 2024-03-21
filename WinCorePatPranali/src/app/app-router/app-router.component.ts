@@ -27,8 +27,10 @@ export class AppRouterComponent implements OnInit, AfterViewInit{
     this.getStates();
     this.getDistricts();
     this.getTahshils();
-    this.getGLGroups();
-    this.getAccountTypes();
+    this.getVillages();
+    this.getCurrencies();
+    //this.getGLGroups();
+    //this.getAccountTypes();
   }
 
   getStates()
@@ -64,6 +66,18 @@ export class AppRouterComponent implements OnInit, AfterViewInit{
     })
   }
 
+  
+  getVillages()
+  {
+    this._branchMasterService.getVillages().subscribe((data: any) => {
+      if (data) {
+        if (data.statusCode == 200 && data.data.data) {
+          this._sharedService.uiAllVillages = data.data.data;
+        }
+      }
+    })
+  }
+
   getGLGroups()
   {
     this._generalLedgerService.getGLGroups().subscribe((data: any) => {
@@ -84,6 +98,17 @@ export class AppRouterComponent implements OnInit, AfterViewInit{
         }
       }
     })
+  }
+
+  getCurrencies() {
+    this._branchMasterService.getCurrencies().subscribe((data: any) => {
+      if (data) {
+        if (data.statusCode == 200 && data.data.data) {
+          this._sharedService.uiCurrencies = data.data.data;
+        }
+      }
+    })
+
   }
 
   configClick(routeValue: string) {
