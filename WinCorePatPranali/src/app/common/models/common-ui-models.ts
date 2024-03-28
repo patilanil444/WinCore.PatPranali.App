@@ -37,7 +37,10 @@ export interface IGeneralMasterDTO
     id: number,
     maxId: number,
     masterId: number,
-    masterType: string
+    constantNo: number,
+    masterType: string,
+    fullName: string,
+    shortName: string
 }
 
 export interface IGeneralLedgerDTO
@@ -73,4 +76,28 @@ export enum UiEnumGeneralMaster {
 	CustomerGroupMaster = 14,
     ScheduleMaster = 15,
     StateMaster = 16
+
+
+    // GENDER = 1,
+    // TITLE = 2,
+    // ACTYPE = 3,
+    // CASTE = 4,
+    // CATEGORY = 5,
+    // ZONE = 6,
+    // CUSTOMERGROUP = 7,
+    // INSURANCE = 8,
+    // HEALTH = 9,
+    // PURPOSE = 10,
+    // RELATION = 11,
+    // RELIGION = 12,
+    // RESON = 13,
+    // OCCUPTION = 14,
+    // VEHICLE = 15,
+    // GLTYPE = 16,
+    // YN = 17,
+    // MARITIALSTATUS = 18,
+    // EDUCATION = 19,
+    // NATIONALITY = 20,
+    // ADDRESSTYPE = 21,
+    // OPRMODE = 22
 }

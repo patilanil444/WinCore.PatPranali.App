@@ -14,18 +14,24 @@
                     <div class="divider"></div>
                     <div class="row">
                         <div class="col-md-6 position-relative form-group">
-                            <label for="txtCode" class="">Code</label>
-                            <input name="code" id="txtCode" tabindex="1" readonly="true" maxlength="10" placeholder="0"
-                                type="text" class="form-control" formControlName="code">
+                            <label for="txtfullName" class="">Full name</label>
+                            <input name="code" id="txtfullName" tabindex="2" maxlength="50"
+                                type="text" class="form-control" formControlName="fullName" autocomplete="off" 
+                                placeholder="Full name" [class.is-invalid]="fullName.invalid && (fullName.dirty || fullName.touched)">
+                                <div *ngIf="fullName.invalid && (fullName.dirty || fullName.touched)" class="invalid-feedback">
+                                    <div *ngIf="fullName.errors?.['required']">
+                                        Full name is required.
+                                    </div>
+                                </div>
                         </div>
                         <div class="col-md-6 position-relative form-group">
-                            <label for="txtName" class="">Name</label>
-                            <input name="priorityName" id="txtName" tabindex="2" placeholder="Name" type="text"
-                                class="form-control" required maxlength="50" formControlName="name" autocomplete="off"
-                                [class.is-invalid]="name.invalid && (name.dirty || name.touched)">
-                            <div *ngIf="name.invalid && (name.dirty || name.touched)" class="invalid-feedback">
-                                <div *ngIf="name.errors?.['required']">
-                                    Name is required.
+                            <label for="txtShortName" class="">Short name</label>
+                            <input name="priorityName" id="txtShortName" tabindex="3" placeholder="Short name" type="text"
+                                class="form-control" required maxlength="50" formControlName="shortName" autocomplete="off"
+                                [class.is-invalid]="shortName.invalid && (shortName.dirty || shortName.touched)">
+                            <div *ngIf="shortName.invalid && (shortName.dirty || shortName.touched)" class="invalid-feedback">
+                                <div *ngIf="shortName.errors?.['required']">
+                                    Short name is required.
                                 </div>
                             </div>
                         </div>

@@ -17,6 +17,10 @@ export class SharedService {
   public uiTypeOfAccounts = [];
   public uiCurrencies = [];
 
+  private apiCount = 0;
+  private isLoadingSubject = new BehaviorSubject<boolean>(false);
+  isLoading$ = this.isLoadingSubject.asObservable();
+
   constructor() { }
 
   bankEmitter = new EventEmitter<any>();
@@ -29,6 +33,22 @@ export class SharedService {
   }
   getDTO() {
     return this.dto.asObservable();
+  }
+
+  showLoader()
+  {
+    if (this.apiCount === 0) {
+      this.isLoadingSubject.next(true);
+    }
+    this.apiCount++;
+  }
+
+  hideLoader()
+  {
+    this.apiCount--;
+    if (this.apiCount === 0) {
+      this.isLoadingSubject.next(false);
+    }
   }
 
 }
