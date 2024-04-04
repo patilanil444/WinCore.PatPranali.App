@@ -103,7 +103,7 @@ export class BranchMasterFormComponent {
 
     this.uiStates = this._sharedService.uiAllStates;
     this.uiAllDistricts = this._sharedService.uiAllDistricts;
-    this.uiAllTahshils = this._sharedService.uiAllTahshils;
+    this.uiAllTahshils = this._sharedService.uiAllTalukas;
     this.uiCurrencies = this._sharedService.uiCurrencies;
 
     let districts = this.uiAllDistricts.filter((d: any) => d.stateId == this.uiStates[0].id);

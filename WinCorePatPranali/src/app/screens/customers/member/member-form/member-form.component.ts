@@ -199,7 +199,7 @@ export class MemberFormComponent implements OnInit {
     this.uiAddressStates = this._sharedService.uiAllStates;
     this.uiNominiStates = this._sharedService.uiAllStates;
     this.uiAllDistricts = this._sharedService.uiAllDistricts;
-    this.uiAllTahshils = this._sharedService.uiAllTahshils;
+    this.uiAllTahshils = this._sharedService.uiAllTalukas;
 
     let districts = this.uiAllDistricts.filter((d: any) => d.stateId == this.uiAddressStates[0].id);
     if (districts) {
@@ -345,7 +345,7 @@ export class MemberFormComponent implements OnInit {
   loadMasters() {
     return new Promise((resolve, reject) => {
       let occupationsMasterModel = {
-        GeneralMasterId: UiEnumGeneralMaster.OccupationMaster,
+        GeneralMasterId:1,// UiEnumGeneralMaster.OccupationMaster,
         BranchId: this._sharedService.applicationUser.branchId
       }
       this._generalMasterService.getAllGeneralMasters(occupationsMasterModel).subscribe((memberGroups: any) => {
@@ -354,7 +354,7 @@ export class MemberFormComponent implements OnInit {
             this.uiOccupations = memberGroups.data.data;
 
             let castMasterModel = {
-              GeneralMasterId: UiEnumGeneralMaster.CastMaster,
+              GeneralMasterId: 1,//UiEnumGeneralMaster.CastMaster,
               BranchId: this._sharedService.applicationUser.branchId
             }
             this._generalMasterService.getAllGeneralMasters(castMasterModel).subscribe((casts: any) => {
@@ -363,7 +363,7 @@ export class MemberFormComponent implements OnInit {
                   this.uiCasts = casts.data.data;
 
                   let relationsMasterModel = {
-                    GeneralMasterId: UiEnumGeneralMaster.RelationMaster,
+                    GeneralMasterId: 1,//UiEnumGeneralMaster.RelationMaster,
                     BranchId: this._sharedService.applicationUser.branchId
                   }
                   this._generalMasterService.getAllGeneralMasters(relationsMasterModel).subscribe((relations: any) => {

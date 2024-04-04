@@ -11,11 +11,13 @@ export class SharedService {
 
   public uiAllStates = [];
   public uiAllDistricts = [];
-  public uiAllTahshils = [];
+  public uiAllTalukas = [];
   public uiAllVillages = [];
   public uiGLGroups = [];
   public uiTypeOfAccounts = [];
   public uiCurrencies = [];
+
+  public uiAllMasters: any[] = [];
 
   private apiCount = 0;
   private isLoadingSubject = new BehaviorSubject<boolean>(false);

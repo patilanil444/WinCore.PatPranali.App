@@ -44,30 +44,4 @@ export class BranchMasterService {
     let options = GlobleDeclarations.getHeaderOptions();
     return this.http.delete(GlobleDeclarations.apiBaseURL + "api/branch/delete-branch?id=" + id, options);
   }
-
-  getStates() {
-    let options = GlobleDeclarations.getHeaderOptions();
-    return this.http.get(GlobleDeclarations.apiBaseURL + "api/master/states", options);
-  }
-
-  getDistricts() {
-    let options = GlobleDeclarations.getHeaderOptions();
-    return this.http.get(GlobleDeclarations.apiBaseURL + "api/master/districts", options);
-  }
-
-  getTahshils() {
-    let options = GlobleDeclarations.getHeaderOptions();
-    return this.http.get(GlobleDeclarations.apiBaseURL + "api/master/talukas", options);
-  }
-
-  getVillages() {
-    let options = GlobleDeclarations.getHeaderOptions();
-    return this.http.get(GlobleDeclarations.apiBaseURL + "api/master/villages", options);
-  }
-
-  getCurrencies() {
-    let options = GlobleDeclarations.getHeaderOptions();
-    return this.http.get(GlobleDeclarations.apiBaseURL + "api/master/currencies", options);
-  }
-  
 }

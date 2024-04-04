@@ -80,7 +80,7 @@ export class LoanInterestStructureComponent implements OnInit {
   getPurposeMaster()
   {
     let branchGeneralMasterModel = {
-      GeneralMasterId: UiEnumGeneralMaster.PurposeMaster,
+      GeneralMasterId:1,// UiEnumGeneralMaster.PurposeMaster,
       BranchId: this._sharedService.applicationUser.branchId
     }
     this._generalMasterService.getAllGeneralMasters(branchGeneralMasterModel).subscribe((data: any) => {
