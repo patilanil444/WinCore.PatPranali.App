@@ -7,7 +7,9 @@ import { IGeneralDTO, UiEnumGeneralMaster } from 'src/app/common/models/common-u
 import { CustomerService } from 'src/app/services/customers/customer/customer.service';
 import { SharedService } from 'src/app/services/shared.service';
 import { GeneralMasterService } from 'src/app/services/masters/general-master/general-master.service';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
+import { MemberService } from 'src/app/services/customers/member/member.service';
+import { NgxDropdownConfig } from 'ngx-select-dropdown';
 
 interface ICustomerModel {
   Id: number;
@@ -31,6 +33,7 @@ interface ICustomerModel {
   TDSRate: number;
   Form60: string;
   Form61: string;
+  MemberId: number;
   Status: string;
   BranchId: number;
   Addresses: any[];
@@ -85,6 +88,8 @@ export interface UiDocument {
   documentKey: string,
   documentName: string,
   filePath: string,
+  uploadSuccess: false,
+  percentDone: 0
 }
 
 @Component({
@@ -94,7 +99,21 @@ export interface UiDocument {
 })
 export class CustomerFormComponent implements OnInit {
 
-  customerForm!: FormGroup;
+  config: NgxDropdownConfig = {
+    displayKey: "name",
+    height: "auto",
+    search: true,
+    placeholder: "Select member",
+    searchPlaceholder: "Search member by name...",
+    limitTo: 0,
+    customComparator: undefined,
+    noResultsFound: "No results found",
+    moreText: "more",
+    clearOnSelection: false,
+    inputDirection: "ltr",
+    enableSelectAll: false,
+  };
+
   personalDetailsForm!: FormGroup;
   addressForm!: FormGroup;
   nominiForm!: FormGroup;
@@ -115,6 +134,8 @@ export class CustomerFormComponent implements OnInit {
   newCode!: string;
   isAddMode!: boolean;
   maxDate!: Date;
+
+  masterData: any = {};
 
   uiGenders: any[] = [];
   uiForm60YN: any[] = [];
@@ -138,142 +159,156 @@ export class CustomerFormComponent implements OnInit {
   uiCustomerGroups: any[] = [];
   uiRelations: any[] = [];
   uiOccupations: any[] = [];
+  uiCustomerZones: any[] = [];
+  uiCastes: any[] = [];
+  uiReligions: any[] = [];
+  uiNationalities: any[] = [];
+  uiCustomerCategories: any[] = [];
   uiAddresses: any[] = [];
   uiNominis: any[] = [];
   uiDocuments: any[] = [];
 
+  uiMembers: any[] = [];
+
   dto: IGeneralDTO = {} as IGeneralDTO;
 
 
-  constructor(private router: Router, private _customerService: CustomerService, private _sharedService: SharedService,
-    private _generalMasterService: GeneralMasterService, private _toastrService: ToastrService) { }
+  constructor(private router: Router, private _customerService: CustomerService,
+    private _sharedService: SharedService, private _memberService: MemberService,
+    private _generalMasterService: GeneralMasterService, private _toastrService: ToastrService,
+    private activatedRoute: ActivatedRoute) { }
 
   ngOnInit(): void {
     this.maxDate = new Date();
 
-    this.uiGenders = CustomerDeclarations.genders;
-    this.uiMaritalStatuses = CustomerDeclarations.maritalStatuses;
-    this.uiStatuses = CustomerDeclarations.statuses;
-    this.uiEducations = CustomerDeclarations.educations;
-    this.uiTdsApplicables = CustomerDeclarations.tdsApplicables;
-    this.uiTdsPrintings = CustomerDeclarations.tdsPrintings;
-    this.uiAddressTypes = CustomerDeclarations.addressTypes;
-    this.uiCustomerTypes = CustomerDeclarations.customerTypes;
-    this.uiTitles = CustomerDeclarations.titles;
-    this.uiDocumentTypes = CustomerDeclarations.documents;
-    this.uiForm60YN = CustomerDeclarations.form60YN;
-    this.uiForm61YN = CustomerDeclarations.form61YN;
+    // this.activatedRoute.data.subscribe((response: any) => {
+      
+    // });
 
-    this.customerForm = new FormGroup({
-      customerCode: new FormControl("", []),
-    });
+      this.uiGenders = this.retrieveMasters(UiEnumGeneralMaster.GENDER); // CustomerDeclarations.genders;
+      this.uiMaritalStatuses = this.retrieveMasters(UiEnumGeneralMaster.MARITIALSTATUS);
+      //this.uiStatuses = CustomerDeclarations.statuses;
+      this.uiEducations = this.retrieveMasters(UiEnumGeneralMaster.EDUCATION);
+      //this.uiTdsApplicables = CustomerDeclarations.tdsApplicables;
+      //this.uiTdsPrintings = CustomerDeclarations.tdsPrintings;
+      this.uiAddressTypes = this.retrieveMasters(UiEnumGeneralMaster.ADDRESSTYPE);
+      this.uiCustomerTypes = CustomerDeclarations.customerTypes;
+      this.uiTitles = this.retrieveMasters(UiEnumGeneralMaster.TITLE);
+      this.uiDocumentTypes = CustomerDeclarations.documents;
+      this.uiCustomerGroups = this.retrieveMasters(UiEnumGeneralMaster.CUSTOMERGROUP);
+      this.uiOccupations = this.retrieveMasters(UiEnumGeneralMaster.OCCUPTION);
+      this.uiRelations = this.retrieveMasters(UiEnumGeneralMaster.RELATION);
+      this.uiCustomerZones = this.retrieveMasters(UiEnumGeneralMaster.ZONE);
+      this.uiCastes = this.retrieveMasters(UiEnumGeneralMaster.CASTE);
+      this.uiReligions = this.retrieveMasters(UiEnumGeneralMaster.RELIGION);
+      this.uiNationalities = this.retrieveMasters(UiEnumGeneralMaster.NATIONALITY);
+      this.uiCustomerCategories = this.retrieveMasters(UiEnumGeneralMaster.CATEGORY);
 
-    this.personalDetailsForm = new FormGroup({
-      personalTitle: new FormControl(this.uiTitles[0].code, [Validators.required]),
-      personalFirstName: new FormControl("", [Validators.required]),
-      personalMiddleName: new FormControl("", []),
-      personalLastName: new FormControl("", [Validators.required]),
-      personalGender: new FormControl(this.uiGenders[0].code, [Validators.required]),
-      personalGroup: new FormControl("", [Validators.required]),
-      personalCustomerType: new FormControl(this.uiCustomerTypes[0].code, [Validators.required]),
-      personalOccupation: new FormControl("", []),
-      personalMaritalStatus: new FormControl(this.uiMaritalStatuses[0].code, []),
-      personalStatus: new FormControl(this.uiStatuses[0].code, []),
-      personalDateOfBirth: new FormControl("", [Validators.required]),
-      personalAge: new FormControl("", []),
-      personalPAN: new FormControl("", [Validators.required]),
-      personalAadhar: new FormControl("", [Validators.required]),
-      personalPhone: new FormControl("", [Validators.required]),
-      personalEmail: new FormControl("", [Validators.pattern("[a-zA-Z0-9.-_]{1,}@[a-zA-Z.-]{2,}[.]{1}[a-zA-Z]{2,}")]),
-      personalEducation: new FormControl(this.uiEducations[0].code, []),
-      personalTDSApplicable: new FormControl(this.uiTdsApplicables[0].code, [Validators.required]),
-      personalTDSPrinting: new FormControl(this.uiTdsPrintings[0].code, [Validators.required]),
-      personalTDSRate: new FormControl("", [Validators.required]),
-      personalForm60: new FormControl(this.uiForm60YN[0].code, []),
-      personalForm61: new FormControl(this.uiForm61YN[0].code, [])
-    });
+      //this.uiForm60YN = CustomerDeclarations.form60YN;
+      //this.uiForm61YN = CustomerDeclarations.form61YN;
 
-    this.addressForm = new FormGroup({
-      addressType: new FormControl(this.uiAddressTypes[0].code, [Validators.required]),
-      addressBuilding: new FormControl("", [Validators.required]),
-      addressStreet: new FormControl("", []),
-      addressLandmark: new FormControl("", [Validators.required]),
-      addressCity: new FormControl("", [Validators.required]),
-      addressState: new FormControl("", [Validators.required]),
-      addressDistrict: new FormControl("", [Validators.required]),
-      addressTahsil: new FormControl("", [Validators.required]),
-      addressPincode: new FormControl("", []),
-    });
+      this.personalDetailsForm = new FormGroup({
+        customerCode: new FormControl("", []),
+        personalTitle: new FormControl(this.uiTitles[0].constantNo, [Validators.required]),
+        personalFirstName: new FormControl("", [Validators.required]),
+        personalMiddleName: new FormControl("", []),
+        personalLastName: new FormControl("", [Validators.required]),
+        personalPhone: new FormControl("", []),
+        personalMobile: new FormControl("", [Validators.required]),
+        personalDateOfBirth: new FormControl("", [Validators.required]),
+        personalAge: new FormControl("", []),
+        personalOpenDate: new FormControl("", [Validators.required]),
+        personalEmail: new FormControl("", [Validators.pattern("[a-zA-Z0-9.-_]{1,}@[a-zA-Z.-]{2,}[.]{1}[a-zA-Z]{2,}")]),
+        personalPAN: new FormControl("", [Validators.required]),
+        personalAadhar: new FormControl("", [Validators.required]),
+        personalGender: new FormControl(this.uiGenders[0].constantNo, [Validators.required]),
+        personalCustGroup: new FormControl(this.uiCustomerGroups[0].constantNo, [Validators.required]),
+        personalCustZone: new FormControl(this.uiCustomerZones[0].constantNo, [Validators.required]),
+        personalCustCaste: new FormControl(this.uiCastes[0].constantNo, []),
+        personalCustReligion: new FormControl(this.uiReligions[0].constantNo, []),
+        personalOccupation: new FormControl(1, [Validators.required]),
+        personalMaritalStatus: new FormControl(this.uiMaritalStatuses[0].constantNo, []),
+        personalNationality: new FormControl(this.uiNationalities[0].constantNo, [Validators.required]),
+        personalEducation: new FormControl(this.uiEducations[0].constantNo, []),
+        personalCustCategory: new FormControl(this.uiCustomerCategories[0].constantNo, [])
+      });
 
-    this.nominiForm = new FormGroup({
-      nominiTitle: new FormControl(this.uiTitles[0].code, [Validators.required]),
-      nominiFirstName: new FormControl("", [Validators.required]),
-      nominiMiddleName: new FormControl("", []),
-      nominiLastName: new FormControl("", [Validators.required]),
-      nominiRelation: new FormControl("", [Validators.required]),
-      nominiGuardian: new FormControl("", []),
-      nominiPercentage: new FormControl("100", [Validators.required]),
-      nominiDateOfBirth: new FormControl("", [Validators.required]),
-      nominiAge: new FormControl("", []),
-      nominiBuilding: new FormControl("", [Validators.required]),
-      nominiStreet: new FormControl("", []),
-      nominiCity: new FormControl("", [Validators.required]),
-      nominiState: new FormControl("", []),
-      nominiDistrict: new FormControl("", []),
-      nominiTahsil: new FormControl("", [Validators.required]),
-      nominiPincode: new FormControl("", []),
-      nominiPhone: new FormControl("", [Validators.required]),
-      nominiEmail: new FormControl("", [Validators.pattern("[a-zA-Z0-9.-_]{1,}@[a-zA-Z.-]{2,}[.]{1}[a-zA-Z]{2,}")]),
-    });
+      this.addressForm = new FormGroup({
+        addressType: new FormControl(this.uiAddressTypes[0].constantNo, [Validators.required]),
+        addressText: new FormControl("", [Validators.required]),
+        addressCity: new FormControl("", [Validators.required]),
+        addressState: new FormControl("", [Validators.required]),
+        addressDistrict: new FormControl("", [Validators.required]),
+        addressTaluka: new FormControl("", [Validators.required]),
+        addressPincode: new FormControl("", []),
+        addressDefault: new FormControl(true, []),
+      });
 
-    this.documentsForm = new FormGroup({
-      documentSelect: new FormControl(this.uiDocumentTypes[0].code, [Validators.required]),
-    });
+      this.nominiForm = new FormGroup({
+        nominiName: new FormControl("", [Validators.required]),
+        nominiAddress: new FormControl("", [Validators.required]),
+        nominiDateOfBirth: new FormControl("", [Validators.required]),
+        nominiAge: new FormControl("", []),
+        nominiPhone: new FormControl("", []),
+        nominiRelation: new FormControl("", [Validators.required]),
+        nominiGuardian: new FormControl("", []),
+        nominiPercentage: new FormControl("100", [Validators.required]),
+      });
 
-    this.loadMasters().then(() => {
+      this.documentsForm = new FormGroup({
+        documentSelect: new FormControl(this.uiDocumentTypes[0].code, [Validators.required]),
+      });
+
       this.loadForm();
-    })
-   
   }
 
-  loadForm()
-  {
+  retrieveMasters(uiEnumGeneralMaster: UiEnumGeneralMaster) {
+    let mastersData = this._sharedService.uiAllMasters.filter((m: any) => m.identifier == uiEnumGeneralMaster);
+    if (mastersData && mastersData.length) {
+      let masters = mastersData.filter((m: any) => m.identifier == uiEnumGeneralMaster);
+      return masters[0].codeTables;
+    }
+    return [];
+  }
+
+  loadForm() {
     this.uiAddressStates = this._sharedService.uiAllStates;
     this.uiNominiStates = this._sharedService.uiAllStates;
 
     this.uiAllDistricts = this._sharedService.uiAllDistricts;
-    this.uiAllTahshils = this._sharedService.uiAllTahshils;
-    let districts = this.uiAllDistricts.filter((d: any) => d.stateId == this.uiAddressStates[0].id);
-    if (districts) {
-      this.uiAddressDistricts = districts;
-      this.uiNominiDistricts = districts;
-    }
+    this.uiAllTahshils = this._sharedService.uiAllTalukas;
+    // if (this.uiAddressStates && this.uiAddressStates.length) {
+    //   let districts = this.uiAllDistricts.filter((d: any) => d.stateId == this.uiAddressStates[0].id);
+    //   if (districts) {
+    //     this.uiAddressDistricts = districts;
+    //     this.uiNominiDistricts = districts;
+    //   }
+    // }
 
-    let tahshils = this.uiAllTahshils.filter((d: any) => d.districtId == this.uiAddressDistricts[0].id);
-    if (tahshils) {
-      this.uiAddressTahshils = tahshils;
-      this.uiNominiTahshils = tahshils;
-    }
+    // if (this.uiAddressDistricts && this.uiAddressDistricts.length) {
+    //   let tahshils = this.uiAllTahshils.filter((d: any) => d.districtId == this.uiAddressDistricts[0].id);
+    //   if (tahshils) {
+    //     this.uiAddressTahshils = tahshils;
+    //     this.uiNominiTahshils = tahshils;
+    //   }
+    // }
 
     this._customerService.getDTO().subscribe(obj => this.dto = obj);
     if (this.dto) {
-      this.personalDetailsForm.patchValue({
-        personalGroup: this.uiCustomerGroups[0].id,
-        personalOccupation: this.uiOccupations[0].id,
-      })
+      // this.personalDetailsForm.patchValue({
+      //   personalGroup: this.uiCustomerGroups[0].id,
+      //   personalOccupation: this.uiOccupations[0].id,
+      // })
 
-      this.addressForm.patchValue({
-        addressState: this.uiAddressStates[0].id,
-        addressDistrict: this.uiAddressDistricts[0].id,
-        addressTahsil: this.uiAddressTahshils[0].id,
-      })
+      // this.addressForm.patchValue({
+      //   addressState: this.uiAddressStates[0].id,
+      //   addressDistrict: this.uiAddressDistricts[0].id,
+      //   addressTahsil: this.uiAddressTahshils[0].id,
+      // })
 
-      this.nominiForm.patchValue({
-        nominiRelation: this.uiRelations[0].id,
-        nominiState: this.uiNominiStates[0].id,
-        nominiDistrict: this.uiNominiDistricts[0].id,
-        nominiTahsil: this.uiNominiTahshils[0].id,
-      })
+      // this.nominiForm.patchValue({
+      //   nominiRelation: this.uiRelations[0].id,
+      // })
 
       this.id = this.dto.id;
       if (this.dto.id == 0 || this.dto.id == undefined) {
@@ -282,12 +317,9 @@ export class CustomerFormComponent implements OnInit {
 
         this._customerService.getMaxCustomerId(this._sharedService.applicationUser.branchId).subscribe((data: any) => {
           let maxCustId = data.data.data;
-          this.maxId = maxCustId + 1;
-          this.customerForm.patchValue({
-            customerCode: this.maxId,
-          });
-
           this.personalDetailsForm.patchValue({
+            customerCode: maxCustId,
+            personalOpenDate: formatDate(new Date(), 'yyyy-MM-dd', 'en'),
             personalDateOfBirth: formatDate(new Date(), 'yyyy-MM-dd', 'en'),
             personalAge: this.calculateAge(formatDate(new Date(), 'yyyy-MM-dd', 'en')),
           });
@@ -307,17 +339,10 @@ export class CustomerFormComponent implements OnInit {
             if (data.statusCode == 200 && data.data.data) {
               var customer = data.data.data;
 
-              // let tahshils = this.uiAllTahshils.filter((d: any) => d.districtId == customer.districtId);
-              // if (tahshils) {
-              //   this.uiAddressTahshils = tahshils;
-              // }
-
-              this.customerForm.patchValue({
-                code: customer.id,
-              });
+              let member = this.uiMembers.filter((d: any) => d.id == customer.memberId);
 
               this.personalDetailsForm.patchValue({
-                code: customer.id,
+                customerCode: customer.id,
                 personalTitle: customer.title,
                 personalFirstName: customer.firstName,
                 personalMiddleName: customer.middleName,
@@ -340,10 +365,11 @@ export class CustomerFormComponent implements OnInit {
                 personalTDSRate: customer.tdsRate,
                 personalForm60: customer.form60,
                 personalForm61: customer.form61,
+                personalMember: member ? member[0].firstName + " " + member[0].middleName + " " + member[0].lastName : ""
               });
 
               if (customer.addresses) {
-                customer.addresses.forEach((add:any) => {
+                customer.addresses.forEach((add: any) => {
                   let uiAddress = {} as UiAddress;
 
                   let addresssType = this.uiAddressTypes.filter(d => d.code == add.addressType);
@@ -367,7 +393,7 @@ export class CustomerFormComponent implements OnInit {
               this.uiNominis = customer.nominis;
 
               if (customer.documents) {
-                customer.documents.forEach((doc:any) => {
+                customer.documents.forEach((doc: any) => {
                   let uiDocument = {} as UiDocument;
                   uiDocument.customerId = this.dto.id;
                   uiDocument.documentKey = doc.documentKey;
@@ -384,51 +410,17 @@ export class CustomerFormComponent implements OnInit {
     }
   }
 
-  loadMasters() {
-    return new Promise((resolve, reject) => {
-      let customerGroupMasterModel = {
-        GeneralMasterId: UiEnumGeneralMaster.CustomerGroupMaster,
-        BranchId: this._sharedService.applicationUser.branchId
-      }
-      this._generalMasterService.getAllGeneralMasters(customerGroupMasterModel).subscribe((customerGroups: any) => {
-        if (customerGroups) {
-          if (customerGroups.statusCode == 200 && customerGroups.data.data) {
-            this.uiCustomerGroups = customerGroups.data.data;
-
-            let occupationsMasterModel = {
-              GeneralMasterId: UiEnumGeneralMaster.OccupationMaster,
-              BranchId: this._sharedService.applicationUser.branchId
-            }
-            this._generalMasterService.getAllGeneralMasters(occupationsMasterModel).subscribe((occupations: any) => {
-              if (occupations) {
-                if (occupations.statusCode == 200 && occupations.data.data) {
-                  this.uiOccupations = occupations.data.data;
-
-                  let relationsMasterModel = {
-                    GeneralMasterId: UiEnumGeneralMaster.RelationMaster,
-                    BranchId: this._sharedService.applicationUser.branchId
-                  }
-                  this._generalMasterService.getAllGeneralMasters(relationsMasterModel).subscribe((relations: any) => {
-                    if (relations) {
-                      if (relations.statusCode == 200 && relations.data.data) {
-                        this.uiRelations = relations.data.data;
-                        resolve(true);
-                      }
-                    }
-                  })
-                }
-              }
-            })
-          }
-        }
-      })
-    })
-
-  }
-
-  onClick(section: string): void { 
+  onClick(section: string): void {
     window.location.hash = '';
     window.location.hash = section;
+  }
+
+  selectMember(memberEvent: any) {
+    if (memberEvent && memberEvent.value.id > 0) {
+      this.addressForm.patchValue({
+        personalMember: memberEvent.value.id
+      });
+    }
   }
 
   calculateAge(dateOfBirth: any) { // birthday is a date
@@ -545,79 +537,80 @@ export class CustomerFormComponent implements OnInit {
   }
 
   saveCustomer() {
-    if (!this.validPersonalDetailsForm()) {
-      this._toastrService.error('Personal details has errors.', 'Error!');
-      return;
-    }
-    if (!this.validAddressForm()) {
-      this._toastrService.error('Address details has errors.', 'Error!');
-      return;
-    }
-    if (!this.validNominiForm()) {
-      this._toastrService.error('Nomini details has errors.', 'Error!');
-      return;
-    }
-    if (!this.validDocumentsForm()) {
-      this._toastrService.error('Document details has errors.', 'Error!');
-      return;
-    }
+    // if (!this.validPersonalDetailsForm()) {
+    //   this._toastrService.error('Personal details has errors.', 'Error!');
+    //   return;
+    // }
+    // if (this.uiAddresses.length == 0) {
+    //   this._toastrService.error('Address details has errors.', 'Error!');
+    //   return;
+    // }
+    // if (this.uiNominis.length == 0) {
+    //   this._toastrService.error('Nomini details has errors.', 'Error!');
+    //   return;
+    // }
+    // if (!this.validDocumentsForm()) {
+    //   this._toastrService.error('Document details has errors.', 'Error!');
+    //   return;
+    // }
 
-    let customerModel = {} as ICustomerModel;
-    customerModel.Id = parseInt(this.customerCode.value.toString());
-    customerModel.Title = this.personalTitle.value.toString();
-    customerModel.FirstName = this.personalFirstName.value.toString();
-    customerModel.MiddleName = this.personalMiddleName.value.toString();
-    customerModel.LastName = this.personalLastName.value.toString();
-    customerModel.Gender = this.personalGender.value.toString();
-    customerModel.CustomerGroupId = this.personalGroup.value.toString();
+    // let customerModel = {} as ICustomerModel;
+    // customerModel.Id = parseInt(this.customerCode.value.toString());
+    // customerModel.Title = this.personalTitle.value.toString();
+    // customerModel.FirstName = this.personalFirstName.value.toString();
+    // customerModel.MiddleName = this.personalMiddleName.value.toString();
+    // customerModel.LastName = this.personalLastName.value.toString();
+    // customerModel.Gender = this.personalGender.value.toString();
+    // customerModel.CustomerGroupId = this.personalGroup.value.toString();
 
-    customerModel.CustomerGroupId = this.personalGroup.value.toString();
-    customerModel.CustomerType = this.personalCustomerType.value.toString();
-    customerModel.OccupationId = this.personalOccupation.value.toString();
-    customerModel.MaritalStatus = this.personalMaritalStatus.value.toString();
-    customerModel.DateOfBirth = this.personalDateOfBirth.value.toString();
-    customerModel.PAN = this.personalPAN.value.toString();
-    customerModel.Aadhar = this.personalAadhar.value.toString();
-    customerModel.Phone = this.personalPhone.value.toString();
-    customerModel.Email = this.personalEmail.value.toString();
-    customerModel.Education = this.personalEducation.value.toString();
-    customerModel.TDSApplicable = this.personalTDSApplicable.value.toString();
-    customerModel.TDSPrinting = this.personalTDSPrinting.value.toString();
-    customerModel.TDSRate = this.personalTDSRate.value.toString();
-    customerModel.Form60 = this.personalForm60.value.toString();
-    customerModel.Form61 = this.personalForm61.value.toString();
-    customerModel.Status = this.personalStatus.value.toString();
-    customerModel.BranchId = this._sharedService.applicationUser.branchId;
-    customerModel.Addresses = this.uiAddresses;
-    customerModel.Nominis = this.uiNominis;
-    customerModel.Documents = this.uiDocuments;
+    // customerModel.CustomerGroupId = this.personalGroup.value.toString();
+    // customerModel.CustomerType = this.personalCustomerType.value.toString();
+    // customerModel.OccupationId = this.personalOccupation.value.toString();
+    // customerModel.MaritalStatus = this.personalMaritalStatus.value.toString();
+    // customerModel.DateOfBirth = this.personalDateOfBirth.value.toString();
+    // customerModel.PAN = this.personalPAN.value.toString();
+    // customerModel.Aadhar = this.personalAadhar.value.toString();
+    // customerModel.Phone = this.personalPhone.value.toString();
+    // customerModel.Email = this.personalEmail.value.toString();
+    // customerModel.Education = this.personalEducation.value.toString();
+    // customerModel.TDSApplicable = this.personalTDSApplicable.value.toString();
+    // customerModel.TDSPrinting = this.personalTDSPrinting.value.toString();
+    // customerModel.TDSRate = this.personalTDSRate.value.toString();
+    // customerModel.Form60 = this.personalForm60.value.toString();
+    // customerModel.Form61 = this.personalForm61.value.toString();
+    // customerModel.MemberId = this.personalMember.value.id.toString();
+    // customerModel.Status = this.personalStatus.value.toString();
+    // customerModel.BranchId = this._sharedService.applicationUser.branchId;
+    // customerModel.Addresses = this.uiAddresses;
+    // customerModel.Nominis = this.uiNominis;
+    // customerModel.Documents = this.uiDocuments;
 
-    console.log(customerModel);
+    // console.log(customerModel);
 
-    if (this.isAddMode) {
-      this._customerService.createCustomer(customerModel).subscribe((data: any) => {
-        console.log(data);
-        if (data) {
-          if (data.statusCode == 200 && data.data.data > 0) {
-            this._toastrService.success('Customer created.', 'Success!');
-            this.clear();
-            this.loadForm();
-          }
-        }
-      })
-    }
-    else {
-      this._customerService.updateCustomer(customerModel.Id, customerModel).subscribe((data: any) => {
-        console.log(data);
-        if (data) {
-          if (data.statusCode == 200 && data.data.data > 0) {
-            this._toastrService.success('Customer updated.', 'Success!');
-            this.clear();
-            this.loadForm();
-          }
-        }
-      })
-    }
+    // if (this.isAddMode) {
+    //   this._customerService.createCustomer(customerModel).subscribe((data: any) => {
+    //     console.log(data);
+    //     if (data) {
+    //       if (data.statusCode == 200 && data.data.data > 0) {
+    //         this._toastrService.success('Customer created.', 'Success!');
+    //         this.clear();
+    //         this.loadForm();
+    //       }
+    //     }
+    //   })
+    // }
+    // else {
+    //   this._customerService.updateCustomer(customerModel.Id, customerModel).subscribe((data: any) => {
+    //     console.log(data);
+    //     if (data) {
+    //       if (data.statusCode == 200 && data.data.data > 0) {
+    //         this._toastrService.success('Customer updated.', 'Success!');
+    //         this.clear();
+    //         this.loadForm();
+    //       }
+    //     }
+    //   })
+    // }
   }
 
   clear() {
@@ -688,36 +681,36 @@ export class CustomerFormComponent implements OnInit {
       districtName = district[0].name;
 
       let addressIndex = this.uiAddresses.findIndex(add => add.addressType == this.addressType.value.toString());
-      if (addressIndex > -1) {
-        // update old
-        let uiAddress = this.uiAddresses[addressIndex];
-        uiAddress.addressType = this.addressType.value.toString();
-        uiAddress.addressTypeName = addressTypeName;
-        uiAddress.address = this.addressBuilding.value.toString();
-        uiAddress.street = this.addressStreet.value.toString();
-        uiAddress.landmark = this.addressLandmark.value.toString();
-        uiAddress.city = this.addressCity.value.toString();
-        uiAddress.districtId = this.addressDistrict.value.toString();
-        uiAddress.districtName = districtName;
-        uiAddress.tahshilId = this.addressTahsil.value.toString();
-        uiAddress.pincode = this.addressPincode.value.toString();
-      }
-      else {
-        // add new
-        let uiAddress = {} as UiAddress;
-        uiAddress.id = 0;
-        uiAddress.addressType = this.addressType.value.toString();
-        uiAddress.addressTypeName = addressTypeName;
-        uiAddress.address = this.addressBuilding.value.toString();
-        uiAddress.street = this.addressStreet.value.toString();
-        uiAddress.landmark = this.addressLandmark.value.toString();
-        uiAddress.city = this.addressCity.value.toString();
-        uiAddress.districtId = this.addressDistrict.value.toString();
-        uiAddress.districtName = districtName;
-        uiAddress.tahshilId = this.addressTahsil.value.toString();
-        uiAddress.pincode = this.addressPincode.value.toString();
-        this.uiAddresses.push(uiAddress);
-      }
+      // if (addressIndex > -1) {
+      //   // update old
+      //   let uiAddress = this.uiAddresses[addressIndex];
+      //   uiAddress.addressType = this.addressType.value.toString();
+      //   uiAddress.addressTypeName = addressTypeName;
+      //   uiAddress.address = this.addressBuilding.value.toString();
+      //   uiAddress.street = this.addressStreet.value.toString();
+      //   uiAddress.landmark = this.addressLandmark.value.toString();
+      //   uiAddress.city = this.addressCity.value.toString();
+      //   uiAddress.districtId = this.addressDistrict.value.toString();
+      //   uiAddress.districtName = districtName;
+      //   uiAddress.tahshilId = this.addressTahsil.value.toString();
+      //   uiAddress.pincode = this.addressPincode.value.toString();
+      // }
+      // else {
+      //   // add new
+      //   let uiAddress = {} as UiAddress;
+      //   uiAddress.id = 0;
+      //   uiAddress.addressType = this.addressType.value.toString();
+      //   uiAddress.addressTypeName = addressTypeName;
+      //   uiAddress.address = this.addressBuilding.value.toString();
+      //   uiAddress.street = this.addressStreet.value.toString();
+      //   uiAddress.landmark = this.addressLandmark.value.toString();
+      //   uiAddress.city = this.addressCity.value.toString();
+      //   uiAddress.districtId = this.addressDistrict.value.toString();
+      //   uiAddress.districtName = districtName;
+      //   uiAddress.tahshilId = this.addressTahsil.value.toString();
+      //   uiAddress.pincode = this.addressPincode.value.toString();
+      //   this.uiAddresses.push(uiAddress);
+      // }
 
     }
   }
@@ -785,75 +778,75 @@ export class CustomerFormComponent implements OnInit {
   addNomini() {
     if (this.validNominiForm()) {
 
-      // Check existing nomini with name and relation
-      let nominiIndex = this.uiNominis.findIndex(nomini =>
-        nomini.firstName.toLowerCase() == this.nominiFirstName.value.toLowerCase() &&
-        nomini.middleName.toLowerCase() == this.nominiMiddleName.value.toLowerCase() &&
-        nomini.lastName.toLowerCase() == this.nominiLastName.value.toLowerCase());
+      // // Check existing nomini with name and relation
+      // let nominiIndex = this.uiNominis.findIndex(nomini =>
+      //   nomini.firstName.toLowerCase() == this.nominiFirstName.value.toLowerCase() &&
+      //   nomini.middleName.toLowerCase() == this.nominiMiddleName.value.toLowerCase() &&
+      //   nomini.lastName.toLowerCase() == this.nominiLastName.value.toLowerCase());
 
-      let totalPercentage = this.uiNominis.reduce((sum, nomini) => sum + parseInt(nomini.percentage), 0);
-      if (nominiIndex > -1) {
-        totalPercentage = totalPercentage - this.uiNominis[nominiIndex].percentage;
-      }
-      if (totalPercentage == 100) {
-        this._toastrService.warning('Total percentage for nomini exceeded.', 'Warning!');
-        return;
-      }
+      // let totalPercentage = this.uiNominis.reduce((sum, nomini) => sum + parseInt(nomini.percentage), 0);
+      // if (nominiIndex > -1) {
+      //   totalPercentage = totalPercentage - this.uiNominis[nominiIndex].percentage;
+      // }
+      // if (totalPercentage == 100) {
+      //   this._toastrService.warning('Total percentage for nomini exceeded.', 'Warning!');
+      //   return;
+      // }
 
-      let relation = "";
-      let uiRelation = this.uiRelations.filter(r => r.id == parseInt(this.nominiRelation.value.toString()));
-      if (uiRelation) {
-        relation = uiRelation[0].branchMasterName;
-      }
+      // let relation = "";
+      // let uiRelation = this.uiRelations.filter(r => r.id == parseInt(this.nominiRelation.value.toString()));
+      // if (uiRelation) {
+      //   relation = uiRelation[0].branchMasterName;
+      // }
 
-      let district = this.uiAllDistricts.filter(d => d.id == this.nominiDistrict.value.toString());
-      let districtName = district[0].name;
+      // let district = this.uiAllDistricts.filter(d => d.id == this.nominiDistrict.value.toString());
+      // let districtName = district[0].name;
 
-      if (nominiIndex > -1) {
-        let uiNomini = this.uiNominis[nominiIndex];
-        uiNomini.title = this.nominiTitle.value.toString();
-        uiNomini.firstName = this.nominiFirstName.value.toString();
-        uiNomini.middleName = this.nominiMiddleName.value.toString();
-        uiNomini.lastName = this.nominiLastName.value.toString();
-        uiNomini.relationId = this.nominiRelation.value.toString();
-        uiNomini.relationName = relation;
-        uiNomini.guardian = this.nominiGuardian.value.toString();
-        uiNomini.percentage = this.nominiPercentage.value.toString();
-        uiNomini.dateOfBirth = this.nominiDateOfBirth.value.toString();
-        uiNomini.address = this.nominiBuilding.value.toString();
-        uiNomini.street = this.nominiStreet.value.toString();
-        uiNomini.city = this.nominiCity.value.toString();
-        uiNomini.districtId = this.nominiDistrict.value.toString();
-        uiNomini.districtName = districtName;
-        uiNomini.tahshilId = this.nominiTahsil.value.toString();
-        uiNomini.pincode = this.nominiPincode.value.toString();
-        uiNomini.phone = this.nominiPhone.value.toString();
-        uiNomini.email = this.nominiEmail.value.toString();
-      }
-      else {
-        let uiNomini = {} as UiNomini;
-        uiNomini.id = 0;
-        uiNomini.title = this.nominiTitle.value.toString();
-        uiNomini.firstName = this.nominiFirstName.value.toString();
-        uiNomini.middleName = this.nominiMiddleName.value.toString();
-        uiNomini.lastName = this.nominiLastName.value.toString();
-        uiNomini.relationId = this.nominiRelation.value.toString();
-        uiNomini.relationName = relation;
-        uiNomini.guardian = this.nominiGuardian.value.toString();
-        uiNomini.percentage = this.nominiPercentage.value.toString();
-        uiNomini.dateOfBirth = this.nominiDateOfBirth.value.toString();
-        uiNomini.address = this.nominiBuilding.value.toString();
-        uiNomini.street = this.nominiStreet.value.toString();
-        uiNomini.city = this.nominiCity.value.toString();
-        uiNomini.districtId = this.nominiDistrict.value.toString();
-        uiNomini.districtName = districtName;
-        uiNomini.tahshilId = this.nominiTahsil.value.toString();
-        uiNomini.pincode = this.nominiPincode.value.toString();
-        uiNomini.phone = this.nominiPhone.value.toString();
-        uiNomini.email = this.nominiEmail.value.toString();
+      // if (nominiIndex > -1) {
+      //   let uiNomini = this.uiNominis[nominiIndex];
+      //   uiNomini.title = this.nominiTitle.value.toString();
+      //   uiNomini.firstName = this.nominiFirstName.value.toString();
+      //   uiNomini.middleName = this.nominiMiddleName.value.toString();
+      //   uiNomini.lastName = this.nominiLastName.value.toString();
+      //   uiNomini.relationId = this.nominiRelation.value.toString();
+      //   uiNomini.relationName = relation;
+      //   uiNomini.guardian = this.nominiGuardian.value.toString();
+      //   uiNomini.percentage = this.nominiPercentage.value.toString();
+      //   uiNomini.dateOfBirth = this.nominiDateOfBirth.value.toString();
+      //   uiNomini.address = this.nominiBuilding.value.toString();
+      //   uiNomini.street = this.nominiStreet.value.toString();
+      //   uiNomini.city = this.nominiCity.value.toString();
+      //   uiNomini.districtId = this.nominiDistrict.value.toString();
+      //   uiNomini.districtName = districtName;
+      //   uiNomini.tahshilId = this.nominiTahsil.value.toString();
+      //   uiNomini.pincode = this.nominiPincode.value.toString();
+      //   uiNomini.phone = this.nominiPhone.value.toString();
+      //   uiNomini.email = this.nominiEmail.value.toString();
+      // }
+      // else {
+      //   let uiNomini = {} as UiNomini;
+      //   uiNomini.id = 0;
+      //   uiNomini.title = this.nominiTitle.value.toString();
+      //   uiNomini.firstName = this.nominiFirstName.value.toString();
+      //   uiNomini.middleName = this.nominiMiddleName.value.toString();
+      //   uiNomini.lastName = this.nominiLastName.value.toString();
+      //   uiNomini.relationId = this.nominiRelation.value.toString();
+      //   uiNomini.relationName = relation;
+      //   uiNomini.guardian = this.nominiGuardian.value.toString();
+      //   uiNomini.percentage = this.nominiPercentage.value.toString();
+      //   uiNomini.dateOfBirth = this.nominiDateOfBirth.value.toString();
+      //   uiNomini.address = this.nominiBuilding.value.toString();
+      //   uiNomini.street = this.nominiStreet.value.toString();
+      //   uiNomini.city = this.nominiCity.value.toString();
+      //   uiNomini.districtId = this.nominiDistrict.value.toString();
+      //   uiNomini.districtName = districtName;
+      //   uiNomini.tahshilId = this.nominiTahsil.value.toString();
+      //   uiNomini.pincode = this.nominiPincode.value.toString();
+      //   uiNomini.phone = this.nominiPhone.value.toString();
+      //   uiNomini.email = this.nominiEmail.value.toString();
 
-        this.uiNominis.push(uiNomini);
-      }
+      //   this.uiNominis.push(uiNomini);
+      // }
     }
   }
 
@@ -949,6 +942,8 @@ export class CustomerFormComponent implements OnInit {
     uiDocument.documentName = this.uiDocumentTypes.filter(d => d.code == uiDocument.documentKey)[0].name;
     uiDocument.filePath = "";
     uiDocument.id = 0;
+    uiDocument.uploadSuccess = false;
+    uiDocument.percentDone = 0;
     this.uiDocuments.push(uiDocument);
 
   }
@@ -962,11 +957,8 @@ export class CustomerFormComponent implements OnInit {
     this.uiDocuments = [];
   }
 
-  percentDone: number = 0;
-  uploadSuccess: boolean = false;
+
   uploadDocument(event: any, index: number, documentKey: string) {
-    this.uploadSuccess = false;
-    this.percentDone = 0;
     this.uploadAndProgressSingle(event.target.files[0], index, documentKey);
   }
 
@@ -980,8 +972,8 @@ export class CustomerFormComponent implements OnInit {
     this._customerService.uploadDocument(formData).subscribe((data: any) => {
       let result = data.data.data;
       if (result.includes(file.name)) {
-        this.uploadSuccess = true;
-        this.percentDone = 100;
+        this.uiDocuments[index].uploadSuccess = true;
+        this.uiDocuments[index].percentDone = 100;
       }
 
       this.uiDocuments[index].filePath = file.name;
@@ -989,12 +981,14 @@ export class CustomerFormComponent implements OnInit {
   }
 
   ///Customer
-  get customerCode() {
-    return this.customerForm.get('customerCode')!;
-  }
+
+
   ///
 
   /// Personal
+  get customerCode() {
+    return this.personalDetailsForm.get('customerCode')!;
+  }
   get personalTitle() {
     return this.personalDetailsForm.get('personalTitle')!;
   }
@@ -1007,23 +1001,11 @@ export class CustomerFormComponent implements OnInit {
   get personalLastName() {
     return this.personalDetailsForm.get('personalLastName')!;
   }
-  get personalGender() {
-    return this.personalDetailsForm.get('personalGender')!;
+  get personalPhone() {
+    return this.personalDetailsForm.get('personalPhone')!;
   }
-  get personalGroup() {
-    return this.personalDetailsForm.get('personalGroup')!;
-  }
-  get personalCustomerType() {
-    return this.personalDetailsForm.get('personalCustomerType')!;
-  }
-  get personalOccupation() {
-    return this.personalDetailsForm.get('personalOccupation')!;
-  }
-  get personalMaritalStatus() {
-    return this.personalDetailsForm.get('personalMaritalStatus')!;
-  }
-  get personalStatus() {
-    return this.personalDetailsForm.get('personalStatus')!;
+  get personalMobile() {
+    return this.personalDetailsForm.get('personalMobile')!;
   }
   get personalDateOfBirth() {
     return this.personalDetailsForm.get('personalDateOfBirth')!;
@@ -1031,52 +1013,56 @@ export class CustomerFormComponent implements OnInit {
   get personalAge() {
     return this.personalDetailsForm.get('personalAge')!;
   }
+  get personalOpenDate() {
+    return this.personalDetailsForm.get('personalOpenDate')!;
+  }
+  get personalEmail() {
+    return this.personalDetailsForm.get('personalEmail')!;
+  }
   get personalPAN() {
     return this.personalDetailsForm.get('personalPAN')!;
   }
   get personalAadhar() {
     return this.personalDetailsForm.get('personalAadhar')!;
   }
-  get personalPhone() {
-    return this.personalDetailsForm.get('personalPhone')!;
+  get personalGender() {
+    return this.personalDetailsForm.get('personalGender')!;
   }
-  get personalEmail() {
-    return this.personalDetailsForm.get('personalEmail')!;
+  get personalCustGroup() {
+    return this.personalDetailsForm.get('personalCustGroup')!;
+  }
+  get personalCustZone() {
+    return this.personalDetailsForm.get('personalCustZone')!;
+  }
+  get personalCustCaste() {
+    return this.personalDetailsForm.get('personalCustCaste')!;
+  }
+  get personalCustReligion() {
+    return this.personalDetailsForm.get('personalCustReligion')!;
+  }
+  get personalOccupation() {
+    return this.personalDetailsForm.get('personalOccupation')!;
+  }
+  get personalMaritalStatus() {
+    return this.personalDetailsForm.get('personalMaritalStatus')!;
+  }
+  get personalNationality() {
+    return this.personalDetailsForm.get('personalNationality')!;
   }
   get personalEducation() {
     return this.personalDetailsForm.get('personalEducation')!;
   }
-  get personalTDSApplicable() {
-    return this.personalDetailsForm.get('personalTDSApplicable')!;
-  }
-  get personalTDSPrinting() {
-    return this.personalDetailsForm.get('personalTDSPrinting')!;
-  }
-  get personalTDSRate() {
-    return this.personalDetailsForm.get('personalTDSRate')!;
-  }
-  get personalForm60() {
-    return this.personalDetailsForm.get('personalForm60')!;
-  }
-  get personalForm61() {
-    return this.personalDetailsForm.get('personalForm61')!;
+  get personalCustCategory() {
+    return this.personalDetailsForm.get('personalCustCategory')!;
   }
   ///
-
-
   /// Address
 
   get addressType() {
     return this.addressForm.get('addressType')!;
   }
-  get addressBuilding() {
-    return this.addressForm.get('addressBuilding')!;
-  }
-  get addressStreet() {
-    return this.addressForm.get('addressStreet')!;
-  }
-  get addressLandmark() {
-    return this.addressForm.get('addressLandmark')!;
+  get addressText() {
+    return this.addressForm.get('addressText')!;
   }
   get addressCity() {
     return this.addressForm.get('addressCity')!;
@@ -1087,28 +1073,33 @@ export class CustomerFormComponent implements OnInit {
   get addressDistrict() {
     return this.addressForm.get('addressDistrict')!;
   }
-  get addressTahsil() {
-    return this.addressForm.get('addressTahsil')!;
+  get addressTaluka() {
+    return this.addressForm.get('addressTaluka')!;
   }
   get addressPincode() {
     return this.addressForm.get('addressPincode')!;
   }
-  
+  get addressDefault() {
+    return this.addressForm.get('addressDefault')!;
+  }
+
   ///
-
-
   /// Nomini
-  get nominiTitle() {
-    return this.nominiForm.get('nominiTitle')!;
+
+  get nominiName() {
+    return this.nominiForm.get('nominiName')!;
   }
-  get nominiFirstName() {
-    return this.nominiForm.get('nominiFirstName')!;
+  get nominiAddress() {
+    return this.nominiForm.get('nominiAddress')!;
   }
-  get nominiMiddleName() {
-    return this.nominiForm.get('nominiMiddleName')!;
+  get nominiDateOfBirth() {
+    return this.nominiForm.get('nominiDateOfBirth')!;
   }
-  get nominiLastName() {
-    return this.nominiForm.get('nominiLastName')!;
+  get nominiAge() {
+    return this.nominiForm.get('nominiAge')!;
+  }
+  get nominiPhone() {
+    return this.nominiForm.get('nominiPhone')!;
   }
   get nominiRelation() {
     return this.nominiForm.get('nominiRelation')!;
@@ -1119,46 +1110,13 @@ export class CustomerFormComponent implements OnInit {
   get nominiPercentage() {
     return this.nominiForm.get('nominiPercentage')!;
   }
-  get nominiDateOfBirth() {
-    return this.nominiForm.get('nominiDateOfBirth')!;
-  }
-  get nominiAge() {
-    return this.nominiForm.get('nominiAge')!;
-  }
-  get nominiBuilding() {
-    return this.nominiForm.get('nominiBuilding')!;
-  }
-  get nominiStreet() {
-    return this.nominiForm.get('nominiStreet')!;
-  }
-  get nominiCity() {
-    return this.nominiForm.get('nominiCity')!;
-  }
-  get nominiState() {
-    return this.nominiForm.get('nominiState')!;
-  }
-  get nominiDistrict() {
-    return this.nominiForm.get('nominiDistrict')!;
-  }
-  get nominiTahsil() {
-    return this.nominiForm.get('nominiTahsil')!;
-  }
-  get nominiPincode() {
-    return this.nominiForm.get('nominiPincode')!;
-  }
-  get nominiPhone() {
-    return this.nominiForm.get('nominiPhone')!;
-  }
-  get nominiEmail() {
-    return this.nominiForm.get('nominiEmail')!;
-  }
   /// 
 
   /// Document
   get documentSelect() {
     return this.documentsForm.get('documentSelect')!;
   }
-  
+
   ///
 
 }

@@ -7,13 +7,21 @@ import { IGeneralMasterDTO, UiUser } from 'src/app/common/models/common-ui-model
 })
 export class SharedService {
 
-  public applicationUser: UiUser = new UiUser(1, 1);
+  public applicationUser: UiUser = new UiUser(1, 1, "TempUser");
 
   public uiAllStates = [];
   public uiAllDistricts = [];
-  public uiAllTahshils = [];
+  public uiAllTalukas = [];
+  public uiAllVillages = [];
   public uiGLGroups = [];
   public uiTypeOfAccounts = [];
+  public uiCurrencies = [];
+
+  public uiAllMasters: any[] = [];
+
+  private apiCount = 0;
+  private isLoadingSubject = new BehaviorSubject<boolean>(false);
+  isLoading$ = this.isLoadingSubject.asObservable();
 
   constructor() { }
 
@@ -27,6 +35,22 @@ export class SharedService {
   }
   getDTO() {
     return this.dto.asObservable();
+  }
+
+  showLoader()
+  {
+    if (this.apiCount === 0) {
+      this.isLoadingSubject.next(true);
+    }
+    this.apiCount++;
+  }
+
+  hideLoader()
+  {
+    this.apiCount--;
+    if (this.apiCount === 0) {
+      this.isLoadingSubject.next(false);
+    }
   }
 
 }

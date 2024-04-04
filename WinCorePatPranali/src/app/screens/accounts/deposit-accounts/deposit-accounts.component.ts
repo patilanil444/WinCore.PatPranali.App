@@ -138,7 +138,7 @@ export class DepositAccountsComponent {
 
     // Occupations
     let occupationsMasterModel = {
-      GeneralMasterId: UiEnumGeneralMaster.OccupationMaster,
+      GeneralMasterId: 1,//UiEnumGeneralMaster.OccupationMaster,
       BranchId: this._sharedService.applicationUser.branchId
     }
     this._generalMasterService.getAllGeneralMasters(occupationsMasterModel).subscribe((data: any) => {
@@ -149,7 +149,7 @@ export class DepositAccountsComponent {
 
     // Zones
     let zoneGeneralMasterModel = {
-      GeneralMasterId: UiEnumGeneralMaster.ZoneMaster,
+      GeneralMasterId: 1,//UiEnumGeneralMaster.ZoneMaster,
       BranchId: this._sharedService.applicationUser.branchId
     }
     this._generalMasterService.getAllGeneralMasters(zoneGeneralMasterModel).subscribe((data: any) => {
@@ -160,7 +160,7 @@ export class DepositAccountsComponent {
 
     // Relations
     let relationsGeneralMasterModel = {
-      GeneralMasterId: UiEnumGeneralMaster.RelationMaster,
+      GeneralMasterId: 1,//UiEnumGeneralMaster.RelationMaster,
       BranchId: this._sharedService.applicationUser.branchId
     }
     this._generalMasterService.getAllGeneralMasters(relationsGeneralMasterModel).subscribe((data: any) => {

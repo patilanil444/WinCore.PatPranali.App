@@ -8,8 +8,10 @@ import { SharedService } from 'src/app/services/shared.service';
 
 interface IDistrictServerModel
 {
-  Name: string;
+  DistrictName: string;
   StateId: string;
+  CreatedBy: string;
+  UpdatedBy: string;
 }
 
 @Component({
@@ -65,7 +67,7 @@ export class DistrictMasterFormComponent implements OnInit {
               var district = data.data.data;
               this.districtForm.patchValue({
                 code: district.id,
-                name: district.name,
+                name: district.districtName,
                 stateId: district.stateId
               });
             }
@@ -87,15 +89,18 @@ export class DistrictMasterFormComponent implements OnInit {
     if (this.validateForm()) {
       let districtModel = {} as IDistrictServerModel;
 
-      districtModel.Name = this.name.value.toString();
+      districtModel.DistrictName = this.name.value.toString();
       districtModel.StateId = this.stateId.value.toString();
+      districtModel.CreatedBy = "";
+      districtModel.UpdatedBy = "";
+      
       console.log(districtModel);
 
       if (this.isAddMode) {
         this._districtMasterService.createDistrict(districtModel).subscribe((data: any) => {
           console.log(data);
           if (data) {
-            if (data.statusCode == 200 && data.data.data == 1) {
+            if (data.statusCode == 200 && data.data.data > 1) {
               this.toastrService.success('District added.', 'Success!');
               this.configClick("districts");
             }
@@ -107,7 +112,7 @@ export class DistrictMasterFormComponent implements OnInit {
         this._districtMasterService.updateDistrict(this.dto.id, districtModel).subscribe((data: any) => {
           console.log(data);
           if (data) {
-            if (data.statusCode == 200 && data.data.data == 1) {
+            if (data.statusCode == 200 && data.data.data > 1) {
               this.toastrService.success('District updated.', 'Success!');
               this.configClick("districts");
             }

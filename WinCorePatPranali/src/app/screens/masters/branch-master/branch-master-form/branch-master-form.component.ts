@@ -3,23 +3,36 @@ import { Component } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
+import { BranchDeclarations } from 'src/app/common/branch-declarations';
 import { IGeneralDTO } from 'src/app/common/models/common-ui-models';
 import { BranchMasterService } from 'src/app/services/masters/branch-master/branch-master.service';
 import { SharedService } from 'src/app/services/shared.service';
 
 interface IBranchServerModel {
-  Id: string;
-  Name: string;
+  BranchCode: string;
+  BranchName: string;
+  LocalName: string;
   Address: string;
-  Phone:string;
-  EmailId: string;
-  OpeningDate: string;
-  HeadOfficeDistance: string;
-  BankId: number;
-  Town: string;
-  TahshilId: number;
-  SZone: string;
+  ZipCode: string;
+  Phone: string;
+  Email: string;
+  Start_Date: string;
+  Ho: number;
+  Clg: number;
+  RegionalLang: string;
+  DailyAuthorisation: string;
+  Software_Type: string;
+  ClearingMember: string;
+  Cashyn: string;
+  OfficerManager: string;
+  CashierClerk: string;
+  MICRCODE: string;
+  ContactPerson: string;
   DistrictId: number;
+  TalukaId: number;
+  CurrencyId: number;
+  CreateBy:string;
+  UpdateBy: string;
 }
 
 @Component({
@@ -37,15 +50,24 @@ export class BranchMasterFormComponent {
   newCode!: string;
   isAddMode!: boolean;
 
-  uiAllDistricts = [];
-  uiAllTahshils = [];
+  uiAllDistricts: any[]= [];
+  uiAllTahshils: any[]= [];
 
   uiStates: any[] = [];
   uiDistricts: any[] = [];
-  uiTahshils:any[] = [];
+  uiTahshils: any[] = [];
+  uiCurrencies:any[] = [];
+
+  uiHOYN = BranchDeclarations.hoYN;
+  uiClearingYN = BranchDeclarations.clearingYN;
+  uiRegionalLang = BranchDeclarations.regionalLang;
+  uiDailyAuthYN = BranchDeclarations.dailyAuthYN;
+  uiSoftwareType = BranchDeclarations.softwareType;
+  uiClearingMemberYN = BranchDeclarations.clearingMemberYN;
+  uiCashierTransactionsYN = BranchDeclarations.cashierTransactionsYN;
 
   constructor(private router: Router, private route: ActivatedRoute,
-    private _branchMasterService: BranchMasterService, private _sharedService:SharedService,
+    private _branchMasterService: BranchMasterService, private _sharedService: SharedService,
     private _toastrService: ToastrService) {
   }
 
@@ -54,28 +76,41 @@ export class BranchMasterFormComponent {
     this.branchForm = new FormGroup({
       code: new FormControl("", []),
       name: new FormControl("", [Validators.required]),
+      localName: new FormControl("", []),
       address: new FormControl("", [Validators.required]),
+      zipCode: new FormControl("", [Validators.required]),
       phone: new FormControl("", [Validators.required]),
       email: new FormControl("", [Validators.required, Validators.email]),
-      openingDate : new FormControl(formatDate(new Date(Date.now()), 'yyyy-MM-dd', 'en'), [Validators.required]),
-      distance: new FormControl("", []),
-      town: new FormControl("", [Validators.required]),
-      zone: new FormControl("", []),
+      openingDate: new FormControl(formatDate(new Date(Date.now()), 'yyyy-MM-dd', 'en'), [Validators.required]),
+      ho: new FormControl(this.uiHOYN[0].code, []),
+      clearing: new FormControl(this.uiClearingYN[0].code, []),
+      regionalLanguage: new FormControl(this.uiRegionalLang[0].code, []),
+      dailyAuthorisation: new FormControl(this.uiDailyAuthYN[0].code, []),
+      softwareType: new FormControl(this.uiSoftwareType[0].code, []),
+      clearingMember: new FormControl(this.uiClearingMemberYN[0].code, []),
+      cashyn: new FormControl(this.uiCashierTransactionsYN[0].code, []),
+      officerManagerName: new FormControl("", [Validators.required]),
+      cashierClerkName: new FormControl("", [Validators.required]),
+      micrCode: new FormControl("", [Validators.required]),
+      contactPerson: new FormControl("", [Validators.required]),
+      currency: new FormControl(this.uiCurrencies.length ? this.uiCurrencies[0].code : 0, [Validators.required]),
       stateId: new FormControl(1, []),
-      tahshilId: new FormControl(1, [Validators.required]),
-      districtId: new FormControl(1, [Validators.required])
+      districtId: new FormControl(1, [Validators.required]),
+      tahshilId: new FormControl(1, [Validators.required])
     });
 
     this._branchMasterService.getDTO().subscribe(obj => this.dto = obj);
-   
+
     this.uiStates = this._sharedService.uiAllStates;
     this.uiAllDistricts = this._sharedService.uiAllDistricts;
-    this.uiAllTahshils = this._sharedService.uiAllTahshils;
+    this.uiAllTahshils = this._sharedService.uiAllTalukas;
+    this.uiCurrencies = this._sharedService.uiCurrencies;
+
     let districts = this.uiAllDistricts.filter((d: any) => d.stateId == this.uiStates[0].id);
     if (districts) {
       this.uiDistricts = districts;
     }
-  
+
     if (this.dto) {
       this.id = this.dto.id;
       if (this.dto.id == 0) {
@@ -85,49 +120,54 @@ export class BranchMasterFormComponent {
           code: this.maxId + 1,
         });
       }
-      else
-      {
+      else {
         this.isAddMode = false;
         this._branchMasterService.getBranch(this.dto.id).subscribe((data: any) => {
           console.log(data);
           if (data) {
             if (data.statusCode == 200 && data.data.data) {
               var brnch = data.data.data;
-  
+              let stateId = 0;
+              let districts = this.uiAllDistricts.filter((d: any) => d.id == brnch.districtId);
+              if (districts && districts.length) {
+                stateId = districts[0].stateId;
+
+                let allDistricts = this.uiAllDistricts.filter((d: any) => d.stateId == stateId);
+                if (allDistricts && allDistricts.length > 0) {
+                  this.uiDistricts = allDistricts;
+                }
+              }
+
               let tahshils = this.uiAllTahshils.filter((d: any) => d.districtId == brnch.districtId);
               if (tahshils) {
                 this.uiTahshils = tahshils;
               }
-  
-              this.branchForm.patchValue({
-                code:brnch.id,
-                name: brnch.name,
-                address: brnch.address,
-                phone: brnch.phone,
-                email: brnch.emailId,
-                openingDate: formatDate(new Date(brnch.openingDate), 'yyyy-MM-dd', 'en'),
-                distance: brnch.headOfficeDistance,
-                town: brnch.town,
-                zone: brnch.sZone,
-                stateId: 1,
-                tahshilId: brnch.tahshilId,
-                districtId: brnch.districtId
-              });
 
-              // this.branchForm = new FormGroup({
-              //   code: new FormControl(brnch.id, []),
-              //   name: new FormControl(brnch.name, [Validators.required]),
-              //   address: new FormControl(brnch.address, [Validators.required]),
-              //   phone: new FormControl(brnch.phone, [Validators.required]),
-              //   email: new FormControl(brnch.emailId, [Validators.required, Validators.email]),
-              //   openingDate : new FormControl(formatDate(new Date(brnch.openingDate), 'yyyy-MM-dd', 'en'), [Validators.required]),
-              //   distance: new FormControl(brnch.headOfficeDistance, []),
-              //   town: new FormControl(brnch.town, [Validators.required]),
-              //   zone: new FormControl(brnch.sZone, []),
-              //   stateId: new FormControl(1, []),
-              //   tahshilId: new FormControl(brnch.tahshilId, [Validators.required]),
-              //   districtId: new FormControl(brnch.districtId, [Validators.required])
-              // });
+              this.branchForm.patchValue({
+                code: brnch.branchCode,
+                name: brnch.branchName,
+                localName: brnch.localName,
+                address: brnch.address,
+                zipCode: brnch.zipCode,
+                phone: brnch.phone,
+                email: brnch.email,
+                openingDate: formatDate(new Date(brnch.start_Date), 'yyyy-MM-dd', 'en'),
+                ho: brnch.ho == 1? 'Y' : 'N',
+                clearing: brnch.clg == 1? 'Y' : 'N',
+                regionalLanguage: brnch.regionalLang,
+                dailyAuthorisation: brnch.dailyAuthorisation,
+                softwareType: brnch.software_Type,
+                clearingMember: brnch.clearingMember,
+                cashyn: brnch.cashyn,
+                officerManagerName: brnch.officerManager,
+                cashierClerkName: brnch.cashierClerk,
+                micrCode: brnch.micrcode,
+                contactPerson: brnch.contactPerson,
+                currency: brnch.currencyId,
+                stateId: stateId,
+                districtId: brnch.districtId,
+                tahshilId: brnch.talukaId,
+              });
             }
           }
         })
@@ -143,12 +183,11 @@ export class BranchMasterFormComponent {
       this.uiDistricts = districts;
       this.branchForm.patchValue({
         districtId: this.uiDistricts[0].id
-     });
+      });
     }
   }
 
-  onDistrictChange(event:any)
-  {
+  onDistrictChange(event: any) {
     let districtId = this.districtId.value;
     this.uiTahshils = [];
     let tahshils = this.uiAllTahshils.filter((d: any) => d.districtId == districtId);
@@ -156,7 +195,7 @@ export class BranchMasterFormComponent {
       this.uiTahshils = tahshils;
       this.branchForm.patchValue({
         tahshilId: this.uiTahshils[0].id
-     });
+      });
     }
   }
 
@@ -164,24 +203,36 @@ export class BranchMasterFormComponent {
     if (this.validateForm()) {
       let branchModel = {} as IBranchServerModel;
 
-      branchModel.Name = this.name.value.toString();
+      branchModel.BranchName = this.name.value.toString();
+      branchModel.LocalName = this.localName.value.toString();
       branchModel.Address = this.address.value.toString();
+      branchModel.ZipCode = this.zipCode.value.toString();
       branchModel.Phone = this.phone.value.toString();
-      branchModel.EmailId = this.email.value.toString();
-      branchModel.OpeningDate = this.openingDate.value.toString();
-      branchModel.HeadOfficeDistance = this.distance.value.toString();
-      branchModel.Town = this.town.value.toString();
-      branchModel.TahshilId = this.tahshilId.value.toString();
-      branchModel.BankId = 1;
-      branchModel.SZone = this.zone.value.toString();
+      branchModel.Email = this.email.value.toString();
+      branchModel.Start_Date = this.openingDate.value.toString();
+      branchModel.Ho = this.ho.value.toString() == "Y" ? 1: 0;
+      branchModel.Clg = this.clearing.value.toString() == "Y" ? 1: 0;
+      branchModel.RegionalLang = this.regionalLanguage.value.toString();
+      branchModel.DailyAuthorisation = this.dailyAuthorisation.value.toString();
+      branchModel.Software_Type = this.softwareType.value.toString();
+      branchModel.ClearingMember = this.clearingMember.value.toString();
+      branchModel.Cashyn = this.cashyn.value.toString();
+      branchModel.OfficerManager = this.officerManagerName.value.toString();
+      branchModel.CashierClerk = this.cashierClerkName.value.toString();
+      branchModel.MICRCODE = this.micrCode.value.toString();
+      branchModel.ContactPerson = this.contactPerson.value.toString();
       branchModel.DistrictId = this.districtId.value.toString();
+      branchModel.TalukaId = this.tahshilId.value.toString();
+      branchModel.CurrencyId = this.currency.value.toString();
+      branchModel.CreateBy = this._sharedService.applicationUser.userName;
+      branchModel.UpdateBy = this._sharedService.applicationUser.userName;
       console.log(branchModel);
 
       if (this.isAddMode) {
         this._branchMasterService.createBranch(branchModel).subscribe((data: any) => {
           console.log(data);
           if (data) {
-            if (data.statusCode == 200 && data.data.data == 1) {
+            if (data.statusCode == 200 && data.data.data > 1) {
               this._toastrService.success('Branch added.', 'Success!');
               this.configClick("branches");
             }
@@ -193,7 +244,7 @@ export class BranchMasterFormComponent {
         this._branchMasterService.updateBranch(this.dto.id, branchModel).subscribe((data: any) => {
           console.log(data);
           if (data) {
-            if (data.statusCode == 200 && data.data.data == 1) {
+            if (data.statusCode == 200 && data.data.data > 1) {
               this._toastrService.success('Branch updated.', 'Success!');
               this.configClick("branches");
             }
@@ -216,28 +267,51 @@ export class BranchMasterFormComponent {
   }
 
   public clear(): void {
-    this.branchForm = new FormGroup({
-      //code: new FormControl("", []),
-      name: new FormControl("", [Validators.required]),
-      address: new FormControl("", [Validators.required]),
-      phone: new FormControl("", [Validators.required]),
-      email: new FormControl("", [Validators.required, Validators.email]),
-      openingDate : new FormControl(new Date(), [Validators.required]),
-      distance: new FormControl("", []),
-      town: new FormControl("", [Validators.required]),
-      zone: new FormControl("", []),
-      stateId: new FormControl(1, []),
-      tahshilId: new FormControl(1, [Validators.required]),
-      districtId: new FormControl(1, [Validators.required])
+    this.branchForm.patchValue({
+      code: 0,
+      name: "",
+      localName: "",
+      address: "",
+      zipCode: "",
+      phone: "",
+      email: "",
+      openingDate: formatDate(new Date(), 'yyyy-MM-dd', 'en'),
+      ho: this.uiHOYN[0].code,
+      clearing: this.uiClearingYN[0].code,
+      regionalLanguage: this.uiRegionalLang[0].code,
+      dailyAuthorisation: this.uiDailyAuthYN[0].code,
+      softwareType: this.uiSoftwareType[0].code,
+      clearingMember: this.uiClearingMemberYN[0].code,
+      cashyn: this.uiCashierTransactionsYN[0].code,
+      officerManagerName: "",
+      cashierClerkName: "",
+      micrCode: "",
+      contactPerson: "",
+      currency: this.uiCurrencies.length ? this.uiCurrencies[0].code : 0,
+      stateId: 1,
+      districtId: 1,
+      tahshilId: 1
     });
   }
-  
+
+  get code() {
+    return this.branchForm.get('code')!;
+  }
+
   get name() {
     return this.branchForm.get('name')!;
   }
 
+  get localName() {
+    return this.branchForm.get('localName')!;
+  }
+
   get address() {
     return this.branchForm.get('address')!;
+  }
+
+  get zipCode() {
+    return this.branchForm.get('zipCode')!;
   }
 
   get phone() {
@@ -252,32 +326,68 @@ export class BranchMasterFormComponent {
     return this.branchForm.get('openingDate')!;
   }
 
-  get distance() {
-    return this.branchForm.get('distance')!;
+  get ho() {
+    return this.branchForm.get('ho')!;
   }
 
-  get town() {
-    return this.branchForm.get('town')!;
+  get clearing() {
+    return this.branchForm.get('clearing')!;
   }
 
-  get zone() {
-    return this.branchForm.get('zone')!;
+  get regionalLanguage() {
+    return this.branchForm.get('regionalLanguage')!;
+  }
+
+  get dailyAuthorisation() {
+    return this.branchForm.get('dailyAuthorisation')!;
+  }
+
+  get softwareType() {
+    return this.branchForm.get('softwareType')!;
+  }
+
+  get clearingMember() {
+    return this.branchForm.get('clearingMember')!;
+  }
+
+  get cashyn() {
+    return this.branchForm.get('cashyn')!;
+  }
+
+  get officerManagerName() {
+    return this.branchForm.get('officerManagerName')!;
+  }
+
+  get cashierClerkName() {
+    return this.branchForm.get('cashierClerkName')!;
+  }
+
+  get micrCode() {
+    return this.branchForm.get('micrCode')!;
+  }
+
+  get contactPerson() {
+    return this.branchForm.get('contactPerson')!;
+  }
+
+  get currency() {
+    return this.branchForm.get('currency')!;
   }
 
   get stateId() {
     return this.branchForm.get('stateId')!;
   }
 
-  get districtId() {
-    return this.branchForm.get('districtId')!;
-  }
-
   get tahshilId() {
     return this.branchForm.get('tahshilId')!;
   }
 
+  get districtId() {
+    return this.branchForm.get('districtId')!;
+  }
+
   configClick(routeValue: string) {
     sessionStorage.setItem("configMenu", routeValue);
-    this.router.navigate(['/app/'+ routeValue]);
+    this.router.navigate(['/app/' + routeValue]);
   }
 }

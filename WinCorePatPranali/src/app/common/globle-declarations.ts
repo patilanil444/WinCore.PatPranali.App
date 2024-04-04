@@ -2,7 +2,7 @@ import { HttpHeaders } from '@angular/common/http';
 
 export class GlobleDeclarations
 {
-  static apiBaseURL = "http://localhost:7230/";
+  static apiBaseURL = "https://localhost:7229/";
 
   private static GetHeader() {
     const headers = new HttpHeaders();

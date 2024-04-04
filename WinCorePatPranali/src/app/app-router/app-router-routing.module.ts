@@ -27,11 +27,19 @@ import { CustomerFormComponent } from '../screens/customers/customer/customer-fo
 import { CustomerSearchComponent } from '../screens/customers/customer/customer-search/customer-search.component';
 import { MemberSearchComponent } from '../screens/customers/member/member-search/member-search.component';
 import { MemberFormComponent } from '../screens/customers/member/member-form/member-form.component';
+import { MasterDataResolverService } from '../common/resolvers/master-data-resolver.service';
 
 const routes: Routes = [
   {
-    path: '', component: AppRouterComponent, children: [
-      { path: 'home', component: HomeComponent },
+    path: '', component: AppRouterComponent, 
+    resolve:
+    {
+      masterData: MasterDataResolverService,
+    }, 
+    children: 
+    [{
+        path: 'home', component: HomeComponent
+      },
       { path: 'deposit-accounts', component: DepositAccountsComponent },
       { path: 'loan-accounts', component: LoanAccountsComponent },
       { path: 'bank', component: BankMasterFormComponent },

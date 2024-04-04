@@ -13,7 +13,7 @@
                         </select> -->
                         <select class="form-control" name="masterList" [(ngModel)]="masterId">
                             <option *ngFor="let uiMaster of uiMasters" [ngValue]="uiMaster.id">
-                                {{uiMaster.masterName}}
+                                {{uiMaster.constName}}
                             </option>
                         </select>
                     </div>
@@ -28,24 +28,24 @@
                 <table class="mb-0 table table-striped">
                     <thead>
                         <tr>
-                            <th width="5%">#</th>
-                            <th width="80%">Name</th>
-                            <th width="15%">Actions</th>
+                            <th width="40%">Full Name</th>
+                            <th width="40%">Short Name</th>
+                            <th width="20%">Actions</th>
                         </tr>
                     </thead>
                     <tbody>
-                        <tr *ngFor="let uiBranchGeneralMaster of uiBranchGeneralMasters| paginate: { itemsPerPage: 10, currentPage: p, totalItems: total }">
-                            <th scope="row">{{uiBranchGeneralMaster.id}}</th>
-                            <td>{{uiBranchGeneralMaster.branchMasterName}}</td>
+                        <tr *ngFor="let uiGeneralMaster of uiGeneralMasters| paginate: { itemsPerPage: 10, currentPage: p, totalItems: total }">
+                            <td>{{uiGeneralMaster.constantname}}</td>
+                            <td>{{uiGeneralMaster.shortName}}</td>
                             <td>
                                 <div class="widget-content-right">
-                                    <button type="button" title="Edit record" class="btn-shadow btn btn-info btn-actions" (click)="edit(uiBranchGeneralMaster)">
+                                    <button type="button" title="Edit record" class="btn-shadow btn btn-info btn-actions" (click)="edit(uiGeneralMaster)">
                                         <span class="btn-icon-wrapper opacity-10">
                                             <i class="fa fa-edit fa-w-10"></i>
                                         </span>
                                     </button>
                                     <button type="button" title="Delete record" class="btn-shadow btn btn-danger btn-actions" data-toggle="modal"
-                                    data-target="#deleteModal" (click)="delete(uiBranchGeneralMaster)">
+                                    data-target="#deleteModal" (click)="delete(uiGeneralMaster)">
                                         <span class="btn-icon-wrapper opacity-10">
                                             <i class="fa fa-trash fa-w-20"></i>
                                         </span>

@@ -24,47 +24,36 @@ export class GeneralLedgerService {
 
   getGeneralLedgers(branchId: number) {
     let options = GlobleDeclarations.getHeaderOptions();
-    return this.http.get(GlobleDeclarations.apiBaseURL + "api/GLMaster/general-ledgers?branchId=" + branchId, options);
+    return this.http.get(GlobleDeclarations.apiBaseURL + "api/GeneralLedger/general-ledgers" , options);
   }
 
-  getGeneralLedger(id: number): any {
+  getGeneralLedger(code: number): any {
     let options = GlobleDeclarations.getHeaderOptions();
-    return this.http.get(GlobleDeclarations.apiBaseURL + "api/GLMaster/general-ledger?id=" + id, options);
+    return this.http.get(GlobleDeclarations.apiBaseURL + "api/GeneralLedger/general-ledger?code=" + code, options);
   }
 
   createGeneralLedger(glModel: any): any {
     let options = GlobleDeclarations.getHeaderOptions();
-    return this.http.post(GlobleDeclarations.apiBaseURL + "api/GLMaster/create-gl", glModel, options);
+    return this.http.post(GlobleDeclarations.apiBaseURL + "api/GeneralLedger/create-gl", glModel, options);
   }
 
   updateGeneralLedger(id: number, glModel: any): any {
     let options = GlobleDeclarations.getHeaderOptions();
-    return this.http.post(GlobleDeclarations.apiBaseURL + "api/GLMaster/update-gl?id=" + id, glModel, options);
+    return this.http.post(GlobleDeclarations.apiBaseURL + "api/GeneralLedger/update-gl?id=" + id, glModel, options);
   }
 
   deleteGeneralLedger(id: number): any {
     let options = GlobleDeclarations.getHeaderOptions();
-    return this.http.delete(GlobleDeclarations.apiBaseURL + "api/GLMaster/delete-gl?id=" + id, options);
+    return this.http.delete(GlobleDeclarations.apiBaseURL + "api/GeneralLedger/delete-gl?id=" + id, options);
   }
-
-  getGLGroups() {
-    let options = GlobleDeclarations.getHeaderOptions();
-    return this.http.get(GlobleDeclarations.apiBaseURL + "api/GLMaster/gl-groups", options);
-  }
-
-  getTypeOfAccounts() {
-    let options = GlobleDeclarations.getHeaderOptions();
-    return this.http.get(GlobleDeclarations.apiBaseURL + "api/common/type-of-accounts", options);
-  }
-
 
   getGeneralLedgerInterestParams(id: number): any {
     let options = GlobleDeclarations.getHeaderOptions();
-    return this.http.get(GlobleDeclarations.apiBaseURL + "api/GLMaster/gl-interest-parameters?id=" + id, options);
+    return this.http.get(GlobleDeclarations.apiBaseURL + "api/GeneralLedger/gl-interest-parameters?id=" + id, options);
   }
 
   updateGeneralLedgerInterestParams(id: number, glModel: any): any {
     let options = GlobleDeclarations.getHeaderOptions();
-    return this.http.post(GlobleDeclarations.apiBaseURL + "api/GLMaster/update-gl-interest-parameters?id=" + id, glModel, options);
+    return this.http.post(GlobleDeclarations.apiBaseURL + "api/GeneralLedger/update-gl-interest-parameters?id=" + id, glModel, options);
   }
 }

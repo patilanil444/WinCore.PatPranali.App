@@ -23,7 +23,7 @@ export class MemberService {
 
   getAllMembers(branchId: number) {
     let options = GlobleDeclarations.getHeaderOptions();
-    return this.http.get(GlobleDeclarations.apiBaseURL + "api/member/members?id=" + branchId, options);
+    return this.http.get(GlobleDeclarations.apiBaseURL + "api/member/members?branchId=" + branchId, options);
   }
 
   getMembersOnSearch(memberModel: any) {
@@ -60,5 +60,10 @@ export class MemberService {
   uploadDocument(uplaodMemberDocument: FormData,): any {
     let options = GlobleDeclarations.getHeaderOptions();
     return this.http.post(GlobleDeclarations.apiBaseURL + "api/member/upload-document", uplaodMemberDocument, options);
+  }
+
+  getDirectors(branchId: number) {
+    let options = GlobleDeclarations.getHeaderOptions();
+    return this.http.get(GlobleDeclarations.apiBaseURL + "api/member/directors?branchId=" + branchId, options);
   }
 }

@@ -13,7 +13,7 @@ import { SharedService } from 'src/app/services/shared.service';
 export class GeneralMasterListComponent {
 
   uiMasters: any[] = [];
-  uiBranchGeneralMasters: any[] = [];
+  uiGeneralMasters: any[] = [];
   p: number = 1;
   total: number = 0;
 
@@ -38,19 +38,15 @@ export class GeneralMasterListComponent {
   }
 
   getBranchGeneralMasters(){
-    let branchGeneralMasterModel = {
-      GeneralMasterId: this.masterId,
-      BranchId: this._sharedService.applicationUser.branchId
-    }
-    this._generalMasterService.getAllGeneralMasters(branchGeneralMasterModel).subscribe((data: any) => {
+    this._generalMasterService.getAllGeneralMasters(this.masterId).subscribe((data: any) => {
       if (data) {
-        this.uiBranchGeneralMasters = data.data.data;
+        this.uiGeneralMasters = data.data.data;
       }
     })
   }
 
   showMasterList() {
-    this.uiBranchGeneralMasters = [];
+    this.uiGeneralMasters = [];
     if (this.masterId > 0) {
       this.getBranchGeneralMasters();
     }
@@ -67,22 +63,28 @@ export class GeneralMasterListComponent {
       action: "newRecord",
       id: 0,
       maxId: 0,
+      constantNo : 0,
       masterId: this.masterId,
-      masterType: this.uiMasters.filter(m => m.id == this.masterId)[0].masterName
+      masterType: this.uiMasters.filter(m => m.id == this.masterId)[0].constName,
+      fullName: "",
+      shortName: ""
     }
 
     this._sharedService.setDTO(dtObject);
     this.configClick(route);
   }
 
-  edit(uiBranchGeneralMaster: any) {
+  edit(uiGeneralMaster: any) {
     let dtObject: IGeneralMasterDTO = {
       route: "general-master",
       action: "editRecord",
-      id: uiBranchGeneralMaster.id,
+      id: uiGeneralMaster.constId,
       maxId: 0,
+      constantNo : uiGeneralMaster.constantNo,
       masterId: this.masterId,
-      masterType: this.uiMasters.filter(m => m.id == this.masterId)[0].masterName
+      masterType: this.uiMasters.filter(m => m.id == this.masterId)[0].constName,
+      fullName: uiGeneralMaster.constantname,
+      shortName: uiGeneralMaster.shortName
     }
     
     this._sharedService.setDTO(dtObject);
@@ -90,8 +92,8 @@ export class GeneralMasterListComponent {
   }
 
   delete(uiGeneralMaster: any) {
-    if (uiGeneralMaster.id > 0) {
-      this._generalMasterService.generalMasterIdToDelete = uiGeneralMaster.id; 
+    if (uiGeneralMaster.constId > 0) {
+      this._generalMasterService.generalMasterIdToDelete = uiGeneralMaster.constId; 
     }
   }
 

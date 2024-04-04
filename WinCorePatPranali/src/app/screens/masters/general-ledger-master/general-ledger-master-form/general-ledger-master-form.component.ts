@@ -89,7 +89,7 @@ export class GeneralLedgerMasterFormComponent implements OnInit {
 
   getScheduleMaster() {
     let branchGeneralMasterModel = {
-      GeneralMasterId: UiEnumGeneralMaster.ScheduleMaster,
+      GeneralMasterId: 1,//UiEnumGeneralMaster.ScheduleMaster,
       BranchId: this._sharedService.applicationUser.branchId
     }
     this._generalMasterService.getAllGeneralMasters(branchGeneralMasterModel).subscribe((data: any) => {

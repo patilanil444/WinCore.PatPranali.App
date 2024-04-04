@@ -26,9 +26,9 @@ export class GeneralMasterService {
     return this.http.get(GlobleDeclarations.apiBaseURL + "api/GeneralMaster/master-list", options);
   }
 
-  getAllGeneralMasters(branchGeneralMasterModel: any) {
+  getAllGeneralMasters(systemConstantId: any) {
     let options = GlobleDeclarations.getHeaderOptions();
-    return this.http.post(GlobleDeclarations.apiBaseURL + "api/GeneralMaster/all-general-masters", branchGeneralMasterModel, options);
+    return this.http.get(GlobleDeclarations.apiBaseURL + "api/GeneralMaster/general-masters?systemConstantId=" + systemConstantId);
   }
 
   getGeneralMaster(id: number): any {
@@ -36,24 +36,14 @@ export class GeneralMasterService {
     return this.http.get(GlobleDeclarations.apiBaseURL + "api/GeneralMaster/general-master?id=" + id, options);
   }
 
-  createGeneralMaster(branchGeneralMasterModel: any): any {
+  saveGeneralMaster(branchGeneralMasterModel: any): any {
     let options = GlobleDeclarations.getHeaderOptions();
-    return this.http.post(GlobleDeclarations.apiBaseURL + "api/GeneralMaster/create-master", branchGeneralMasterModel, options);
+    return this.http.post(GlobleDeclarations.apiBaseURL + "api/GeneralMaster/save-general-master", branchGeneralMasterModel, options);
   }
 
-  updateGeneralMaster(id: number, branchGeneralMasterModel: any): any {
+  deleteGeneralMaster(constId: number): any {
     let options = GlobleDeclarations.getHeaderOptions();
-    return this.http.post(GlobleDeclarations.apiBaseURL + "api/GeneralMaster/update-master?id=" + id, branchGeneralMasterModel, options);
-  }
-
-  deleteGeneralMaster(id: number): any {
-    let options = GlobleDeclarations.getHeaderOptions();
-    return this.http.delete(GlobleDeclarations.apiBaseURL + "api/GeneralMaster/delete-master?id=" + id, options);
-  }
-
-  getMaxGeneralMasterId(): any {
-    let options = GlobleDeclarations.getHeaderOptions();
-    return this.http.get(GlobleDeclarations.apiBaseURL + "api/GeneralMaster/max-id", options);
+    return this.http.delete(GlobleDeclarations.apiBaseURL + "api/GeneralMaster/delete-master?constId=" + constId, options);
   }
 
   getMasterType(masterId: number)

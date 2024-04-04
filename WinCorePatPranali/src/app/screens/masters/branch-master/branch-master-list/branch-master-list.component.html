@@ -14,33 +14,41 @@
                 <table class="mb-0 table table-striped">
                     <thead>
                         <tr>
-                            <th width="5%">#</th>
+                            <th width="15%">Branch code</th>
                             <th width="25%">Name</th>
-                            <th width="10%">Town</th>
+                            <!-- <th width="10%">Town</th> -->
                             <th width="10%">District</th>
                             <th width="15%">Phone</th>
                             <th width="15%">Email</th>
-                            <th width="10%">Zone</th>
+                            <th width="10%">Status</th>
                             <th width="10%">Actions</th>
                         </tr>
                     </thead>
                     <tbody>
                         <tr *ngFor="let uiBranch of uiBranches| paginate: { itemsPerPage: 10, currentPage: p, totalItems: total }">
-                            <th scope="row">{{uiBranch.id}}</th>
-                            <td>{{uiBranch.name}}</td>
-                            <td>{{uiBranch.town}}</td>
+                            <th scope="row">{{uiBranch.branchCodeStr}}</th>
+                            <td>{{uiBranch.branchName}}</td>
+                            <!-- <td>{{uiBranch.town}}</td> -->
                             <td>{{uiBranch.districtName}}</td>
                             <td>{{uiBranch.phone}}</td>
-                            <td>{{uiBranch.emailId}}</td>
-                            <td>{{uiBranch.sZone}}</td>
+                            <td>{{uiBranch.email}}</td>
+                            <td>
+                                <div class="badge"
+                                    [ngClass]="{'badge-danger': uiBranch.active === 0, 'badge-success' : uiBranch.active === 1, 'badge-warning' : uiBranch.active === 2 }">
+                                    {{uiBranch.activeText}}
+                                </div>
+
+                            </td>
                             <td>
                                 <div class="widget-content-right">
-                                    <button type="button" title="Edit record" class="btn-shadow btn btn-info btn-actions" (click)="edit(uiBranch)">
+                                    <button type="button" title="Edit record" class="btn-shadow btn btn-info btn-actions" 
+                                    (click)="edit(uiBranch)" [disabled]="uiBranch.active === 0">
                                         <span class="btn-icon-wrapper opacity-10">
                                             <i class="fa fa-edit fa-w-10"></i>
                                         </span>
                                     </button>
-                                    <button type="button" title="Delete record" class="btn-shadow btn btn-danger btn-actions" data-toggle="modal"
+                                    <button type="button" title="Delete record" class="btn-shadow btn btn-danger btn-actions" 
+                                    data-toggle="modal" [disabled]="uiBranch.active === 0"
                                     data-target="#deleteModal" (click)="delete(uiBranch)">
                                         <span class="btn-icon-wrapper opacity-10">
                                             <i class="fa fa-trash fa-w-20"></i>

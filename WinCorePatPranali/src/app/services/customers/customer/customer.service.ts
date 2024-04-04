@@ -38,7 +38,7 @@ export class CustomerService {
 
   getMaxCustomerId(branchId: number): any {
     let options = GlobleDeclarations.getHeaderOptions();
-    return this.http.get(GlobleDeclarations.apiBaseURL + "api/customer/max-customer-id?branchId=" + branchId, options);
+    return this.http.get(GlobleDeclarations.apiBaseURL + "api/customer/max-customer-no?branchCode=" + branchId, options);
   }
 
   createCustomer(customerModel: any): any {

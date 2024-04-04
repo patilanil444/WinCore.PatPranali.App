@@ -14,9 +14,9 @@
                             <label for="txtName" class="">State</label>
                             <div class="input-group">
                                 <select class="mb-2 form-control" tabindex="10"
-                                formControlName="stateId">
+                                formControlName="stateId" (change)="onStateChange($event)" >
                                 <option *ngFor="let uiState of uiStates" [ngValue]="uiState.id">
-                                    {{uiState.name}}
+                                    {{uiState.stateName}}
                                 </option>
                             </select>
                             </div>
@@ -29,7 +29,7 @@
                                 <select class="mb-2 form-control" tabindex="10"
                                 formControlName="districtId">
                                 <option *ngFor="let uiDistrict of uiDistricts" [ngValue]="uiDistrict.id">
-                                    {{uiDistrict.name}}
+                                    {{uiDistrict.districtName}}
                                 </option>
                             </select>
                             </div>
@@ -50,8 +50,8 @@
                     <div class="row">
                         <div class="col-md-6 position-relative">
                             <button class="mt-1 btn btn-primary" (click)="saveTahsil()">Submit</button>
-                            <button class="mt-1 btn btn-left-margin10 btn-secondary" (click)="clear()">Clear</button>
-                            <button class="mt-1 btn btn-left-margin10 btn-alternate"
+                            <button class="mt-1 btn btn-left-margin10 btn-danger" (click)="clear()">Clear</button>
+                            <button class="mt-1 btn btn-left-margin10 btn-secondary"
                                 (click)="configClick('tahsils')">Tahsil List</button>
                         </div>
 

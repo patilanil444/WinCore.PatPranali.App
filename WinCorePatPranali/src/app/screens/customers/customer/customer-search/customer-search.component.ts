@@ -143,6 +143,7 @@ export class CustomerSearchComponent implements OnInit {
   addNewCustomer()
   {
     this._customerService.customerIdToDelete = -1;
+    this._customerService.setDTO({});
     this.configClick("customer");
   }
 

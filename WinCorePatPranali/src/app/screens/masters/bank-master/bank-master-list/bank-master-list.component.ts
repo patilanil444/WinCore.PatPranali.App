@@ -30,7 +30,7 @@ export class BankMasterListComponent {
         this.total = this.uiBanks.length;
         if (this.uiBanks) {
           this.uiBanks.map((bank, i) => {
-            bank.hasBranchesYN = bank.hasBranches ? "Yes" : "No";
+            bank.activeText = bank.active == 1 ? "Active" : "InActive";
           });
         }
       }
@@ -46,7 +46,7 @@ export class BankMasterListComponent {
   {
     let maxId = 1;
     const ids = this.uiBanks.map(gl => {
-      return gl.id;
+      return gl.bankId;
     })
     maxId = Math.max(...ids);
 
@@ -68,7 +68,7 @@ export class BankMasterListComponent {
     let dtObject: IGeneralDTO = {
       route: "bank",
       action: "editRecord",
-      id: uiBank.id,
+      id: uiBank.bankId,
       maxId: 0,
     }
     this._bankMasterService.setDTO(dtObject);
@@ -77,8 +77,8 @@ export class BankMasterListComponent {
   }
 
   delete(uiBank: any) {
-    if (uiBank.id > 0) {
-      this._bankMasterService.bankIdToDelete = uiBank.id;
+    if (uiBank.bankId > 0) {
+      this._bankMasterService.bankIdToDelete = uiBank.bankId;
     }
   }
 

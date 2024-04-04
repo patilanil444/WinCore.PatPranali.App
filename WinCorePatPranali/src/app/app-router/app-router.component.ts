@@ -1,8 +1,6 @@
 import { AfterViewInit, Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
-import { BranchMasterService } from '../services/masters/branch-master/branch-master.service';
+import { ActivatedRoute, Router } from '@angular/router';
 import { SharedService } from '../services/shared.service';
-import { GeneralLedgerService } from '../services/masters/general-ledger/general-ledger.service';
 
 @Component({
   selector: 'app-app-router',
@@ -11,11 +9,20 @@ import { GeneralLedgerService } from '../services/masters/general-ledger/general
 })
 export class AppRouterComponent implements OnInit, AfterViewInit{
 
-  constructor(private router: Router, private _branchMasterService:BranchMasterService,
-    private _sharedService:SharedService, private _generalLedgerService: GeneralLedgerService) { }
+  constructor(private router: Router, private activatedRoute: ActivatedRoute,
+    private _sharedService: SharedService) { }
 
   ngOnInit(): void {
-    
+    this.activatedRoute.data.subscribe((response: any) => {
+      this._sharedService.uiAllMasters = this.activatedRoute.snapshot.data['masterData'].masters.data.data
+      this._sharedService.uiAllStates =  this.activatedRoute.snapshot.data['masterData'].states.data.data
+      this._sharedService.uiAllDistricts = this.activatedRoute.snapshot.data['masterData'].districts.data.data
+      this._sharedService.uiAllTalukas =this.activatedRoute.snapshot.data['masterData'].talukas.data.data
+      this._sharedService.uiAllVillages =this.activatedRoute.snapshot.data['masterData'].villages.data.data
+      this._sharedService.uiCurrencies =this.activatedRoute.snapshot.data['masterData'].currencies.data.data
+    });
+
+
     let configMenu = sessionStorage.getItem("configMenu");
     if (configMenu != null && configMenu.length > 0) {
       this.configClick(configMenu);
@@ -23,67 +30,6 @@ export class AppRouterComponent implements OnInit, AfterViewInit{
     else {
       this.configClick('home');
     }
-
-    this.getStates();
-    this.getDistricts();
-    this.getTahshils();
-    this.getGLGroups();
-    this.getAccountTypes();
-  }
-
-  getStates()
-  {
-    this._branchMasterService.getStates().subscribe((data: any) => {
-      if (data) {
-        if (data.statusCode == 200 && data.data.data) {
-          this._sharedService.uiAllStates = data.data.data;
-        }
-      }
-    })
-  }
-
-  getDistricts()
-  {
-    this._branchMasterService.getDistricts().subscribe((data: any) => {
-      if (data) {
-        if (data.statusCode == 200 && data.data.data) {
-          this._sharedService.uiAllDistricts = data.data.data;
-        }
-      }
-    })
-  }
-
-  getTahshils()
-  {
-    this._branchMasterService.getTahshils().subscribe((data: any) => {
-      if (data) {
-        if (data.statusCode == 200 && data.data.data) {
-          this._sharedService.uiAllTahshils = data.data.data;
-        }
-      }
-    })
-  }
-
-  getGLGroups()
-  {
-    this._generalLedgerService.getGLGroups().subscribe((data: any) => {
-      if (data) {
-        if (data.statusCode == 200 && data.data.data) {
-          this._sharedService.uiGLGroups = data.data.data;
-        }
-      }
-    })
-  }
-
-  getAccountTypes()
-  {
-    this._generalLedgerService.getTypeOfAccounts().subscribe((data: any) => {
-      if (data) {
-        if (data.statusCode == 200 && data.data.data) {
-          this._sharedService.uiTypeOfAccounts = data.data.data;
-        }
-      }
-    })
   }
 
   configClick(routeValue: string) {

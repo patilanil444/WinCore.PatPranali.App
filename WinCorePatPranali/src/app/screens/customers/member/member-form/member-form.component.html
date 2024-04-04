@@ -172,9 +172,9 @@
                                                 <label for="txtCode" class="">Director</label>
                                                 <select class="mb-2 form-control" 
                                                     tabindex="17" formControlName="personalDirector">
-                                                    <option *ngFor="let uiOccupation of uiOccupations"
-                                                        [ngValue]="uiOccupation.id">
-                                                        {{uiOccupation.branchMasterName}}
+                                                    <option *ngFor="let uiDirector of uiDirectors"
+                                                        [ngValue]="uiDirector.id">
+                                                        {{uiDirector.directorName}}
                                                     </option>
                                                 </select>
                                             </div>
@@ -190,7 +190,8 @@
                                             <div class="col-md-2 position-relative form-group">
                                                 <label for="txtCode" class="">A/c open date</label>
                                                 <input tabindex="19" type="date" class="form-control"
-                                                formControlName="personalAccountopenDate">
+                                                formControlName="personalAccountopenDate" 
+                                                [max]="maxDate | date:'yyyy-MM-dd'">
                                             </div>
                                             <div class="col-md-2 position-relative form-group">
                                                 <label for="txtCode" class="">Authorised by</label>
@@ -218,7 +219,7 @@
                                             <div class="col-md-2 position-relative">
                                                 <label for="txtCode" class="">Title</label>
                                                 <select class="mb-2 form-control" 
-                                                    tabindex="21" formControlName="personalTitle">
+                                                    tabindex="21" formControlName="nominiTitle">
                                                     <option *ngFor="let uiTitle of uiTitles"
                                                         [ngValue]="uiTitle.code">
                                                         {{uiTitle.name}}
@@ -228,22 +229,22 @@
                                             <div class="col-md-2 position-relative">
                                                 <label for="txtCode" class="">First name</label>
                                                 <input tabindex="22" type="text" class="form-control"
-                                                    formControlName="personalFirstName">
+                                                    formControlName="nominiFirstName">
                                             </div>
                                             <div class="col-md-2 position-relative">
                                                 <label for="txtCode" class="">Middle name</label>
                                                 <input tabindex="23" type="text" class="form-control"
-                                                    formControlName="personalMiddleName">
+                                                    formControlName="nominiMiddleName">
                                             </div>
                                             <div class="col-md-2 position-relative">
                                                 <label for="txtCode" class="">Last name</label>
                                                 <input tabindex="24" type="text" class="form-control"
-                                                    formControlName="personalLastName">
+                                                    formControlName="nominiLastName">
                                             </div>
                                             <div class="col-md-2 position-relative form-group">
                                                 <label for="txtCode" class="">Gender</label>
                                                 <select class="mb-2 form-control" 
-                                                    tabindex="25" formControlName="personalGender">
+                                                    tabindex="25" formControlName="nominiGender">
                                                     <option *ngFor="let uiGender of uiGenders" [ngValue]="uiGender.code">
                                                         {{uiGender.name}}
                                                     </option>
@@ -253,8 +254,8 @@
                                             <div class="col-md-2 position-relative form-group">
                                                 <label for="txtCode" class="">Relation</label>
                                                 <select class="mb-2 form-control" 
-                                                    tabindex="26" formControlName="personalGender">
-                                                    <option *ngFor="let uiRelation of uiRelations" [ngValue]="uiRelation.code">
+                                                    tabindex="26" formControlName="nominiRelation">
+                                                    <option *ngFor="let uiRelation of uiRelations" [ngValue]="uiRelation.id">
                                                         {{uiRelation.branchMasterName}}
                                                     </option>
                                                 </select>
@@ -264,30 +265,30 @@
                                             <div class="col-md-2 position-relative form-group">
                                                 <label for="txtCode" class="">Flat/Building/Street</label>
                                                 <input tabindex="27" type="text" class="form-control"
-                                                    formControlName="addressBuilding">
+                                                    formControlName="nominiAddress">
                                             </div>
                                             <div class="col-md-2 position-relative form-group">
                                                 <label for="txtCode" class="">City/Town</label>
                                                 <input tabindex="28" type="text" class="form-control"
-                                                    formControlName="addressCity">
+                                                    formControlName="nominiCity">
                                             </div>
                                             <div class="col-md-2 position-relative form-group">
                                                 <label for="txtCode" class="">State</label>
-                                                <select class="mb-2 form-control" (change)="onAddressStateChange($event)" 
-                                                    tabindex="29" formControlName="addressState">
-                                                    <option *ngFor="let uiAddressState of uiAddressStates"
-                                                        [ngValue]="uiAddressState.id">
-                                                        {{uiAddressState.name}}
+                                                <select class="mb-2 form-control" (change)="onNominiStateChange($event)" 
+                                                    tabindex="29" formControlName="nominiState">
+                                                    <option *ngFor="let uiNominiState of uiNominiStates"
+                                                        [ngValue]="uiNominiState.id">
+                                                        {{uiNominiState.name}}
                                                     </option>
                                                 </select>
                                             </div>
                                             <div class="col-md-2 position-relative form-group">
                                                 <label for="txtCode" class="">District</label>
                                                 <select class="mb-2 form-control" (change)="onAddressDistrictChange($event)"
-                                                    tabindex="30" formControlName="addressDistrict">
-                                                    <option *ngFor="let uiAddressDistrict of uiAddressDistricts"
-                                                        [ngValue]="uiAddressDistrict.id">
-                                                        {{uiAddressDistrict.name}}
+                                                    tabindex="30" formControlName="nominiDistrict">
+                                                    <option *ngFor="let uiNominiDistrict of uiNominiDistricts"
+                                                        [ngValue]="uiNominiDistrict.id">
+                                                        {{uiNominiDistrict.name}}
                                                     </option>
                                                 </select>
                                             </div>
@@ -295,87 +296,90 @@
                                             <div class="col-md-2 position-relative form-group">
                                                 <label for="txtCode" class="">Tahsil</label>
                                                 <select class="mb-2 form-control" 
-                                                    tabindex="31" formControlName="addressTahsil">
-                                                    <option *ngFor="let uiAddressTahshil of uiAddressTahshils"
-                                                        [ngValue]="uiAddressTahshil.id">
-                                                        {{uiAddressTahshil.name}}
+                                                    tabindex="31" formControlName="nominiTahsil">
+                                                    <option *ngFor="let uiNominiTahshil of uiNominiTahshils"
+                                                        [ngValue]="uiNominiTahshil.id">
+                                                        {{uiNominiTahshil.name}}
                                                     </option>
                                                 </select>
                                             </div>
                                             <div class="col-md-2 position-relative form-group">
                                                 <label for="txtCode" class="">Pincode</label>
                                                 <input tabindex="32" type="text" class="form-control"
-                                                    formControlName="addressPincode">
+                                                    formControlName="nominiPincode">
                                             </div>
                                         </div>
                                         <div class="row">
                                             <div class="col-md-2 position-relative form-group">
                                                 <label for="txtCode" class="">Nomini given date</label>
-                                                <input tabindex="33" type="text" class="form-control"
-                                                    formControlName="addressPincode"
+                                                <input tabindex="33" type="date" class="form-control"
+                                                    formControlName="nominiGivenDate"
                                                     [max]="maxDate | date:'yyyy-MM-dd'">
                                             </div>
                                             <div class="col-md-2 position-relative form-group">
                                                 <label for="txtCode" class="">Nomini share percentage</label>
-                                                <input tabindex="34" type="text" class="form-control"
-                                                    formControlName="addressPincode">
+                                                <input tabindex="34" type="number" class="form-control"
+                                                    formControlName="nominiSharePercentage">
                                             </div>
                                        </div>
                                         <div class="row">
                                             <div class="col-md-3 position-relative form-group">
-                                                <button class="mt-1 btn btn-info" (click)="addNomini()" tabindex="35">Add</button>
-                                                <button class="mt-1 btn btn-left-margin10 btn-secondary" (click)="clearNomini()" tabindex="36">Clear</button>
+                                                <button class="mt-1 btn btn-info" (click)="addNomini()" tabindex="35">Save</button>
+                                                <button class="mt-1 btn btn-left-margin10 btn-danger" (click)="clearNomini()" tabindex="36">Clear</button>
                                             </div>
                                         </div>
 
                                         <div class="row">
-                                            <table class="mb-0 table table-striped">
-                                                <thead>
-                                                    <tr>
-                                                        <th width="20%">Name</th>
-                                                        <th width="15%">Relation</th>
-                                                        <th width="15%">Percentage</th>
-                                                        <th width="15%">District</th>
-                                                        <th width="15%">Date</th>
-                                                        <th width="15%">Actions</th>
-                                                    </tr>
-                                                </thead>
-                                                <tbody>
-                                                    <tr
-                                                        *ngFor="let uiNomini of uiNominis | paginate: { itemsPerPage: 10, currentPage: p_nomini, totalItems: total_nomini }; let ind = index">
-                                                        <td>{{uiNomini.firstName}} {{uiNomini.middleName}} {{uiNomini.lastName}}</td>
-                                                        <td>{{uiNomini.relationName}}</td>
-                                                        <td>{{uiNomini.percentage}}</td>
-                                                        <td>{{uiNomini.districtName}}</td>
-                                                        <td>{{uiNomini.phone}}</td>
-                                                        <td>
-                                                            <div class="widget-content-right">
-                                                                <button type="button" title="Edit record"
-                                                                    class="btn-shadow btn btn-info btn-actions"
-                                                                    (click)="editNomini(uiNomini, ind)">
-                                                                    <span class="btn-icon-wrapper opacity-10">
-                                                                        <i class="fa fa-edit fa-w-10"></i>
-                                                                    </span>
-                                                                </button>
-                                                                <button type="button" title="Delete record"
-                                                                    class="btn-shadow btn btn-danger btn-actions"
-                                                                    data-toggle="modal" data-target="#deleteModal"
-                                                                    (click)="deleteNomini(uiNomini, ind)">
-                                                                    <span class="btn-icon-wrapper opacity-10">
-                                                                        <i class="fa fa-trash fa-w-20"></i>
-                                                                    </span>
-                                                                </button>
-                                                            </div>
-                                                        </td>
-                                                    </tr>
-                                                    <tr *ngIf="uiNominis.length==0">
-                                                        <td colspan="5">No records found..</td>
-                                                    </tr>
-                                                </tbody>
-                                            </table>
-                                            <div class="d-flex justify-content-center">
-                                                <pagination-controls (pageChange)="pageNominiChangeEvent($event)"></pagination-controls>
-                                              </div>
+                                            <div class="col-md-12">
+                                                <table class="mb-0 table table-striped">
+                                                    <thead>
+                                                        <tr>
+                                                            <th width="20%">Name</th>
+                                                            <th width="15%">Relation</th>
+                                                            <th width="15%">Percentage</th>
+                                                            <th width="15%">District</th>
+                                                            <th width="15%">Date</th>
+                                                            <th width="15%">Actions</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        <tr
+                                                            *ngFor="let uiNomini of uiNominis | paginate: { itemsPerPage: 10, currentPage: p_nomini, totalItems: total_nomini }; let ind = index">
+                                                            <td>{{uiNomini.firstName}} {{uiNomini.middleName}} {{uiNomini.lastName}}</td>
+                                                            <td>{{uiNomini.relationName}}</td>
+                                                            <td>{{uiNomini.percentage}}</td>
+                                                            <td>{{uiNomini.districtName}}</td>
+                                                            <td>{{uiNomini.givenDate}}</td>
+                                                            <td>
+                                                                <div class="widget-content-right">
+                                                                    <button type="button" title="Edit record"
+                                                                        class="btn-shadow btn btn-info btn-actions"
+                                                                        (click)="editNomini(uiNomini, ind)">
+                                                                        <span class="btn-icon-wrapper opacity-10">
+                                                                            <i class="fa fa-edit fa-w-10"></i>
+                                                                        </span>
+                                                                    </button>
+                                                                    <button type="button" title="Delete record"
+                                                                        class="btn-shadow btn btn-danger btn-actions"
+                                                                        data-toggle="modal" data-target="#deleteModal"
+                                                                        (click)="deleteNomini(uiNomini, ind)">
+                                                                        <span class="btn-icon-wrapper opacity-10">
+                                                                            <i class="fa fa-trash fa-w-20"></i>
+                                                                        </span>
+                                                                    </button>
+                                                                </div>
+                                                            </td>
+                                                        </tr>
+                                                        <tr *ngIf="uiNominis.length==0">
+                                                            <td colspan="6">No records found..</td>
+                                                        </tr>
+                                                    </tbody>
+                                                </table>
+                                                <div class="d-flex justify-content-center" style="margin-top: 10px;">
+                                                    <pagination-controls (pageChange)="pageNominiChangeEvent($event)"></pagination-controls>
+                                                  </div>
+                                            </div>
+                                           
                                         </div>
                                        
                                     </div>
@@ -391,46 +395,41 @@
                                         <div class="row">
                                             <div class="col-md-2 position-relative form-group">
                                                 <label for="txtCode" class="">Number of shares</label>
-                                                <input tabindex="37" type="text" class="form-control"
-                                                    formControlName="nominiFirstName">
+                                                <input tabindex="37" type="number" class="form-control"
+                                                    formControlName="dividentNoOfShares" (change)="calculateTotalShareValue()">
                                             </div>
                                             <div class="col-md-2 position-relative form-group">
                                                 <label for="txtCode" class="">Share value</label>
-                                                <input tabindex="38" type="text" class="form-control"
-                                                    formControlName="nominiMiddleName">
+                                                <input tabindex="38" type="number" class="form-control"
+                                                    formControlName="dividentShareValue" (change)="calculateTotalShareValue()">
                                             </div>
                                             <div class="col-md-2 position-relative form-group">
                                                 <label for="txtCode" class="">Total share value</label>
-                                                <input tabindex="39" type="text" class="form-control" readonly
-                                                    formControlName="nominiLastName">
+                                                <input tabindex="39" type="number" class="form-control" readonly
+                                                    formControlName="dividentTotalShareValue">
                                             </div>
                                             <div class="col-md-2 position-relative form-group">
                                                 <label for="txtCode" class="">Divident amount</label>
-                                                <input tabindex="40" type="text" class="form-control"
-                                                formControlName="nominiLastName">
+                                                <input tabindex="40" type="number" class="form-control"
+                                                formControlName="dividentAmount">
                                             </div>
                                             <div class="col-md-2 position-relative form-group">
                                                 <label for="txtCode" class="">Loan limit amount</label>
-                                                <input tabindex="41" type="text" class="form-control"
-                                                    formControlName="nominiGuardian">
+                                                <input tabindex="41" type="number" class="form-control"
+                                                    formControlName="dividentLoanLimit">
                                             </div>
 
                                         </div>
                                         <div class="row">
                                             <div class="col-md-2 position-relative form-group">
                                                 <label for="txtCode" class="">Admission fee date</label>
-                                                <div class="input-group">
-                                                    <input tabindex="42" type="text" class="form-control"
-                                                        formControlName="nominiPercentage">
-                                                    <div class="input-group-append"><span
-                                                            class="input-group-text">%</span></div>
-                                                </div>
-
+                                                <input tabindex="42" type="date" class="form-control"
+                                                formControlName="dividentAdmissionFeeDate">
                                             </div>
                                             <div class="col-md-2 position-relative form-group">
                                                 <label for="txtCode" class="">Income</label>
-                                                <input tabindex="43" type="text" class="form-control"
-                                                    formControlName="nominiAge">
+                                                <input tabindex="43" type="number" class="form-control"
+                                                    formControlName="dividentIncome">
                                             </div>
                                         </div>
                                     </div>
@@ -471,7 +470,7 @@
                                                         <td width="40%">
                                                             <input tabindex="46" type="file" class="form-control"
                                                                 (change)="uploadDocument($event, ind, uiDocument.documentKey)">
-                                                                {{uiDocument.filePath}}
+                                                               
                                                         </td>
                                                         <td width="5%"><button class="mt-1 btn btn-info">
                                                                 Upload
@@ -480,12 +479,19 @@
                                                                 Delete
                                                             </button></td>
                                                         <td width="15%">
-                                                            Upload Percent: {{percentDone}}%
+                                                            Upload Percent: {{uiDocument.percentDone}}%
                                                         </td>
                                                         <td width="25%">
-                                                            <ng-container *ngIf="uploadSuccess">
+                                                            <ng-container *ngIf="uiDocument.uploadSuccess">
                                                                 Upload Successful
                                                             </ng-container>
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>
+                                                        </td>
+                                                        <td colspan="5">
+                                                            {{uiDocument.filePath}}
                                                         </td>
                                                     </tr>
                                                 </table>
@@ -498,13 +504,13 @@
                     </div>
                 </div>
 
-                <div class="divider" style="margin-bottom: 0.5rem !important"></div>
-
                 <div class="row">
                     <div class="col-md-6 position-relative">
                         <button class="mt-1 btn btn-primary" (click)="saveMember()" tabindex="47">Submit</button>
-                        <button class="mt-1 btn btn-left-margin10 btn-secondary" (click)="clear()"
+                        <button class="mt-1 btn btn-left-margin10 btn-danger" (click)="clear()"
                             tabindex="48">Clear</button>
+                        <button class="mt-1 btn btn-left-margin10 btn-secondary" (click)="searchMember()"
+                            tabindex="24">Search Member</button>
                     </div>
                 </div>
             </div>
