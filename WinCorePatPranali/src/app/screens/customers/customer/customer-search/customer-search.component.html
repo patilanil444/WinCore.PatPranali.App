@@ -7,7 +7,32 @@
                 <h5 class="card-title">Search customer</h5>
                 <form [formGroup]="searchForm" #form="ngForm">
                     <div class="row">
-                        <div class="col-md-3 position-relative">
+                        <div class="col-md-4 position-relative">
+                            <label for="txtCode" class="">Search by </label>
+                            <select class="mb-2 form-control" tabindex="1" formControlName="searchBy">
+                                <option *ngFor="let uiCustomerSearch of uiCustomerSearchBy"
+                                    [ngValue]="uiCustomerSearch.code">
+                                    {{uiCustomerSearch.name}}
+                                </option>
+                            </select>
+                        </div>
+                        <div class="col-md-4 position-relative">
+                            <label for="txtCode" class="">Search Text </label>
+                            <input tabindex="4" type="text" class="form-control" autocomplete="off"
+                              placeholder="Enter search text.."  formControlName="searchText">
+                        </div>
+
+                        <div class="col-md-4 position-relative form-group" style="float: right !important; margin-top: 30px;">
+                            <button class="btn btn-left-margin10 btn-danger" style="float: right;" tabindex="2"
+                                (click)="clear()">
+                                Clear</button>
+                            <button class="btn btn-left-margin10 btn-warning" style="float: right;" tabindex="2"
+                                (click)="addNewCustomer()"><i class="fa fa-plus"></i> Add New Customer </button>
+                            <button class="btn btn-info" style="float: right;" tabindex="2"
+                                (click)="searchCustomer()"><i class="fa fa-search"></i> Search</button>
+                        </div>
+
+                        <!-- <div class="col-md-3 position-relative">
                             <div class="input-group">
                                 <input tabindex="4" type="text" class="form-control" placeholder="Search customer name"
                                 autocomplete="off"  formControlName="customerName">
@@ -37,18 +62,7 @@
                                 <input tabindex="5" type="text" class="form-control" placeholder="Search phone"
                                 autocomplete="off"   formControlName="customerPhone">
                             </div>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-md-12 position-relative form-group" style="float: right !important">
-                           
-                            <button class="btn btn-left-margin10 btn-danger" style="float: right;" tabindex="2" (click)="clear()">
-                                Clear</button>
-                            <button class="btn btn-left-margin10 btn-warning" style="float: right;" tabindex="2" (click)="addNewCustomer()"><i
-                                    class="fa fa-plus"></i> Add New Customer </button>
-                                    <button class="btn btn-info" style="float: right;" tabindex="2" (click)="searchCustomer()"><i
-                                        class="fa fa-search"></i> Search</button>
-                        </div>
+                        </div> -->
                     </div>
                 </form>
                 <div class="row" style="margin-bottom: 10px;">
@@ -69,10 +83,10 @@
                                 <tr
                                     *ngFor="let uiCustomer of uiCustomers | paginate: { itemsPerPage: 10, currentPage: p, totalItems: total }">
                                     <th scope="row">{{uiCustomer.id}}</th>
-                                    <td>{{uiCustomer.firstName}} {{uiCustomer.middleName}} {{uiCustomer.lastName}}</td>
+                                    <td>{{uiCustomer.custName}}</td>
                                     <td>{{uiCustomer.pan}}</td>
                                     <td>{{uiCustomer.aadhar}}</td>
-                                    <td>{{uiCustomer.phone}}</td>
+                                    <td>{{uiCustomer.mobile}}</td>
                                     <td>
                                         <div class="badge"
                                             [ngClass]="{'badge-danger': uiCustomer.status==='Deleted', 'badge-success' : uiCustomer.status=== 'Active', 'badge-warning' : uiCustomer.status=== 'In-Active'}">

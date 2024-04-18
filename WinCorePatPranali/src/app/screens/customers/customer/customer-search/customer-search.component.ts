@@ -2,8 +2,10 @@ import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
+import { CustomerDeclarations } from 'src/app/common/customer-declarations';
 import { IGeneralDTO } from 'src/app/common/models/common-ui-models';
 import { CustomerService } from 'src/app/services/customers/customer/customer.service';
+import { SharedService } from 'src/app/services/shared.service';
 
 @Component({
   selector: 'app-customer-search',
@@ -15,18 +17,19 @@ export class CustomerSearchComponent implements OnInit {
   searchForm!: FormGroup;
 
   uiCustomers: any[] = [];
+
+  uiCustomerSearchBy: any[] = [];
   p: number = 1;
   total: number = 0;
   constructor(private router: Router, private _toastrService: ToastrService, 
-    private _customerService: CustomerService) { }
+    private _customerService: CustomerService, private _sharedService: SharedService ) { }
 
   ngOnInit(): void {
+
+    this.uiCustomerSearchBy = CustomerDeclarations.customerSearchBy;
     this.searchForm = new FormGroup({
-      customerNumber: new FormControl("", []),
-      customerName: new FormControl("", []),
-      customerPAN: new FormControl("", []),
-      customerAadhar: new FormControl("", []),
-      customerPhone: new FormControl("", [])
+      searchBy: new FormControl(this.uiCustomerSearchBy[0].code, []),
+      searchText: new FormControl("", []),
     });
   }
 
@@ -37,18 +40,12 @@ export class CustomerSearchComponent implements OnInit {
   searchCustomer()
   {
     this.uiCustomers = [];
-     if (this.customerNumber.value > 0 || 
-      this.customerName.value.length > 0 || 
-      this.customerPAN.value.length > 0 || 
-      this.customerAadhar.value.length > 0 || 
-      this.customerPhone.value.length > 0) {
+     if (this.searchText.value.length > 0) {
 
       let customerSearchModel = {
-        Id: this.customerNumber.value == null || this.customerNumber.value == ""? 0: parseInt(this.customerNumber.value),
-        FirstName: this.customerName.value,
-        PAN: this.customerPAN.value,
-        Aadhar: this.customerAadhar.value,
-        Phone: this.customerPhone.value
+        searchBy: this.searchBy.value,
+        searchText: this.searchText.value,
+        branchCode: this._sharedService.applicationUser.branchId
       };
 
       this._customerService.getCustomersOnSearch(customerSearchModel).subscribe((data: any) => {
@@ -57,14 +54,12 @@ export class CustomerSearchComponent implements OnInit {
           if (customers!=null && customers.length>0) {
             this.uiCustomers = customers.map((cust: any) => (
               { 
-                id: cust.id,
-                firstName: cust.firstName,
-                middleName: cust.middleName,
-                lastName: cust.lastName,
-                pan: cust.pan,
-                aadhar: cust.aadhar,
-                phone: cust.phone,
-                status: this.getCustomerStatus(cust.status) 
+                id: cust.customerId,
+                custName: cust.custName,
+                pan: cust.panNo,
+                aadhar: cust.aadharno,
+                mobile: cust.mobileno,
+                status: this.getCustomerStatus(cust.active) 
               })) 
           }
         }
@@ -76,28 +71,22 @@ export class CustomerSearchComponent implements OnInit {
      }
   }
 
-  getCustomerStatus(status: string)
+  getCustomerStatus(status: number)
   {
-    if (status=="I") {
-      return "In-Active";
-    }
-    if (status=="A") {
+    if (status == 1) {
       return "Active";
     }
-    if (status=="D") {
-      return "Deleted";
+    else
+    {
+      return "In-Active";
     }
-    return "";
   }
 
   clear()
   {
     this.searchForm.patchValue({
-      customerNumber: "",
-      customerName: "",
-      customerPAN: "",
-      customerAadhar: "",
-      customerPhone: "",
+      searchBy: this.uiCustomerSearchBy[0].code,
+      searchText: ""
     });
   }
 
@@ -152,19 +141,10 @@ export class CustomerSearchComponent implements OnInit {
     this.router.navigate(['/app/'+ routeValue]);
   }
 
-  get customerNumber() {
-    return this.searchForm.get('customerNumber')!;
+  get searchBy() {
+    return this.searchForm.get('searchBy')!;
   }
-  get customerName() {
-    return this.searchForm.get('customerName')!;
-  }
-  get customerPAN() {
-    return this.searchForm.get('customerPAN')!;
-  }
-  get customerAadhar() {
-    return this.searchForm.get('customerAadhar')!;
-  }
-  get customerPhone() {
-    return this.searchForm.get('customerPhone')!;
+  get searchText() {
+    return this.searchForm.get('searchText')!;
   }
 }

@@ -106,9 +106,11 @@ export class BranchMasterFormComponent {
     this.uiAllTahshils = this._sharedService.uiAllTalukas;
     this.uiCurrencies = this._sharedService.uiCurrencies;
 
-    let districts = this.uiAllDistricts.filter((d: any) => d.stateId == this.uiStates[0].id);
-    if (districts) {
-      this.uiDistricts = districts;
+    if (this.uiStates && this.uiStates.length) {
+      let districts = this.uiAllDistricts.filter((d: any) => d.stateId == this.uiStates[0].id);
+      if (districts && districts.length) {
+        this.uiDistricts = districts;
+      }
     }
 
     if (this.dto) {
@@ -139,7 +141,7 @@ export class BranchMasterFormComponent {
               }
 
               let tahshils = this.uiAllTahshils.filter((d: any) => d.districtId == brnch.districtId);
-              if (tahshils) {
+              if (tahshils && tahshils.length) {
                 this.uiTahshils = tahshils;
               }
 
@@ -232,7 +234,7 @@ export class BranchMasterFormComponent {
         this._branchMasterService.createBranch(branchModel).subscribe((data: any) => {
           console.log(data);
           if (data) {
-            if (data.statusCode == 200 && data.data.data > 1) {
+            if (data.statusCode == 200 && data.data.data > 0) {
               this._toastrService.success('Branch added.', 'Success!');
               this.configClick("branches");
             }
@@ -244,7 +246,7 @@ export class BranchMasterFormComponent {
         this._branchMasterService.updateBranch(this.dto.id, branchModel).subscribe((data: any) => {
           console.log(data);
           if (data) {
-            if (data.statusCode == 200 && data.data.data > 1) {
+            if (data.statusCode == 200 && data.data.data > 0) {
               this._toastrService.success('Branch updated.', 'Success!');
               this.configClick("branches");
             }

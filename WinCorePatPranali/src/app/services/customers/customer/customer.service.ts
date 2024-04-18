@@ -31,9 +31,9 @@ export class CustomerService {
     return this.http.post(GlobleDeclarations.apiBaseURL + "api/customer/search-customer", customerModel, options);
   }
 
-  getCustomer(id: number): any {
+  getCustomer(branchCode:number, id: number): any {
     let options = GlobleDeclarations.getHeaderOptions();
-    return this.http.get(GlobleDeclarations.apiBaseURL + "api/customer/customer?id=" + id, options);
+    return this.http.get(GlobleDeclarations.apiBaseURL + "api/customer/customer?branchCode=" + branchCode + "&customerId=" + id, options);
   }
 
   getMaxCustomerId(branchId: number): any {
@@ -41,14 +41,9 @@ export class CustomerService {
     return this.http.get(GlobleDeclarations.apiBaseURL + "api/customer/max-customer-no?branchCode=" + branchId, options);
   }
 
-  createCustomer(customerModel: any): any {
+  saveCustomer(customerModel: any): any {
     let options = GlobleDeclarations.getHeaderOptions();
-    return this.http.post(GlobleDeclarations.apiBaseURL + "api/customer/create-customer", customerModel, options);
-  }
-
-  updateCustomer(id: number, customerModel: any): any {
-    let options = GlobleDeclarations.getHeaderOptions();
-    return this.http.post(GlobleDeclarations.apiBaseURL + "api/customer/update-customer?id=" + id, customerModel, options);
+    return this.http.post(GlobleDeclarations.apiBaseURL + "api/customer/save-customer", customerModel, options);
   }
 
   deleteCustomer(id: number): any {
@@ -58,12 +53,12 @@ export class CustomerService {
 
   isAadharExists(id: number, aadhar: string): any {
     let options = GlobleDeclarations.getHeaderOptions();
-    return this.http.get(GlobleDeclarations.apiBaseURL + "api/customer/is-aadhar-exists?id=" + id + ", aadhar=" + aadhar, options);
+    return this.http.get(GlobleDeclarations.apiBaseURL + "api/customer/is-aadhar-exists?id=" + id + "&aadhar=" + aadhar, options);
   }
 
   isPANExists(id: number, pan: string): any {
     let options = GlobleDeclarations.getHeaderOptions();
-    return this.http.get(GlobleDeclarations.apiBaseURL + "api/customer/is-pan-exists?id=" + id + ", pan=" + pan, options);
+    return this.http.get(GlobleDeclarations.apiBaseURL + "api/customer/is-pan-exists?id=" + id + "&pan=" + pan, options);
   }
 
   uploadDocument(uplaodCustomerDocument: FormData,): any {

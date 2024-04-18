@@ -24321,3 +24321,7 @@ margin-top: 40px !important;
 select.form-control {
     -webkit-appearance: menulist; 
 }
+
+.mandatory{
+    color: red;
+}
