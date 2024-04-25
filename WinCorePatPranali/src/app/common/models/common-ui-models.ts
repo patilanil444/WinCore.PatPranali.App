@@ -81,7 +81,9 @@ export enum UiEnumGeneralMaster {
     EDUCATION = 19,
     NATIONALITY = 20,
     ADDRESSTYPE = 21,
-    OPRMODE = 22
+    OPRMODE = 22,
+    GLGROUP = 23,
+    SCHEDULE = 24
 
     // GENDER = 1,
     // TITLE = 2,

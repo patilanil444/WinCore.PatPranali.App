@@ -4,15 +4,19 @@
             <div class="card-body">
                 <form [formGroup]="glForm" #form="ngForm">
                     <h5 class="card-title">General Ledger</h5>
+
                     <div class="row">
-                        <div class="col-md-4 position-relative form-group">
+
+
+
+                        <!-- <div class="col-md-4 position-relative form-group">
                             <label class="">Code</label>
                             <input name="code" id="txtCode" tabindex="1" readonly="true" placeholder="0" type="text"
                                 class="form-control" formControlName="code">
-                        </div>
+                        </div> -->
 
-                        <div class="col-md-4 position-relative form-group">
-                            <label class="">Name</label>
+                        <div class="col-md-3 position-relative form-group">
+                            <label class="">Ledger Name <span class="mandatory">*</span></label>
                             <input type="text" id="txtName" autocomplete="off" tabindex="2" placeholder="Ledger Name"
                                 class="form-control" formControlName="name" required maxlength="50"
                                 [class.is-invalid]="name.invalid && (name.dirty || name.touched)">
@@ -23,128 +27,130 @@
                             </div>
                         </div>
 
-                        <div class="col-md-4 position-relative">
-                            <label class="">Type of Account</label>
-                            <select class="mb-2 form-control" tabindex="3" formControlName="accountType">
-                                <option *ngFor="let uiTypeOfAccount of uiTypeOfAccounts" [ngValue]="uiTypeOfAccount.id">
-                                    {{uiTypeOfAccount.typeDescription}}
+                        <div class="col-md-3 position-relative form-group">
+                            <label class="">Local Name</label>
+                            <input type="text" id="txtName" autocomplete="off" tabindex="2" placeholder="Local Name"
+                                class="form-control" formControlName="localName" required maxlength="50">
+                        </div>
+
+                        <div class="col-md-3 position-relative form-group">
+                            <label class="">Short Name <span class="mandatory">*</span></label>
+                            <input type="text" id="txtName" autocomplete="off" tabindex="2" placeholder="Short Name"
+                                class="form-control" formControlName="shortName" required maxlength="50"
+                                [class.is-invalid]="shortName.invalid && (shortName.dirty || shortName.touched)">
+                            <div *ngIf="shortName.invalid && (shortName.dirty || shortName.touched)" class="invalid-feedback">
+                                <div *ngIf="shortName.errors?.['required']">
+                                    Short Name is required.
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-3 position-relative form-group">
+                            <label class="">Ledger Group</label>
+                            <select class="mb-2 form-control" tabindex="4" formControlName="group" (change)="changeTypes($event)">
+                                <option *ngFor="let uiGLGroup of uiGLGroups" [ngValue]="uiGLGroup.groupCode">
+                                    {{uiGLGroup.groupName}}
                                 </option>
                             </select>
                         </div>
-                    </div>
 
-                    <div class="row">
-                        <div class="col-md-4 position-relative">
-                            <label class="">Group</label>
-                            <select class="mb-2 form-control" tabindex="4" formControlName="group">
-                                <option *ngFor="let uiGLGroup of uiGLGroups" [ngValue]="uiGLGroup.id">
-                                    {{uiGLGroup.name}}
+                        <div class="col-md-3 position-relative form-group">
+                            <label class="">Ledger Type</label>
+                            <select class="mb-2 form-control" tabindex="3" formControlName="type" >
+                                <option *ngFor="let uiGLType of uiGLTypes" [ngValue]="uiGLType.glType">
+                                    {{uiGLType.typeName}}
                                 </option>
                             </select>
                         </div>
-
-                        <div class="col-md-4 position-relative form-group">
-                            <label class="">Interest Rate</label>
+                        <div class="col-md-3 position-relative form-group">
+                            <label class="">Interest Rate <span class="mandatory">*</span></label>
                             <div class="input-group">
                                 <input placeholder="Interest Rate" tabindex="5" type="number" maxlength="5"
-                                    class="form-control" formControlName="interestRate"  
-                                   >
-                                   <!-- [class.is-invalid]="interestRate.invalid && (interestRate.dirty || interestRate.touched)" -->
-                                <!-- <div *ngIf="interestRate.invalid && (interestRate.dirty || interestRate.touched)"
+                                    class="form-control" formControlName="interestRate"
+                               [class.is-invalid]="interestRate.invalid && (interestRate.dirty || interestRate.touched)">
+                               <div class="input-group-append"><span class="input-group-text">%</span></div>
+                                <div *ngIf="interestRate.invalid && (interestRate.dirty || interestRate.touched)"
                                     class="invalid-feedback">
                                     <div *ngIf="interestRate.errors?.['required']">
                                         Interest Rate is required.
                                     </div>
-                                </div> -->
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-3 position-relative form-group">
+                            <label for="txtName" class="">Opening Date</label>
+                            <div class="input-group">
+                                <input tabindex="8" type="date" class="form-control" required
+                                    formControlName="openDate">
                             </div>
                         </div>
 
-                        <div class="col-md-4 position-relative form-group">
+                        <div class="col-md-3 position-relative form-group">
                             <label class="">Balance</label>
                             <div class="input-group">
                                 <div class="input-group-prepend"><span class="input-group-text">₹</span></div>
-                                <input placeholder="0" readonly="true" tabindex="6" type="text"
-                                    class="form-control" formControlName="balance">
+                                <input placeholder="0" readonly="true" tabindex="6" type="text" class="form-control"
+                                    formControlName="balance">
                             </div>
                         </div>
-                    </div>
-                  
-                    <div class="row">
-                        <div class="col-md-4 position-relative">
+
+                        <div class="col-md-3 position-relative form-group">
+                            <label class="">Open Balance <span class="mandatory">*</span></label>
+                            <div class="input-group">
+                                <div class="input-group-prepend"><span class="input-group-text">₹</span></div>
+                                <input placeholder="Open Balance" tabindex="9" type="text" class="form-control" required maxlength="10"
+                                    formControlName="openBalance"
+                                    [class.is-invalid]="openBalance.invalid && (openBalance.dirty || openBalance.touched)">
+                                <div *ngIf="openBalance.invalid && (openBalance.dirty || openBalance.touched)" class="invalid-feedback">
+                                    <div *ngIf="openBalance.errors?.['required']">
+                                        Open Balance is required.
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- <div class="col-md-3 position-relative form-group">
                             <label class="">Sub Accounts</label>
                             <select class="mb-2 form-control" tabindex="7" formControlName="subAccounts">
                                 <option *ngFor="let uiSubAccount of uiSubAccounts" [ngValue]="uiSubAccount.id">
                                     {{uiSubAccount.name}}
                                 </option>
                             </select>
-                        </div>
+                        </div> -->
 
-                        <div class="col-md-4 position-relative form-group">
-                            <label for="txtName" class="">Opening Date</label>
-                            <div class="input-group">
-                                <input tabindex="8" type="date" class="form-control" required formControlName="openDate">
-                            </div>
-                        </div>
-                     
-                        <div class="col-md-4 position-relative form-group">
-                            <label class="">Open Balance</label>
-                            <div class="input-group">
-                                <div class="input-group-prepend"><span class="input-group-text">₹</span></div>
-                                <input placeholder="Open Balance" tabindex="9" type="text" class="form-control"
-                                    required maxlength="10" formControlName="openBalance">
-                                <!-- [class.is-invalid]="openBalance.invalid && (openBalance.dirty || openBalance.touched)" -->
-                                <!-- <div *ngIf="openBalance.invalid && (openBalance.dirty || openBalance.touched)" class="invalid-feedback">
-                                    <div *ngIf="openBalance.errors?.['required']">
-                                        Town is required.
-                                    </div>
-                                </div> -->
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="divider"></div>
-
-                    <div class="row">
-
-                        <div class="col-md-4 position-relative">
+                        <div class="col-md-3 position-relative">
                             <label class="">Regular Schedule</label>
                             <select class="mb-2 form-control" tabindex="10" formControlName="regularSchedule">
                                 <option *ngFor="let uiScheduleMaster of uiScheduleMasters"
-                                    [ngValue]="uiScheduleMaster.id">
-                                    {{uiScheduleMaster.branchMasterName}}
+                                    [ngValue]="uiScheduleMaster.constantNo">
+                                    {{uiScheduleMaster.constantname}}
                                 </option>
                             </select>
                         </div>
-                        <div class="col-md-4 position-relative">
+                        <div class="col-md-3 position-relative">
                             <label class="">Asset Schedule</label>
                             <select class="mb-2 form-control" formControlName="tahshilId" tabindex="11"
                                 formControlName="assetSchedule">
                                 <option *ngFor="let uiScheduleMaster of uiScheduleMasters"
-                                    [ngValue]="uiScheduleMaster.id">
-                                    {{uiScheduleMaster.branchMasterName}}
+                                    [ngValue]="uiScheduleMaster.constantNo">
+                                    {{uiScheduleMaster.constantname}}
                                 </option>
                             </select>
                         </div>
-                        <div class="col-md-4 position-relative">
+                        <div class="col-md-3 position-relative">
                             <label class="">Liability Schedule</label>
                             <select class="mb-2 form-control" tabindex="12" formControlName="liabilitySchedule">
                                 <option *ngFor="let uiScheduleMaster of uiScheduleMasters"
-                                    [ngValue]="uiScheduleMaster.id">
-                                    {{uiScheduleMaster.branchMasterName}}
+                                    [ngValue]="uiScheduleMaster.constantNo">
+                                    {{uiScheduleMaster.constantname}}
                                 </option>
                             </select>
                         </div>
-                    </div>
-
-                    <div class="row">
-
-                        
                     </div>
                     <div class="divider"></div>
                     <div class="row">
                         <div class="col-md-6 position-relative">
-                            <button class="mt-1 btn btn-primary" tabindex="13"
-                                (click)="saveGLMaster()">Submit</button>
+                            <button class="mt-1 btn btn-primary" tabindex="13" (click)="saveGLMaster()">Submit</button>
                             <button class="mt-1 btn btn-left-margin10 btn-danger" (click)="clear()">Clear</button>
                             <button class="mt-1 btn btn-left-margin10 btn-secondary"
                                 (click)="configClick('general-ledger-list')">Ledgers List</button>

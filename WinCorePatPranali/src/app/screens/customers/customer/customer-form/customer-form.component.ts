@@ -59,6 +59,7 @@ interface ICustomerAddress {
 
 interface ICustomerNominee {
   Id: number;
+  SrNo: number;
   CustomerId: number;
   NomineeName: string;
   NomineeAddress: string;
@@ -406,6 +407,7 @@ export class CustomerFormComponent implements OnInit {
               });
 
               if (customer.customerAddresses) {
+                this.uiAddresses = [];
                 customer.customerAddresses.forEach((add: any) => {
                   let uiAddress = {} as UiAddress;
 
@@ -436,6 +438,7 @@ export class CustomerFormComponent implements OnInit {
               }
 
               if (customer.customerNominees) {
+                this.uiNominis = [];
                 customer.customerNominees.forEach((nom: any) => {
                   let uiNomini = {} as UiNomini;
 
@@ -716,6 +719,7 @@ export class CustomerFormComponent implements OnInit {
     this.uiNominis.forEach(nom => {
       customerNomini = {} as ICustomerNominee;
       customerNomini.Id =  nom.id;
+      customerNomini.SrNo =  nom.srNo;
       customerNomini.CustomerId = nom.customerId;
       customerNomini.BirthDate = nom.birthDate;
       customerNomini.NomineeAddress = nom.nomineeAddress;
@@ -935,7 +939,7 @@ export class CustomerFormComponent implements OnInit {
 
         //uiNomini.id = 0;
         uiNomini.customerId = this.dto.id;
-        uiNomini.srNo = 0;
+        uiNomini.srNo = 1;
         uiNomini.nomineeName = this.nominiName.value.toString();
         uiNomini.nomineeAddress = this.nominiAddress.value.toString();
         uiNomini.birthDate = this.nominiDateOfBirth.value.toString();
