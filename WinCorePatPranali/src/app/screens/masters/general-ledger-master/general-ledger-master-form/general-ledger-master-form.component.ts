@@ -264,7 +264,7 @@ export class GeneralLedgerMasterFormComponent implements OnInit {
       this._generalLedgerService.saveGeneralLedger(glMasterModel).subscribe((data: any) => {
         console.log(data);
         if (data) {
-          if (data.statusCode == 200 && data.data.data.retId > 1) {
+          if (data.statusCode == 200 && data.data.data.retId > 0) {
             this._toastrService.success('General ledger saved.', 'Success!');
             this.configClick("general-ledger-list");
           }

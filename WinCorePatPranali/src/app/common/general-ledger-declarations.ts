@@ -2,7 +2,7 @@ import { UiStaticType } from "./models/common-ui-models";
 
 export class GlobleGLDeclarations
 {
-    static addInterestToBal = [new UiStaticType(1, "Y", "Yes"), 
+  static addInterestToBal = [new UiStaticType(1, "Y", "Yes"), 
   new UiStaticType(2, "N", "No"),
   new UiStaticType(3, "Q", "2 Quarter principalise"),
   new UiStaticType(4, "E", "After expiry seperate")];

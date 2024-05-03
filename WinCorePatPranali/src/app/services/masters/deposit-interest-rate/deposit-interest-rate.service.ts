@@ -9,14 +9,14 @@ export class DepositInterestRateService {
   serviceBaseURL = "";
   constructor(private http: HttpClient) { }
 
-  getDepositRatesByGL(id: number): any {
+  getDepositRatesByGL(id: number, interestStructureDate: string): any {
     let options = GlobleDeclarations.getHeaderOptions();
-    return this.http.get(GlobleDeclarations.apiBaseURL + "api/DepositInterestRate/deposit-rates-by-gl?glId=" + id, options);
+    return this.http.get(GlobleDeclarations.apiBaseURL + "api/InterestStructure/deposit-int-structure?glId=" + id + "&date=" + interestStructureDate, options);
   }
 
-  createDepositRateStructure(depositInterestModel: any): any {
+  saveDepositRateStructure(depositInterestModel: any): any {
     let options = GlobleDeclarations.getHeaderOptions();
-    return this.http.post(GlobleDeclarations.apiBaseURL + "api/DepositInterestRate/create-deposit-rates", depositInterestModel, options);
+    return this.http.post(GlobleDeclarations.apiBaseURL + "api/InterestStructure/save-deposit-int-structure", depositInterestModel, options);
   }
 
   updateDepositRateStructure(id: number, depositInterestModel: any): any {

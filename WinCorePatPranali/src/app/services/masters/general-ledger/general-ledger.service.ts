@@ -52,13 +52,13 @@ export class GeneralLedgerService {
     return this.http.delete(GlobleDeclarations.apiBaseURL + "api/GeneralLedger/delete-gl?id=" + id, options);
   }
 
-  getGeneralLedgerInterestParams(id: number): any {
+  getGeneralLedgerInterestParams(code: number): any {
     let options = GlobleDeclarations.getHeaderOptions();
-    return this.http.get(GlobleDeclarations.apiBaseURL + "api/GeneralLedger/gl-interest-parameters?id=" + id, options);
+    return this.http.get(GlobleDeclarations.apiBaseURL + "api/GeneralLedger/gl-interest-parameters?code=" + code, options);
   }
 
-  updateGeneralLedgerInterestParams(id: number, glModel: any): any {
+  saveGeneralLedgerInterestParams(glModel: any): any {
     let options = GlobleDeclarations.getHeaderOptions();
-    return this.http.post(GlobleDeclarations.apiBaseURL + "api/GeneralLedger/update-gl-interest-parameters?id=" + id, glModel, options);
+    return this.http.post(GlobleDeclarations.apiBaseURL + "api/GeneralLedger/save-gl-interest-parameters", glModel, options);
   }
 }

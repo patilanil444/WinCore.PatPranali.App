@@ -71,7 +71,7 @@ export class GLInterestParameterComponent implements OnInit {
   extraInterestForCC = GlobleGLDeclarations.extraInterestForCC;
 
   config: NgxDropdownConfig = {
-    displayKey: "name",
+    displayKey: "glName",
     height: "auto",
     search: true,
     placeholder: "Select GL",
@@ -95,7 +95,7 @@ export class GLInterestParameterComponent implements OnInit {
       generalLedger: new FormControl("", []),
       code: new FormControl("", []),
       group: new FormControl("", []),
-      typeOfAccount: new FormControl("", []),
+      glType: new FormControl("", []),
       interestPosting: new FormControl(this.interestPostings[0].code, []),
       addIntToBalance: new FormControl(this.addInterestToBal[0].code, []),
       receivable: new FormControl("", []),
@@ -134,16 +134,16 @@ export class GLInterestParameterComponent implements OnInit {
         if ( this.uiGeneralLedgers) {
 
           this.uiGeneralLedgers.map((gl: any, i: any) => {
-            gl.name = gl.id + "-" + gl.name;
+            gl.glName = gl.code + "-" + gl.glName;
           });
 
           //this.uiGeneralLedgers = ledgers.map((gl: any) => { id: gl.id; name: gl.id + "" + gl.name });
 
-          this.uiReceivableGLs = this.uiGeneralLedgers.filter(gl => gl.typeOfAccount.toLowerCase().includes('payable')
-            || gl.typeOfAccount.toLowerCase().includes('receivable'));
+          this.uiReceivableGLs = this.uiGeneralLedgers.filter(gl => gl.typeName.toLowerCase().includes('payable')
+            || gl.typeName.toLowerCase().includes('receivable'));
 
-          this.uiReceivedGLs = this.uiGeneralLedgers.filter(gl => gl.typeOfAccount.toLowerCase().includes('paid')
-            || gl.typeOfAccount.toLowerCase().includes('received'));
+          this.uiReceivedGLs = this.uiGeneralLedgers.filter(gl => gl.typeName.toLowerCase().includes('paid')
+            || gl.typeName.toLowerCase().includes('received'));
         }
       }
     })
@@ -153,23 +153,23 @@ export class GLInterestParameterComponent implements OnInit {
     this.isDepositEnabled = true;
     this.isLoanEnabled = true;
 
-    if (this.glForm.controls['generalLedger'].value.id) {
-      let selectedGL = this.uiGeneralLedgers.filter(gl => gl.id == this.glForm.controls['generalLedger'].value.id);
+    if (this.glForm.controls['generalLedger'].value.code) {
+      let selectedGL = this.uiGeneralLedgers.filter(gl => gl.code == this.glForm.controls['generalLedger'].value.code);
       if (selectedGL && selectedGL.length) {
         this.glForm.patchValue({
-          code: selectedGL[0].id,
-          group: selectedGL[0].glGroupName,
-          typeOfAccount: selectedGL[0].typeOfAccount,
+          code: selectedGL[0].code,
+          group: selectedGL[0].groupName,
+          glType: selectedGL[0].typeName,
         });
 
-        if (selectedGL[0].typeOfAccount.toLowerCase().includes('deposit')) {
+        if (selectedGL[0].typeName.toLowerCase().includes('deposit')) {
           this.isDepositEnabled = false;
         }
-        else if (selectedGL[0].typeOfAccount.toLowerCase().includes('loan')) {
+        else if (selectedGL[0].typeName.toLowerCase().includes('loan')) {
           this.isLoanEnabled = false;
         }
 
-        this._generalLedgerService.getGeneralLedgerInterestParams(selectedGL[0].id).subscribe((data: any) => {
+        this._generalLedgerService.getGeneralLedgerInterestParams(selectedGL[0].code).subscribe((data: any) => {
           console.log(data);
           if (data) {
 
@@ -204,9 +204,9 @@ export class GLInterestParameterComponent implements OnInit {
               extraInterestForCCForLoan: this.bindLoanValue(glwithParams.extraInterestForCCAboveLimit, this.extraInterestForCC[0].code),
             });
 
-            let gl = this.uiGeneralLedgers.filter(g=>g.id== glwithParams.payableGL);
+            let gl = this.uiGeneralLedgers.filter(g=>g.code == glwithParams.payableGL);
             this.receivable.setValue(gl[0]);
-            gl = this.uiGeneralLedgers.filter(g=>g.id== glwithParams.paidGL);
+            gl = this.uiGeneralLedgers.filter(g=>g.code == glwithParams.paidGL);
             this.received.setValue(gl[0]);
 
             this.rateForStaff.setValue(((glwithParams.staffRateYN == 'S' || glwithParams.staffRateYN == '') ? "" : glwithParams.staffRate));
@@ -243,7 +243,7 @@ export class GLInterestParameterComponent implements OnInit {
 
   bindGLValue(glValue: number)
   {
-    let filteredGLs = this.uiGeneralLedgers.filter(gl=>gl.id == glValue);
+    let filteredGLs = this.uiGeneralLedgers.filter(gl=>gl.code == glValue);
     if (filteredGLs && filteredGLs.length) {
       return filteredGLs[0];
     }
@@ -334,7 +334,7 @@ export class GLInterestParameterComponent implements OnInit {
 
       console.log(glMasterModel);
 
-      this._generalLedgerService.updateGeneralLedgerInterestParams(this.code.value, glMasterModel).subscribe((data: any) => {
+      this._generalLedgerService.saveGeneralLedgerInterestParams(glMasterModel).subscribe((data: any) => {
         console.log(data);
         if (data) {
           if (data.statusCode == 200 && data.data.data > 0) {
@@ -364,7 +364,7 @@ export class GLInterestParameterComponent implements OnInit {
       //generalLedger: new FormControl("", []),
       code: new FormControl("", []),
       group: new FormControl("", []),
-      typeOfAccount: new FormControl("", []),
+      glType: new FormControl("", []),
       interestPosting: new FormControl(this.interestPostings[0].code, []),
       addIntToBalance: new FormControl(this.addInterestToBal[0].code, []),
       //receivable: new FormControl("", []),
@@ -433,8 +433,8 @@ export class GLInterestParameterComponent implements OnInit {
   get group() {
     return this.glForm.get('group')!;
   }
-  get typeOfAccount() {
-    return this.glForm.get('typeOfAccount')!;
+  get glType() {
+    return this.glForm.get('glType')!;
   }
   get interestPosting() {
     return this.glForm.get('interestPosting')!;
