@@ -55,6 +55,7 @@ interface ICustomerAddress {
   is_Default: number;
   Createdby: string;
   ModifiedBy: string;
+  Status: string;
 }
 
 interface ICustomerNominee {
@@ -69,6 +70,7 @@ interface ICustomerNominee {
   Percentage: number;
   Phone: string;
   Createdby: string;
+  Status: string;
 }
 
 
@@ -85,6 +87,7 @@ export interface UiAddress {
   pincode: string,
   addressTypeId: string,
   addressTypeName: string,
+  status: string,
   isDefault: boolean,
   createdby: string,
   modifiedBy: string,
@@ -106,6 +109,7 @@ export interface UiNomini {
   phone: string,
   createdBy: string,
   modifiedBy: string,
+  status : string,
   mstCustomer: {}
 }
 
@@ -433,6 +437,7 @@ export class CustomerFormComponent implements OnInit {
                   uiAddress.addressTypeId = add.address_Type;
                   uiAddress.addressTypeName = addressTypeName;
                   uiAddress.isDefault = add.is_Default;
+                  uiAddress.status = "N";
                   this.uiAddresses.push(uiAddress);
                 });
               }
@@ -456,6 +461,7 @@ export class CustomerFormComponent implements OnInit {
                   uiNomini.guardian = nom.guardian;
                   uiNomini.percentage = nom.percentage;
                   uiNomini.phone = nom.phone;
+                  uiNomini.status = "N";
                   this.uiNominis.push(uiNomini);
                 });
               }
@@ -711,6 +717,7 @@ export class CustomerFormComponent implements OnInit {
       customerAddress.ModifiedBy = add.modifiedBy;
       customerAddress.is_Default = add.isDefault ? 1 : 0;
       customerAddress.PinCode = add.pincode;
+      customerAddress.Status = add.status;
       customerModel.CustomerAddresses.push(customerAddress);
     });
 
@@ -729,6 +736,7 @@ export class CustomerFormComponent implements OnInit {
       customerNomini.Phone = nom.phone;
       customerNomini.Relation = nom.relation;
       customerNomini.Guardian = nom.guardian;
+      customerNomini.Status = nom.status;
       customerModel.CustomerNominees.push(customerNomini);
     });
 
@@ -841,6 +849,7 @@ export class CustomerFormComponent implements OnInit {
         uiAddress.addressTypeId = this.addressType.value.toString();
         uiAddress.addressTypeName = addressTypeName;
         uiAddress.isDefault = true;
+        uiAddress.status = 'M';
         uiAddress.createdby = this._sharedService.applicationUser.userName;
         uiAddress.modifiedBy = this._sharedService.applicationUser.userName;
 
@@ -861,6 +870,7 @@ export class CustomerFormComponent implements OnInit {
         uiAddress.addressTypeId = this.addressType.value.toString();
         uiAddress.addressTypeName = addressTypeName;
         uiAddress.isDefault = true;
+        uiAddress.status = 'A';
         uiAddress.createdby = this._sharedService.applicationUser.userName;
         uiAddress.modifiedBy = this._sharedService.applicationUser.userName;
 
@@ -894,7 +904,8 @@ export class CustomerFormComponent implements OnInit {
   }
 
   deleteAddress(uiAddress: any, index: number) {
-    this.uiAddresses.splice(index, 1);
+    uiAddress.status = 'D';
+    // this.uiAddresses.splice(index, 1);
   }
 
   clearAddress() {
@@ -950,6 +961,7 @@ export class CustomerFormComponent implements OnInit {
         uiNomini.phone = this.nominiPhone.value.toString();
         uiNomini.createdBy = this._sharedService.applicationUser.userName;
         uiNomini.modifiedBy = this._sharedService.applicationUser.userName;
+        uiNomini.status = 'M';
       }
       else {
         let uiNomini = {} as UiNomini;
@@ -964,7 +976,7 @@ export class CustomerFormComponent implements OnInit {
         uiNomini.phone = this.nominiPhone.value.toString();
         uiNomini.createdBy = this._sharedService.applicationUser.userName;
         uiNomini.modifiedBy = this._sharedService.applicationUser.userName;
-
+        uiNomini.status = 'A';
         this.uiNominis.push(uiNomini);
       }
     }
@@ -984,7 +996,8 @@ export class CustomerFormComponent implements OnInit {
   }
 
   deleteNomini(uiNomini: any, index: number) {
-    this.uiNominis.splice(index, 1);
+    //this.uiNominis.splice(index, 1);
+    uiNomini.status = 'D';
   }
 
   clearNomini() {

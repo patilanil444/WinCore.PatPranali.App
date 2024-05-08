@@ -219,7 +219,7 @@ export class LoanInterestStructureComponent implements OnInit {
       this._loanInterestRateService.saveLoanRateStructure(loanInterestRateModel).subscribe((data: any) => {
         console.log(data);
         if (data) {
-          if (data.statusCode == 200 && data.data.data > 0) {
+          if (data.statusCode == 200 && data.data.data.retId > 0) {
             this._toastrService.success('Loan interest structure saved.', 'Success!');
             //this.configClick("banks");
             this.getLoanInterestRates();

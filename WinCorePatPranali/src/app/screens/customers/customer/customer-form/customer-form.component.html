@@ -436,38 +436,40 @@
                                             <tbody>
                                                 <tr
                                                     *ngFor="let uiAddress of uiAddresses | paginate: { itemsPerPage: 10, currentPage: p_address, totalItems: total_address }; let ind = index">
-                                                    <td>{{uiAddress.addressTypeName}}</td>
-                                                    <td>{{uiAddress.address}}</td>
-                                                    <td>{{uiAddress.city}}</td>
-                                                    <td>{{uiAddress.talukaName}}</td>
-                                                    <td>{{uiAddress.districtName}}</td>
-                                                    <td>
-                                                        <div *ngIf="uiAddress.isDefault" >
-                                                            Yes
-                                                        </div>
-                                                        <div *ngIf="!uiAddress.isDefault" >
-                                                            No
-                                                        </div>
-                                                    </td>
-                                                    <td>
-                                                        <div class="widget-content-right">
-                                                            <button type="button" placeholder="Edit record"
-                                                                class="btn-shadow btn btn-info btn-actions"
-                                                                (click)="editAddress(uiAddress, ind)">
-                                                                <span class="btn-icon-wrapper opacity-10">
-                                                                    <i class="fa fa-edit fa-w-10"></i>
-                                                                </span>
-                                                            </button>
-                                                            <button type="button" placeholder="Delete record"
-                                                                class="btn-shadow btn btn-danger btn-actions"
-                                                                data-toggle="modal" data-target="#deleteModal"
-                                                                (click)="deleteAddress(uiAddress, ind)">
-                                                                <span class="btn-icon-wrapper opacity-10">
-                                                                    <i class="fa fa-trash fa-w-20"></i>
-                                                                </span>
-                                                            </button>
-                                                        </div>
-                                                    </td>
+                                                    <ng-container *ngIf="uiAddress.status!='D'">
+                                                        <td>{{uiAddress.addressTypeName}}</td>
+                                                        <td>{{uiAddress.address}}</td>
+                                                        <td>{{uiAddress.city}}</td>
+                                                        <td>{{uiAddress.talukaName}}</td>
+                                                        <td>{{uiAddress.districtName}}</td>
+                                                        <td>
+                                                            <div *ngIf="uiAddress.isDefault" >
+                                                                Yes
+                                                            </div>
+                                                            <div *ngIf="!uiAddress.isDefault" >
+                                                                No
+                                                            </div>
+                                                        </td>
+                                                        <td>
+                                                            <div class="widget-content-right">
+                                                                <button type="button" placeholder="Edit record"
+                                                                    class="btn-shadow btn btn-info btn-actions"
+                                                                    (click)="editAddress(uiAddress, ind)">
+                                                                    <span class="btn-icon-wrapper opacity-10">
+                                                                        <i class="fa fa-edit fa-w-10"></i>
+                                                                    </span>
+                                                                </button>
+                                                                <button type="button" placeholder="Delete record"
+                                                                    class="btn-shadow btn btn-danger btn-actions"
+                                                                    data-toggle="modal" data-target="#deleteModal"
+                                                                    (click)="deleteAddress(uiAddress, ind)">
+                                                                    <span class="btn-icon-wrapper opacity-10">
+                                                                        <i class="fa fa-trash fa-w-20"></i>
+                                                                    </span>
+                                                                </button>
+                                                            </div>
+                                                        </td>
+                                                    </ng-container>
                                                 </tr>
                                                 <tr *ngIf="uiAddresses.length==0">
                                                     <td colspan="7">No records found..</td>
@@ -592,30 +594,32 @@
                                             <tbody>
                                                 <tr
                                                     *ngFor="let uiNomini of uiNominis | paginate: { itemsPerPage: 10, currentPage: p_nomini, totalItems: total_nomini }; let ind = index">
-                                                    <td>{{uiNomini.nomineeName}}</td>
-                                                    <td>{{uiNomini.relationName}}</td>
-                                                    <td>{{uiNomini.percentage}}</td>
-                                                    <td>{{uiNomini.nomineeAddress}}</td>
-                                                    <td>{{uiNomini.phone}}</td>
-                                                    <td>
-                                                        <div class="widget-content-right">
-                                                            <button type="button" placeholder="Edit record"
-                                                                class="btn-shadow btn btn-info btn-actions"
-                                                                (click)="editNomini(uiNomini, ind)">
-                                                                <span class="btn-icon-wrapper opacity-10">
-                                                                    <i class="fa fa-edit fa-w-10"></i>
-                                                                </span>
-                                                            </button>
-                                                            <button type="button" placeholder="Delete record"
-                                                                class="btn-shadow btn btn-danger btn-actions"
-                                                                data-toggle="modal" data-target="#deleteModal"
-                                                                (click)="deleteNomini(uiNomini, ind)">
-                                                                <span class="btn-icon-wrapper opacity-10">
-                                                                    <i class="fa fa-trash fa-w-20"></i>
-                                                                </span>
-                                                            </button>
-                                                        </div>
-                                                    </td>
+                                                    <ng-container *ngIf="uiNomini.status!='D'">
+                                                        <td>{{uiNomini.nomineeName}}</td>
+                                                        <td>{{uiNomini.relationName}}</td>
+                                                        <td>{{uiNomini.percentage}}</td>
+                                                        <td>{{uiNomini.nomineeAddress}}</td>
+                                                        <td>{{uiNomini.phone}}</td>
+                                                        <td>
+                                                            <div class="widget-content-right">
+                                                                <button type="button" placeholder="Edit record"
+                                                                    class="btn-shadow btn btn-info btn-actions"
+                                                                    (click)="editNomini(uiNomini, ind)">
+                                                                    <span class="btn-icon-wrapper opacity-10">
+                                                                        <i class="fa fa-edit fa-w-10"></i>
+                                                                    </span>
+                                                                </button>
+                                                                <button type="button" placeholder="Delete record"
+                                                                    class="btn-shadow btn btn-danger btn-actions"
+                                                                    data-toggle="modal" data-target="#deleteModal"
+                                                                    (click)="deleteNomini(uiNomini, ind)">
+                                                                    <span class="btn-icon-wrapper opacity-10">
+                                                                        <i class="fa fa-trash fa-w-20"></i>
+                                                                    </span>
+                                                                </button>
+                                                            </div>
+                                                        </td>
+                                                    </ng-container>
                                                 </tr>
                                                 <tr *ngIf="uiNominis.length==0">
                                                     <td colspan="6">No records found..</td>
