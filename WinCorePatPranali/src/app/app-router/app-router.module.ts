@@ -39,6 +39,9 @@ import { CustomerFormComponent } from '../screens/customers/customer/customer-fo
 import { CustomerSearchComponent } from '../screens/customers/customer/customer-search/customer-search.component';
 import { MemberSearchComponent } from '../screens/customers/member/member-search/member-search.component';
 import { MemberFormComponent } from '../screens/customers/member/member-form/member-form.component';
+import { CustSearchComponent } from '../common/directives/cust-search/cust-search.component';
+import { AccountSearchComponent } from '../screens/accounts/account-search/account-search.component';
+import { SavingAccountsComponent } from '../screens/accounts/saving-accounts/saving-accounts.component';
 
 @NgModule({
   declarations: [
@@ -76,6 +79,9 @@ import { MemberFormComponent } from '../screens/customers/member/member-form/mem
     CustomerSearchComponent,
     MemberSearchComponent,
     MemberFormComponent,
+    CustSearchComponent,
+    AccountSearchComponent,
+    SavingAccountsComponent,
   ],
   imports: [
     CommonModule,

@@ -28,6 +28,8 @@ import { CustomerSearchComponent } from '../screens/customers/customer/customer-
 import { MemberSearchComponent } from '../screens/customers/member/member-search/member-search.component';
 import { MemberFormComponent } from '../screens/customers/member/member-form/member-form.component';
 import { MasterDataResolverService } from '../common/resolvers/master-data-resolver.service';
+import { AccountSearchComponent } from '../screens/accounts/account-search/account-search.component';
+import { SavingAccountsComponent } from '../screens/accounts/saving-accounts/saving-accounts.component';
 
 const routes: Routes = [
   {
@@ -41,6 +43,7 @@ const routes: Routes = [
         path: 'home', component: HomeComponent
       },
       { path: 'deposit-accounts', component: DepositAccountsComponent },
+      { path: 'saving-accounts', component: SavingAccountsComponent },
       { path: 'loan-accounts', component: LoanAccountsComponent },
       { path: 'bank', component: BankMasterFormComponent },
       { path: 'banks', component: BankMasterComponent },
@@ -64,6 +67,7 @@ const routes: Routes = [
       { path: 'customer-search', component: CustomerSearchComponent },
       { path: 'member-list', component: MemberSearchComponent },
       { path: 'member', component: MemberFormComponent },
+      { path: 'account-search', component: AccountSearchComponent },
       { path: '**', component: NotFoundComponent },
       { path: '', redirectTo: 'projects', pathMatch: 'full' },
     ]

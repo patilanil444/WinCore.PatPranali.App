@@ -83,8 +83,8 @@ export enum UiEnumGeneralMaster {
     ADDRESSTYPE = 21,
     OPRMODE = 22,
     GLGROUP = 23,
-    SCHEDULE = 24
-
+    SCHEDULE = 24,
+    TDSREASON = 25
     // GENDER = 1,
     // TITLE = 2,
     // ACTYPE = 3,

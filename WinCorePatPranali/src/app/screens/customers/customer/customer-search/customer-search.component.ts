@@ -1,8 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { CustomerDeclarations } from 'src/app/common/customer-declarations';
+import { CustSearchComponent } from 'src/app/common/directives/cust-search/cust-search.component';
 import { IGeneralDTO } from 'src/app/common/models/common-ui-models';
 import { CustomerService } from 'src/app/services/customers/customer/customer.service';
 import { SharedService } from 'src/app/services/shared.service';
@@ -14,11 +15,11 @@ import { SharedService } from 'src/app/services/shared.service';
 })
 export class CustomerSearchComponent implements OnInit {
 
-  searchForm!: FormGroup;
+  //searchForm!: FormGroup;
 
   uiCustomers: any[] = [];
-
-  uiCustomerSearchBy: any[] = [];
+  @ViewChild(CustSearchComponent) custSearch!: CustSearchComponent;
+  //uiCustomerSearchBy: any[] = [];
   p: number = 1;
   total: number = 0;
   constructor(private router: Router, private _toastrService: ToastrService, 
@@ -26,68 +27,70 @@ export class CustomerSearchComponent implements OnInit {
 
   ngOnInit(): void {
 
-    this.uiCustomerSearchBy = CustomerDeclarations.customerSearchBy;
-    this.searchForm = new FormGroup({
-      searchBy: new FormControl(this.uiCustomerSearchBy[0].code, []),
-      searchText: new FormControl("", []),
-    });
+    // this.uiCustomerSearchBy = CustomerDeclarations.customerSearchBy;
+    // this.searchForm = new FormGroup({
+    //   searchBy: new FormControl(this.uiCustomerSearchBy[0].code, []),
+    //   searchText: new FormControl("", []),
+    // });
   }
 
   pageChangeEvent(event: number) {
     this.p = event;
   }
 
-  searchCustomer()
+  getCustomers(custData: any)
   {
-    this.uiCustomers = [];
-     if (this.searchText.value.length > 0) {
-
-      let customerSearchModel = {
-        searchBy: this.searchBy.value,
-        searchText: this.searchText.value,
-        branchCode: this._sharedService.applicationUser.branchId
-      };
-
-      this._customerService.getCustomersOnSearch(customerSearchModel).subscribe((data: any) => {
-        if (data!=null && data.data.data !=null) {
-          let customers = data.data.data;
-          if (customers!=null && customers.length>0) {
-            this.uiCustomers = customers.map((cust: any) => (
-              { 
-                id: cust.customerId,
-                custName: cust.custName,
-                pan: cust.panNo,
-                aadhar: cust.aadharno,
-                mobile: cust.mobileno,
-                status: this.getCustomerStatus(cust.active) 
-              })) 
-          }
-        }
-      })
-     }
-     else 
-     {
-      this._toastrService.info('Enter customer details to search.', 'Information!');
-     }
+    this.uiCustomers = custData;
   }
 
-  getCustomerStatus(status: number)
-  {
-    if (status == 1) {
-      return "Active";
-    }
-    else
-    {
-      return "In-Active";
-    }
-  }
+  // searchCustomer()
+  // {
+  //   this.uiCustomers = [];
+  //    if (this.searchText.value.length > 0) {
+
+  //     let customerSearchModel = {
+  //       searchBy: this.searchBy.value,
+  //       searchText: this.searchText.value,
+  //       branchCode: this._sharedService.applicationUser.branchId
+  //     };
+
+  //     this._customerService.getCustomersOnSearch(customerSearchModel).subscribe((data: any) => {
+  //       if (data!=null && data.data.data !=null) {
+  //         let customers = data.data.data;
+  //         if (customers!=null && customers.length>0) {
+  //           this.uiCustomers = customers.map((cust: any) => (
+  //             { 
+  //               id: cust.customerId,
+  //               custName: cust.custName,
+  //               pan: cust.panNo,
+  //               aadhar: cust.aadharno,
+  //               mobile: cust.mobileno,
+  //               status: this.getCustomerStatus(cust.active) 
+  //             })) 
+  //         }
+  //       }
+  //     })
+  //    }
+  //    else 
+  //    {
+  //     this._toastrService.info('Enter customer details to search.', 'Information!');
+  //    }
+  // }
+
+  // getCustomerStatus(status: number)
+  // {
+  //   if (status == 1) {
+  //     return "Active";
+  //   }
+  //   else
+  //   {
+  //     return "In-Active";
+  //   }
+  // }
 
   clear()
   {
-    this.searchForm.patchValue({
-      searchBy: this.uiCustomerSearchBy[0].code,
-      searchText: ""
-    });
+    this.custSearch.clear();
   }
 
   edit(uiCustomer:any)
@@ -118,7 +121,7 @@ export class CustomerSearchComponent implements OnInit {
         console.log(data);
         if (data) {
           this._toastrService.success('customer deleted.', 'Success!');
-          this.searchCustomer();
+          //this.getCustomers();
         }
       })
     }
@@ -141,10 +144,10 @@ export class CustomerSearchComponent implements OnInit {
     this.router.navigate(['/app/'+ routeValue]);
   }
 
-  get searchBy() {
-    return this.searchForm.get('searchBy')!;
-  }
-  get searchText() {
-    return this.searchForm.get('searchText')!;
-  }
+  // get searchBy() {
+  //   return this.searchForm.get('searchBy')!;
+  // }
+  // get searchText() {
+  //   return this.searchForm.get('searchText')!;
+  // }
 }

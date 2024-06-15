@@ -236,6 +236,7 @@ export class CustomerFormComponent implements OnInit {
 
     this.personalDetailsForm = new FormGroup({
       customerCode: new FormControl("", []),
+      customerNumber: new FormControl("", []),
       personalTitle: new FormControl(this.uiTitles[0].constantNo, [Validators.required]),
       personalFirstName: new FormControl("", [Validators.required]),
       personalMiddleName: new FormControl("", []),
@@ -386,6 +387,7 @@ export class CustomerFormComponent implements OnInit {
 
               this.personalDetailsForm.patchValue({
                 customerCode: customer.id,
+                customerNumber: customer.customerCodeStr,
                 personalTitle: customer.title,
                 personalFirstName: customer.fName,
                 personalMiddleName: customer.mName,
@@ -921,8 +923,6 @@ export class CustomerFormComponent implements OnInit {
     });
   }
 
-
-
   addNomini() {
     if (this.validNominiForm()) {
 
@@ -934,7 +934,12 @@ export class CustomerFormComponent implements OnInit {
       if (nominiIndex > -1) {
         totalPercentage = totalPercentage - this.uiNominis[nominiIndex].percentage;
       }
-      if (totalPercentage == 100) {
+      if (totalPercentage >= 100) {
+        this._toastrService.warning('Total percentage for nomini exceeded.', 'Warning!');
+        return;
+      }
+
+      if (parseFloat(this.nominiPercentage.value) + totalPercentage > 100) {
         this._toastrService.warning('Total percentage for nomini exceeded.', 'Warning!');
         return;
       }
@@ -1074,6 +1079,11 @@ export class CustomerFormComponent implements OnInit {
   get customerCode() {
     return this.personalDetailsForm.get('customerCode')!;
   }
+
+  get customerNumber() {
+    return this.personalDetailsForm.get('customerNumber')!;
+  }
+  
   get personalTitle() {
     return this.personalDetailsForm.get('personalTitle')!;
   }

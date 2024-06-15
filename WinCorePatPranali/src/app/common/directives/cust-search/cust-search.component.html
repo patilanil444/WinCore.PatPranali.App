@@ -1,0 +1,30 @@
+<form [formGroup]="searchForm" #form="ngForm">
+    <div class="col-lg-12">
+        <div class="row">
+
+            <div class="col-md-4 position-relative">
+                <label for="txtCode" class="">Search By </label>
+                <select class="mb-2 form-control" tabindex="1" formControlName="searchBy">
+                    <option *ngFor="let uiCustomerSearch of uiCustomerSearchBy" [ngValue]="uiCustomerSearch.code">
+                        {{uiCustomerSearch.name}}
+                    </option>
+                </select>
+            </div>
+            <div class="col-md-4 position-relative">
+                <label for="txtCode" class="">Search Text </label>
+                <input tabindex="4" type="text" class="form-control" autocomplete="off"
+                    placeholder="Enter search text.." formControlName="searchText">
+            </div>
+
+            <div class="col-md-3 position-relative form-group" style="display: grid; margin-top: 30px;">
+                <!-- <button class="btn btn-left-margin10 btn-danger" style="float: right;" tabindex="2"
+                    (click)="clear()">
+                    Clear</button>
+                <button class="btn btn-left-margin10 btn-warning" style="float: right;" tabindex="2"
+                    (click)="addNewCustomer()"><i class="fa fa-plus"></i> Add New Customer </button> -->
+                <button class="btn btn-info" style="float: right;" tabindex="2" (click)="searchCustomer()"><i
+                        class="fa fa-search"></i> Search</button>
+            </div>
+        </div>
+    </div>
+</form>
