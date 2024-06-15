@@ -1,0 +1,154 @@
+<div class="row">
+    <div class="col-lg-12">
+
+        <div class="main-card mb-3 card">
+            <div class="card-body">
+
+                <h5 class="card-title">Search Account</h5>
+                <form [formGroup]="searchForm" #form="ngForm">
+                    <div class="row">
+                        <div class="col-md-3 position-relative form-group">
+                            <label for="txtCode" class="">Search by GL</label>
+                            <div class="input-group">
+                                <ngx-select-dropdown [config]="config" tabindex="1" [options]="uiAllGeneralLedgers"
+                                    style="width: 100%;" formControlName="generalLedger"
+                                    [multiple]="false"></ngx-select-dropdown>
+                            </div>
+                        </div>
+                        <div class="col-md-3 position-relative form-group">
+                            <label for="txtCode" class="">Search by Customer Number</label>
+                            <input tabindex="2" type="text" formControlName="customerNumber" class="form-control">
+                        </div>
+                        <div class="col-md-3 position-relative form-group">
+                            <label for="txtCode" class="">Search by Account Number</label>
+                            <input tabindex="2" type="text" formControlName="accountNumber" class="form-control">
+                        </div>
+                        <div class="col-md-3 position-relative form-group">
+                            <div style="float: right; margin-top: 30px;">
+                                <button class="btn  btn-warning"  tabindex="2"
+                                    (click)="clear()">
+                                    Clear</button>
+                            </div>
+                           
+    
+                            <div class="mb-2 mr-2 btn-group" style="float: right; margin-top: 30px;margin-left: 10px;">
+                                <button class="btn btn-primary" >Add Account</button>
+                                <button type="button" aria-haspopup="true" aria-expanded="false" data-toggle="dropdown" class="dropdown-toggle-split dropdown-toggle btn btn-primary"><span class="sr-only">Toggle Dropdown</span></button>
+                                <div tabindex="-1" role="menu" aria-hidden="true" class="dropdown-menu" x-placement="bottom-start" style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(67px, 32px, 0px);">
+                                    <button type="button" tabindex="0" class="dropdown-item" (click)="addAccount('saving-accounts')">Saving</button>
+                                    <button type="button" tabindex="0" class="dropdown-item" (click)="addAccount('deposit-accounts')">Deposit</button>
+                                    <button type="button" tabindex="0" class="dropdown-item" (click)="addAccount('loan-accounts')">Loan</button>
+                                    <button type="button" tabindex="0" class="dropdown-item" (click)="addAccount('banks')">Other</button>
+                                </div>
+                            </div>
+    
+                            <div style="float: right; margin-top: 30px; ">
+                                <button class="btn  btn-info" 
+                                    tabindex="2" (click)="searchAccounts()">
+                                    Search</button>
+                            </div>
+                            <!-- <div class="dropdown d-inline-block" style="float: right; margin-top: 30px;">
+                                <button class="btn btn-left-margin10 btn-success" 
+                                    type="button" aria-haspopup="true" aria-expanded="true" data-toggle="dropdown"
+                                    class="mb-2 mr-2 dropdown-toggle btn btn-success" tabindex="2"><i
+                                        class="fa fa-plus"></i> Add Account </button>
+                                <div tabindex="-1" role="menu" aria-hidden="true" class="dropdown-menu show"
+                                    x-placement="bottom-start"
+                                    style="position: absolute; transform: translate3d(0px, 32px, 0px); top:30px; left: 0px; will-change: transform;">
+                                    <button type="button" tabindex="0" class="dropdown-item"
+                                        (click)="addNewAccount()">Saving</button>
+                                    <button type="button" tabindex="0" class="dropdown-item"
+                                        (click)="addNewAccount()">Deposit</button>
+                                    <button type="button" tabindex="0" class="dropdown-item"
+                                        (click)="addNewAccount()">Loan</button>
+                                </div>
+                            </div> -->
+                        </div>
+                    </div>
+                </form>
+              
+
+                <div class="row" style="margin-bottom: 10px;">
+                    <div class="col-lg-12">
+                        <table class="mb-0 table table-striped">
+                            <thead>
+                                <tr>
+                                    <th width="15%">General Ledger</th>
+                                    <th width="15%">Account Number</th>
+                                    <th width="15%">Customer Number</th>
+                                    <th width="20%">Name</th>
+                                    <th width="15%">Rate Of Interest</th>
+                                    <th width="10%">Status</th>
+                                    <th width="10%">Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr
+                                    *ngFor="let uiAccount of uiAccounts | paginate: { itemsPerPage: 10, currentPage: p, totalItems: total }">
+                                    <th scope="row">{{uiAccount.glName}}</th>
+                                    <td>{{uiAccount.accountNo}}</td>
+                                    <td>{{uiAccount.customerCodeStr}}</td>
+                                    <td>{{uiAccount.custName}}</td>
+                                    <td>{{uiAccount.int_Rate}}</td>
+                                    <td>
+                                        <div class="badge"
+                                            [ngClass]="{'badge-danger': uiAccount.status==='Deleted', 'badge-success' : uiAccount.status=== 'Active', 'badge-warning' : uiAccount.status=== 'In-Active'}">
+                                            {{uiAccount.status}}
+                                        </div>
+
+                                    </td>
+                                    <td>
+                                        <div class="widget-content-right">
+                                            <button type="button" title="Edit record"
+                                                class="btn-shadow btn btn-info btn-actions" (click)="edit(uiAccount)">
+                                                <span class="btn-icon-wrapper opacity-10">
+                                                    <i class="fa fa-edit fa-w-10"></i>
+                                                </span>
+                                            </button>
+                                            <button type="button" title="Delete record"
+                                                class="btn-shadow btn btn-danger btn-actions" data-toggle="modal"
+                                                data-target="#deleteModal" (click)="delete(uiAccount)">
+                                                <span class="btn-icon-wrapper opacity-10">
+                                                    <i class="fa fa-trash fa-w-20"></i>
+                                                </span>
+                                            </button>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr *ngIf="uiAccounts.length==0">
+                                    <td colspan="7">No records found..</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <div class="d-flex justify-content-center">
+                    <pagination-controls (pageChange)="pageChangeEvent($event)"></pagination-controls>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<div id="deleteModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+    aria-hidden="true" data-backdrop="false">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Delete</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="cancelDelete()">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <p class="mb-0">Are you sure do you want to delete?</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-danger" data-dismiss="modal" (click)="onDelete()">Yes</button>
+                <button type="button" class="btn btn-primary" data-dismiss="modal" (click)="cancelDelete()">No</button>
+            </div>
+        </div>
+    </div>
+</div>

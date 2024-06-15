@@ -21,6 +21,11 @@ export class GeneralLedgerService {
     return this.dto.asObservable();
   }
 
+  getGeneralLedgerTypesAndGroups(glGroupCode: string)
+  {
+    let options = GlobleDeclarations.getHeaderOptions();
+    return this.http.get(GlobleDeclarations.apiBaseURL + "api/GeneralLedger/gl-types-groups?glGroupCode" + glGroupCode, options);
+  }
 
   getGeneralLedgers(branchId: number) {
     let options = GlobleDeclarations.getHeaderOptions();
@@ -32,28 +37,28 @@ export class GeneralLedgerService {
     return this.http.get(GlobleDeclarations.apiBaseURL + "api/GeneralLedger/general-ledger?code=" + code, options);
   }
 
-  createGeneralLedger(glModel: any): any {
+  saveGeneralLedger(glModel: any): any {
     let options = GlobleDeclarations.getHeaderOptions();
-    return this.http.post(GlobleDeclarations.apiBaseURL + "api/GeneralLedger/create-gl", glModel, options);
+    return this.http.post(GlobleDeclarations.apiBaseURL + "api/GeneralLedger/save-ledger", glModel, options);
   }
 
-  updateGeneralLedger(id: number, glModel: any): any {
-    let options = GlobleDeclarations.getHeaderOptions();
-    return this.http.post(GlobleDeclarations.apiBaseURL + "api/GeneralLedger/update-gl?id=" + id, glModel, options);
-  }
+  // updateGeneralLedger(id: number, glModel: any): any {
+  //   let options = GlobleDeclarations.getHeaderOptions();
+  //   return this.http.post(GlobleDeclarations.apiBaseURL + "api/GeneralLedger/update-gl?id=" + id, glModel, options);
+  // }
 
   deleteGeneralLedger(id: number): any {
     let options = GlobleDeclarations.getHeaderOptions();
     return this.http.delete(GlobleDeclarations.apiBaseURL + "api/GeneralLedger/delete-gl?id=" + id, options);
   }
 
-  getGeneralLedgerInterestParams(id: number): any {
+  getGeneralLedgerInterestParams(code: number): any {
     let options = GlobleDeclarations.getHeaderOptions();
-    return this.http.get(GlobleDeclarations.apiBaseURL + "api/GeneralLedger/gl-interest-parameters?id=" + id, options);
+    return this.http.get(GlobleDeclarations.apiBaseURL + "api/GeneralLedger/gl-interest-parameters?code=" + code, options);
   }
 
-  updateGeneralLedgerInterestParams(id: number, glModel: any): any {
+  saveGeneralLedgerInterestParams(glModel: any): any {
     let options = GlobleDeclarations.getHeaderOptions();
-    return this.http.post(GlobleDeclarations.apiBaseURL + "api/GeneralLedger/update-gl-interest-parameters?id=" + id, glModel, options);
+    return this.http.post(GlobleDeclarations.apiBaseURL + "api/GeneralLedger/save-gl-interest-parameters", glModel, options);
   }
 }

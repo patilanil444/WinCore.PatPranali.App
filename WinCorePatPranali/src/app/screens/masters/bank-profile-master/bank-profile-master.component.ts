@@ -142,7 +142,7 @@ export class BankProfileMasterComponent implements OnInit {
   uiSystemProfile: any;
 
   config: NgxDropdownConfig = {
-    displayKey: "name",
+    displayKey: "glName",
     height: "auto",
     search: true,
     placeholder: "Select GL",
@@ -332,8 +332,12 @@ export class BankProfileMasterComponent implements OnInit {
         this.uiGeneralLedgers = data.data.data;
         if (this.uiGeneralLedgers) {
 
+          // this.uiGeneralLedgers.map((gl: any, i: any) => {
+          //   gl.name = gl.id + "-" + gl.name;
+          // });
+
           this.uiGeneralLedgers.map((gl: any, i: any) => {
-            gl.name = gl.id + "-" + gl.name;
+            gl.glName = gl.code + "-" + gl.glName;
           });
 
           this.getSystemProfile();

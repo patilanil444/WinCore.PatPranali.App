@@ -1,6 +1,7 @@
 import { formatDate } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { NgxDropdownConfig } from 'ngx-select-dropdown';
 import { ToastrService } from 'ngx-toastr';
 import { UiValueType } from 'src/app/common/models/common-ui-models';
 import { DepositInterestRateService } from 'src/app/services/masters/deposit-interest-rate/deposit-interest-rate.service';
@@ -23,10 +24,13 @@ interface IUiInterestStructureModel {
 
 interface IDepositInterestRate{
   Id : number,
-  GeneralLedgerId: number,
-  InterestSetDate: Date,
-  BranchId: number,
-  Schedules: IDepositInterestRateScheduleModel[]
+  GLId: number,
+  IntSetDate: Date,
+  Type: string,
+  BranchCode: number,
+  Active: number,
+  CreatedBy : string,
+  mstDepositIntRateStruct: IDepositInterestRateScheduleModel[]
 }
 
 interface IDepositInterestRateScheduleModel
@@ -41,7 +45,8 @@ interface IDepositInterestRateScheduleModel
   PreMatureRate: number,
   RegularRate: number,
   AfterExpiryRate: number,
-  DepositInterestRateId: number
+  IntRateStructureId: number,
+  CreatedBy: string
 }
 
 @Component({
@@ -51,9 +56,24 @@ interface IDepositInterestRateScheduleModel
 })
 export class DepositInterestStructureComponent implements OnInit {
 
+  config: NgxDropdownConfig = {
+    displayKey: "glName",
+    height: "auto",
+    search: true,
+    placeholder: "Select GL",
+    searchPlaceholder: "Search GL by name...",
+    limitTo: 0,
+    customComparator: undefined,
+    noResultsFound: "No results found",
+    moreText: "more",
+    clearOnSelection: false,
+    inputDirection: "ltr",
+    enableSelectAll: false,
+  };
+
   uiGeneralLedgers: any[] = [];
   interestStructureDate = formatDate(new Date(Date.now()), 'yyyy-MM-dd', 'en');
-  generalLedgerId = 0;
+  generalLedger: any;
   structureArray: IUiInterestStructureModel[] = [];
   uiPeriods = [new UiValueType(1, "Days"), new UiValueType(2, "Months")];
   uiDepositInterestRate :any;
@@ -74,8 +94,11 @@ export class DepositInterestStructureComponent implements OnInit {
       if (data) {
         this.uiGeneralLedgers = data.data.data;
         if (this.uiGeneralLedgers) {
-          this.generalLedgerId = this.uiGeneralLedgers[0].id;
+          this.generalLedger = this.uiGeneralLedgers[0];
         }
+        this.uiGeneralLedgers.map((gl: any, i: any) => {
+          gl.glName = gl.code + "-" + gl.glName;
+        });
       }
     })
   }
@@ -109,17 +132,17 @@ export class DepositInterestStructureComponent implements OnInit {
   }
 
   getDepositInterestRates(){
-    this._depositInterestRateService.getDepositRatesByGL(this.generalLedgerId).subscribe((data: any) => {
+    this._depositInterestRateService.getDepositRatesByGL(this.generalLedger.code, this.interestStructureDate).subscribe((data: any) => {
       console.log(data);
       if (data) {
         let response = data.data.data;
         if (response) {
           this.uiDepositInterestRate = response;
-          if (this.uiDepositInterestRate.id > 0 && this.uiDepositInterestRate.schedules) {
+          if (this.uiDepositInterestRate.id > 0 && this.uiDepositInterestRate.mstDepositIntRateStruct) {
 
-            this.interestStructureDate = formatDate(new Date(this.uiDepositInterestRate.interestSetDate), 'yyyy-MM-dd', 'en');
+            this.interestStructureDate = formatDate(new Date(this.uiDepositInterestRate.intSetDate), 'yyyy-MM-dd', 'en');
 
-            this.uiDepositInterestRate.schedules.forEach((schedule: any) => {
+            this.uiDepositInterestRate.mstDepositIntRateStruct.forEach((schedule: any) => {
               this.structureArray[schedule.rowIndex].id = schedule.id;
               this.structureArray[schedule.rowIndex].fromAmount = schedule.fromAmount;
               this.structureArray[schedule.rowIndex].toAmount = schedule.toAmount;
@@ -129,7 +152,7 @@ export class DepositInterestStructureComponent implements OnInit {
               this.structureArray[schedule.rowIndex].preMatureRate = schedule.preMatureRate;
               this.structureArray[schedule.rowIndex].regularInterestRate = schedule.regularRate;
               this.structureArray[schedule.rowIndex].afterExpiryRate = schedule.afterExpiryRate;
-              this.structureArray[schedule.rowIndex].depositInterestRateId = schedule.depositInterestRateId;
+              this.structureArray[schedule.rowIndex].depositInterestRateId = schedule.IntRateStructureId;
             });
             this.isAddMode = false;
           }
@@ -137,6 +160,7 @@ export class DepositInterestStructureComponent implements OnInit {
           {
             this.isAddMode = true;
             this.interestStructureDate = formatDate(new Date(Date.now()), 'yyyy-MM-dd', 'en');
+            this.uiDepositInterestRate = {};
           }
         }
       }
@@ -160,11 +184,13 @@ export class DepositInterestStructureComponent implements OnInit {
     if (this.validateForm()) {
       let depositInterestRateModel = {} as IDepositInterestRate;
 
-      depositInterestRateModel.BranchId = this._sharedService.applicationUser.branchId;
-      depositInterestRateModel.GeneralLedgerId = this.generalLedgerId;
-      depositInterestRateModel.InterestSetDate = new Date(this.interestStructureDate);
-      depositInterestRateModel.Schedules = [];
-      depositInterestRateModel.Id = 0;
+      depositInterestRateModel.BranchCode = this._sharedService.applicationUser.branchId;
+      depositInterestRateModel.GLId = this.generalLedger.code;
+      depositInterestRateModel.IntSetDate = new Date(this.interestStructureDate);
+      depositInterestRateModel.Type = 'D';
+      depositInterestRateModel.CreatedBy = this._sharedService.applicationUser.userName;
+      depositInterestRateModel.mstDepositIntRateStruct = [];
+      depositInterestRateModel.Id = (this.uiDepositInterestRate && this.uiDepositInterestRate.id) ? this.uiDepositInterestRate.id : 0;
       console.log(depositInterestRateModel);
 
       for (let index = 0; index < this.structureArray.length; index++) {
@@ -179,32 +205,43 @@ export class DepositInterestStructureComponent implements OnInit {
         model.PreMatureRate = this.structureArray[index].preMatureRate;
         model.RegularRate = this.structureArray[index].regularInterestRate;
         model.AfterExpiryRate = this.structureArray[index].afterExpiryRate;
-        model.DepositInterestRateId = this.structureArray[index].depositInterestRateId
-        depositInterestRateModel.Schedules.push(model);
+        model.IntRateStructureId = (this.uiDepositInterestRate && this.uiDepositInterestRate.id) ? this.uiDepositInterestRate.id : 0;
+        depositInterestRateModel.mstDepositIntRateStruct.push(model);
       }
 
-      if (this.isAddMode) {
-        this._depositInterestRateService.createDepositRateStructure(depositInterestRateModel).subscribe((data: any) => {
-          console.log(data);
-          if (data) {
-            if (data.statusCode == 200 && data.data.data > 0) {
-              this._toastrService.success('Deposit interest structure added.', 'Success!');
-              this.getDepositInterestRates();
-            }
+      this._depositInterestRateService.saveDepositRateStructure(depositInterestRateModel).subscribe((data: any) => {
+        console.log(data);
+        if (data) {
+          if (data.statusCode == 200 && data.data.data.retId > 0) {
+            this._toastrService.success('Deposit interest structure saved.', 'Success!');
+            this.getDepositInterestRates();
           }
-        })
-      }
-      else  
-      {
-        this._depositInterestRateService.updateDepositRateStructure(parseInt(this.uiDepositInterestRate.id), depositInterestRateModel).subscribe((data: any) => {
-          console.log(data);
-          if (data) {
-            if (data.statusCode == 200 && data.data.data > 0) {
-              this._toastrService.success('Deposit interest structure updated.', 'Success!');
-            }
-          }
-        })
-      }
+        }
+      })
+
+
+      // if (this.isAddMode) {
+      //   this._depositInterestRateService.createDepositRateStructure(depositInterestRateModel).subscribe((data: any) => {
+      //     console.log(data);
+      //     if (data) {
+      //       if (data.statusCode == 200 && data.data.data > 0) {
+      //         this._toastrService.success('Deposit interest structure added.', 'Success!');
+      //         this.getDepositInterestRates();
+      //       }
+      //     }
+      //   })
+      // }
+      // else  
+      // {
+      //   this._depositInterestRateService.updateDepositRateStructure(parseInt(this.uiDepositInterestRate.id), depositInterestRateModel).subscribe((data: any) => {
+      //     console.log(data);
+      //     if (data) {
+      //       if (data.statusCode == 200 && data.data.data > 0) {
+      //         this._toastrService.success('Deposit interest structure updated.', 'Success!');
+      //       }
+      //     }
+      //   })
+      // }
 
     }
   }

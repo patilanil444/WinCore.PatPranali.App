@@ -2,6 +2,13 @@ import { UiStaticType } from "./models/common-ui-models";
 
 export class CustomerDeclarations
 {
+    static customerSearchBy = [
+    new UiStaticType(1, "N", "Customer Name"), 
+    new UiStaticType(2, "C", "Customer Number"),
+    new UiStaticType(3, "P", "PAN"),
+    new UiStaticType(4, "A", "Aadhar"),
+    new UiStaticType(5, "O", "Phone")];
+
     static titles = [new UiStaticType(1, "M", "Mr."), 
     new UiStaticType(2, "R", "Mrs."),
     new UiStaticType(3, "I", "Miss"),
@@ -21,28 +28,28 @@ export class CustomerDeclarations
     new UiStaticType(2, "I", "Inactive"),
     new UiStaticType(3, "D", "Deleted")];
 
-    static educations = [new UiStaticType(1, "U", "Under-graduate"),
-    new UiStaticType(2, "G", "Graduate"),
-    new UiStaticType(3, "P", "Post-graduate"),
-    new UiStaticType(4, "S", "School")];
+    // static educations = [new UiStaticType(1, "U", "Under-graduate"),
+    // new UiStaticType(2, "G", "Graduate"),
+    // new UiStaticType(3, "P", "Post-graduate"),
+    // new UiStaticType(4, "S", "School")];
 
-    static tdsApplicables = [new UiStaticType(1, "N", "Not applicable"),
-    new UiStaticType(2, "A", "Applicable")];
+    // static tdsApplicables = [new UiStaticType(1, "N", "Not applicable"),
+    // new UiStaticType(2, "A", "Applicable")];
 
-    static tdsPrintings = [new UiStaticType(1, "S", "Seperate"),
-    new UiStaticType(2, "A", "Applicable")];
+    // static tdsPrintings = [new UiStaticType(1, "S", "Seperate"),
+    // new UiStaticType(2, "A", "Applicable")];
 
-    static form60YN = [new UiStaticType(1, "Y", "Yes"),
-    new UiStaticType(2, "N", "No")];
+    // static form60YN = [new UiStaticType(1, "Y", "Yes"),
+    // new UiStaticType(2, "N", "No")];
 
-    static form61YN = [new UiStaticType(1, "Y", "Yes"),
-    new UiStaticType(2, "N", "No")];
+    // static form61YN = [new UiStaticType(1, "Y", "Yes"),
+    // new UiStaticType(2, "N", "No")];
 
     static customerTypes = [new UiStaticType(1, "R", "Regular"),
     new UiStaticType(2, "P", "Permanent")];
 
-    static addressTypes = [new UiStaticType(1, "C", "Correspondence"),
-    new UiStaticType(2, "P", "Permanent")];
+    // static addressTypes = [new UiStaticType(1, "C", "Correspondence"),
+    // new UiStaticType(2, "P", "Permanent")];
 
     static documents = [new UiStaticType(1, "A", "Aadhar card"),
     new UiStaticType(2, "P", "PAN card"),

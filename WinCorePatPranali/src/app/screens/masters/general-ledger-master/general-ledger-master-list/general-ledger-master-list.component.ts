@@ -30,7 +30,7 @@ export class GeneralLedgerMasterListComponent implements OnInit {
         this.total = this.uiGeneralLedgers.length;
         if (this.uiGeneralLedgers) {
           this.uiGeneralLedgers.map((ledger, i) => {
-            ledger.hasBranchesYN = ledger.hasBranches ? "Yes" : "No";
+            ledger.statusText = ledger.active == 1 ? "Active" : "In-Active";
           });
         }
       }
@@ -66,7 +66,7 @@ export class GeneralLedgerMasterListComponent implements OnInit {
     let dtObject: IGeneralLedgerDTO = {
       route: "general-ledger",
       action: "editRecord",
-      id: uiGeneralLedger.id,
+      id: uiGeneralLedger.code,
       maxId: 0,
     }
     this._generalLedgerService.setDTO(dtObject);

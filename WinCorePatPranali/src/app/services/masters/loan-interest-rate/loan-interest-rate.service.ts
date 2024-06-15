@@ -9,14 +9,14 @@ export class LoanInterestRateService {
   serviceBaseURL = "";
   constructor(private http: HttpClient) { }
 
-  getLoanRatesByGL(id: number): any {
+  getLoanRatesByGL(id: number, interestStructureDate: string): any {
     let options = GlobleDeclarations.getHeaderOptions();
-    return this.http.get(GlobleDeclarations.apiBaseURL + "api/LoanInterestRate/loan-rates-by-gl?glId=" + id, options);
+    return this.http.get(GlobleDeclarations.apiBaseURL + "api/InterestStructure/loan-int-structure?glId=" + id + "&date=" + interestStructureDate, options);
   }
 
-  createLoanRateStructure(loanInterestRateModel: any): any {
+  saveLoanRateStructure(loanInterestRateModel: any): any {
     let options = GlobleDeclarations.getHeaderOptions();
-    return this.http.post(GlobleDeclarations.apiBaseURL + "api/LoanInterestRate/create-loan-rates", loanInterestRateModel, options);
+    return this.http.post(GlobleDeclarations.apiBaseURL + "api/InterestStructure/save-loan-int-structure", loanInterestRateModel, options);
   }
 
   updateLoanRateStructure(id: number, loanInterestRateModel: any): any {
