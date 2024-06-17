@@ -3,7 +3,6 @@ import { Component } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { NgxDropdownConfig } from 'ngx-select-dropdown';
 import { ToastrService } from 'ngx-toastr';
-import { filter } from 'rxjs';
 import { AccountDeclarations } from 'src/app/common/account-declarations';
 import { IGeneralDTO, UiEnumGeneralMaster } from 'src/app/common/models/common-ui-models';
 import { DepositAccountService } from 'src/app/services/accounts/deposit-accounts/deposit-account.service';
@@ -58,11 +57,11 @@ export interface IDepositAccountModel {
   StaffCode: string;
   PassbookDate: Date;
   DebitInterestDate: Date;
-  LedgerNumber: string;
-  AdditionalBalance: number;
-  Form60: string;
-  Form61: string;
-  MinimumBalance: number;
+  // LedgerNumber: string;
+  // AdditionalBalance: number;
+  // Form60: string;
+  // Form61: string;
+  // MinimumBalance: number;
   RenewalOnDate: Date;
   TDays: number;
   TMonths: number;
@@ -133,7 +132,7 @@ export class DepositAccountsComponent {
   customerDetailsForm!: FormGroup;
   summaryForm!: FormGroup;
   accountForm!: FormGroup;
-  parametersForm!: FormGroup;
+  // parametersForm!: FormGroup;
   nominiForm!: FormGroup;
   jointForm!: FormGroup;
   fdDetailsForm!: FormGroup;
@@ -245,17 +244,17 @@ export class DepositAccountsComponent {
       drInterestDate: new FormControl(formatDate(new Date(Date.now()), 'yyyy-MM-dd', 'en'), [Validators.required]),
     });
 
-    this.parametersForm = new FormGroup({
-      interestRateParam: new FormControl("", [Validators.required]),
-      ledgerNumber: new FormControl("", []),
-      //introducedByGI: new FormControl("", []),
-      minimumBalance: new FormControl("", [Validators.required]),
-      additionalBalance: new FormControl("", [Validators.required]),
-      form60: new FormControl(this.uiForm60Options[0].code, [Validators.required]),
-      form61: new FormControl(this.uiForm61Options[0].code, [Validators.required]),
-      tds: new FormControl(this.uiTDSOptions[0].code, [Validators.required]),
-      tdsReason: new FormControl(this.uiTDSReasons[0].constantNo, [Validators.required]),
-    });
+    // this.parametersForm = new FormGroup({
+    //   interestRateParam: new FormControl("", [Validators.required]),
+    //   ledgerNumber: new FormControl("", []),
+    //   //introducedByGI: new FormControl("", []),
+    //   minimumBalance: new FormControl("", [Validators.required]),
+    //   additionalBalance: new FormControl("", [Validators.required]),
+    //   form60: new FormControl(this.uiForm60Options[0].code, [Validators.required]),
+    //   form61: new FormControl(this.uiForm61Options[0].code, [Validators.required]),
+    //   tds: new FormControl(this.uiTDSOptions[0].code, [Validators.required]),
+    //   tdsReason: new FormControl(this.uiTDSReasons[0].constantNo, [Validators.required]),
+    // });
 
     this.nominiForm = new FormGroup({
       nominiName: new FormControl("", []),
@@ -392,16 +391,16 @@ export class DepositAccountsComponent {
                 drInterestDate: formatDate(new Date(depositAccount.debitInterestDate), 'yyyy-MM-dd', 'en')
               })
 
-              this.parametersForm.patchValue({
-                interestRateParam: depositAccount.int_Rate,
-                ledgerNumber: depositAccount.ledgerNumber,
-                minimumBalance: depositAccount.minimumBalance,
-                additionalBalance: depositAccount.additionalBalance,
-                form60: depositAccount.form60,
-                form61: depositAccount.form61,
-                tds: depositAccount.tdS_YN ? 'Y' : 'N',
-                tdsReason: depositAccount.tdS_Reason_Code,
-              })
+              // this.parametersForm.patchValue({
+              //   interestRateParam: depositAccount.int_Rate,
+              //   ledgerNumber: depositAccount.ledgerNumber,
+              //   minimumBalance: depositAccount.minimumBalance,
+              //   additionalBalance: depositAccount.additionalBalance,
+              //   form60: depositAccount.form60,
+              //   form61: depositAccount.form61,
+              //   tds: depositAccount.tdS_YN ? 'Y' : 'N',
+              //   tdsReason: depositAccount.tdS_Reason_Code,
+              // })
 
               // depositAccount.nomineeList
               if (depositAccount.nomineeList && depositAccount.nomineeList.length) {
@@ -609,7 +608,7 @@ export class DepositAccountsComponent {
         uiJointCust.customerNumber = customer.customerCodeStr;
         uiJointCust.customerName = customer.custName;
         uiJointCust.operativeInstruction = this.operativeInstruction.value.toString();
-        uiJointCust.status = customer.status;
+        uiJointCust.status = 'A';
         uiJointCust.createdBy = this._sharedService.applicationUser.userName;
         uiJointCust.srNo = this.uiSelectedJointCustomers.length;
         this.uiSelectedJointCustomers.push(uiJointCust);
@@ -788,15 +787,15 @@ export class DepositAccountsComponent {
     return true;
   }
 
-  validParameters() {
-    if (this.parametersForm.invalid) {
-      for (const control of Object.keys(this.parametersForm.controls)) {
-        this.parametersForm.controls[control].markAsTouched();
-      }
-      return false;
-    }
-    return true;
-  }
+  // validParameters() {
+  //   if (this.parametersForm.invalid) {
+  //     for (const control of Object.keys(this.parametersForm.controls)) {
+  //       this.parametersForm.controls[control].markAsTouched();
+  //     }
+  //     return false;
+  //   }
+  //   return true;
+  // }
 
   validNominiDetails() {
     return (this.uiNominis && this.uiNominis.length > 0);
@@ -843,10 +842,10 @@ export class DepositAccountsComponent {
       this._toastrService.error('Please enter account details.', 'Error!');
       return;
     }
-    if (!this.validParameters()) {
-      this._toastrService.error('Please enter paramater details.', 'Error!');
-      return;
-    }
+    // if (!this.validParameters()) {
+    //   this._toastrService.error('Please enter paramater details.', 'Error!');
+    //   return;
+    // }
     if (!this.validNominiDetails()) {
       this._toastrService.error('Please enter nominee details.', 'Error!');
       return;
@@ -874,11 +873,11 @@ export class DepositAccountsComponent {
     accountModel.StaffCode = this.staffDirectorOther.value.toString();
     accountModel.PassbookDate = this.passbookDate.value.toString();
     accountModel.DebitInterestDate = this.drInterestDate.value.toString();
-    accountModel.LedgerNumber = this.ledgerNumber.value.toString();
-    accountModel.AdditionalBalance = parseFloat(this.additionalBalance.value.toString());
-    accountModel.Form60 = this.form60.value.toString();
-    accountModel.Form61 = this.form61.value.toString();
-    accountModel.MinimumBalance = parseFloat(this.minimumBalance.value.toString());
+    // accountModel.LedgerNumber = this.ledgerNumber.value.toString();
+    // accountModel.AdditionalBalance = parseFloat(this.additionalBalance.value.toString());
+    // accountModel.Form60 = this.form60.value.toString();
+    // accountModel.Form61 = this.form61.value.toString();
+    // accountModel.MinimumBalance = parseFloat(this.minimumBalance.value.toString());
     //accountModel.Reinv_Flag = this.renewFD.value.toString();
 
     if (this.isFDAccount) { // If FD account
@@ -913,8 +912,8 @@ export class DepositAccountsComponent {
     accountModel.Last_Int_Date = this.lastInterestDate.value.toString();
     accountModel.Last_Trn_Date = this.lastTransactionDate.value.toString();
     // accountModel.Close_Flag = this.clo.value.toString();
-    accountModel.TDS_YN = this.tds.value.toString() == 'Y' ? true : false;
-    accountModel.TDS_Reason_Code = parseInt(this.tdsReason.value.toString());
+    // accountModel.TDS_YN = this.tds.value.toString() == 'Y' ? true : false;
+    // accountModel.TDS_Reason_Code = parseInt(this.tdsReason.value.toString());
     accountModel.CreatedBy = this._sharedService.applicationUser.userName;
 
     accountModel.NomineeList = [];
@@ -973,7 +972,7 @@ export class DepositAccountsComponent {
     this.clearSummaryDetails();
     this.clearCustomerDetails();
     this.clearAccountsDetails();
-    this.clearParametersDetails();
+    //this.clearParametersDetails();
     this.clearNomineeDetails();
     this.clearJointDetails();
     this.clearFDDetails();
@@ -1020,18 +1019,18 @@ export class DepositAccountsComponent {
       drInterestDate: new FormControl(formatDate(new Date(Date.now()), 'yyyy-MM-dd', 'en'), [Validators.required]),
     })
   }
-  clearParametersDetails() {
-    this.parametersForm.patchValue({
-      interestRateParam: "",
-      ledgerNumber: "",
-      minimumBalance: "",
-      additionalBalance: "",
-      form60: this.uiForm60Options[0].code,
-      form61: this.uiForm61Options[0].code,
-      tds: this.uiTDSOptions[0].code,
-      tdsReason: this.uiTDSReasons[0].constantNo,
-    })
-  }
+  // clearParametersDetails() {
+  //   this.parametersForm.patchValue({
+  //     interestRateParam: "",
+  //     ledgerNumber: "",
+  //     minimumBalance: "",
+  //     additionalBalance: "",
+  //     form60: this.uiForm60Options[0].code,
+  //     form61: this.uiForm61Options[0].code,
+  //     tds: this.uiTDSOptions[0].code,
+  //     tdsReason: this.uiTDSReasons[0].constantNo,
+  //   })
+  // }
   clearNomineeDetails() {
     this.nominiForm.patchValue({
       nominiName: "",
@@ -1172,30 +1171,30 @@ export class DepositAccountsComponent {
 
   //
 
-  get interestRateParam() {
-    return this.parametersForm.get('interestRateParam')!;
-  }
-  get ledgerNumber() {
-    return this.parametersForm.get('ledgerNumber')!;
-  }
-  get minimumBalance() {
-    return this.parametersForm.get('minimumBalance')!;
-  }
-  get additionalBalance() {
-    return this.parametersForm.get('additionalBalance')!;
-  }
-  get form60() {
-    return this.parametersForm.get('form60')!;
-  }
-  get form61() {
-    return this.parametersForm.get('form61')!;
-  }
-  get tds() {
-    return this.parametersForm.get('tds')!;
-  }
-  get tdsReason() {
-    return this.parametersForm.get('tdsReason')!;
-  }
+  // get interestRateParam() {
+  //   return this.parametersForm.get('interestRateParam')!;
+  // }
+  // get ledgerNumber() {
+  //   return this.parametersForm.get('ledgerNumber')!;
+  // }
+  // get minimumBalance() {
+  //   return this.parametersForm.get('minimumBalance')!;
+  // }
+  // get additionalBalance() {
+  //   return this.parametersForm.get('additionalBalance')!;
+  // }
+  // get form60() {
+  //   return this.parametersForm.get('form60')!;
+  // }
+  // get form61() {
+  //   return this.parametersForm.get('form61')!;
+  // }
+  // get tds() {
+  //   return this.parametersForm.get('tds')!;
+  // }
+  // get tdsReason() {
+  //   return this.parametersForm.get('tdsReason')!;
+  // }
 
   //
 

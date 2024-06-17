@@ -1,1 +1,611 @@
-<p>saving-accounts works!</p>
+<div class="row">
+    <div class="col-lg-12">
+
+        <div class="main-card mb-3 card">
+            <div class="card-body">
+
+                <h5 class="card-title">Saving account opening</h5>
+                <form [formGroup]="summaryForm" #form="ngForm">
+                    <div class="row">
+
+                        <div class="col-md-3 position-relative">
+                            <label for="txtCode" class="">General Ledger</label>
+                            <div class="input-group">
+                                <ngx-select-dropdown [config]="config" tabindex="1" [options]="uiSavingGeneralLedgers"
+                                    style="width: 100%;" formControlName="generalLedger"
+                                    [multiple]="false" (change)="changeGeneralLedger($event)"
+                                    [ngClass]="{'disabled': !isAddMode}" ></ngx-select-dropdown>
+                            </div>
+                        </div>
+
+                        <div class="col-md-3 position-relative form-group">
+                            <label for="txtCode" class="">A/C Number</label>
+                            <div class="input-group">
+                                <input tabindex="4" type="text" readonly class="form-control" formControlName="glAccountNumberStr">
+                            </div>
+                        </div>
+                        <div class="col-md-6 position-relative">
+                            <app-cust-search [ngClass]="{'disabled': !isAddMode}" (customers)="getCustomers($event)">
+                            </app-cust-search>
+                        </div>
+                        <div class="col-md-12 position-relative">
+                            <button class="customer-accordion"
+                                [ngClass]="{'customer-panel-active': toggleSearchCustomers===true}"
+                                (click)="openSearchedCustomers()">Searched Customers
+                            </button>
+                            <div class="customer-panel" *ngIf="toggleSearchCustomers">
+                                <table style="width: 100%;"
+                                    class="table table-hover table-striped table-bordered dataTable dtr-inline">
+                                    <thead>
+                                        <tr role="row">
+                                            <th style="width: 5%;">Select</th>
+                                            <th style="width: 18%;">Customer Number</th>
+                                            <th style="width: 18%;">Customer Name</th>
+                                            <th style="width: 18%">Mobile</th>
+                                            <th style="width: 18%">Date</th>
+                                            <th style="width: 18%">PAN</th>
+                                            <th style="width: 5%">Status</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr role="row" *ngFor="let uiCustomer of uiCustomers" class="odd">
+                                            <td class="sorting_1 dtr-control"><button class="mb-2 mr-2 btn btn-link"
+                                                    style="--bs-btn-padding-x:none !important; padding:0 !important;"
+                                                    (click)="selectCustomer(uiCustomer.id)">Select</button></td>
+                                            <td>{{uiCustomer.id}}</td>
+                                            <td>{{uiCustomer.custName}}</td>
+                                            <td>{{uiCustomer.mobile}}</td>
+                                            <td>{{uiCustomer.joinDate}}</td>
+                                            <td>{{uiCustomer.pan}}</td>
+                                            <td>
+                                                <div class="badge"
+                                                    [ngClass]="{'badge-danger': uiCustomer.status==='Deleted', 'badge-success' : uiCustomer.status=== 'Active', 'badge-warning' : uiCustomer.status=== 'In-Active'}">
+                                                    {{uiCustomer.status}}
+                                                </div>
+                                            </td>
+                                        </tr>
+                                        <tr *ngIf="uiCustomers.length==0">
+                                            <td colspan="7">No records..</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+                <ul class="nav nav-tabs" style="margin-top: 10px;">
+                    <li class="nav-item">
+                        <a role="tab" class="nav-link active" id="tab-0" data-toggle="tab" href="#tab-content-0">
+                            <span>Customer Details </span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a role="tab" class="nav-link" id="tab-0" data-toggle="tab" href="#tab-content-1">
+                            <span>Account Details</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a role="tab" class="nav-link" id="tab-1" data-toggle="tab" href="#tab-content-2">
+                            <span>Parameters</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a role="tab" class="nav-link" id="tab-2" data-toggle="tab" href="#tab-content-3">
+                            <span>Nomini Details</span>
+                        </a>
+                    </li>
+                    <li class="nav-item" [ngClass]="{'disabled': isNotJointAccount}">
+                        <a role="tab" class="nav-link" id="tab-3" data-toggle="tab" href="#tab-content-4">
+                            <span>Joint Account</span>
+                        </a>
+                    </li>
+                </ul>
+
+                <div class="tab-content">
+                    <div class="tab-pane tabs-animation fade show active" id="tab-content-0" role="tabpanel">
+                        <form [formGroup]="customerDetailsForm" #form="ngForm">
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="tab-content">
+                                        <div class="row">
+                                            <div class="col-md-3 position-relative form-group">
+                                                <label for="txtCode" class="">Customer Number</label>
+                                                <input tabindex="1" type="text" class="form-control" readonly
+                                                    formControlName="customerNumber">
+                                            </div>
+                                            <div class="col-md-3 position-relative form-group">
+                                                <label for="txtCode" class="">Name</label>
+                                                <input tabindex="1" type="text" class="form-control" readonly
+                                                    formControlName="name">
+                                            </div>
+                                            <div class="col-md-3 position-relative form-group">
+                                                <label for="txtCode" class="">Address</label>
+                                                <input tabindex="1" type="text" class="form-control" readonly
+                                                    formControlName="address">
+                                            </div>
+                                            <div class="col-md-3 position-relative form-group">
+                                                <label for="txtCode" class="">Mobile</label>
+                                                <input tabindex="1" type="text" class="form-control" readonly
+                                                    formControlName="mobile">
+                                            </div>
+                                            <div class="col-md-3 position-relative form-group">
+                                                <label for="txtCode" class="">Email</label>
+                                                <input tabindex="1" type="text" class="form-control" readonly
+                                                    formControlName="email">
+                                            </div>
+                                            <div class="col-md-3 position-relative form-group">
+                                                <label for="txtCode" class="">PAN</label>
+                                                <input tabindex="1" type="text" class="form-control" readonly
+                                                    formControlName="pan">
+                                            </div>
+                                            <div class="col-md-3 position-relative form-group">
+                                                <label for="txtCode" class="">Date Of Birth</label>
+                                                <input tabindex="1" type="date" class="form-control" readonly
+                                                    formControlName="dob">
+                                            </div>
+                                            <div class="col-md-3 position-relative form-group">
+                                                <label for="txtCode" class="">Aadhar Number</label>
+                                                <input tabindex="1" type="text" class="form-control" readonly
+                                                    formControlName="aadhar">
+                                            </div>
+                                            <div class="col-md-3 position-relative form-group">
+                                                <label for="txtCode" class="">Joining Date</label>
+                                                <input tabindex="1" type="date" class="form-control" readonly
+                                                    formControlName="joiningDate">
+                                            </div>
+                                            <div class="col-md-3 position-relative form-group">
+                                                <label for="txtCode" class="">Customer Group</label>
+                                                <input tabindex="1" type="text" class="form-control" readonly
+                                                    formControlName="group">
+                                            </div>
+                                            <div class="col-md-3 position-relative form-group">
+                                                <label for="txtCode" class="">Occupation</label>
+                                                <input tabindex="1" type="text" class="form-control" readonly
+                                                    formControlName="occupation">
+                                            </div>
+                                            <div class="col-md-3 position-relative form-group">
+                                                <label for="txtCode" class="">City</label>
+                                                <input tabindex="1" type="text" class="form-control" readonly
+                                                    formControlName="city">
+                                            </div>
+                                            <div class="col-md-3 position-relative form-group">
+                                                <label for="txtCode" class="">Zone</label>
+                                                <input tabindex="1" type="text" class="form-control" readonly
+                                                    formControlName="zone">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="tab-pane tabs-animation fade show" id="tab-content-1" role="tabpanel">
+                        <form [formGroup]="accountForm" #form="ngForm">
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="tab-content">
+                                        <div class="row">
+                                            <div class="col-md-3 position-relative form-group">
+                                                <label for="txtCode" class="">Account Type <span
+                                                        class="mandatory">*</span></label>
+                                                <select class="mb-2 form-control" tabindex="1"
+                                                    formControlName="accountType" (change)="selectAccountType($event)">
+                                                    <option *ngFor="let uiAccountType of uiAccountTypes"
+                                                        [ngValue]="uiAccountType.constantNo">
+                                                        {{uiAccountType.constantname}}
+                                                    </option>
+                                                </select>
+                                            </div>
+                                            <div class="col-md-3 position-relative form-group">
+                                                <label for="txtCode" class="">Mode Of Operation <span
+                                                        class="mandatory">*</span></label>
+                                                <select class="mb-2 form-control" tabindex="1"
+                                                    formControlName="modeOfOperation">
+                                                    <option *ngFor="let uiModeOfOperation of uiModeOfOperations"
+                                                        [ngValue]="uiModeOfOperation.constantNo">
+                                                        {{uiModeOfOperation.constantname}}
+                                                    </option>
+                                                </select>
+                                            </div>
+                                            <div class="col-md-3 position-relative form-group">
+                                                <label for="txtCode" class="">Staff/Director/Other <span
+                                                        class="mandatory">*</span></label>
+                                                <select class="mb-2 form-control" tabindex="1"
+                                                    formControlName="staffDirectorOther">
+                                                    <option *ngFor="let uiEmployyeType of uiEmployyeTypes"
+                                                        [ngValue]="uiEmployyeType.code">
+                                                        {{uiEmployyeType.name}}
+                                                    </option>
+                                                </select>
+                                            </div>
+                                            <!-- <div class="col-md-3 position-relative form-group">
+                                                <label for="txtCode" class="">A/C opening Date <span
+                                                        class="mandatory">*</span></label>
+                                                <input tabindex="1" type="date" class="form-control"
+                                                    formControlName="accountOpeningDate">
+                                            </div> -->
+                                            <div class="col-md-3 position-relative form-group">
+                                                <label for="txtCode" class="">Last Transaction Date <span
+                                                        class="mandatory">*</span></label>
+                                                <input tabindex="1" type="date" class="form-control"
+                                                    formControlName="lastTransactionDate">
+                                            </div>
+                                            <div class="col-md-3 position-relative form-group">
+                                                <label for="txtCode" class="">Passbook Date <span
+                                                        class="mandatory">*</span></label>
+                                                <input tabindex="1" type="date" class="form-control"
+                                                    formControlName="passbookDate">
+                                            </div>
+                                            <div class="col-md-3 position-relative form-group">
+                                                <label for="txtCode" class="">Mature Date <span
+                                                        class="mandatory">*</span></label>
+                                                <input tabindex="1" type="date" class="form-control"
+                                                    formControlName="matureDate">
+                                            </div>
+                                            <div class="col-md-3 position-relative form-group">
+                                                <label for="txtCode" class="">Last Interest Date <span
+                                                        class="mandatory">*</span></label>
+                                                <input tabindex="1" type="date" class="form-control"
+                                                    formControlName="lastInterestDate">
+                                            </div>
+                                            <div class="col-md-3 position-relative form-group">
+                                                <label for="txtCode" class="">Debit Interest Date <span
+                                                        class="mandatory">*</span></label>
+                                                <input tabindex="1" type="date" class="form-control"
+                                                    formControlName="drInterestDate">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="tab-pane tabs-animation fade" id="tab-content-2" role="tabpanel">
+                        <form [formGroup]="parametersForm" #form="ngForm">
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="tab-content">
+                                        <div class="row">
+                                            <div class="col-md-3 position-relative form-group">
+                                                <label for="txtCode" class="">Interest Rate <span
+                                                        class="mandatory">*</span></label>
+                                                <input tabindex="1" type="number" class="form-control"
+                                                    formControlName="interestRateParam" min="0" 
+                                                    onKeyPress="if(this.value.length >=3) return false;">
+                                            </div>
+                                            <div class="col-md-3 position-relative form-group">
+                                                <label for="txtCode" class="">Ledger Number</label>
+                                                <input tabindex="1" type="text" class="form-control"
+                                                    formControlName="ledgerNumber">
+                                            </div>
+                                            <div class="col-md-3 position-relative form-group">
+                                                <label for="txtCode" class="">Minimum Balance <span
+                                                        class="mandatory">*</span></label>
+                                                <input tabindex="1" type="number" min="0" class="form-control"
+                                                    formControlName="minimumBalance">
+                                            </div>
+                                            <div class="col-md-3 position-relative form-group">
+                                                <label for="txtCode" class="">Additional Balance <span
+                                                        class="mandatory">*</span></label>
+                                                <input tabindex="1" type="number" min="0" class="form-control"
+                                                    formControlName="additionalBalance">
+                                            </div>
+                                            <div class="col-md-3 position-relative form-group">
+                                                <label for="txtCode" class="">TDS <span
+                                                        class="mandatory">*</span></label>
+                                                <select class="mb-2 form-control" tabindex="1" formControlName="tds">
+                                                    <option *ngFor="let uiTDSOption of uiTDSOptions"
+                                                        [ngValue]="uiTDSOption.code">
+                                                        {{uiTDSOption.name}}
+                                                    </option>
+                                                </select>
+                                            </div>
+                                            <div class="col-md-3 position-relative form-group">
+                                                <label for="txtCode" class="">TDS Reason <span
+                                                        class="mandatory">*</span></label>
+                                                <select class="mb-2 form-control" tabindex="1"
+                                                    formControlName="tdsReason">
+                                                    <option *ngFor="let uiTDSReason of uiTDSReasons"
+                                                        [ngValue]="uiTDSReason.constantNo">
+                                                        {{uiTDSReason.constantname}}
+                                                    </option>
+                                                </select>
+                                            </div>
+
+                                            <div class="col-md-3 position-relative form-group">
+                                                <label for="txtCode" class="">Form No 60 <span
+                                                        class="mandatory">*</span></label>
+                                                <select class="mb-2 form-control" tabindex="1" formControlName="form60">
+                                                    <option *ngFor="let uiForm60Option of uiForm60Options"
+                                                        [ngValue]="uiForm60Option.code">
+                                                        {{uiForm60Option.name}}
+                                                    </option>
+                                                </select>
+                                            </div>
+                                            <div class="col-md-3 position-relative form-group">
+                                                <label for="txtCode" class="">Form No 61 <span
+                                                        class="mandatory">*</span></label>
+                                                <select class="mb-2 form-control" tabindex="1" formControlName="form61">
+                                                    <option *ngFor="let uiForm61Option of uiForm61Options"
+                                                        [ngValue]="uiForm61Option.code">
+                                                        {{uiForm61Option.name}}
+                                                    </option>
+                                                </select>
+                                            </div>
+
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="tab-pane tabs-animation fade" id="tab-content-3" role="tabpanel">
+                        <form [formGroup]="nominiForm" #form="ngForm">
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="tab-content">
+                                        <div class="row">
+                                            <div class="col-md-3 position-relative form-group">
+                                                <label for="txtCode" class="">Nomini Name <span
+                                                        class="mandatory">*</span></label>
+                                                <input tabindex="1" type="text" class="form-control"
+                                                    formControlName="nominiName">
+                                            </div>
+                                            <div class="col-md-3 position-relative form-group">
+                                                <label for="txtCode" class="">Relation <span
+                                                        class="mandatory">*</span></label>
+                                                <select class="mb-2 form-control" tabindex="1"
+                                                    formControlName="relation">
+                                                    <option *ngFor="let uiRelation of uiRelations"
+                                                        [ngValue]="uiRelation.constantNo">
+                                                        {{uiRelation.constantname}}
+                                                    </option>
+                                                </select>
+                                            </div>
+                                            <div class="col-md-3 position-relative form-group">
+                                                <label for="txtCode" class="">Percentage <span
+                                                        class="mandatory">*</span></label>
+                                                <input tabindex="1" type="number" min="0"  class="form-control"
+                                                    formControlName="percentage" onKeyPress="if(this.value >= 100) return false;">
+                                            </div>
+                                            <div class="col-md-3 position-relative form-group">
+                                                <label for="txtCode" class="">Address <span
+                                                        class="mandatory">*</span></label>
+                                                <input tabindex="1" type="text" class="form-control"
+                                                    formControlName="nomineeAddress">
+                                            </div>
+                                            <div class="col-md-3 position-relative form-group">
+                                                <label for="txtCode" class="">Guardian (for minor)</label>
+                                                <input tabindex="1" type="text" class="form-control"
+                                                    formControlName="guardian">
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div style="display: flex; margin-bottom: 10px;">
+                                                <button class="mt-1 btn btn-primary" (click)="addNomini()"
+                                                    tabindex="23">Save Nominee</button>
+                                                <button class="mt-1 btn btn-left-margin10 btn-danger"
+                                                    (click)="clearNomini()" tabindex="24">Clear</button>
+                                            </div>
+                                        </div>
+
+                                        <div class="row">
+                                            <div class="col-md-12">
+                                                <table class="mb-0 table table-bordered">
+                                                    <thead>
+                                                        <tr>
+                                                            <th width="20%">Name</th>
+                                                            <th width="20%">Relation</th>
+                                                            <th width="20%">Percentage</th>
+                                                            <th width="20%">Address</th>
+                                                            <th width="20%">Actions</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        <tr
+                                                            *ngFor="let uiNomini of uiNominis | paginate: { itemsPerPage: 10, currentPage: p_nomini, totalItems: total_nomini }; let ind = index">
+                                                            <ng-container *ngIf="uiNomini.status!='D'">
+                                                                <td>{{uiNomini.nomineeName}}</td>
+                                                                <td>{{uiNomini.relationName}}</td>
+                                                                <td>{{uiNomini.percentage}}</td>
+                                                                <td>{{uiNomini.nomineeAddress}}</td>
+                                                                <td>
+                                                                    <div class="widget-content-right">
+                                                                        <button type="button" placeholder="Edit record"
+                                                                            class="btn-shadow btn btn-info btn-actions"
+                                                                            (click)="editNomini(uiNomini, ind)">
+                                                                            <span class="btn-icon-wrapper opacity-10">
+                                                                                <i class="fa fa-edit fa-w-10"></i>
+                                                                            </span>
+                                                                        </button>
+                                                                        <button type="button"
+                                                                            placeholder="Delete record"
+                                                                            class="btn-shadow btn btn-danger btn-actions"
+                                                                            data-toggle="modal"
+                                                                            (click)="deleteNomini(uiNomini, ind)">
+                                                                            <span class="btn-icon-wrapper opacity-10">
+                                                                                <i class="fa fa-trash fa-w-20"></i>
+                                                                            </span>
+                                                                        </button>
+                                                                    </div>
+                                                                </td>
+                                                            </ng-container>
+                                                        </tr>
+                                                        <tr *ngIf="uiNominis.length==0">
+                                                            <td colspan="5">No records found..</td>
+                                                        </tr>
+                                                    </tbody>
+                                                </table>
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="tab-pane tabs-animation fade" id="tab-content-4" role="tabpanel">
+                        <form [formGroup]="jointForm" #form="ngForm">
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="tab-content">
+                                        <div class="row">
+                                            <div class="col-md-6 position-relative form-group">
+                                                <app-cust-search (customers)="getCustomersForJoint($event)">
+                                                </app-cust-search>
+                                            </div>
+
+                                            <div class="col-md-6">
+                                                <label for="txtCode" class="">Operative instruction</label>
+                                                <input tabindex="1" type="text" class="form-control"
+                                                    formControlName="operativeInstruction">
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-md-12 position-relative">
+                                                <button class="customer-accordion"
+                                                    [ngClass]="{'customer-panel-active': toggleSearchJointCustomers===true}"
+                                                    (click)="openSearchedJointCustomers()">Searched Customers
+                                                </button>
+                                                <div class="customer-panel" *ngIf="toggleSearchJointCustomers">
+                                                    <table style="width: 100%;"
+                                                        class="table table-hover table-striped table-bordered dataTable dtr-inline">
+                                                        <thead>
+                                                            <tr role="row">
+                                                                <th style="width: 5%;">Add</th>
+                                                                <th style="width: 18%;">Customer Number</th>
+                                                                <th style="width: 18%;">Customer Name</th>
+                                                                <th style="width: 18%">Mobile</th>
+                                                                <th style="width: 18%">Date</th>
+                                                                <th style="width: 18%">PAN</th>
+                                                                <th style="width: 5%">Status</th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                            <tr role="row" *ngFor="let uiCustomer of uiJointCustomers"
+                                                                class="odd">
+                                                                <td class="sorting_1 dtr-control"><button
+                                                                        class="mb-2 mr-2 btn btn-link"
+                                                                        style="--bs-btn-padding-x:none !important; padding:0 !important;"
+                                                                        (click)="selectJointCustomer(uiCustomer)">Add</button>
+                                                                </td>
+                                                                <td>{{uiCustomer.id}}</td>
+                                                                <td>{{uiCustomer.custName}}</td>
+                                                                <td>{{uiCustomer.mobile}}</td>
+                                                                <td>{{uiCustomer.joinDate}}</td>
+                                                                <td>{{uiCustomer.pan}}</td>
+                                                                <td>
+                                                                    <div class="badge"
+                                                                        [ngClass]="{'badge-danger': uiCustomer.status==='Deleted', 'badge-success' : uiCustomer.status=== 'Active', 'badge-warning' : uiCustomer.status=== 'In-Active'}">
+                                                                        {{uiCustomer.status}}
+                                                                    </div>
+                                                                </td>
+                                                            </tr>
+                                                            <tr *ngIf="uiJointCustomers.length==0">
+                                                                <td colspan="7">No records..</td>
+                                                            </tr>
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                            </div>
+                                        </div>
+
+
+                                        <!-- <div class="row">
+                                            <div style="display: flex; margin-bottom: 10px;">
+                                                <button class="mt-1 btn btn-primary" (click)="saveAccount()"
+                                                    tabindex="23">Add</button>
+                                                <button class="mt-1 btn btn-left-margin10 btn-danger"
+                                                    (click)="clear()" tabindex="24">Clear</button>
+                                            </div>
+                                        </div> -->
+                                        <div class="row">
+                                            <div class="col-md-12 position-relative" style="margin: 10px 0 0 0;">
+                                                <h5 class="card-title" style="color: #bb3fd8 !important;">Joint
+                                                    Customers <span class="mandatory">*</span></h5>
+                                            </div>
+                                        </div>
+
+                                        <div class="row">
+                                            <div class="col-md-12">
+                                                <table style="width: 100%;"
+                                                    class="table table-hover table-striped table-bordered dataTable dtr-inline">
+                                                    <thead>
+                                                        <tr role="row">
+                                                            <th style="width: 5%;">#</th>
+                                                            <th style="width: 20%;">Customer Number</th>
+                                                            <th style="width: 20%;">Customer Name</th>
+                                                            <th style="width: 45%">Operative Instruction</th>
+                                                            <th style="width: 10%">Actions</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        <tr role="row" *ngFor="let uiCustomer of uiSelectedJointCustomers; let i=index" class="odd">
+                                                            <ng-container *ngIf="uiCustomer.status!='D'">
+                                                                <td>{{i+1}}</td>
+                                                                <td>{{uiCustomer.customerNumber}}</td>
+                                                                <td>{{uiCustomer.customerName}}</td>
+                                                                <td>{{uiCustomer.operativeInstruction}}</td>
+                                                                <td>
+                                                                    <div class="widget-content-right">
+                                                                        <button type="button" title="Delete record" class="btn-shadow btn btn-danger btn-actions"
+                                                                            data-toggle="modal" data-target="#deleteJointModal" (click)="deleteJoinCustomer(uiCustomer)">
+                                                                            <span class="btn-icon-wrapper opacity-10">
+                                                                                <i class="fa fa-trash fa-w-20"></i>
+                                                                            </span>
+                                                                        </button>
+                                                                    </div>
+                                                                </td>
+                                                            </ng-container>
+                                                        </tr>
+                                                        <tr *ngIf="uiSelectedJointCustomers.length==0">
+                                                            <td colspan="5">No records..</td>
+                                                        </tr>
+                                                    </tbody>
+                                                </table>
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-6 position-relative">
+                        <button class="mt-1 btn btn-primary" (click)="saveSavingAccount()"
+                            tabindex="23">Submit</button>
+                        <button class="mt-1 btn btn-left-margin10 btn-danger" (click)="clear()"
+                            tabindex="24">Clear</button>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<div id="deleteJointModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+    aria-hidden="true" data-backdrop="false">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Delete</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="cancelJointDelete()">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <p class="mb-0">Are you sure do you want to delete?</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-danger" data-dismiss="modal" (click)="onJointDelete()">Yes</button>
+                <button type="button" class="btn btn-primary" data-dismiss="modal" (click)="cancelJointDelete()">No</button>
+            </div>
+        </div>
+    </div>
+</div>
