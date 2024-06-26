@@ -3,8 +3,9 @@ import { FormControl, FormGroup } from '@angular/forms';
 import { Router } from '@angular/router';
 import { NgxDropdownConfig } from 'ngx-select-dropdown';
 import { ToastrService } from 'ngx-toastr';
-import { IGeneralDTO } from 'src/app/common/models/common-ui-models';
+import { IGeneralDTO, UiEnumAccountStatus } from 'src/app/common/models/common-ui-models';
 import { DepositAccountService } from 'src/app/services/accounts/deposit-accounts/deposit-account.service';
+import { SavingAccountService } from 'src/app/services/accounts/saving-accounts/saving-account.service';
 import { GeneralLedgerService } from 'src/app/services/masters/general-ledger/general-ledger.service';
 import { SharedService } from 'src/app/services/shared.service';
 
@@ -39,7 +40,7 @@ export class AccountSearchComponent implements OnInit {
 
   constructor(private router: Router, private _sharedService: SharedService,
     private _toastrService: ToastrService, private _generalLedgerService: GeneralLedgerService,
-    private _depositAccountService: DepositAccountService) { }
+    private _depositAccountService: DepositAccountService,private _savingAccountService: SavingAccountService) { }
 
   ngOnInit(): void {
     this.searchForm = new FormGroup({
@@ -99,7 +100,7 @@ export class AccountSearchComponent implements OnInit {
             this.uiAccounts = accounts.map((acc: any) => (
               {
                 ...acc,
-                status: this.getStatus(acc.active)
+                status: this.getStatus(acc.accountStatus)
               }))
             //this.uiDepositGeneralLedgers = this.uiAllGeneralLedgers.filter(gl => gl.glGroup == 'D');
           }
@@ -109,12 +110,19 @@ export class AccountSearchComponent implements OnInit {
   }
 
   getStatus(status: number) {
-    if (status == 1) {
-      return "Active";
+    if (status == UiEnumAccountStatus.OPEN) {
+      return "Open";
     }
-    else {
-      return "In-Active";
+    else if (status == UiEnumAccountStatus.FREEZE) {
+      return "Freeze";
     }
+    else if (status == UiEnumAccountStatus.DORMANT) {
+      return "Dormant";
+    }
+    else if (status == UiEnumAccountStatus.CLOSE) {
+      return "Closed";
+    }
+    return "";
   }
 
   pageChangeEvent(event: number) {
@@ -144,6 +152,7 @@ export class AccountSearchComponent implements OnInit {
 
   addAccount(route: string) {
     this._depositAccountService.setDTO({});
+    this._savingAccountService.setDTO({});
     this.configClick(route);
   }
 
@@ -156,6 +165,8 @@ export class AccountSearchComponent implements OnInit {
     }
     if (uiAccount.glGroup == 'D' && uiAccount.glType =='S') {
       // Saving accounts
+      this._savingAccountService.setDTO(dtObject);
+      this.configClick("saving-accounts");
     }
     else if (uiAccount.glGroup == 'D' && uiAccount.glType !='S') {
       // Deposit accounts

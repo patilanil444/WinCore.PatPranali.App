@@ -1,6 +1,7 @@
 import { formatDate } from '@angular/common';
 import { Component } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { Router } from '@angular/router';
 import { NgxDropdownConfig } from 'ngx-select-dropdown';
 import { ToastrService } from 'ngx-toastr';
 import { AccountDeclarations } from 'src/app/common/account-declarations';
@@ -42,7 +43,7 @@ export interface UiJoint {
   status: string
 }
 
-export interface IDepositAccountModel {
+export interface ISavingAccountModel {
   AccountsId: number;
   BranchCode: number;
   CustomerId: number;
@@ -51,47 +52,27 @@ export interface IDepositAccountModel {
   AccountNo: string;
   AccountType: number;
   AccountStatus: number;
-  FdDetailId: number;
-  ReceiptNo: string;
-  ModeOfOperation: number;
-  StaffCode: string;
-  PassbookDate: Date;
-  DebitInterestDate: Date;
-  LedgerNumber: string;
-  AdditionalBalance: number;
-  Form60: string;
-  Form61: string;
-  MinimumBalance: number;
-  RenewalOnDate: Date;
-  TDays: number;
-  TMonths: number;
-  TYears: number;
-  Reinv_Flag: boolean;
-  Inst_Amt: number;
-  Inst_No: number;
-  Inst_Type: string;
-  FD_Amt: number;
-  Payb_Amt: number;
+  Int_Rate: number;
+  SavingsAccountId: number;
+  Mode_Opr: number;
+  Mode_Sgn: number;
   Opn_Date: Date;
   Exp_Date: Date;
   Last_Int_Date: Date;
   Last_Trn_Date: Date;
+  Passbook_Date: Date;
+  Penal_Date: Date;
   Close_Flag: number;
-  Close_Date : Date;
-  Int_Rate: number;
-  RenewalYN: boolean;
-  TDS_YN: boolean;
-  TDS_Reason_Code: number;
-  Ac_Statement_Freq: number;
-  Email_Day_Freq: number;
-  Pass_Book_Charges: number;
-  MinBal_Charges: boolean;
-  Service_Charges: boolean;
-  PrintCount: number;
+  Close_Date: Date;
+  Min_Bal: number;
+  Print_Date: Date;
+  Currency: number;
+  Other_Branch_Trf: number;
+  LedgerFolioNo: string;
+  StaffCode: string;
   Active: number;
   CreatedBy: string;
   CreatedDate: Date;
-  BankAccountType: string;
   NomineeList: INominiModel[];
   JointList: IJointModel[];
 }
@@ -122,7 +103,6 @@ export interface IJointModel {
   CreatedBy: string;
   CreatedDate: Date;
 }
-
 
 
 @Component({
@@ -162,11 +142,13 @@ export class SavingAccountsComponent {
   uiRelations: any[] = [];
   uiOccupations: any[] = [];
   uiCustomerGroups: any[] = [];
+  uiCurrencies: any[] = [];
   uiZones: any[] = [];
   uiTDSOptions: any[] = [];
   uiTDSReasons: any[] = [];
   uiForm60Options: any[] = [];
   uiForm61Options: any[] = [];
+  uiAccountStatuses: any[] = [];
 
   toggleSearchCustomers = false;
   toggleSearchJointCustomers = false;
@@ -188,7 +170,7 @@ export class SavingAccountsComponent {
   accountsId!: number;
   isAddMode = true;
 
-  constructor(private _sharedService: SharedService, private _toastrService: ToastrService,
+  constructor(private router: Router, private _sharedService: SharedService, private _toastrService: ToastrService,
     private _generalLedgerService: GeneralLedgerService, private _customerService: CustomerService,
     private _savingAccountService: SavingAccountService) { }
 
@@ -203,6 +185,8 @@ export class SavingAccountsComponent {
     this.uiCustomerGroups = this.retrieveMasters(UiEnumGeneralMaster.CUSTOMERGROUP);
     this.uiTDSOptions = AccountDeclarations.tdsYN;
     this.uiTDSReasons = this.retrieveMasters(UiEnumGeneralMaster.TDSREASON);
+    this.uiAccountStatuses = this.retrieveMasters(UiEnumGeneralMaster.ACSTATUS);
+    this.uiCurrencies = this._sharedService.uiCurrencies;
     this.uiForm60Options = AccountDeclarations.form60YN;
     this.uiForm61Options = AccountDeclarations.form61YN;
 
@@ -232,25 +216,27 @@ export class SavingAccountsComponent {
     this.accountForm = new FormGroup({
       accountType: new FormControl(this.uiAccountTypes[0].constantNo, [Validators.required]),
       modeOfOperation: new FormControl(this.uiModeOfOperations[0].constantNo, [Validators.required]),
+      modeOfSignature: new FormControl(this.uiModeOfOperations[0].constantNo, [Validators.required]),
       staffDirectorOther: new FormControl(this.uiEmployyeTypes[0].code, [Validators.required]),
-      //accountOpeningDate: new FormControl(formatDate(new Date(Date.now()), 'yyyy-MM-dd', 'en'), [Validators.required]),
-      lastTransactionDate: new FormControl(formatDate(new Date(Date.now()), 'yyyy-MM-dd', 'en'), [Validators.required]),
+      accountStatus: new FormControl(this.uiAccountStatuses[0].constantNo, [Validators.required]),
+      accountOpeningDate: new FormControl(formatDate(new Date(Date.now()), 'yyyy-MM-dd', 'en'), [Validators.required]),
       passbookDate: new FormControl(formatDate(new Date(Date.now()), 'yyyy-MM-dd', 'en'), [Validators.required]),
-      matureDate: new FormControl(formatDate(new Date(Date.now()), 'yyyy-MM-dd', 'en'), [Validators.required]),
       lastInterestDate: new FormControl(formatDate(new Date(Date.now()), 'yyyy-MM-dd', 'en'), [Validators.required]),
-      drInterestDate: new FormControl(formatDate(new Date(Date.now()), 'yyyy-MM-dd', 'en'), [Validators.required]),
+      lastTransactionDate: new FormControl(formatDate(new Date(Date.now()), 'yyyy-MM-dd', 'en'), [Validators.required]),
+      //drInterestDate: new FormControl(formatDate(new Date(Date.now()), 'yyyy-MM-dd', 'en'), [Validators.required]),
+      printDate: new FormControl("", []),
+      accountCloseDate: new FormControl("", []),
+      close_Flag: new FormControl(false, [Validators.required])
     });
+
+    this.accountStatus.disable();
 
     this.parametersForm = new FormGroup({
       interestRateParam: new FormControl("", [Validators.required]),
       ledgerNumber: new FormControl("", []),
-      //introducedByGI: new FormControl("", []),
       minimumBalance: new FormControl("", [Validators.required]),
-      additionalBalance: new FormControl("", [Validators.required]),
-      form60: new FormControl(this.uiForm60Options[0].code, [Validators.required]),
-      form61: new FormControl(this.uiForm61Options[0].code, [Validators.required]),
-      tds: new FormControl(this.uiTDSOptions[0].code, [Validators.required]),
-      tdsReason: new FormControl(this.uiTDSReasons[0].constantNo, [Validators.required]),
+      currency: new FormControl(this.uiCurrencies[0].currencyId, [Validators.required]),
+      otherBranchTransfer: new FormControl(this.uiTDSOptions[1].code, [Validators.required]),
     });
 
     this.nominiForm = new FormGroup({
@@ -326,10 +312,10 @@ export class SavingAccountsComponent {
               this.selectCustomer(savingAccount.customerId);
 
               // bind general ledger
-              let gl = this.uiAllGeneralLedgers.filter(g=>g.code == savingAccount.code1);
+              let gl = this.uiAllGeneralLedgers.filter(g => g.code == savingAccount.code1);
 
               this.summaryForm.patchValue({
-                generalLedger: gl && gl.length ? gl[0]: null,
+                generalLedger: gl && gl.length ? gl[0] : null,
                 glAccountNumberStr: savingAccount.accountNo,
                 glAccountNumber: savingAccount.code2,
                 customerId: savingAccount.customerId,
@@ -342,36 +328,40 @@ export class SavingAccountsComponent {
                 mobile: "",
                 email: "",
                 pan: "",
-                dob: new FormControl(formatDate(new Date(Date.now()), 'yyyy-MM-dd', 'en'), []),
+                dob: formatDate(new Date(Date.now()), 'yyyy-MM-dd', 'en'),
                 aadhar: "",
-                joiningDate: new FormControl(formatDate(new Date(Date.now()), 'yyyy-MM-dd', 'en'), []),
+                joiningDate: formatDate(new Date(Date.now()), 'yyyy-MM-dd', 'en'),
                 group: "",
                 occupation: "",
                 city: "",
                 zone: "",
               })
 
+
               this.accountForm.patchValue({
                 accountType: savingAccount.accountType,
-                modeOfOperation: savingAccount.modeOfOperation,
+                modeOfOperation: savingAccount.mode_Opr,
+                modeOfSignature: savingAccount.mode_Sgn,
                 staffDirectorOther: savingAccount.staffCode,
-                //accountOpeningDate: formatDate(new Date(depositAccount.opn_Date), 'yyyy-MM-dd', 'en'),
-                lastTransactionDate: formatDate(new Date(savingAccount.last_Trn_Date), 'yyyy-MM-dd', 'en'),
-                passbookDate: formatDate(new Date(savingAccount.passbookDate), 'yyyy-MM-dd', 'en'),
-                matureDate: formatDate(new Date(savingAccount.exp_Date), 'yyyy-MM-dd', 'en'),
+                accountStatus: savingAccount.accountStatus,
+                accountOpeningDate: formatDate(new Date(savingAccount.opn_Date), 'yyyy-MM-dd', 'en'),
+                passbookDate: formatDate(new Date(savingAccount.passbook_Date), 'yyyy-MM-dd', 'en'),
+                //matureDate: formatDate(new Date(savingAccount.exp_Date), 'yyyy-MM-dd', 'en'),
                 lastInterestDate: formatDate(new Date(savingAccount.last_Int_Date), 'yyyy-MM-dd', 'en'),
-                drInterestDate: formatDate(new Date(savingAccount.debitInterestDate), 'yyyy-MM-dd', 'en')
+                lastTransactionDate: formatDate(new Date(savingAccount.last_Trn_Date), 'yyyy-MM-dd', 'en'),
+                printDate: (savingAccount.print_Date == null) ? "" : formatDate(new Date(savingAccount.print_Date), 'yyyy-MM-dd', 'en'),
+                accountCloseDate: (savingAccount.close_Date == null) ? "" : formatDate(new Date(savingAccount.close_Date), 'yyyy-MM-dd', 'en'),
+                close_Flag: (savingAccount.close_Flag == 1) ? 'Y' : 'N',
               })
+
+              this.accountStatus.enable();
 
               this.parametersForm.patchValue({
                 interestRateParam: savingAccount.int_Rate,
-                ledgerNumber: savingAccount.ledgerNumber,
-                minimumBalance: savingAccount.minimumBalance,
-                additionalBalance: savingAccount.additionalBalance,
-                form60: savingAccount.form60,
-                form61: savingAccount.form61,
-                tds: savingAccount.tdS_YN ? 'Y' : 'N',
-                tdsReason: savingAccount.tdS_Reason_Code,
+                ledgerNumber: savingAccount.ledgerFolioNo,
+                minimumBalance: savingAccount.min_Bal,
+                currency: savingAccount.currency,
+                otherBranchTransfer: savingAccount.other_Branch_Trf == 1 ? 'Y' : 'N',
               })
 
               // depositAccount.nomineeList
@@ -396,7 +386,7 @@ export class SavingAccountsComponent {
                   uiNominee.createdBy = nominee.createdBy;
                   uiNominee.status = '';
                   this.uiNominis.push(uiNominee);
-                 });
+                });
               }
 
               //depositAccount.jointList
@@ -413,7 +403,7 @@ export class SavingAccountsComponent {
                   uiJointCust.status = '';
                   uiJointCust.createdBy = joint.createdBy;
                   this.uiSelectedJointCustomers.push(uiJointCust);
-                 });
+                });
               }
 
               this.isNotJointAccount = !(savingAccount.accountType == 2); // TODO: Need to make it configurable
@@ -475,8 +465,7 @@ export class SavingAccountsComponent {
     }
   }
 
-  getCustomer(customerId: number)
-  {
+  getCustomer(customerId: number) {
     this._customerService.getCustomer(this._sharedService.applicationUser.branchId, customerId).subscribe((data: any) => {
       console.log(data);
       if (data) {
@@ -546,7 +535,7 @@ export class SavingAccountsComponent {
         uiJointCust.customerNumber = customer.customerCodeStr;
         uiJointCust.customerName = customer.custName;
         uiJointCust.operativeInstruction = this.operativeInstruction.value.toString();
-        uiJointCust.status = customer.status;
+        uiJointCust.status = 'A';
         uiJointCust.createdBy = this._sharedService.applicationUser.userName;
         uiJointCust.srNo = this.uiSelectedJointCustomers.length;
         this.uiSelectedJointCustomers.push(uiJointCust);
@@ -559,37 +548,32 @@ export class SavingAccountsComponent {
     }
   }
 
-  deleteJoinCustomer(customer: any)
-  {
+  deleteJoinCustomer(customer: any) {
     if (customer) {
       this._savingAccountService.jointCustomerToDelete = customer.customerId;
     }
   }
 
-  onJointDelete()
-  {
+  onJointDelete() {
     let customerIdToDelete = this._savingAccountService.jointCustomerToDelete;
     if (customerIdToDelete > 0) {
-      
-      let customers = this.uiSelectedJointCustomers.filter(c=>c.customerId == customerIdToDelete);
+
+      let customers = this.uiSelectedJointCustomers.filter(c => c.customerId == customerIdToDelete);
       if (customers && customers.length) {
         customers[0].status = "D";
-      }  
+      }
     }
   }
-  
-  cancelJointDelete()
-  {
+
+  cancelJointDelete() {
     this._savingAccountService.jointCustomerToDelete = -1;
   }
 
-  getCustomerStatus(status: number)
-  {
+  getCustomerStatus(status: number) {
     if (status == 1) {
       return "Active";
     }
-    else
-    {
+    else {
       return "In-Active";
     }
   }
@@ -602,6 +586,28 @@ export class SavingAccountsComponent {
         this.isNotJointAccount = true;
         if (parseInt(accountType[1]) == 2) { //TODO: Need to make it configurable
           this.isNotJointAccount = false;
+        }
+      }
+    }
+  }
+
+  selectAccountStatus(event: any) {
+    if (event) {
+      if (event.target.value) {
+        let targetValue = event.target.value;
+        let accountType = targetValue.split(":");
+        this.isNotJointAccount = true;
+        if (parseInt(accountType[1]) == 4) { //TODO: Need to make it configurable
+          this.accountForm.patchValue({
+            close_Flag: true,
+            accountCloseDate: formatDate(new Date(Date.now()), 'MM/dd/yyyy', 'en')
+          })
+        }
+        else {
+          this.accountForm.patchValue({
+            close_Flag: false,
+            accountCloseDate: ""
+          })
         }
       }
     }
@@ -774,7 +780,7 @@ export class SavingAccountsComponent {
     }
 
     // add values into model
-    let accountModel = {} as IDepositAccountModel;
+    let accountModel = {} as ISavingAccountModel;
     accountModel.AccountsId = this.dto.id;
     accountModel.BranchCode = this._sharedService.applicationUser.branchId;
     accountModel.CustomerId = parseInt(this.customerId.value.toString());
@@ -782,25 +788,27 @@ export class SavingAccountsComponent {
     accountModel.Code2 = parseInt(this.glAccountNumber.value.toString());
     accountModel.AccountNo = this.glAccountNumberStr.value.toString()
     accountModel.AccountType = parseInt(this.accountType.value.toString());
-    accountModel.FdDetailId = 0;
-    accountModel.ModeOfOperation = parseInt(this.modeOfOperation.value.toString());
+    accountModel.AccountStatus = parseInt(this.accountStatus.value.toString());
+    accountModel.SavingsAccountId = 0;
+    accountModel.Mode_Opr = parseInt(this.modeOfOperation.value.toString());
+    accountModel.Mode_Sgn = parseInt(this.modeOfSignature.value.toString());
     accountModel.StaffCode = this.staffDirectorOther.value.toString();
-    accountModel.PassbookDate = this.passbookDate.value.toString();
-    accountModel.DebitInterestDate = this.drInterestDate.value.toString();
-    accountModel.LedgerNumber = this.ledgerNumber.value.toString();
-    accountModel.AdditionalBalance = parseFloat(this.additionalBalance.value.toString());
-    accountModel.Form60 = this.form60.value.toString();
-    accountModel.Form61 = this.form61.value.toString();
-    accountModel.MinimumBalance = parseFloat(this.minimumBalance.value.toString());
-    //accountModel.Reinv_Flag = this.renewFD.value.toString();
-
+    accountModel.LedgerFolioNo = this.ledgerNumber.value.toString();
+    accountModel.Min_Bal = parseFloat(this.minimumBalance.value.toString());
     accountModel.Last_Int_Date = this.lastInterestDate.value.toString();
     accountModel.Last_Trn_Date = this.lastTransactionDate.value.toString();
-    // accountModel.Close_Flag = this.clo.value.toString();
-    accountModel.TDS_YN = this.tds.value.toString() == 'Y' ? true : false;
-    accountModel.TDS_Reason_Code = parseInt(this.tdsReason.value.toString());
+    accountModel.Int_Rate = parseFloat(this.interestRateParam.value.toString());
+    accountModel.Opn_Date = this.accountOpeningDate.value.toString();
+    // accountModel.Print_Date = this.printDate.value.toString();
+    accountModel.Passbook_Date = this.passbookDate.value.toString();
+    accountModel.Close_Flag = this.close_Flag.value.toString() == 'true' ? 1 : 0;
+    if (accountModel.Close_Flag == 1) {
+      accountModel.Close_Date = this.accountCloseDate.value.toString();
+      accountModel.Exp_Date = this.accountCloseDate.value.toString();
+    }
+    accountModel.Currency = this.currency.value.toString();
+    accountModel.Other_Branch_Trf = this.otherBranchTransfer.value.toString() == 'Y' ? 1 : 0;
     accountModel.CreatedBy = this._sharedService.applicationUser.userName;
-
     accountModel.NomineeList = [];
 
     let nominiModel = {} as INominiModel;
@@ -825,7 +833,6 @@ export class SavingAccountsComponent {
         jointModel = {} as IJointModel;
         jointModel.Id = jointCust.id;
         jointModel.AccountId = this.dto.id;
-        //jointModel.SrNo = jointCust.srNo;
         jointModel.CustomerId = jointCust.customerId;
         jointModel.OperativeInstruction = jointCust.operativeInstruction;
         jointModel.Status = jointCust.status;
@@ -842,6 +849,7 @@ export class SavingAccountsComponent {
           if (data.data.data.status == "SUCCESS") {
             this._toastrService.success(data.data.data.message, 'Success!');
             this.clear();
+            this.configClick("account-search");
           }
           else {
             this._toastrService.success("Error saving account!", 'Error!');
@@ -851,6 +859,16 @@ export class SavingAccountsComponent {
         }
       }
     })
+  }
+
+  authoriseAccount() {
+
+
+  }
+
+  configClick(routeValue: string) {
+    sessionStorage.setItem("configMenu", routeValue);
+    this.router.navigate(['/app/' + routeValue]);
   }
 
   clear() {
@@ -880,9 +898,9 @@ export class SavingAccountsComponent {
       mobile: "",
       email: "",
       pan: "",
-      dob: new FormControl(formatDate(new Date(Date.now()), 'yyyy-MM-dd', 'en'), []),
+      dob: formatDate(new Date(Date.now()), 'yyyy-MM-dd', 'en'),
       aadhar: "",
-      joiningDate: new FormControl(formatDate(new Date(Date.now()), 'yyyy-MM-dd', 'en'), []),
+      joiningDate: formatDate(new Date(Date.now()), 'yyyy-MM-dd', 'en'),
       group: "",
       occupation: "",
       city: "",
@@ -893,13 +911,16 @@ export class SavingAccountsComponent {
     this.accountForm.patchValue({
       accountType: this.uiAccountTypes[0].constantNo,
       modeOfOperation: this.uiModeOfOperations[0].constantNo,
+      modeOfSignature: this.uiModeOfOperations[0].constantNo,
       staffDirectorOther: this.uiEmployyeTypes[0].code,
-      //accountOpeningDate: new FormControl(formatDate(new Date(Date.now()), 'yyyy-MM-dd', 'en'), [Validators.required]),
-      lastTransactionDate: new FormControl(formatDate(new Date(Date.now()), 'yyyy-MM-dd', 'en'), [Validators.required]),
-      passbookDate: new FormControl(formatDate(new Date(Date.now()), 'yyyy-MM-dd', 'en'), [Validators.required]),
-      matureDate: new FormControl(formatDate(new Date(Date.now()), 'yyyy-MM-dd', 'en'), [Validators.required]),
-      lastInterestDate: new FormControl(formatDate(new Date(Date.now()), 'yyyy-MM-dd', 'en'), [Validators.required]),
-      drInterestDate: new FormControl(formatDate(new Date(Date.now()), 'yyyy-MM-dd', 'en'), [Validators.required]),
+      accountStatus: this.uiAccountStatuses[0].constantNo,
+      accountOpeningDate: formatDate(new Date(Date.now()), 'yyyy-MM-dd', 'en'),
+      passbookDate: formatDate(new Date(Date.now()), 'yyyy-MM-dd', 'en'),
+      lastInterestDate: formatDate(new Date(Date.now()), 'yyyy-MM-dd', 'en'),
+      lastTransactionDate: formatDate(new Date(Date.now()), 'yyyy-MM-dd', 'en'),
+      printDate: formatDate(new Date(Date.now()), 'yyyy-MM-dd', 'en'),
+      accountCloseDate: "",
+      close_Flag: false
     })
   }
   clearParametersDetails() {
@@ -907,11 +928,8 @@ export class SavingAccountsComponent {
       interestRateParam: "",
       ledgerNumber: "",
       minimumBalance: "",
-      additionalBalance: "",
-      form60: this.uiForm60Options[0].code,
-      form61: this.uiForm61Options[0].code,
-      tds: this.uiTDSOptions[0].code,
-      tdsReason: this.uiTDSReasons[0].constantNo,
+      currency: this.uiCurrencies[0].currencyId,
+      otherBranchTransfer: this.uiTDSOptions[0].code,
     })
   }
   clearNomineeDetails() {
@@ -1003,26 +1021,39 @@ export class SavingAccountsComponent {
   get modeOfOperation() {
     return this.accountForm.get('modeOfOperation')!;
   }
+  get modeOfSignature() {
+    return this.accountForm.get('modeOfSignature')!;
+  }
   get staffDirectorOther() {
     return this.accountForm.get('staffDirectorOther')!;
   }
-  // get accountOpeningDate() {
-  //   return this.accountForm.get('accountOpeningDate')!;
-  // }
-  get lastTransactionDate() {
-    return this.accountForm.get('lastTransactionDate')!;
+  get accountStatus() {
+    return this.accountForm.get('accountStatus')!;
   }
+
   get passbookDate() {
     return this.accountForm.get('passbookDate')!;
   }
-  get matureDate() {
-    return this.accountForm.get('matureDate')!;
+  get accountOpeningDate() {
+    return this.accountForm.get('accountOpeningDate')!;
+  }
+  get accountCloseDate() {
+    return this.accountForm.get('accountCloseDate')!;
   }
   get lastInterestDate() {
     return this.accountForm.get('lastInterestDate')!;
   }
-  get drInterestDate() {
-    return this.accountForm.get('drInterestDate')!;
+  get lastTransactionDate() {
+    return this.accountForm.get('lastTransactionDate')!;
+  }
+  // get drInterestDate() {
+  //   return this.accountForm.get('drInterestDate')!;
+  // }
+  get printDate() {
+    return this.accountForm.get('printDate')!;
+  }
+  get close_Flag() {
+    return this.accountForm.get('close_Flag')!;
   }
 
   //
@@ -1038,6 +1069,12 @@ export class SavingAccountsComponent {
   }
   get additionalBalance() {
     return this.parametersForm.get('additionalBalance')!;
+  }
+  get currency() {
+    return this.parametersForm.get('currency')!;
+  }
+  get otherBranchTransfer() {
+    return this.parametersForm.get('otherBranchTransfer')!;
   }
   get form60() {
     return this.parametersForm.get('form60')!;

@@ -21,24 +21,18 @@ export class SavingAccountService {
     return this.dto.asObservable();
   }
 
-  SearchAccountsAsync(branchId: number, glId: number, customerNumber: string, accountNumber: string) {
-    let options = GlobleDeclarations.getHeaderOptions();
-    return this.http.get(GlobleDeclarations.apiBaseURL + "api/DepositAccount/search-account?branchCode=" + branchId 
-    + "&glId="+ glId + "&customerNumber="+ customerNumber+ "&accountNumber="+ accountNumber, options);
-  }
-
   getSavingAccount(accountsId: number) {
     let options = GlobleDeclarations.getHeaderOptions();
-    return this.http.get(GlobleDeclarations.apiBaseURL + "api/DepositAccount/deposit-account?accountsId=" + accountsId, options);
+    return this.http.get(GlobleDeclarations.apiBaseURL + "api/SavingAccount/saving-account?accountsId=" + accountsId, options);
   }
 
   getMaxAccountNumber(branchId: number, code1: number) {
     let options = GlobleDeclarations.getHeaderOptions();
-    return this.http.get(GlobleDeclarations.apiBaseURL + "api/DepositAccount/max-account-no?branchCode=" + branchId+ "&code1="+ code1, options);
+    return this.http.get(GlobleDeclarations.apiBaseURL + "api/SavingAccount/max-account-no?branchCode=" + branchId+ "&code1="+ code1, options);
   }
 
   saveSavingAccount(accountModel: any): any {
     let options = GlobleDeclarations.getHeaderOptions();
-    return this.http.post(GlobleDeclarations.apiBaseURL + "api/DepositAccount/create-deposit-account", accountModel, options);
+    return this.http.post(GlobleDeclarations.apiBaseURL + "api/SavingAccount/create-saving-account", accountModel, options);
   }
 }

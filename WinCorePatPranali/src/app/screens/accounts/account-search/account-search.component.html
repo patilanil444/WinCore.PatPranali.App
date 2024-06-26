@@ -92,7 +92,7 @@
                                     <td>{{uiAccount.int_Rate}}</td>
                                     <td>
                                         <div class="badge"
-                                            [ngClass]="{'badge-danger': uiAccount.status==='Deleted', 'badge-success' : uiAccount.status=== 'Active', 'badge-warning' : uiAccount.status=== 'In-Active'}">
+                                            [ngClass]="{'badge-danger': (uiAccount.status==='Freeze'|| uiAccount.status==='Closed'), 'badge-success' : uiAccount.status=== 'Open', 'badge-warning' : uiAccount.status=== 'Dormant'}">
                                             {{uiAccount.status}}
                                         </div>
 
