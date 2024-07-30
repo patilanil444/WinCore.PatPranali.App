@@ -1,9 +1,9 @@
 <form [formGroup]="searchForm" #form="ngForm">
-    <div class="col-lg-12">
+    <div class="col-lg-12 search-box-color">
         <div class="row">
 
             <div class="col-md-4 position-relative">
-                <label for="txtCode" class="">Search By </label>
+                <label for="txtCode" class="">Search Customer By </label>
                 <select class="mb-2 form-control" tabindex="1" formControlName="searchBy">
                     <option *ngFor="let uiCustomerSearch of uiCustomerSearchBy" [ngValue]="uiCustomerSearch.code">
                         {{uiCustomerSearch.name}}

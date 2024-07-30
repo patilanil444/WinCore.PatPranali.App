@@ -10,6 +10,7 @@ import { IGeneralDTO } from 'src/app/common/models/common-ui-models';
 export class SavingAccountService {
   serviceBaseURL = "";
   jointCustomerToDelete = -1;
+  guarantorCustomerToDelete = -1;
 
   constructor(private http: HttpClient) { }
 
@@ -24,11 +25,6 @@ export class SavingAccountService {
   getSavingAccount(accountsId: number) {
     let options = GlobleDeclarations.getHeaderOptions();
     return this.http.get(GlobleDeclarations.apiBaseURL + "api/SavingAccount/saving-account?accountsId=" + accountsId, options);
-  }
-
-  getMaxAccountNumber(branchId: number, code1: number) {
-    let options = GlobleDeclarations.getHeaderOptions();
-    return this.http.get(GlobleDeclarations.apiBaseURL + "api/SavingAccount/max-account-no?branchCode=" + branchId+ "&code1="+ code1, options);
   }
 
   saveSavingAccount(accountModel: any): any {

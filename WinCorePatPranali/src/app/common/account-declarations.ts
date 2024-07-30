@@ -25,5 +25,8 @@ export class AccountDeclarations
 
     static renewalTypes = [new UiStaticType(1, "Y", "Yes"),
     new UiStaticType(2, "N", "No")];
+
+    static changesInInterestRateYN = [new UiStaticType(1, "Y", "Yes"),
+    new UiStaticType(2, "N", "No")];
     
 }

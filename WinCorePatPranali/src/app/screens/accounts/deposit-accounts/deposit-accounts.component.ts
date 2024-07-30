@@ -6,6 +6,7 @@ import { NgxDropdownConfig } from 'ngx-select-dropdown';
 import { ToastrService } from 'ngx-toastr';
 import { AccountDeclarations } from 'src/app/common/account-declarations';
 import { IGeneralDTO, UiEnumGeneralMaster } from 'src/app/common/models/common-ui-models';
+import { AccountsService } from 'src/app/services/accounts/accounts/accounts.service';
 import { DepositAccountService } from 'src/app/services/accounts/deposit-accounts/deposit-account.service';
 import { CustomerService } from 'src/app/services/customers/customer/customer.service';
 import { GeneralLedgerService } from 'src/app/services/masters/general-ledger/general-ledger.service';
@@ -193,7 +194,7 @@ export class DepositAccountsComponent {
 
   constructor(private router: Router, private _sharedService: SharedService, private _toastrService: ToastrService,
     private _generalLedgerService: GeneralLedgerService, private _customerService: CustomerService,
-    private _depositAccountService: DepositAccountService) { }
+    private _depositAccountService: DepositAccountService, private _accountsService: AccountsService ) { }
 
   ngOnInit(): void {
 
@@ -243,7 +244,7 @@ export class DepositAccountsComponent {
       lastTransactionDate: new FormControl(formatDate(new Date(Date.now()), 'yyyy-MM-dd', 'en'), [Validators.required]),
       accountStatus: new FormControl(this.uiAccountStatuses[0].constantNo, [Validators.required]),
       passbookDate: new FormControl(formatDate(new Date(Date.now()), 'yyyy-MM-dd', 'en'), [Validators.required]),
-      matureDate: new FormControl(formatDate(new Date(Date.now()), 'yyyy-MM-dd', 'en'), [Validators.required]),
+      // matureDate: new FormControl(formatDate(new Date(Date.now()), 'yyyy-MM-dd', 'en'), [Validators.required]),
       lastInterestDate: new FormControl(formatDate(new Date(Date.now()), 'yyyy-MM-dd', 'en'), [Validators.required]),
       drInterestDate: new FormControl(formatDate(new Date(Date.now()), 'yyyy-MM-dd', 'en'), [Validators.required]),
     });
@@ -391,7 +392,7 @@ export class DepositAccountsComponent {
                 lastTransactionDate: formatDate(new Date(depositAccount.last_Trn_Date), 'yyyy-MM-dd', 'en'),
                 accountStatus: depositAccount.accountStatus,
                 passbookDate: formatDate(new Date(depositAccount.passbookDate), 'yyyy-MM-dd', 'en'),
-                matureDate: formatDate(new Date(depositAccount.exp_Date), 'yyyy-MM-dd', 'en'),
+                // matureDate: formatDate(new Date(depositAccount.exp_Date), 'yyyy-MM-dd', 'en'),
                 lastInterestDate: formatDate(new Date(depositAccount.last_Int_Date), 'yyyy-MM-dd', 'en'),
                 drInterestDate: formatDate(new Date(depositAccount.debitInterestDate), 'yyyy-MM-dd', 'en')
               })
@@ -508,7 +509,7 @@ export class DepositAccountsComponent {
 
 
   getMaxAccountNumber(glId: number) {
-    this._depositAccountService.getMaxAccountNumber(this._sharedService.applicationUser.branchId, glId).subscribe((data: any) => {
+    this._accountsService.getMaxAccountNumber(this._sharedService.applicationUser.branchId, glId).subscribe((data: any) => {
       console.log(data);
       if (data) {
         let maxAccountModel = data.data.data;
@@ -973,6 +974,44 @@ export class DepositAccountsComponent {
 
   }
 
+  calculateMatureDate()
+  {
+    if (this.years.value || this.months.value || this.days.value) {
+      let totalDays = 0;
+      if (!isNaN(parseInt(this.years.value))) {
+        let today = new Date(this.fdOpeningDate.value);
+        let targetDate = new Date(this.fdOpeningDate.value);
+        targetDate.setFullYear(today.getFullYear() + parseInt(this.years.value));
+        let differenceInTime = Math.abs(targetDate.getTime() - today.getTime());
+        let differenceInDays = Math.round(differenceInTime / (1000 * 3600 * 24));
+        totalDays = totalDays + differenceInDays;
+      }
+      if (!isNaN(parseInt(this.months.value))) {
+        let today = new Date(this.fdOpeningDate.value);
+        let targetDate = new Date(this.fdOpeningDate.value);
+        targetDate.setMonth(today.getMonth() + parseInt(this.months.value));
+        let differenceInTime = Math.abs(targetDate.getTime() - today.getTime());
+        let differenceInDays = Math.round(differenceInTime / (1000 * 3600 * 24));
+        totalDays = totalDays + differenceInDays;
+      }
+      if (!isNaN(parseInt(this.days.value))) {
+        let today = new Date(this.fdMatureDate.value);
+        let targetDate  = new Date(this.fdMatureDate.value);
+        targetDate.setDate(today.getDate() + parseInt(this.days.value));
+        let differenceInTime = Math.abs(targetDate.getTime() - today.getTime());
+        let differenceInDays = Math.round(differenceInTime / (1000 * 3600 * 24));
+        totalDays = totalDays + differenceInDays;
+      }
+
+      let maturityDate = new Date(this.fdOpeningDate.value).setDate(totalDays);
+
+      this.fdDetailsForm.patchValue({
+        fdMatureDate: formatDate(maturityDate, 'yyyy-MM-dd', 'en'),
+        renewalOnDate: formatDate(maturityDate, 'yyyy-MM-dd', 'en'),
+      })
+    }
+  }
+
   configClick(routeValue: string) {
     sessionStorage.setItem("configMenu", routeValue);
     this.router.navigate(['/app/' + routeValue]);
@@ -1025,7 +1064,7 @@ export class DepositAccountsComponent {
       lastTransactionDate: formatDate(new Date(Date.now()), 'yyyy-MM-dd', 'en'),
       accountStatus: this.uiAccountStatuses[0].constantNo,
       passbookDate: formatDate(new Date(Date.now()), 'yyyy-MM-dd', 'en'),
-      matureDate: formatDate(new Date(Date.now()), 'yyyy-MM-dd', 'en'),
+      // matureDate: formatDate(new Date(Date.now()), 'yyyy-MM-dd', 'en'),
       lastInterestDate: formatDate(new Date(Date.now()), 'yyyy-MM-dd', 'en'),
       drInterestDate: formatDate(new Date(Date.now()), 'yyyy-MM-dd', 'en'),
     })
@@ -1173,9 +1212,9 @@ export class DepositAccountsComponent {
   get passbookDate() {
     return this.accountForm.get('passbookDate')!;
   }
-  get matureDate() {
-    return this.accountForm.get('matureDate')!;
-  }
+  // get matureDate() {
+  //   return this.accountForm.get('matureDate')!;
+  // }
   get lastInterestDate() {
     return this.accountForm.get('lastInterestDate')!;
   }

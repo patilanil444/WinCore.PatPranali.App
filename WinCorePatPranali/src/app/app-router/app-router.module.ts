@@ -42,6 +42,15 @@ import { MemberFormComponent } from '../screens/customers/member/member-form/mem
 import { CustSearchComponent } from '../common/directives/cust-search/cust-search.component';
 import { AccountSearchComponent } from '../screens/accounts/account-search/account-search.component';
 import { SavingAccountsComponent } from '../screens/accounts/saving-accounts/saving-accounts.component';
+import { UserSearchComponent } from '../screens/users/user-search/user-search.component';
+import { UserComponent } from '../screens/users/user/user.component';
+import { RoleAccessComponent } from '../screens/users/role-access/role-access.component';
+import { UserActivityComponent } from '../screens/users/user-activity/user-activity.component';
+import { UserDailyRoleComponent } from '../screens/users/user-daily-role/user-daily-role.component';
+import { VehicleLoanComponent } from '../screens/accounts/loan-accounts/loan-types/vehicle-loan/vehicle-loan.component';
+import { GoldLoanComponent } from '../screens/accounts/loan-accounts/loan-types/gold-loan/gold-loan.component';
+import { OtherAccountsComponent } from '../screens/accounts/other-accounts/other-accounts.component';
+import { LienFdLoanComponent } from '../screens/accounts/loan-accounts/loan-types/lien-fd-loan/lien-fd-loan.component';
 
 @NgModule({
   declarations: [
@@ -82,6 +91,15 @@ import { SavingAccountsComponent } from '../screens/accounts/saving-accounts/sav
     CustSearchComponent,
     AccountSearchComponent,
     SavingAccountsComponent,
+    OtherAccountsComponent,
+    UserSearchComponent,
+    UserComponent,
+    RoleAccessComponent,
+    UserActivityComponent,
+    UserDailyRoleComponent,
+    VehicleLoanComponent,
+    GoldLoanComponent,
+    LienFdLoanComponent,
   ],
   imports: [
     CommonModule,

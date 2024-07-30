@@ -1,0 +1,105 @@
+<div class="row">
+    <div class="col-lg-12">
+    
+        <div class="main-card mb-3 card">
+            <div class="card-body">
+                <h5 class="card-title">Users</h5>
+                <div class="row">
+                    <div class="col-md-12">
+                        <button class="btn btn-left-margin10 btn-success" style="float: right; margin-bottom: 10px;" tabindex="2"
+                            (click)="addNewUser()"><i class="fa fa-plus"></i> &nbsp; Add New User </button>
+                    </div>
+                </div>
+                
+                <div class="row" style="margin-bottom: 10px;">
+                    <div class="col-lg-12">
+                        <table class="mb-0 table table-striped">
+                            <thead>
+                                <tr>
+                                    <th width="15%">Name</th>
+                                    <th width="7%">Username</th>
+                                    <th width="15%">Email</th>
+                                    <th width="10%">Mobile</th>
+                                    <th width="15%">Role</th>
+                                    <th width="15%">Todays Role</th>
+                                    <th width="5%">Status</th>
+                                    <th width="13%">Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr
+                                    *ngFor="let uiUser of uiUsers | paginate: { itemsPerPage: 10, currentPage: p, totalItems: total }">
+                                    <th scope="row">{{uiUser.name}}</th>
+                                    <td>{{uiUser.userName}}</td>
+                                    <td>{{uiUser.emailId}}</td>
+                                    <td>{{uiUser.mobileNo}}</td>
+                                    <td>{{uiUser.accessString}}</td>
+                                    <td>{{uiUser.todayAccessString}}</td>
+                                    <td>
+                                        <div class="badge"
+                                            [ngClass]="{'badge-danger': !uiUser.isActive, 'badge-success' : uiUser.isActive}">
+                                            {{uiUser.status}}
+                                        </div>
+    
+                                    </td>
+                                    <td>
+                                        <div class="widget-content-right">
+                                            <button type="button" title="Todays Role" [disabled]="!uiUser.isActive"
+                                                class="btn-shadow btn btn-alternate btn-actions" (click)="setTodaysLimit(uiUser)">
+                                                <span class="btn-icon-wrapper opacity-10">
+                                                    <i class="fa fa-calendar fa-w-10"></i>
+                                                </span>
+                                            </button>
+                                            <button type="button" title="Edit record" [disabled]="!uiUser.isActive"
+                                                class="btn-shadow btn btn-info btn-actions" (click)="edit(uiUser)">
+                                                <span class="btn-icon-wrapper opacity-10">
+                                                    <i class="fa fa-edit fa-w-10"></i>
+                                                </span>
+                                            </button>
+                                            <button type="button" title="Delete record"
+                                                class="btn-shadow btn btn-danger btn-actions" data-toggle="modal"
+                                                data-target="#deleteModal" (click)="delete(uiUser)">
+                                                <span class="btn-icon-wrapper opacity-10">
+                                                    <i class="fa fa-trash fa-w-20"></i>
+                                                </span>
+                                            </button>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr *ngIf="uiUsers.length==0">
+                                    <td colspan="8">No records found..</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+    
+                <div class="d-flex justify-content-center">
+                    <pagination-controls (pageChange)="pageChangeEvent($event)"></pagination-controls>
+                </div>
+            </div>
+        </div>
+    
+    </div>
+</div>
+
+<div id="deleteModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+    aria-hidden="true" data-backdrop="false">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Delete</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="cancelDelete()">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <p class="mb-0">Are you sure do you want to delete?</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-danger" data-dismiss="modal" (click)="onDelete()">Yes</button>
+                <button type="button" class="btn btn-primary" data-dismiss="modal" (click)="cancelDelete()">No</button>
+            </div>
+        </div>
+    </div>
+</div>

@@ -19,7 +19,7 @@
                         </div>
 
                         <div class="col-md-3 position-relative form-group">
-                            <label for="txtCode" class="">A/C Number</label>
+                            <label for="txtCode" class="">Account Number</label>
                             <div class="input-group">
                                 <input tabindex="2" type="text" readonly class="form-control" formControlName="glAccountNumberStr">
                             </div>
@@ -257,12 +257,12 @@
                                                 <input tabindex="22" type="date" class="form-control"
                                                     formControlName="passbookDate">
                                             </div>
-                                            <div class="col-md-3 position-relative form-group">
+                                            <!-- <div class="col-md-3 position-relative form-group">
                                                 <label for="txtCode" class="">Mature Date <span
                                                         class="mandatory">*</span></label>
                                                 <input tabindex="23" type="date" class="form-control"
                                                     formControlName="matureDate">
-                                            </div>
+                                            </div> -->
                                             <div class="col-md-3 position-relative form-group">
                                                 <label for="txtCode" class="">Last Interest Date <span
                                                         class="mandatory">*</span></label>
@@ -610,7 +610,7 @@
                                                     <span class="mandatory">*</span></label>
                                                 <!-- <input tabindex="1" type="text" class="form-control"
                                                     formControlName="renewFD"> -->
-                                                <select class="mb-2 form-control" tabindex="35"
+                                                <select class="form-control" tabindex="35"
                                                     formControlName="renewFD">
                                                     <option *ngFor="let uiRenewalType of uiRenewalTypes"
                                                         [ngValue]="uiRenewalType.code">
@@ -624,11 +624,39 @@
                                                 <input tabindex="36" type="date" class="form-control"
                                                     formControlName="fdOpeningDate">
                                             </div>
+
                                             <div class="col-md-3 position-relative form-group">
-                                                <label for="txtCode" class="">Renewal On <span
+                                                <label for="txtCode" class="">FD Amount <span
                                                         class="mandatory">*</span></label>
-                                                <input tabindex="37" type="date" class="form-control"
-                                                    formControlName="renewalOnDate">
+                                                <input tabindex="42" type="number" min="0" class="form-control"
+                                                    formControlName="fdAmount">
+                                            </div>
+                                            
+                                            <div class="col-md-3 position-relative form-group">
+                                                <label for="txtCode" class="">FD Tenure <span class="mandatory">*</span></label>
+                                                <div class="input-group">
+                                                    <input tabindex="41" type="number" min="0" class="form-control" formControlName="years"
+                                                    (change)="calculateMatureDate()">
+                                                    <div class="input-group-append"><span class="input-group-text">Years</span></div>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-3 position-relative form-group">
+                                                <label for="txtCode"> &nbsp;</label>
+                                                <div class="input-group">
+                                                    <input tabindex="40" type="number" min="0" class="form-control"
+                                                        formControlName="months" (change)="calculateMatureDate()">
+                                                    <div class="input-group-append"><span
+                                                            class="input-group-text">Months</span></div>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-3 position-relative form-group">
+                                                <label for="txtCode"> &nbsp;</label>
+                                                 <div class="input-group">
+                                                    <input tabindex="39" type="number" min="0" class="form-control"
+                                                        formControlName="days" (change)="calculateMatureDate()">
+                                                    <div class="input-group-append"><span
+                                                            class="input-group-text">Days</span></div>
+                                                </div>
                                             </div>
                                             <div class="col-md-3 position-relative form-group">
                                                 <label for="txtCode" class="">Mature Date <span
@@ -636,40 +664,14 @@
                                                 <input tabindex="38" type="date" class="form-control"
                                                     formControlName="fdMatureDate">
                                             </div>
+
                                             <div class="col-md-3 position-relative form-group">
-                                                <label for="txtCode" class="">FD Tenure <span
+                                                <label for="txtCode" class="">Renewal On <span
                                                         class="mandatory">*</span></label>
-                                                <div class="input-group">
-                                                    <input tabindex="39" type="number" min="0" class="form-control"
-                                                        formControlName="days">
-                                                    <div class="input-group-append"><span
-                                                            class="input-group-text">Days</span></div>
-                                                </div>
+                                                <input tabindex="37" type="date" class="form-control"
+                                                    formControlName="renewalOnDate">
                                             </div>
-                                            <div class="col-md-3 position-relative form-group">
-                                                <label for="txtCode"> &nbsp;</label>
-                                                <div class="input-group">
-                                                    <input tabindex="40" type="number" min="0" class="form-control"
-                                                        formControlName="months">
-                                                    <div class="input-group-append"><span
-                                                            class="input-group-text">Months</span></div>
-                                                </div>
-                                            </div>
-                                            <div class="col-md-3 position-relative form-group">
-                                                <label for="txtCode"> &nbsp;</label>
-                                                <div class="input-group">
-                                                    <input tabindex="41" type="number" min="0" class="form-control"
-                                                        formControlName="years">
-                                                    <div class="input-group-append"><span
-                                                            class="input-group-text">Years</span></div>
-                                                </div>
-                                            </div>
-                                            <div class="col-md-3 position-relative form-group">
-                                                <label for="txtCode" class="">FD Amount <span
-                                                        class="mandatory">*</span></label>
-                                                <input tabindex="42" type="number" min="0" class="form-control"
-                                                    formControlName="fdAmount">
-                                            </div>
+                                           
                                             <div class="col-md-3 position-relative form-group">
                                                 <label for="txtCode" class="">Interest Rate <span
                                                         class="mandatory">*</span></label>

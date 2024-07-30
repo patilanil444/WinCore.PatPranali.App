@@ -6,6 +6,7 @@ import { NgxDropdownConfig } from 'ngx-select-dropdown';
 import { ToastrService } from 'ngx-toastr';
 import { AccountDeclarations } from 'src/app/common/account-declarations';
 import { IGeneralDTO, UiEnumGeneralMaster } from 'src/app/common/models/common-ui-models';
+import { AccountsService } from 'src/app/services/accounts/accounts/accounts.service';
 import { SavingAccountService } from 'src/app/services/accounts/saving-accounts/saving-account.service';
 import { CustomerService } from 'src/app/services/customers/customer/customer.service';
 import { GeneralLedgerService } from 'src/app/services/masters/general-ledger/general-ledger.service';
@@ -172,7 +173,7 @@ export class SavingAccountsComponent {
 
   constructor(private router: Router, private _sharedService: SharedService, private _toastrService: ToastrService,
     private _generalLedgerService: GeneralLedgerService, private _customerService: CustomerService,
-    private _savingAccountService: SavingAccountService) { }
+    private _savingAccountService: SavingAccountService, private _accountsService: AccountsService) { }
 
   ngOnInit(): void {
 
@@ -431,7 +432,7 @@ export class SavingAccountsComponent {
 
 
   getMaxAccountNumber(glId: number) {
-    this._savingAccountService.getMaxAccountNumber(this._sharedService.applicationUser.branchId, glId).subscribe((data: any) => {
+    this._accountsService.getMaxAccountNumber(this._sharedService.applicationUser.branchId, glId).subscribe((data: any) => {
       console.log(data);
       if (data) {
         let maxAccountModel = data.data.data;

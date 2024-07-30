@@ -8,6 +8,8 @@ import { DepositAccountService } from 'src/app/services/accounts/deposit-account
 import { SavingAccountService } from 'src/app/services/accounts/saving-accounts/saving-account.service';
 import { GeneralLedgerService } from 'src/app/services/masters/general-ledger/general-ledger.service';
 import { SharedService } from 'src/app/services/shared.service';
+import { OtherAccountsService } from 'src/app/services/accounts/other-accounts/other-accounts.service';
+import { AccountsService } from 'src/app/services/accounts/accounts/accounts.service';
 
 @Component({
   selector: 'app-account-search',
@@ -40,7 +42,10 @@ export class AccountSearchComponent implements OnInit {
 
   constructor(private router: Router, private _sharedService: SharedService,
     private _toastrService: ToastrService, private _generalLedgerService: GeneralLedgerService,
-    private _depositAccountService: DepositAccountService,private _savingAccountService: SavingAccountService) { }
+    private _accountsService: AccountsService,
+    private _depositAccountService: DepositAccountService,
+    private _savingAccountService: SavingAccountService,
+    private _otherAccountsService: OtherAccountsService) { }
 
   ngOnInit(): void {
     this.searchForm = new FormGroup({
@@ -92,7 +97,8 @@ export class AccountSearchComponent implements OnInit {
     }
 
     if (ledgerId > 0 || custNumber.length || accNumber.length) {
-      this._depositAccountService.SearchAccountsAsync(this._sharedService.applicationUser.branchId, ledgerId, custNumber, accNumber).subscribe((data: any) => {
+      this._accountsService.SearchAccountsAsync(this._sharedService.applicationUser.branchId, 
+        ledgerId, custNumber, accNumber).subscribe((data: any) => {
         console.log(data);
         if (data) {
           let accounts = data.data.data;
@@ -131,8 +137,7 @@ export class AccountSearchComponent implements OnInit {
 
 
   cancelDelete() {
-
-
+    
   }
 
   delete(uiCustomer: any) {
@@ -158,7 +163,7 @@ export class AccountSearchComponent implements OnInit {
 
   edit(uiAccount: any) {
     let dtObject: IGeneralDTO = {
-      route: "customer",
+      route: "accounts",
       action: "editRecord",
       id: uiAccount.accountsId,
       maxId: 0,
@@ -173,8 +178,9 @@ export class AccountSearchComponent implements OnInit {
       this._depositAccountService.setDTO(dtObject);
       this.configClick("deposit-accounts");
     }
-    else if (uiAccount.glGroup == 'L') {
-      
+    else if (uiAccount.glGroup == 'B' || uiAccount.glGroup == 'G') {
+      this._otherAccountsService.setDTO(dtObject);
+      this.configClick("other-accounts");
     }
     else if (uiAccount.glGroup == 'G') {
       

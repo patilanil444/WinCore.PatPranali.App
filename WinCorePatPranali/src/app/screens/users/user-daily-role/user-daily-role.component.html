@@ -1,0 +1,78 @@
+<div class="row">
+    <div class="col-md-12">
+        <div class="main-card mb-3 card">
+            <div class="card-body">
+                <form [formGroup]="userForm" #form="ngForm">
+                    <h5 class="card-title">User's Daily Role</h5>
+                    <h5 class="card-title" style="color: orange;">Last Updated On -  {{lastUpdatedOn}}</h5>
+                    <div class="row">
+                        <div class="col-md-3 position-relative form-group">
+                            <label class="">User <span class="mandatory">*</span></label>
+                            <input type="text" tabindex="1" autocomplete="off" placeholder="Name" id="txtName"
+                                class="form-control" formControlName="name" readonly>
+                        </div>
+                        <div class="col-md-3 position-relative form-group">
+                            <label class="">User Role <span class="mandatory">*</span></label>
+                            <select class="mb-2 form-control" tabindex="3" formControlName="role">
+                                <option *ngFor="let uiUserRole of uiUserRoles" [ngValue]="uiUserRole.id">
+                                    {{uiUserRole.userRole}}
+                                </option>
+                            </select>
+                        </div>
+                        <div class="col-md-3 position-relative form-group">
+                            <label class="">Todays Role <span class="mandatory">*</span></label>
+                            <select class="mb-2 form-control" tabindex="3" formControlName="todaysRole">
+                                <option *ngFor="let uiUserRole of uiUserRoles" [ngValue]="uiUserRole.id">
+                                    {{uiUserRole.userRole}}
+                                </option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="divider"></div>
+                    <div class="row">
+                        <div class="col-md-3 position-relative form-group">
+                            <label for="txtCode" class="">Todays Cash Receipt Limit <span
+                                    class="mandatory">*</span></label>
+                            <input type="text" tabindex="2" autocomplete="off" placeholder="Todays Cash Receipt Limit" id="todaysCashReceiptLimit"
+                                class="form-control" formControlName="todaysCashReceiptLimit" required
+                                maxlength="15">
+                        </div>
+
+                        <div class="col-md-3 position-relative form-group">
+                            <label class="">Todays Cash Payment Limit <span class="mandatory">*</span></label>
+                            <input type="text" tabindex="4" autocomplete="off" placeholder="Todays Cash Payment Limit"
+                                id="todaysCashPaymentLimit" class="form-control"
+                                formControlName="todaysCashPaymentLimit" required maxlength="50">
+                        </div>
+                        <div class="col-md-3 position-relative form-group">
+                            <label class="">Todays Transfer Limit <span class="mandatory">*</span></label>
+                            <input type="text" tabindex="5" autocomplete="off" placeholder="Todays Transfer Limit"
+                                id="todaysTransferLimit" class="form-control" formControlName="todaysTransferLimit" required
+                                maxlength="50">
+                        </div>
+                        <div class="mb-2 col-md-3 position-relative form-group">
+                            <label class="">Todays Passing Receipt Limit <span class="mandatory">*</span></label>
+                            <input type="text" tabindex="6" autocomplete="off" id="todaysPassingReceiptLimit"
+                                placeholder="Todays Passing Receipt Limit" class="form-control"
+                                formControlName="todaysPassingReceiptLimit" required>
+                        </div>
+                        <div class="mb-2 col-md-3 position-relative form-group">
+                            <label class="">Todays Passing Payment Limit <span class="mandatory">*</span></label>
+                            <input type="text" tabindex="6" autocomplete="off" id="todaysPassingPaymentLimit"
+                                placeholder="Todays Passing Payment Limit" class="form-control"
+                                formControlName="todaysPassingPaymentLimit" required>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6 position-relative">
+                            <button type="button" class="mt-1 btn btn-primary" tabindex="7"
+                                (click)="saveTodaysRole()">Submit</button>
+                            <button class="mt-1 btn btn-left-margin10 btn-secondary"
+                                (click)="configClick('user-search')">User List</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

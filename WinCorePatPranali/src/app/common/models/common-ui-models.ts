@@ -92,7 +92,8 @@ export enum UiEnumGeneralMaster {
     GLGROUP = 23,
     SCHEDULE = 24,
     TDSREASON = 25,
-    ACSTATUS = 26
+    ACSTATUS = 26,
+    LOANTYPE = 27
     // GENDER = 1,
     // TITLE = 2,
     // ACTYPE = 3,

@@ -1,0 +1,249 @@
+<div class="row">
+    <div class="col-lg-12">
+
+        <div class="main-card mb-3 card">
+            <div class="card-body">
+
+                <h5 class="card-title">Other subsidary account opening</h5>
+                <form [formGroup]="summaryForm" #form="ngForm">
+                    <div class="row">
+
+                        <div class="col-md-3 position-relative">
+                            <label for="txtCode" class="">General Ledger</label>
+                            <div class="input-group">
+                                <ngx-select-dropdown [config]="config" tabindex="1" [options]="uiOtherGeneralLedgers"
+                                    style="width: 100%;" formControlName="generalLedger"
+                                    [multiple]="false" (change)="changeGeneralLedger($event)"
+                                    [ngClass]="{'disabled': !isAddMode}" ></ngx-select-dropdown>
+                            </div>
+                        </div>
+
+                        <div class="col-md-3 position-relative form-group">
+                            <label for="txtCode" class="">Account Number</label>
+                            <div class="input-group">
+                                <input tabindex="2" type="text" readonly class="form-control" formControlName="glAccountNumberStr">
+                            </div>
+                        </div>
+                        <div class="col-md-6 position-relative">
+                            <app-cust-search tabindex="3" [ngClass]="{'disabled': !isAddMode}" (customers)="getCustomers($event)">
+                            </app-cust-search>
+                        </div>
+                        <div class="col-md-12 position-relative">
+                            <button class="customer-accordion" tabindex="4"
+                                [ngClass]="{'customer-panel-active': toggleSearchCustomers===true}"
+                                (click)="openSearchedCustomers()">Searched Customers
+                            </button>
+                            <div class="customer-panel" *ngIf="toggleSearchCustomers">
+                                <table style="width: 100%;"
+                                    class="table table-hover table-striped table-bordered dataTable dtr-inline">
+                                    <thead>
+                                        <tr role="row">
+                                            <th style="width: 5%;">Select</th>
+                                            <th style="width: 18%;">Customer Number</th>
+                                            <th style="width: 18%;">Customer Name</th>
+                                            <th style="width: 18%">Mobile</th>
+                                            <th style="width: 18%">Date</th>
+                                            <th style="width: 18%">PAN</th>
+                                            <th style="width: 5%">Status</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr role="row" *ngFor="let uiCustomer of uiCustomers" class="odd">
+                                            <td class="sorting_1 dtr-control"><button class="mb-2 mr-2 btn btn-link"
+                                                    style="--bs-btn-padding-x:none !important; padding:0 !important;"
+                                                    (click)="selectCustomer(uiCustomer.id)">Select</button></td>
+                                            <td>{{uiCustomer.id}}</td>
+                                            <td>{{uiCustomer.custName}}</td>
+                                            <td>{{uiCustomer.mobile}}</td>
+                                            <td>{{uiCustomer.joinDate}}</td>
+                                            <td>{{uiCustomer.pan}}</td>
+                                            <td>
+                                                <div class="badge"
+                                                    [ngClass]="{'badge-danger': uiCustomer.status==='Deleted', 'badge-success' : uiCustomer.status=== 'Active', 'badge-warning' : uiCustomer.status=== 'In-Active'}">
+                                                    {{uiCustomer.status}}
+                                                </div>
+                                            </td>
+                                        </tr>
+                                        <tr *ngIf="uiCustomers.length==0">
+                                            <td colspan="7">No records..</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+                <ul class="nav nav-tabs" style="margin-top: 10px;">
+                    <li class="nav-item">
+                        <a role="tab" class="nav-link active" id="tab-0" data-toggle="tab" href="#tab-content-0">
+                            <span>Customer Details </span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a role="tab" class="nav-link" id="tab-0" data-toggle="tab" href="#tab-content-1">
+                            <span>Account Details</span>
+                        </a>
+                    </li>
+                </ul>
+
+                <div class="tab-content">
+                    <div class="tab-pane tabs-animation fade show active" id="tab-content-0" role="tabpanel">
+                        <form [formGroup]="customerDetailsForm" #form="ngForm">
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="tab-content">
+                                        <div class="row">
+                                            <div class="col-md-3 position-relative form-group">
+                                                <label for="txtCode" class="">Customer Number</label>
+                                                <input tabindex="5" type="text" class="form-control" readonly
+                                                    formControlName="customerNumber">
+                                            </div>
+                                            <div class="col-md-3 position-relative form-group">
+                                                <label for="txtCode" class="">Name</label>
+                                                <input tabindex="6" type="text" class="form-control" readonly
+                                                    formControlName="name">
+                                            </div>
+                                            <div class="col-md-3 position-relative form-group">
+                                                <label for="txtCode" class="">Address</label>
+                                                <input tabindex="7" type="text" class="form-control" readonly
+                                                    formControlName="address">
+                                            </div>
+                                            <div class="col-md-3 position-relative form-group">
+                                                <label for="txtCode" class="">Mobile</label>
+                                                <input tabindex="8" type="text" class="form-control" readonly
+                                                    formControlName="mobile">
+                                            </div>
+                                            <div class="col-md-3 position-relative form-group">
+                                                <label for="txtCode" class="">Email</label>
+                                                <input tabindex="9" type="text" class="form-control" readonly
+                                                    formControlName="email">
+                                            </div>
+                                            <div class="col-md-3 position-relative form-group">
+                                                <label for="txtCode" class="">PAN</label>
+                                                <input tabindex="10" type="text" class="form-control" readonly
+                                                    formControlName="pan">
+                                            </div>
+                                            <div class="col-md-3 position-relative form-group">
+                                                <label for="txtCode" class="">Date Of Birth</label>
+                                                <input tabindex="11" type="date" class="form-control" readonly
+                                                    formControlName="dob">
+                                            </div>
+                                            <div class="col-md-3 position-relative form-group">
+                                                <label for="txtCode" class="">Aadhar Number</label>
+                                                <input tabindex="12" type="text" class="form-control" readonly
+                                                    formControlName="aadhar">
+                                            </div>
+                                            <div class="col-md-3 position-relative form-group">
+                                                <label for="txtCode" class="">Joining Date</label>
+                                                <input tabindex="13" type="date" class="form-control" readonly
+                                                    formControlName="joiningDate">
+                                            </div>
+                                            <div class="col-md-3 position-relative form-group">
+                                                <label for="txtCode" class="">Customer Group</label>
+                                                <input tabindex="14" type="text" class="form-control" readonly
+                                                    formControlName="group">
+                                            </div>
+                                            <div class="col-md-3 position-relative form-group">
+                                                <label for="txtCode" class="">Occupation</label>
+                                                <input tabindex="15" type="text" class="form-control" readonly
+                                                    formControlName="occupation">
+                                            </div>
+                                            <div class="col-md-3 position-relative form-group">
+                                                <label for="txtCode" class="">City</label>
+                                                <input tabindex="16" type="text" class="form-control" readonly
+                                                    formControlName="city">
+                                            </div>
+                                            <div class="col-md-3 position-relative form-group">
+                                                <label for="txtCode" class="">Zone</label>
+                                                <input tabindex="17" type="text" class="form-control" readonly
+                                                    formControlName="zone">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="tab-pane tabs-animation fade show" id="tab-content-1" role="tabpanel">
+                        <form [formGroup]="accountForm" #form="ngForm">
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="tab-content">
+                                        <div class="row">
+                                            
+                                            <div class="col-md-3 position-relative form-group">
+                                                <label for="txtCode" class="">Account Opening Date <span
+                                                        class="mandatory">*</span></label>
+                                                <input tabindex="23" type="date" class="mb-2 form-control"
+                                                    formControlName="accountOpeningDate">
+                                            </div>
+
+                                            <div class="col-md-3 position-relative form-group">
+                                                <label for="txtCode" class="">Account Status <span
+                                                        class="mandatory">*</span></label>
+                                                <select class="mb-2 form-control" tabindex="22"
+                                                    formControlName="accountStatus" (change)="selectAccountStatus($event)">
+                                                    <option *ngFor="let uiAccountStatus of uiAccountStatuses"
+                                                        [ngValue]="uiAccountStatus.constantNo">
+                                                        {{uiAccountStatus.constantname}}
+                                                    </option>
+                                                </select>
+                                            </div>
+                                            <div class="col-md-3 position-relative form-group">
+                                                <label for="txtCode" class="">Interest Rate <span
+                                                        class="mandatory">*</span></label>
+                                                <input tabindex="29" type="number" class="mb-2 form-control"
+                                                    formControlName="interestRate" min="0" 
+                                                    onKeyPress="if(this.value.length >=3) return false;">
+                                            </div>
+                                            
+                                            <div class="col-md-3 position-relative form-group">
+                                                <label for="txtCode" class="">Last Interest Date <span
+                                                        class="mandatory">*</span></label>
+                                                <input tabindex="25" type="date" class="form-control"
+                                                    formControlName="lastInterestDate">
+                                            </div>
+                                        
+                                            <div class="col-md-3 position-relative form-group">
+                                                <label for="txtCode" class="">Last Transaction Date <span
+                                                        class="mandatory">*</span></label>
+                                                <input tabindex="26" type="date" class="form-control"
+                                                    formControlName="lastTransactionDate">
+                                            </div>
+
+                                            <div class="col-md-3 position-relative form-group">
+                                                <label for="txtCode" class="">Mature Date <span
+                                                        class="mandatory">*</span></label>
+                                                <input tabindex="26" type="date" class="form-control"
+                                                    formControlName="matureDate">
+                                            </div>
+
+                                            <div class="col-md-3 position-relative form-group">
+                                                <label for="txtCode" class="">Account Close Date</label>
+                                                <input tabindex="28" type="text" readonly class="form-control"
+                                                    formControlName="accountCloseDate">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-6 position-relative">
+                        <button class="mt-1 btn btn-primary" (click)="saveSavingAccount()"
+                            tabindex="42">Submit</button>
+                            <button class="mt-1 btn btn-left-margin10 btn-success" (click)="authoriseAccount()"
+                            tabindex="43">Authorise Account</button>
+                        <button class="mt-1 btn btn-left-margin10 btn-danger" (click)="clear()"
+                            tabindex="44">Clear</button>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+    </div>
+</div>

@@ -4,25 +4,25 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { NgxDropdownConfig } from 'ngx-select-dropdown';
 import { ToastrService } from 'ngx-toastr';
 import { AccountDeclarations } from 'src/app/common/account-declarations';
-import { IGeneralDTO, UiEnumGeneralMaster } from 'src/app/common/models/common-ui-models';
+import { IGeneralDTO, UiEnumAccountStatus, UiEnumGeneralMaster } from 'src/app/common/models/common-ui-models';
+import { AccountsService } from 'src/app/services/accounts/accounts/accounts.service';
+import { DepositAccountService } from 'src/app/services/accounts/deposit-accounts/deposit-account.service';
+import { LoanAccountsService } from 'src/app/services/accounts/loan-accounts/loan-accounts.service';
 import { SavingAccountService } from 'src/app/services/accounts/saving-accounts/saving-account.service';
 import { CustomerService } from 'src/app/services/customers/customer/customer.service';
+import { BranchMasterService } from 'src/app/services/masters/branch-master/branch-master.service';
 import { GeneralLedgerService } from 'src/app/services/masters/general-ledger/general-ledger.service';
 import { SharedService } from 'src/app/services/shared.service';
 
-export interface UiNomini {
+export interface UiSecurity {
   id: number,
   customerId: number,
   srNo: number,
-  nomineeName: string,
-  nomineeAddress: string,
-  birthDate: Date,
-  relation: number,
-  relationName: string,
-  guardian: string,
-  active: number,
+  securityType: string,
+  security: string,
+  securityValue: Date,
+  securityDescription: number,
   percentage: string,
-  phone: string,
   createdBy: string,
   modifiedBy: string,
   status: string,
@@ -114,8 +114,12 @@ export class LoanAccountsComponent {
   summaryForm!: FormGroup;
   accountForm!: FormGroup;
   parametersForm!: FormGroup;
-  nominiForm!: FormGroup;
   jointForm!: FormGroup;
+  guarantorForm!: FormGroup;
+  securityForm!: FormGroup;
+  loanDetailsForm!: FormGroup;
+  installmentsForm!: FormGroup;
+
 
   config: NgxDropdownConfig = {
     displayKey: "glName",
@@ -133,7 +137,8 @@ export class LoanAccountsComponent {
   };
 
   uiAllGeneralLedgers: any[] = [];
-  uiSavingGeneralLedgers: any[] = [];
+  uiLoanGeneralLedgers: any[] = [];
+  uiDepositGeneralLedgers: any[] = [];
   uiAccountTypes: any[] = [];
   uiModeOfOperations: any[] = [];
   uiEmployyeTypes: any[] = [];
@@ -147,30 +152,41 @@ export class LoanAccountsComponent {
   uiForm60Options: any[] = [];
   uiForm61Options: any[] = [];
   uiAccountStatuses: any[] = [];
+  uiLoanTypes: any[] = [];
+  uiSecurityTypes: any[] = [];
+  uiDirectors: any[] = [];
+  
+  uiChangesInInterestRateYN: any[] = [];
 
   toggleSearchCustomers = false;
   toggleSearchJointCustomers = false;
+  toggleSearchGuarantorCustomers = false;
   isNotJointAccount = true;
+  isLoanAccountSelected = true;
   isFDAccount = false;
   isRDAccount = false;
 
   selectedCustomerId = 0;
+  selectedLoanType = 2;
 
   uiCustomers: any[] = [];
   uiJointCustomers: any[] = [];
-  uiNominis: any[] = [];
+  uiGuarantorCustomers: any[] = [];
+  uiSecurities: any[] = [];
 
   uiSelectedJointCustomers: any[] = [];
+  uiSelectedGuarantorCustomers: any[] = [];
 
-  p_nomini: number = 1;
-  total_nomini: number = 0;
+  p_security: number = 1;
+  total_securities: number = 0;
   dto: IGeneralDTO = {} as IGeneralDTO;
   accountsId!: number;
   isAddMode = true;
 
   constructor(private _sharedService: SharedService, private _toastrService: ToastrService,
     private _generalLedgerService: GeneralLedgerService, private _customerService: CustomerService,
-    private _savingAccountService: SavingAccountService) { }
+    private _savingAccountService: SavingAccountService, private _loanAccountsService: LoanAccountsService,
+    private _accountsService: AccountsService) { }
 
   ngOnInit(): void {
 
@@ -184,9 +200,11 @@ export class LoanAccountsComponent {
     this.uiTDSOptions = AccountDeclarations.tdsYN;
     this.uiTDSReasons = this.retrieveMasters(UiEnumGeneralMaster.TDSREASON);
     this.uiAccountStatuses = this.retrieveMasters(UiEnumGeneralMaster.ACSTATUS);
+    this.uiLoanTypes = this.retrieveMasters(UiEnumGeneralMaster.LOANTYPE);
     this.uiCurrencies = this._sharedService.uiCurrencies;
     this.uiForm60Options = AccountDeclarations.form60YN;
     this.uiForm61Options = AccountDeclarations.form61YN;
+    this.uiChangesInInterestRateYN = AccountDeclarations.changesInInterestRateYN;
 
     this.customerDetailsForm = new FormGroup({
       customerNumber: new FormControl("", []),
@@ -218,29 +236,31 @@ export class LoanAccountsComponent {
       staffDirectorOther: new FormControl(this.uiEmployyeTypes[0].code, [Validators.required]),
       accountStatus: new FormControl(this.uiAccountStatuses[0].constantNo, [Validators.required]),
       accountOpeningDate: new FormControl(formatDate(new Date(Date.now()), 'yyyy-MM-dd', 'en'), [Validators.required]),
+      loanType: new FormControl(this.uiLoanTypes[0].constantNo, [Validators.required]),
+      
+      insuranceDate: new FormControl(formatDate(new Date(Date.now()), 'yyyy-MM-dd', 'en'), [Validators.required]),
+      contactPerson: new FormControl("", [Validators.required]),
       passbookDate: new FormControl(formatDate(new Date(Date.now()), 'yyyy-MM-dd', 'en'), [Validators.required]),
       lastInterestDate: new FormControl(formatDate(new Date(Date.now()), 'yyyy-MM-dd', 'en'), [Validators.required]),
       lastTransactionDate: new FormControl(formatDate(new Date(Date.now()), 'yyyy-MM-dd', 'en'), [Validators.required]),
-      //drInterestDate: new FormControl(formatDate(new Date(Date.now()), 'yyyy-MM-dd', 'en'), [Validators.required]),
-      printDate: new FormControl(formatDate(new Date(Date.now()), 'yyyy-MM-dd', 'en'), [Validators.required]),
+      lastPenalDate: new FormControl(formatDate(new Date(Date.now()), 'yyyy-MM-dd', 'en'), [Validators.required]),
       accountCloseDate: new FormControl("", [Validators.required]),
       close_Flag: new FormControl(false, [Validators.required])
     });
 
     this.parametersForm = new FormGroup({
-      interestRateParam: new FormControl("", [Validators.required]),
-      ledgerNumber: new FormControl("", []),
-      minimumBalance: new FormControl("", [Validators.required]),
-      currency: new FormControl(this.uiCurrencies[0].currencyId, [Validators.required]),
-      otherBranchTransfer: new FormControl(this.uiTDSOptions[0].code, [Validators.required]),
-    });
-
-    this.nominiForm = new FormGroup({
-      nominiName: new FormControl("", []),
-      relation: new FormControl(this.uiRelations[0].constantNo, []),
-      percentage: new FormControl("", []),
-      guardian: new FormControl("", []),
-      nomineeAddress: new FormControl("", []),
+      sactionAmount: new FormControl("", [Validators.required]),
+      sactionDate: new FormControl(formatDate(new Date(Date.now()), 'yyyy-MM-dd', 'en'), [Validators.required]),
+      sanctionBy: new FormControl(0, [Validators.required]),
+      loanTenureInMonths: new FormControl("", [Validators.required]),
+      interestRate: new FormControl("", [Validators.required]),
+      amountAdvances: new FormControl("", [Validators.required]),
+      changesInInterestApplicable: new FormControl(this.uiChangesInInterestRateYN[0].code, [Validators.required]),
+      maturityDate: new FormControl(formatDate(new Date(Date.now()), 'yyyy-MM-dd', 'en'), [Validators.required]),
+      resolutionNo: new FormControl("", [Validators.required]),
+      resolutionDate: new FormControl(formatDate(new Date(Date.now()), 'yyyy-MM-dd', 'en'), [Validators.required]),
+      firstInstallmentDate: new FormControl(formatDate(new Date().setDate(new Date().getDate() + 30), 'yyyy-MM-dd', 'en'), [Validators.required]),
+      installmentType: new FormControl("", [Validators.required]),
     });
 
     this.jointForm = new FormGroup({
@@ -248,13 +268,37 @@ export class LoanAccountsComponent {
       operativeInstruction: new FormControl("", []),
     });
 
+    this.guarantorForm = new FormGroup({
+      guarantorCustomers: new FormControl("", []),
+    });
+
+    this.securityForm = new FormGroup({
+      securityType: new FormControl(0, []),
+      security: new FormControl("", []),
+      securityValue: new FormControl("", []),
+      securityDescription: new FormControl("", []),
+      percentage: new FormControl("", []),
+    });
+
     this.getGeneralLedgers().then(result => {
       if (result) {
-        this.loadForm();
+        this.getSecurities().then(sResult => {
+          if (sResult) {
+            this.getDirectors().then(dResult => {
+              if (dResult) {
+                this.loadForm();
+              }
+            }).catch(error => {
+              this._toastrService.error('Error loading general ledgers', 'Error!');
+            });
+          }
+        }).catch(error => {
+          this._toastrService.error('Error loading security types', 'Error!');
+        });
       }
     }).catch(error => {
-      this._toastrService.error('Error loading general ledgers', 'Warning!');
-    });;
+      this._toastrService.error('Error loading general ledgers', 'Error!');
+    });
   }
 
   retrieveMasters(uiEnumGeneralMaster: UiEnumGeneralMaster) {
@@ -278,7 +322,8 @@ export class LoanAccountsComponent {
               gl.glName = gl.code + "-" + gl.glName;
             });
 
-            this.uiSavingGeneralLedgers = this.uiAllGeneralLedgers.filter(gl => gl.glGroup == 'D' && gl.glType == 'S');
+            this.uiLoanGeneralLedgers = this.uiAllGeneralLedgers.filter(gl => gl.glGroup == 'L');
+            
             resolve(true);
           }
         }
@@ -288,6 +333,49 @@ export class LoanAccountsComponent {
       })
     })
   }
+
+  getSecurities() {
+    return new Promise((resolve, reject) => {
+      this._accountsService.getSecurities().subscribe((data: any) => {
+        console.log(data);
+        if (data) {
+          this.uiSecurityTypes = data.data.data;
+          if (this.uiSecurityTypes && this.uiSecurityTypes.length) {
+            this.securityForm.patchValue({
+              securityType: this.uiSecurityTypes[0].id
+            })
+          }
+          resolve(true);
+        }
+        else {
+          resolve(false);
+        }
+      })
+    })
+  }
+
+  getDirectors() {
+    return new Promise((resolve, reject) => {
+      this._accountsService.getDirectors().subscribe((data: any) => {
+        console.log(data);
+        if (data) {
+          this.uiDirectors = data.data.data;
+          if (this.uiDirectors && this.uiDirectors.length) {
+            this.parametersForm.patchValue({
+              sanctionBy: this.uiDirectors[0].id
+            })
+          }
+          resolve(true);
+        }
+        else {
+          resolve(false);
+        }
+      })
+    })
+  }
+
+
+  
 
   loadForm() {
     this._savingAccountService.getDTO().subscribe(obj => this.dto = obj);
@@ -378,7 +466,7 @@ export class LoanAccountsComponent {
                   uiNominee.percentage = nominee.percentage;
                   uiNominee.createdBy = nominee.createdBy;
                   uiNominee.status = '';
-                  this.uiNominis.push(uiNominee);
+                  this.uiSecurities.push(uiNominee);
                  });
               }
 
@@ -422,9 +510,47 @@ export class LoanAccountsComponent {
     }
   }
 
+  calculateMatureDate()
+  {
+    if (this.loanTenureInMonths.value && !isNaN(this.loanTenureInMonths.value)) {
+      let matureDate = new Date().setMonth(new Date().getMonth() + parseInt(this.loanTenureInMonths.value))
+      if (matureDate) {
+        this.parametersForm.patchValue({
+          maturityDate : formatDate(matureDate, 'yyyy-MM-dd', 'en') 
+        })
+      }
+    }
+  }
+
+  calculateFirstInstallmentDate()
+  {
+    if (this.sactionDate.value) {
+      let firstInstallDate = new Date().setDate(new Date(this.sactionDate.value).getDate() + 30)
+      if (firstInstallDate) {
+        this.parametersForm.patchValue({
+          firstInstallmentDate : formatDate(firstInstallDate, 'yyyy-MM-dd', 'en') 
+        })
+      }
+    }
+  }
+
+  validateFirstInstallmentDate()
+  {
+    if (this.firstInstallmentDate.value) {
+      let tempFirstInstallmentDate = formatDate(new Date(this.firstInstallmentDate.value),'yyyy-MM-dd','en');
+      let tempSactionDate = formatDate(new Date(this.firstInstallmentDate.value),'yyyy-MM-dd','en');
+      if (tempFirstInstallmentDate < tempSactionDate) {
+        this.parametersForm.patchValue({
+          firstInstallmentDate : formatDate(new Date().setDate(new Date(this.sactionDate.value).getDate() + 30), 'yyyy-MM-dd', 'en') 
+        })
+
+        this._toastrService.error('First installment can not be less than saction date', 'Error!');
+      }
+    }
+  }
 
   getMaxAccountNumber(glId: number) {
-    this._savingAccountService.getMaxAccountNumber(this._sharedService.applicationUser.branchId, glId).subscribe((data: any) => {
+    this._accountsService.getMaxAccountNumber(this._sharedService.applicationUser.branchId, glId).subscribe((data: any) => {
       console.log(data);
       if (data) {
         let maxAccountModel = data.data.data;
@@ -449,6 +575,14 @@ export class LoanAccountsComponent {
     }
 
     this.toggleSearchJointCustomers = true;
+  }
+
+  getCustomersForGuarantor(custData: any) {
+    if (custData && custData.length) {
+      this.uiGuarantorCustomers = custData.filter((c: any) => c.status == 'Active'); // display only active customers
+    }
+
+    this.toggleSearchGuarantorCustomers = true;
   }
 
   selectCustomer(customerId: number) {
@@ -542,10 +676,63 @@ export class LoanAccountsComponent {
     }
   }
 
+  selectGuarantorCustomer(customer: any) {
+    if (customer) {
+      let index = this.uiSelectedGuarantorCustomers.findIndex(c => c.customerId == customer.id);
+      if (index > -1) {
+        let newIndex = this.uiSelectedGuarantorCustomers.findIndex(c => c.customerId == customer.id
+          && c.status === "D");
+        if (newIndex > -1) {
+          this.uiSelectedGuarantorCustomers.splice(newIndex, 1);
+          index = -1;
+        }
+      }
+      if (index == -1) {
+
+        this._accountsService.isCustomerValidGuarantor(customer.id).subscribe((data: any) => {
+          console.log(data);
+          if (data) {
+            let model = data.data.data;
+            if (model) {
+             
+              let uiJointCust = {} as UiJoint;
+              uiJointCust.accountId = 0;
+              uiJointCust.id = 0;
+              uiJointCust.customerId = customer.id;
+              uiJointCust.customerNumber = customer.customerCodeStr;
+              uiJointCust.customerName = customer.custName;
+              uiJointCust.status = customer.status;
+              uiJointCust.createdBy = this._sharedService.applicationUser.userName;
+              uiJointCust.srNo = this.uiSelectedGuarantorCustomers.length;
+              this.uiSelectedGuarantorCustomers.push(uiJointCust);
+      
+              this.toggleSearchGuarantorCustomers = false;
+
+            }
+            else
+            {
+              this._toastrService.error('Guarantor limit exceeded for selected customor.', 'Error!');
+            }
+          }
+        })
+      }
+      else {
+        this._toastrService.error('Customer already added', 'Error!');
+      }
+    }
+  }
+
   deleteJoinCustomer(customer: any)
   {
     if (customer) {
       this._savingAccountService.jointCustomerToDelete = customer.customerId;
+    }
+  }
+
+  deleteGuarantorCustomer(customer: any)
+  {
+    if (customer) {
+      this._savingAccountService.guarantorCustomerToDelete = customer.customerId;
     }
   }
 
@@ -560,10 +747,26 @@ export class LoanAccountsComponent {
       }  
     }
   }
+
+  onGuarantorDelete() {
+    let customerIdToDelete = this._savingAccountService.guarantorCustomerToDelete;
+    if (customerIdToDelete > 0) {
+
+      let customers = this.uiSelectedGuarantorCustomers.filter(c => c.customerId == customerIdToDelete);
+      if (customers && customers.length) {
+        customers[0].status = "D";
+      }
+    }
+  }
   
   cancelJointDelete()
   {
     this._savingAccountService.jointCustomerToDelete = -1;
+  }
+
+  cancelGuarantorDelete()
+  {
+    this._savingAccountService.guarantorCustomerToDelete = -1;
   }
 
   getCustomerStatus(status: number)
@@ -586,6 +789,17 @@ export class LoanAccountsComponent {
         if (parseInt(accountType[1]) == 2) { //TODO: Need to make it configurable
           this.isNotJointAccount = false;
         }
+      }
+    }
+  }
+  
+  selectLoanType(event: any) {
+    if (event) {
+      if (event.target.value) {
+        let targetValue = event.target.value;
+        let loanType = targetValue.split(":");
+        this.isNotJointAccount = true;
+        this.selectedLoanType = parseInt(loanType[1]);
       }
     }
   }
@@ -613,97 +827,89 @@ export class LoanAccountsComponent {
     }
   }
 
-
-  validNominiForm() {
-    if (this.nominiForm.invalid) {
-      for (const control of Object.keys(this.nominiForm.controls)) {
-        this.nominiForm.controls[control].markAsTouched();
+  validSecurityForm() {
+    if (this.securityForm.invalid) {
+      for (const control of Object.keys(this.securityForm.controls)) {
+        this.securityForm.controls[control].markAsTouched();
       }
       return false;
     }
     return true;
   }
 
-  addNomini() {
-    if (this.validNominiForm()) {
+
+  addSecurity() {
+    if (this.validSecurityForm()) {
 
       // Check existing nomini with name and relation
-      let nominiIndex = this.uiNominis.findIndex(nomini =>
-        nomini.nomineeName.toLowerCase() == this.nominiName.value.toLowerCase());
+      let securityIndex = this.uiSecurities.findIndex(security =>
+        security.security.toLowerCase() == this.security.value.toLowerCase());
 
-      let totalPercentage = this.uiNominis.reduce((sum, nomini) => sum + parseInt(nomini.percentage), 0);
-      if (nominiIndex > -1) {
-        totalPercentage = totalPercentage - this.uiNominis[nominiIndex].percentage;
+      let totalPercentage = this.uiSecurities.reduce((sum, security) => sum + parseInt(security.percentage), 0);
+      if (securityIndex > -1) {
+        totalPercentage = totalPercentage - this.uiSecurities[securityIndex].percentage;
       }
       if (totalPercentage >= 100) {
-        this._toastrService.warning('Total percentage for nomini exceeded.', 'Warning!');
+        this._toastrService.warning('Total percentage for security exceeded.', 'Warning!');
         return;
       }
       if (parseFloat(this.percentage.value) + totalPercentage > 100) {
-        this._toastrService.warning('Total percentage for nomini exceeded.', 'Warning!');
+        this._toastrService.warning('Total percentage for security exceeded.', 'Warning!');
         return;
       }
 
-      let relationName = "";
-      let uiRelation = this.uiRelations.filter(r => r.constantNo == parseInt(this.relation.value.toString()));
-      if (uiRelation) {
-        relationName = (uiRelation && uiRelation.length > 0) ? uiRelation[0].constantname : "";
-      }
+      if (securityIndex > -1) {
+        let uiSecurity = this.uiSecurities[securityIndex];
 
-      if (nominiIndex > -1) {
-        let uiNomini = this.uiNominis[nominiIndex];
-
-        //uiNomini.id = 0;
-        uiNomini.customerId = this.selectedCustomerId;
-        uiNomini.nomineeName = this.nominiName.value.toString();
-        uiNomini.nomineeAddress = this.nomineeAddress.value.toString();
-        uiNomini.relation = this.relation.value.toString();
-        uiNomini.relationName = relationName;
-        uiNomini.guardian = this.guardian.value.toString();
-        uiNomini.percentage = this.percentage.value.toString();
-        uiNomini.createdBy = this._sharedService.applicationUser.userName;
-        uiNomini.modifiedBy = this._sharedService.applicationUser.userName;
-        uiNomini.status = 'M';
+        uiSecurity.customerId = this.selectedCustomerId;
+        uiSecurity.securityType = this.securityType.value.toString();
+        uiSecurity.security = this.security.value.toString();
+        uiSecurity.securityValue == this.securityValue.value.toString();
+        uiSecurity.securityDescription = this.securityDescription.value.toString();
+        uiSecurity.percentage = this.percentage.value.toString();
+        uiSecurity.createdBy = this._sharedService.applicationUser.userName;
+        uiSecurity.modifiedBy = this._sharedService.applicationUser.userName;
+        uiSecurity.status = 'M';
       }
       else {
-        let uiNomini = {} as UiNomini;
-        uiNomini.id = 0;
-        uiNomini.srNo = this.uiNominis.length + 1;
-        uiNomini.nomineeName = this.nominiName.value.toString();
-        uiNomini.nomineeAddress = this.nomineeAddress.value.toString();
-        uiNomini.relation = this.relation.value.toString();
-        uiNomini.relationName = relationName;
-        uiNomini.guardian = this.guardian.value.toString();
-        uiNomini.percentage = this.percentage.value.toString();
-        uiNomini.createdBy = this._sharedService.applicationUser.userName;
-        uiNomini.modifiedBy = this._sharedService.applicationUser.userName;
-        uiNomini.status = 'A';
-        this.uiNominis.push(uiNomini);
+        let uiSecurity = {} as UiSecurity;
+        uiSecurity.id = 0;
+        uiSecurity.srNo = this.uiSecurities.length + 1;
+        uiSecurity.securityType = this.securityType.value.toString();
+        uiSecurity.security = this.security.value.toString();
+        uiSecurity.securityValue == this.securityValue.value.toString();
+        uiSecurity.securityDescription = this.securityDescription.value.toString();
+        uiSecurity.percentage = this.percentage.value.toString();
+        uiSecurity.percentage = this.percentage.value.toString();
+        uiSecurity.createdBy = this._sharedService.applicationUser.userName;
+        uiSecurity.modifiedBy = this._sharedService.applicationUser.userName;
+        uiSecurity.status = 'A';
+        this.uiSecurities.push(uiSecurity);
       }
     }
   }
 
-  editNomini(uiNomini: any, index: number) {
-    this.nominiForm.patchValue({
-      nominiName: uiNomini.nomineeName,
-      nomineeAddress: uiNomini.nomineeAddress,
-      relation: parseInt(uiNomini.relation),
-      guardian: uiNomini.guardian,
-      percentage: uiNomini.percentage
+  editSecurity(uiSecurity: any, index: number) {
+    this.securityForm.patchValue({
+      securityType: uiSecurity.securityType,
+      security: uiSecurity.security,
+      securityValue: uiSecurity.securityValue,
+      securityDescription: uiSecurity.securityDescription,
+      percentage: uiSecurity.percentage
     });
   }
 
-  deleteNomini(uiNomini: any, index: number) {
-    uiNomini.status = 'D';
+  deleteSecurity(uiSecurity: any, index: number) {
+    uiSecurity.status = 'D';
   }
 
-  clearNomini() {
-    this.nominiForm.patchValue({
-      nominiName: "",
-      nominiAddress: "",
-      nominiRelation: this.uiRelations[0].constantNo,
-      nominiGuardian: "",
-      nominiPercentage: "100",
+  clearSecurity() {
+    this.securityForm.patchValue({
+      securityType: "",
+      security: "",
+      securityValue: "",
+      securityDescription: "",
+      percentage: "",
     });
   }
 
@@ -742,7 +948,7 @@ export class LoanAccountsComponent {
   }
 
   validNominiDetails() {
-    return (this.uiNominis && this.uiNominis.length > 0);
+    return (this.uiSecurities && this.uiSecurities.length > 0);
   }
 
   validJointDetails() {
@@ -781,36 +987,36 @@ export class LoanAccountsComponent {
 
     // add values into model
     let accountModel = {} as ISavingAccountModel;
-    accountModel.AccountsId = this.dto.id;
-    accountModel.BranchCode = this._sharedService.applicationUser.branchId;
-    accountModel.CustomerId = parseInt(this.customerId.value.toString());
-    accountModel.Code1 = parseInt(this.generalLedger.value.code.toString());
-    accountModel.Code2 = parseInt(this.glAccountNumber.value.toString());
-    accountModel.AccountNo = this.glAccountNumberStr.value.toString()
-    accountModel.AccountType = parseInt(this.accountType.value.toString());
-    accountModel.AccountStatus = parseInt(this.accountStatus.value.toString());
-    accountModel.SavingsAccountId = 0;
-    accountModel.Mode_Opr = parseInt(this.modeOfOperation.value.toString());
-    accountModel.Mode_Sgn = parseInt(this.modeOfSignature.value.toString());
-    accountModel.StaffCode = this.staffDirectorOther.value.toString();
-    accountModel.LedgerFolioNo = this.ledgerNumber.value.toString();
-    accountModel.Min_Bal = parseFloat(this.minimumBalance.value.toString());
-    accountModel.Last_Int_Date = this.lastInterestDate.value.toString();
-    accountModel.Last_Trn_Date = this.lastTransactionDate.value.toString();
-    accountModel.Int_Rate = parseFloat(this.interestRateParam.value.toString());
-    accountModel.Opn_Date = this.accountOpeningDate.value.toString();
-    accountModel.Exp_Date = this.accountCloseDate.value.toString();
-    accountModel.Print_Date = this.printDate.value.toString();
-    accountModel.Passbook_Date = this.passbookDate.value.toString();
-    accountModel.Close_Flag = this.close_Flag.value.toString()=='true'? 1: 0;
-    accountModel.Close_Date = this.accountCloseDate.value.toString();
-    accountModel.Currency = this.currency.value.toString();
-    accountModel.Other_Branch_Trf = this.otherBranchTransfer.value.toString()=='Y'? 1: 0;
-    accountModel.CreatedBy = this._sharedService.applicationUser.userName;
-    accountModel.NomineeList = [];
+    // accountModel.AccountsId = this.dto.id;
+    // accountModel.BranchCode = this._sharedService.applicationUser.branchId;
+    // accountModel.CustomerId = parseInt(this.customerId.value.toString());
+    // accountModel.Code1 = parseInt(this.generalLedger.value.code.toString());
+    // accountModel.Code2 = parseInt(this.glAccountNumber.value.toString());
+    // accountModel.AccountNo = this.glAccountNumberStr.value.toString()
+    // accountModel.AccountType = parseInt(this.accountType.value.toString());
+    // accountModel.AccountStatus = parseInt(this.accountStatus.value.toString());
+    // accountModel.SavingsAccountId = 0;
+    // accountModel.Mode_Opr = parseInt(this.modeOfOperation.value.toString());
+    // accountModel.Mode_Sgn = parseInt(this.modeOfSignature.value.toString());
+    // accountModel.StaffCode = this.staffDirectorOther.value.toString();
+    // accountModel.LedgerFolioNo = this.ledgerNumber.value.toString();
+    // accountModel.Min_Bal = parseFloat(this.minimumBalance.value.toString());
+    // accountModel.Last_Int_Date = this.lastInterestDate.value.toString();
+    // accountModel.Last_Trn_Date = this.lastTransactionDate.value.toString();
+    // accountModel.Int_Rate = parseFloat(this.interestRateParam.value.toString());
+    // accountModel.Opn_Date = this.accountOpeningDate.value.toString();
+    // accountModel.Exp_Date = this.accountCloseDate.value.toString();
+    // accountModel.Print_Date = this.lastPenalDate.value.toString();
+    // accountModel.Passbook_Date = this.passbookDate.value.toString();
+    // accountModel.Close_Flag = this.close_Flag.value.toString()=='true'? 1: 0;
+    // accountModel.Close_Date = this.accountCloseDate.value.toString();
+    // accountModel.Currency = this.currency.value.toString();
+    // accountModel.Other_Branch_Trf = this.otherBranchTransfer.value.toString()=='Y'? 1: 0;
+    // accountModel.CreatedBy = this._sharedService.applicationUser.userName;
+    // accountModel.NomineeList = [];
 
     let nominiModel = {} as INominiModel;
-    this.uiNominis.forEach(nom => {
+    this.uiSecurities.forEach(nom => {
       nominiModel = {} as INominiModel;
       nominiModel.Id = nom.id;
       nominiModel.AccountId = this.dto.id;
@@ -869,7 +1075,6 @@ export class LoanAccountsComponent {
     this.clearCustomerDetails();
     this.clearAccountsDetails();
     this.clearParametersDetails();
-    this.clearNomineeDetails();
     this.clearJointDetails();
     this.isAddMode = false;
   }
@@ -925,15 +1130,7 @@ export class LoanAccountsComponent {
       otherBranchTransfer: this.uiTDSOptions[0].code,
     })
   }
-  clearNomineeDetails() {
-    this.nominiForm.patchValue({
-      nominiName: "",
-      relation: this.uiRelations[0].constantNo,
-      percentage: "",
-      guardian: "",
-      nomineeAddress: "",
-    })
-  }
+ 
   clearJointDetails() {
     this.jointForm.patchValue({
       jointCustomers: [],
@@ -947,6 +1144,10 @@ export class LoanAccountsComponent {
 
   openSearchedJointCustomers() {
     this.toggleSearchJointCustomers = !this.toggleSearchJointCustomers;
+  }
+
+  openSearchedGuarantorCustomers() {
+    this.toggleSearchGuarantorCustomers = !this.toggleSearchGuarantorCustomers;
   }
 
   //
@@ -1023,12 +1224,21 @@ export class LoanAccountsComponent {
   get accountStatus() {
     return this.accountForm.get('accountStatus')!;
   }
-  
-  get passbookDate() {
-    return this.accountForm.get('passbookDate')!;
-  }
   get accountOpeningDate() {
     return this.accountForm.get('accountOpeningDate')!;
+  }
+  get loanType() {
+    return this.accountForm.get('loanType')!;
+  }
+ 
+  get insuranceDate() {
+    return this.accountForm.get('insuranceDate')!;
+  }
+  get contactPerson() {
+    return this.accountForm.get('contactPerson')!;
+  }
+  get passbookDate() {
+    return this.accountForm.get('passbookDate')!;
   }
   get accountCloseDate() {
     return this.accountForm.get('accountCloseDate')!;
@@ -1039,11 +1249,8 @@ export class LoanAccountsComponent {
   get lastTransactionDate() {
     return this.accountForm.get('lastTransactionDate')!;
   }
-  // get drInterestDate() {
-  //   return this.accountForm.get('drInterestDate')!;
-  // }
-  get printDate() {
-    return this.accountForm.get('printDate')!;
+  get lastPenalDate() {
+    return this.accountForm.get('lastPenalDate')!;
   }
   get close_Flag() {
     return this.accountForm.get('close_Flag')!;
@@ -1051,54 +1258,43 @@ export class LoanAccountsComponent {
 
   //
 
-  get interestRateParam() {
-    return this.parametersForm.get('interestRateParam')!;
+  get sactionAmount() {
+    return this.parametersForm.get('sactionAmount')!;
   }
-  get ledgerNumber() {
-    return this.parametersForm.get('ledgerNumber')!;
+  get sactionDate() {
+    return this.parametersForm.get('sactionDate')!;
   }
-  get minimumBalance() {
-    return this.parametersForm.get('minimumBalance')!;
+  get sanctionBy() {
+    return this.parametersForm.get('sanctionBy')!;
   }
-  get additionalBalance() {
-    return this.parametersForm.get('additionalBalance')!;
+  get loanTenureInMonths() {
+    return this.parametersForm.get('loanTenureInMonths')!;
   }
-  get currency() {
-    return this.parametersForm.get('currency')!;
+  get interestRate() {
+    return this.parametersForm.get('interestRate')!;
   }
-  get otherBranchTransfer() {
-    return this.parametersForm.get('otherBranchTransfer')!;
+  get amountAdvances() {
+    return this.parametersForm.get('amountAdvances')!;
   }
-  get form60() {
-    return this.parametersForm.get('form60')!;
+  get changesInInterestApplicable() {
+    return this.parametersForm.get('changesInInterestApplicable')!;
   }
-  get form61() {
-    return this.parametersForm.get('form61')!;
+  get maturityDate() {
+    return this.parametersForm.get('maturityDate')!;
   }
-  get tds() {
-    return this.parametersForm.get('tds')!;
+  get resolutionNo() {
+    return this.parametersForm.get('resolutionNo')!;
   }
-  get tdsReason() {
-    return this.parametersForm.get('tdsReason')!;
+  get resolutionDate() {
+    return this.parametersForm.get('resolutionDate')!;
+  }
+  get firstInstallmentDate() {
+    return this.parametersForm.get('firstInstallmentDate')!;
+  }
+  get installmentType() {
+    return this.parametersForm.get('installmentType')!;
   }
 
-  //
-
-  get nominiName() {
-    return this.nominiForm.get('nominiName')!;
-  }
-  get relation() {
-    return this.nominiForm.get('relation')!;
-  }
-  get percentage() {
-    return this.nominiForm.get('percentage')!;
-  }
-  get guardian() {
-    return this.nominiForm.get('guardian')!;
-  }
-  get nomineeAddress() {
-    return this.nominiForm.get('nomineeAddress')!;
-  }
   //
 
   get jointCustomers() {
@@ -1109,4 +1305,31 @@ export class LoanAccountsComponent {
     return this.jointForm.get('operativeInstruction')!;
   }
 
+  //
+
+  get guarantorCustomers() {
+    return this.guarantorForm.get('guarantorCustomers')!;
+  }
+
+  //
+  
+  get securityType() {
+    return this.securityForm.get('securityType')!;
+  }
+  get security() {
+    return this.securityForm.get('security')!;
+  }
+   get securityValue() {
+    return this.securityForm.get('securityValue')!;
+  } 
+  get securityDescription() {
+    return this.securityForm.get('securityDescription')!;
+  }
+  get percentage() {
+    return this.securityForm.get('percentage')!;
+  }
+
+  //
+
+  
 }

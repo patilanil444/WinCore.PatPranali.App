@@ -4,14 +4,14 @@
         <div class="main-card mb-3 card">
             <div class="card-body">
 
-                <h5 class="card-title">Saving account opening</h5>
+                <h5 class="card-title">Loan account opening</h5>
                 <form [formGroup]="summaryForm" #form="ngForm">
                     <div class="row">
 
                         <div class="col-md-3 position-relative">
                             <label for="txtCode" class="">General Ledger</label>
                             <div class="input-group">
-                                <ngx-select-dropdown [config]="config" tabindex="1" [options]="uiSavingGeneralLedgers"
+                                <ngx-select-dropdown [config]="config" tabindex="1" [options]="uiLoanGeneralLedgers"
                                     style="width: 100%;" formControlName="generalLedger"
                                     [multiple]="false" (change)="changeGeneralLedger($event)"
                                     [ngClass]="{'disabled': !isAddMode}" ></ngx-select-dropdown>
@@ -19,7 +19,7 @@
                         </div>
 
                         <div class="col-md-3 position-relative form-group">
-                            <label for="txtCode" class="">A/C Number</label>
+                            <label for="txtCode" class="">Account Number</label>
                             <div class="input-group">
                                 <input tabindex="4" type="text" readonly class="form-control" formControlName="glAccountNumberStr">
                             </div>
@@ -89,14 +89,31 @@
                             <span>Parameters</span>
                         </a>
                     </li>
-                    <li class="nav-item">
-                        <a role="tab" class="nav-link" id="tab-2" data-toggle="tab" href="#tab-content-3">
-                            <span>Nomini Details</span>
+                   
+                    <li class="nav-item" [ngClass]="{'disabled': isNotJointAccount}">
+                        <a role="tab" class="nav-link" id="tab-3" data-toggle="tab" href="#tab-content-3">
+                            <span>Joint Account</span>
                         </a>
                     </li>
-                    <li class="nav-item" [ngClass]="{'disabled': isNotJointAccount}">
+                    <li class="nav-item">
                         <a role="tab" class="nav-link" id="tab-3" data-toggle="tab" href="#tab-content-4">
-                            <span>Joint Account</span>
+                            <span>Guarantor</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a role="tab" class="nav-link" id="tab-3" data-toggle="tab" href="#tab-content-5">
+                            <span>Security</span>
+                        </a>
+                    </li>
+                    <li class="nav-item" >
+                        <!-- [ngClass]="{'disabled': isLoanAccountSelected}" -->
+                        <a role="tab" class="nav-link" id="tab-3" data-toggle="tab" href="#tab-content-6">
+                            <span>Loan Details</span>
+                        </a>
+                    </li>
+                    <li class="nav-item" >
+                        <a role="tab" class="nav-link" id="tab-3" data-toggle="tab" href="#tab-content-7">
+                            <span>Installments</span>
                         </a>
                     </li>
                 </ul>
@@ -242,11 +259,41 @@
                                             </div>
 
                                             <div class="col-md-3 position-relative form-group">
-                                                <label for="txtCode" class="">A/C Opening Date <span
+                                                <label for="txtCode" class="">Loan Type <span
+                                                        class="mandatory">*</span></label>
+                                                <select class="mb-2 form-control" tabindex="1"
+                                                    formControlName="loanType" (change)="selectLoanType($event)">
+                                                    <option *ngFor="let uiLoanType of uiLoanTypes"
+                                                        [ngValue]="uiLoanType.constantNo">
+                                                        {{uiLoanType.constantname}}
+                                                    </option>
+                                                </select>
+                                            </div>
+
+                                            <div class="col-md-3 position-relative form-group">
+                                                <label for="txtCode" class="">Contact Person <span
+                                                        class="mandatory">*</span></label>
+                                                <input tabindex="1" type="text" class="form-control"
+                                                    formControlName="contactPerson">
+                                            </div>
+
+                                            <div class="col-md-3 position-relative form-group">
+                                                <label for="txtCode" class="">Account Opening Date <span
                                                         class="mandatory">*</span></label>
                                                 <input tabindex="1" type="date" class="mb-2 form-control"
                                                     formControlName="accountOpeningDate">
                                             </div>
+                                            
+                                           
+
+                                            <div class="col-md-3 position-relative form-group">
+                                                <label for="txtCode" class="">Insurance Date <span
+                                                        class="mandatory">*</span></label>
+                                                <input tabindex="1" type="date" class="mb-2 form-control"
+                                                    formControlName="insuranceDate">
+                                            </div>
+
+                                           
                                             
                                             <div class="col-md-3 position-relative form-group">
                                                 <label for="txtCode" class="">Passbook Date <span
@@ -268,16 +315,11 @@
                                                 <input tabindex="1" type="date" class="form-control"
                                                     formControlName="lastTransactionDate">
                                             </div>
-                                            <!-- <div class="col-md-3 position-relative form-group">
-                                                <label for="txtCode" class="">Debit Interest Date <span
-                                                        class="mandatory">*</span></label>
-                                                <input tabindex="1" type="date" class="form-control"
-                                                    formControlName="drInterestDate">
-                                            </div> -->
+                                           
                                             <div class="col-md-3 position-relative form-group">
-                                                <label for="txtCode" class="">Print Date </label>
+                                                <label for="txtCode" class="">Last Penal Date </label>
                                                 <input tabindex="1" type="date" class="form-control"
-                                                    formControlName="printDate">
+                                                    formControlName="lastPenalDate">
                                             </div>
 
                                             <div class="col-md-3 position-relative form-group">
@@ -298,92 +340,95 @@
                                     <div class="tab-content">
                                         <div class="row">
                                             <div class="col-md-3 position-relative form-group">
+                                                <label for="txtCode" class="">Saction Amount <span
+                                                    class="mandatory">*</span></label>
+                                                <input tabindex="1" type="text" class="form-control"
+                                                    formControlName="sactionAmount">
+                                            </div>
+                                            <div class="col-md-3 position-relative form-group">
+                                                <label for="txtCode" class="">Saction Date <span
+                                                    class="mandatory">*</span></label>
+                                                <input tabindex="1" type="date" class="form-control"
+                                                    formControlName="sactionDate" (change)="calculateFirstInstallmentDate()">
+                                            </div>
+                                            <div class="col-md-3 position-relative form-group">
+                                                <label for="txtCode" class="">Saction By <span class="mandatory">*</span></label>
+                                                <select class="mb-2 form-control" tabindex="1" formControlName="sanctionBy">
+                                                    <option *ngFor="let uiDirector of uiDirectors" [ngValue]="uiDirector.id">
+                                                        {{uiDirector.directorName}}
+                                                    </option>
+                                                </select>
+                                            </div>
+
+                                            <div class="col-md-3 position-relative form-group">
+                                                <label for="txtCode" class=""> Loan Tenure in Months<span
+                                                        class="mandatory">*</span></label>
+                                                <input tabindex="1" type="number" class="mb-2 form-control"
+                                                    formControlName="loanTenureInMonths" min="0" (change)="calculateMatureDate()"
+                                                    onKeyPress="if(this.value.length >=4) return false;">
+                                            </div>
+
+                                            <div class="col-md-3 position-relative form-group">
                                                 <label for="txtCode" class="">Interest Rate <span
                                                         class="mandatory">*</span></label>
                                                 <input tabindex="1" type="number" class="mb-2 form-control"
-                                                    formControlName="interestRateParam" min="0" 
+                                                    formControlName="interestRate" min="0" 
                                                     onKeyPress="if(this.value.length >=3) return false;">
                                             </div>
+
                                             <div class="col-md-3 position-relative form-group">
-                                                <label for="txtCode" class="">Ledger Number</label>
+                                                <label for="txtCode" class="">Amount Advances <span
+                                                        class="mandatory">*</span></label>
+                                                <input tabindex="1" type="number" min="0" class="form-control"
+                                                    formControlName="amountAdvances">
+                                            </div>
+
+                                            <div class="col-md-3 position-relative form-group">
+                                                <label for="txtCode" class="">Changes In Interest Rate Applicable</label>
+                                                <select class="mb-2 form-control" tabindex="1" formControlName="changesInInterestApplicable">
+                                                    <option *ngFor="let uiChangesInInterestRate of uiChangesInInterestRateYN"
+                                                        [ngValue]="uiChangesInInterestRate.code">
+                                                        {{uiChangesInInterestRate.name}}
+                                                    </option>
+                                                </select>
+                                            </div>
+
+                                            <div class="col-md-3 position-relative form-group">
+                                                <label for="txtCode" class="">Maturity Date <span
+                                                        class="mandatory">*</span></label>
+                                                <input tabindex="1" type="date" class="mb-2 form-control"
+                                                    formControlName="maturityDate">
+                                            </div>
+
+                                            <div class="col-md-3 position-relative form-group">
+                                                <label for="txtCode" class="">Resolution No</label>
                                                 <input tabindex="1" type="text" class="form-control"
-                                                    formControlName="ledgerNumber">
+                                                    formControlName="resolutionNo">
                                             </div>
+
                                             <div class="col-md-3 position-relative form-group">
-                                                <label for="txtCode" class="">Minimum Balance <span
-                                                        class="mandatory">*</span></label>
-                                                <input tabindex="1" type="number" min="0" class="form-control"
-                                                    formControlName="minimumBalance">
+                                                <label for="txtCode" class="">Resolution Date</label>
+                                                <input tabindex="1" type="date" class="form-control"
+                                                    formControlName="resolutionDate">
                                             </div>
-                                            <!-- <div class="col-md-3 position-relative form-group">
-                                                <label for="txtCode" class="">Additional Balance <span
-                                                        class="mandatory">*</span></label>
-                                                <input tabindex="1" type="number" min="0" class="form-control"
-                                                    formControlName="additionalBalance">
-                                            </div> -->
+
                                             <div class="col-md-3 position-relative form-group">
-                                                <label for="txtCode" class="">Currency <span
+                                                <label for="txtCode" class="">First Installment Date <span
+                                                    class="mandatory">*</span></label>
+                                                <input tabindex="1" type="date" class="form-control"
+                                                    formControlName="firstInstallmentDate" (change)="validateFirstInstallmentDate()">
+                                            </div>
+                                           
+                                            <div class="col-md-3 position-relative form-group">
+                                                <label for="txtCode" class="">Installment Type <span
                                                         class="mandatory">*</span></label>
-                                                <select class="mb-2 form-control" tabindex="1" formControlName="currency">
+                                                <select class="mb-2 form-control" tabindex="1" formControlName="installmentType">
                                                     <option *ngFor="let uiCurrency of uiCurrencies"
                                                         [ngValue]="uiCurrency.currencyId">
                                                         {{uiCurrency.currencyCode}}
                                                     </option>
                                                 </select>
                                             </div>
-                                            <div class="col-md-3 position-relative form-group">
-                                                <label for="txtCode" class="">Other Branch Transfer <span
-                                                        class="mandatory">*</span></label>
-                                                <select class="mb-2 form-control" tabindex="1" formControlName="otherBranchTransfer">
-                                                    <option *ngFor="let uiTDSOption of uiTDSOptions"
-                                                        [ngValue]="uiTDSOption.code">
-                                                        {{uiTDSOption.name}}
-                                                    </option>
-                                                </select>
-                                            </div>
-                                            <!-- <div class="col-md-3 position-relative form-group">
-                                                <label for="txtCode" class="">TDS <span
-                                                        class="mandatory">*</span></label>
-                                                <select class="mb-2 form-control" tabindex="1" formControlName="tds">
-                                                    <option *ngFor="let uiTDSOption of uiTDSOptions"
-                                                        [ngValue]="uiTDSOption.code">
-                                                        {{uiTDSOption.name}}
-                                                    </option>
-                                                </select>
-                                            </div>
-                                            <div class="col-md-3 position-relative form-group">
-                                                <label for="txtCode" class="">TDS Reason <span
-                                                        class="mandatory">*</span></label>
-                                                <select class="mb-2 form-control" tabindex="1"
-                                                    formControlName="tdsReason">
-                                                    <option *ngFor="let uiTDSReason of uiTDSReasons"
-                                                        [ngValue]="uiTDSReason.constantNo">
-                                                        {{uiTDSReason.constantname}}
-                                                    </option>
-                                                </select>
-                                            </div>
-
-                                            <div class="col-md-3 position-relative form-group">
-                                                <label for="txtCode" class="">Form No 60 <span
-                                                        class="mandatory">*</span></label>
-                                                <select class="mb-2 form-control" tabindex="1" formControlName="form60">
-                                                    <option *ngFor="let uiForm60Option of uiForm60Options"
-                                                        [ngValue]="uiForm60Option.code">
-                                                        {{uiForm60Option.name}}
-                                                    </option>
-                                                </select>
-                                            </div>
-                                            <div class="col-md-3 position-relative form-group">
-                                                <label for="txtCode" class="">Form No 61 <span
-                                                        class="mandatory">*</span></label>
-                                                <select class="mb-2 form-control" tabindex="1" formControlName="form61">
-                                                    <option *ngFor="let uiForm61Option of uiForm61Options"
-                                                        [ngValue]="uiForm61Option.code">
-                                                        {{uiForm61Option.name}}
-                                                    </option>
-                                                </select>
-                                            </div> -->
-
 
                                         </div>
                                     </div>
@@ -392,111 +437,6 @@
                         </form>
                     </div>
                     <div class="tab-pane tabs-animation fade" id="tab-content-3" role="tabpanel">
-                        <form [formGroup]="nominiForm" #form="ngForm">
-                            <div class="row">
-                                <div class="col-md-12">
-                                    <div class="tab-content">
-                                        <div class="row">
-                                            <div class="col-md-3 position-relative form-group">
-                                                <label for="txtCode" class="">Nomini Name <span
-                                                        class="mandatory">*</span></label>
-                                                <input tabindex="1" type="text" class="form-control"
-                                                    formControlName="nominiName">
-                                            </div>
-                                            <div class="col-md-3 position-relative form-group">
-                                                <label for="txtCode" class="">Relation <span
-                                                        class="mandatory">*</span></label>
-                                                <select class="mb-2 form-control" tabindex="1"
-                                                    formControlName="relation">
-                                                    <option *ngFor="let uiRelation of uiRelations"
-                                                        [ngValue]="uiRelation.constantNo">
-                                                        {{uiRelation.constantname}}
-                                                    </option>
-                                                </select>
-                                            </div>
-                                            <div class="col-md-3 position-relative form-group">
-                                                <label for="txtCode" class="">Percentage <span
-                                                        class="mandatory">*</span></label>
-                                                <input tabindex="1" type="number" min="0"  class="form-control"
-                                                    formControlName="percentage" onKeyPress="if(this.value >= 100) return false;">
-                                            </div>
-                                            <div class="col-md-3 position-relative form-group">
-                                                <label for="txtCode" class="">Address <span
-                                                        class="mandatory">*</span></label>
-                                                <input tabindex="1" type="text" class="form-control"
-                                                    formControlName="nomineeAddress">
-                                            </div>
-                                            <div class="col-md-3 position-relative form-group">
-                                                <label for="txtCode" class="">Guardian (for minor)</label>
-                                                <input tabindex="1" type="text" class="form-control"
-                                                    formControlName="guardian">
-                                            </div>
-                                        </div>
-                                        <div class="row">
-                                            <div style="display: flex; margin-bottom: 10px;">
-                                                <button class="mt-1 btn btn-primary" (click)="addNomini()"
-                                                    tabindex="23">Save Nominee</button>
-                                                <button class="mt-1 btn btn-left-margin10 btn-danger"
-                                                    (click)="clearNomini()" tabindex="24">Clear</button>
-                                            </div>
-                                        </div>
-
-                                        <div class="row">
-                                            <div class="col-md-12">
-                                                <table class="mb-2 table table-bordered">
-                                                    <thead>
-                                                        <tr>
-                                                            <th width="20%">Name</th>
-                                                            <th width="20%">Relation</th>
-                                                            <th width="20%">Percentage</th>
-                                                            <th width="20%">Address</th>
-                                                            <th width="20%">Actions</th>
-                                                        </tr>
-                                                    </thead>
-                                                    <tbody>
-                                                        <tr
-                                                            *ngFor="let uiNomini of uiNominis | paginate: { itemsPerPage: 10, currentPage: p_nomini, totalItems: total_nomini }; let ind = index">
-                                                            <ng-container *ngIf="uiNomini.status!='D'">
-                                                                <td>{{uiNomini.nomineeName}}</td>
-                                                                <td>{{uiNomini.relationName}}</td>
-                                                                <td>{{uiNomini.percentage}}</td>
-                                                                <td>{{uiNomini.nomineeAddress}}</td>
-                                                                <td>
-                                                                    <div class="widget-content-right">
-                                                                        <button type="button" placeholder="Edit record"
-                                                                            class="btn-shadow btn btn-info btn-actions"
-                                                                            (click)="editNomini(uiNomini, ind)">
-                                                                            <span class="btn-icon-wrapper opacity-10">
-                                                                                <i class="fa fa-edit fa-w-10"></i>
-                                                                            </span>
-                                                                        </button>
-                                                                        <button type="button"
-                                                                            placeholder="Delete record"
-                                                                            class="btn-shadow btn btn-danger btn-actions"
-                                                                            data-toggle="modal"
-                                                                            (click)="deleteNomini(uiNomini, ind)">
-                                                                            <span class="btn-icon-wrapper opacity-10">
-                                                                                <i class="fa fa-trash fa-w-20"></i>
-                                                                            </span>
-                                                                        </button>
-                                                                    </div>
-                                                                </td>
-                                                            </ng-container>
-                                                        </tr>
-                                                        <tr *ngIf="uiNominis.length==0">
-                                                            <td colspan="5">No records found..</td>
-                                                        </tr>
-                                                    </tbody>
-                                                </table>
-                                            </div>
-
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </form>
-                    </div>
-                    <div class="tab-pane tabs-animation fade" id="tab-content-4" role="tabpanel">
                         <form [formGroup]="jointForm" #form="ngForm">
                             <div class="row">
                                 <div class="col-md-12">
@@ -623,6 +563,273 @@
                             </div>
                         </form>
                     </div>
+                    <div class="tab-pane tabs-animation fade" id="tab-content-4" role="tabpanel">
+                        <form [formGroup]="guarantorForm" #form="ngForm">
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="tab-content">
+                                        <div class="row">
+                                            <div class="col-md-6 position-relative form-group">
+                                                <app-cust-search (customers)="getCustomersForGuarantor($event)">
+                                                </app-cust-search>
+                                            </div>
+                                            <div class="col-md-6 position-relative form-group">
+                                               *Note : A customer can be guarantor for maximum 2 loan accounts.
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-md-12 position-relative">
+                                                <button class="customer-accordion"
+                                                    [ngClass]="{'customer-panel-active': toggleSearchGuarantorCustomers===true}"
+                                                    (click)="openSearchedGuarantorCustomers()">Searched Guarantor
+                                                </button>
+                                                <div class="customer-panel" *ngIf="toggleSearchGuarantorCustomers">
+                                                    <table style="width: 100%;"
+                                                        class="table table-hover table-striped table-bordered dataTable dtr-inline">
+                                                        <thead>
+                                                            <tr role="row">
+                                                                <th style="width: 5%;">Add</th>
+                                                                <th style="width: 18%;">Customer Number</th>
+                                                                <th style="width: 18%;">Customer Name</th>
+                                                                <th style="width: 18%">Mobile</th>
+                                                                <th style="width: 18%">Date</th>
+                                                                <th style="width: 18%">PAN</th>
+                                                                <th style="width: 5%">Status</th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                            <tr role="row" *ngFor="let uiCustomer of uiGuarantorCustomers"
+                                                                class="odd">
+                                                                <td class="sorting_1 dtr-control"><button
+                                                                        class="mb-2 mr-2 btn btn-link"
+                                                                        style="--bs-btn-padding-x:none !important; padding:0 !important;"
+                                                                        (click)="selectGuarantorCustomer(uiCustomer)">Add</button>
+                                                                </td>
+                                                                <td>{{uiCustomer.id}}</td>
+                                                                <td>{{uiCustomer.custName}}</td>
+                                                                <td>{{uiCustomer.mobile}}</td>
+                                                                <td>{{uiCustomer.joinDate}}</td>
+                                                                <td>{{uiCustomer.pan}}</td>
+                                                                <td>
+                                                                    <div class="badge"
+                                                                        [ngClass]="{'badge-danger': uiCustomer.status==='Deleted', 'badge-success' : uiCustomer.status=== 'Active', 'badge-warning' : uiCustomer.status=== 'In-Active'}">
+                                                                        {{uiCustomer.status}}
+                                                                    </div>
+                                                                </td>
+                                                            </tr>
+                                                            <tr *ngIf="uiGuarantorCustomers.length==0">
+                                                                <td colspan="7">No records..</td>
+                                                            </tr>
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="row">
+                                            <div class="col-md-12 position-relative" style="margin: 10px 0 0 0;">
+                                                <h5 class="card-title" style="color: #bb3fd8 !important;">Guarantor
+                                                    Customers <span class="mandatory">*</span></h5>
+                                            </div>
+                                        </div>
+
+                                        <div class="row">
+                                            <div class="col-md-12">
+                                                <table style="width: 100%;"
+                                                    class="table table-hover table-striped table-bordered dataTable dtr-inline">
+                                                    <thead>
+                                                        <tr role="row">
+                                                            <th style="width: 5%;">#</th>
+                                                            <th style="width: 20%;">Customer Number</th>
+                                                            <th style="width: 20%;">Customer Name</th>
+                                                            <th style="width: 10%">Actions</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        <tr role="row" *ngFor="let uiCustomer of uiSelectedGuarantorCustomers; let i=index" class="odd">
+                                                            <ng-container *ngIf="uiCustomer.status!='D'">
+                                                                <td>{{i+1}}</td>
+                                                                <td>{{uiCustomer.customerNumber}}</td>
+                                                                <td>{{uiCustomer.customerName}}</td>
+                                                                <td>
+                                                                    <div class="widget-content-right">
+                                                                        <button type="button" title="Delete record" class="btn-shadow btn btn-danger btn-actions"
+                                                                            data-toggle="modal" data-target="#deleteGuarantorModal" (click)="deleteGuarantorCustomer(uiCustomer)">
+                                                                            <span class="btn-icon-wrapper opacity-10">
+                                                                                <i class="fa fa-trash fa-w-20"></i>
+                                                                            </span>
+                                                                        </button>
+                                                                    </div>
+                                                                </td>
+                                                            </ng-container>
+                                                        </tr>
+                                                        <tr *ngIf="uiSelectedGuarantorCustomers.length==0">
+                                                            <td colspan="4">No records..</td>
+                                                        </tr>
+                                                    </tbody>
+                                                </table>
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="tab-pane tabs-animation fade" id="tab-content-5" role="tabpanel">
+                        <form [formGroup]="securityForm" #form="ngForm">
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="tab-content">
+                                        <div class="row">
+                                            <div class="col-md-3 position-relative form-group">
+                                                <label for="txtCode" class="">Security Type <span
+                                                        class="mandatory">*</span></label>
+                                                <select class="mb-2 form-control" tabindex="27"
+                                                    formControlName="securityType">
+                                                    <option *ngFor="let uiSecurityType of uiSecurityTypes"
+                                                        [ngValue]="uiSecurityType.id">
+                                                        {{uiSecurityType.name}}
+                                                    </option>
+                                                </select>
+                                            </div>
+                                            <div class="col-md-3 position-relative form-group">
+                                                <label for="txtCode" class="">Security  <span
+                                                        class="mandatory">*</span></label>
+                                                <input tabindex="26" type="text" class="form-control"
+                                                    formControlName="security">
+                                            </div>
+                                            
+                                            <div class="col-md-3 position-relative form-group">
+                                                <label for="txtCode" class="">Security Value <span
+                                                        class="mandatory">*</span></label>
+                                                <input tabindex="28" type="number" min="0"  class="form-control"
+                                                    formControlName="securityValue">
+                                            </div>
+                                           
+                                            <div class="col-md-3 position-relative form-group">
+                                                <label for="txtCode" class="">Security Description <span
+                                                        class="mandatory">*</span></label>
+                                                <input tabindex="29" type="text" class="form-control"
+                                                    formControlName="securityDescription">
+                                            </div>
+                                            <div class="col-md-3 position-relative form-group">
+                                                <label for="txtCode" class="">Percentage <span
+                                                        class="mandatory">*</span></label>
+                                                <input tabindex="28" type="number" min="0"  class="form-control"
+                                                    formControlName="percentage" onKeyPress="if(this.value >= 100) return false;">
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div style="display: flex; margin-bottom: 10px;">
+                                                <button class="mt-1 btn btn-primary" (click)="addSecurity()"
+                                                    tabindex="31">Save Security</button>
+                                                <button class="mt-1 btn btn-left-margin10 btn-danger"
+                                                    (click)="clearSecurity()" tabindex="24">Clear</button>
+                                            </div>
+                                        </div>
+
+                                        <div class="row">
+                                            <div class="col-md-12">
+                                                <table class="mb-0 table table-bordered">
+                                                    <thead>
+                                                        <tr>
+                                                            <th width="20%">Security Type</th>
+                                                            <th width="20%">Security</th>
+                                                            <th width="20%">Value</th>
+                                                            <th width="20%">Percentage</th>
+                                                            <th width="20%">Actions</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        <tr
+                                                            *ngFor="let uiSecurity of uiSecurities | paginate: { itemsPerPage: 10, currentPage: p_security, totalItems: total_securities }; let ind = index">
+                                                            <ng-container *ngIf="uiSecurity.status!='D'">
+                                                                <td>{{uiSecurity.nomineeName}}</td>
+                                                                <td>{{uiSecurity.relationName}}</td>
+                                                                <td>{{uiSecurity.percentage}}</td>
+                                                                <td>{{uiSecurity.nomineeAddress}}</td>
+                                                                <td>
+                                                                    <div class="widget-content-right">
+                                                                        <button type="button" placeholder="Edit record"
+                                                                            class="btn-shadow btn btn-info btn-actions"
+                                                                            (click)="editSecurity(uiSecurity, ind)">
+                                                                            <span class="btn-icon-wrapper opacity-10">
+                                                                                <i class="fa fa-edit fa-w-10"></i>
+                                                                            </span>
+                                                                        </button>
+                                                                        <button type="button"
+                                                                            placeholder="Delete record"
+                                                                            class="btn-shadow btn btn-danger btn-actions"
+                                                                            data-toggle="modal"
+                                                                            (click)="deleteSecurity(uiSecurity, ind)">
+                                                                            <span class="btn-icon-wrapper opacity-10">
+                                                                                <i class="fa fa-trash fa-w-20"></i>
+                                                                            </span>
+                                                                        </button>
+                                                                    </div>
+                                                                </td>
+                                                            </ng-container>
+                                                        </tr>
+                                                        <tr *ngIf="uiSecurities.length==0">
+                                                            <td colspan="4">No records found..</td>
+                                                        </tr>
+                                                    </tbody>
+                                                </table>
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                   
+                    <div class="tab-pane tabs-animation fade" id="tab-content-6" role="tabpanel">
+                       <app-vehicle-loan *ngIf="selectedLoanType==0 || selectedLoanType==1"></app-vehicle-loan>
+                       <app-gold-loan *ngIf="selectedLoanType==2"></app-gold-loan>
+                       <app-lien-fd-loan *ngIf="selectedLoanType==3"></app-lien-fd-loan>
+                    </div>
+                    <div class="tab-pane tabs-animation fade" id="tab-content-7" role="tabpanel">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="tab-content">
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <table style="width: 100%;"
+                                                class="table table-hover table-striped table-bordered dataTable dtr-inline">
+                                                <thead>
+                                                    <tr role="row">
+                                                        <th style="width: 4%;">#</th>
+                                                        <th style="width: 19%;">Installment Date</th>
+                                                        <th style="width: 19%;">Installment Amount</th>
+                                                        <th style="width: 19%;">Principle</th>
+                                                        <th style="width: 19%;">Interest</th>
+                                                        <th style="width: 19%;">Outstanding Balance</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <tr role="row" *ngFor="let uiCustomer of uiSelectedGuarantorCustomers; let i=index" class="odd">
+                                                        <ng-container *ngIf="uiCustomer.status!='D'">
+                                                            <td>{{i+1}}</td>
+                                                            <td>{{uiCustomer.customerNumber}}</td>
+                                                            <td>{{uiCustomer.customerName}}</td>
+                                                            <td>{{uiCustomer.customerName}}</td>
+                                                            <td>{{uiCustomer.customerName}}</td>
+                                                            <td>{{uiCustomer.customerName}}</td>
+                                                        </ng-container>
+                                                    </tr>
+                                                    <tr *ngIf="uiSelectedGuarantorCustomers.length==0">
+                                                        <td colspan="7">No records..</td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
 
                 <div class="row">
@@ -658,6 +865,27 @@
             <div class="modal-footer">
                 <button type="button" class="btn btn-danger" data-dismiss="modal" (click)="onJointDelete()">Yes</button>
                 <button type="button" class="btn btn-primary" data-dismiss="modal" (click)="cancelJointDelete()">No</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="deleteGuarantorModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+    aria-hidden="true" data-backdrop="false">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Delete</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="cancelGuarantorDelete()">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <p class="mb-0">Are you sure do you want to delete?</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-danger" data-dismiss="modal" (click)="onGuarantorDelete()">Yes</button>
+                <button type="button" class="btn btn-primary" data-dismiss="modal" (click)="cancelGuarantorDelete()">No</button>
             </div>
         </div>
     </div>
