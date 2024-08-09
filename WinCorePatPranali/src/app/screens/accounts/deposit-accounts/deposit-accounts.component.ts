@@ -305,7 +305,7 @@ export class DepositAccountsComponent {
       }
     }).catch(error => {
       this._toastrService.error('Error loading general ledgers', 'Warning!');
-    });;
+    });
   }
 
   retrieveMasters(uiEnumGeneralMaster: UiEnumGeneralMaster) {

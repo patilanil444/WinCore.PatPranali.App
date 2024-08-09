@@ -56,7 +56,7 @@ export interface ISavingAccountModel {
   Mode_Opr: number;
   Mode_Sgn: number;
   Opn_Date: Date;
-  Exp_Date : Date;
+  Exp_Date: Date;
   Last_Int_Date: Date;
   Last_Trn_Date: Date;
   Passbook_Date: Date;
@@ -155,8 +155,10 @@ export class LoanAccountsComponent {
   uiLoanTypes: any[] = [];
   uiSecurityTypes: any[] = [];
   uiDirectors: any[] = [];
-  
+
   uiChangesInInterestRateYN: any[] = [];
+  uiInstallmentWithInterestYN: any[] = [];
+  uiInstallmentTypes: any[] = [];
 
   toggleSearchCustomers = false;
   toggleSearchJointCustomers = false;
@@ -167,7 +169,7 @@ export class LoanAccountsComponent {
   isRDAccount = false;
 
   selectedCustomerId = 0;
-  selectedLoanType = 2;
+  selectedLoanType = 3;
 
   uiCustomers: any[] = [];
   uiJointCustomers: any[] = [];
@@ -182,6 +184,12 @@ export class LoanAccountsComponent {
   dto: IGeneralDTO = {} as IGeneralDTO;
   accountsId!: number;
   isAddMode = true;
+
+  // formatter = new Intl.NumberFormat('en-IN', {
+  //   style: 'currency',
+  //   currency: 'INR',
+  //   minimumFractionDigits: 2,
+  // });
 
   constructor(private _sharedService: SharedService, private _toastrService: ToastrService,
     private _generalLedgerService: GeneralLedgerService, private _customerService: CustomerService,
@@ -205,6 +213,8 @@ export class LoanAccountsComponent {
     this.uiForm60Options = AccountDeclarations.form60YN;
     this.uiForm61Options = AccountDeclarations.form61YN;
     this.uiChangesInInterestRateYN = AccountDeclarations.changesInInterestRateYN;
+    this.uiInstallmentWithInterestYN = AccountDeclarations.InstallmentWithInterestYN;
+    this.uiInstallmentTypes = AccountDeclarations.loanInstallmentTypes;
 
     this.customerDetailsForm = new FormGroup({
       customerNumber: new FormControl("", []),
@@ -237,7 +247,7 @@ export class LoanAccountsComponent {
       accountStatus: new FormControl(this.uiAccountStatuses[0].constantNo, [Validators.required]),
       accountOpeningDate: new FormControl(formatDate(new Date(Date.now()), 'yyyy-MM-dd', 'en'), [Validators.required]),
       loanType: new FormControl(this.uiLoanTypes[0].constantNo, [Validators.required]),
-      
+
       insuranceDate: new FormControl(formatDate(new Date(Date.now()), 'yyyy-MM-dd', 'en'), [Validators.required]),
       contactPerson: new FormControl("", [Validators.required]),
       passbookDate: new FormControl(formatDate(new Date(Date.now()), 'yyyy-MM-dd', 'en'), [Validators.required]),
@@ -249,7 +259,8 @@ export class LoanAccountsComponent {
     });
 
     this.parametersForm = new FormGroup({
-      sactionAmount: new FormControl("", [Validators.required]),
+      sactionAmount: new FormControl(0 , [Validators.required]),
+      sactionAmountFormatted: new FormControl(new Intl.NumberFormat('en-IN',{ style: 'decimal' }).format(0), [Validators.required]),
       sactionDate: new FormControl(formatDate(new Date(Date.now()), 'yyyy-MM-dd', 'en'), [Validators.required]),
       sanctionBy: new FormControl(0, [Validators.required]),
       loanTenureInMonths: new FormControl("", [Validators.required]),
@@ -278,6 +289,20 @@ export class LoanAccountsComponent {
       securityValue: new FormControl("", []),
       securityDescription: new FormControl("", []),
       percentage: new FormControl("", []),
+    });
+
+    this.installmentsForm = new FormGroup({
+      instInstallWithInterest: new FormControl(this.uiInstallmentWithInterestYN[0].code, []),
+      instInstallmentType: new FormControl(this.uiInstallmentTypes[0].code, []),
+      instFirstInstallmentDate: new FormControl(formatDate(this.firstInstallmentDate.value, 'yyyy-MM-dd', 'en'), []),
+      instExpiryDate: new FormControl(formatDate(new Date().setDate(new Date().getDate() + 30), 'yyyy-MM-dd', 'en'), []),
+      instTenureYear: new FormControl("", []),
+      instTenureMonths: new FormControl("", []),
+      instTenureDays: new FormControl("", []),
+      instNumberOfInstallments: new FormControl("", [Validators.required]),
+      instSactionAmount: new FormControl(this.sactionAmount.value, []),
+      instAmountToBeReceived: new FormControl(0, []),
+      instTotalAmountAfterInstallments: new FormControl(0, []),
     });
 
     this.getGeneralLedgers().then(result => {
@@ -323,7 +348,7 @@ export class LoanAccountsComponent {
             });
 
             this.uiLoanGeneralLedgers = this.uiAllGeneralLedgers.filter(gl => gl.glGroup == 'L');
-            
+
             resolve(true);
           }
         }
@@ -375,7 +400,7 @@ export class LoanAccountsComponent {
   }
 
 
-  
+
 
   loadForm() {
     this._savingAccountService.getDTO().subscribe(obj => this.dto = obj);
@@ -396,10 +421,10 @@ export class LoanAccountsComponent {
               this.selectCustomer(savingAccount.customerId);
 
               // bind general ledger
-              let gl = this.uiAllGeneralLedgers.filter(g=>g.code == savingAccount.code1);
+              let gl = this.uiAllGeneralLedgers.filter(g => g.code == savingAccount.code1);
 
               this.summaryForm.patchValue({
-                generalLedger: gl && gl.length ? gl[0]: null,
+                generalLedger: gl && gl.length ? gl[0] : null,
                 glAccountNumberStr: savingAccount.accountNo,
                 glAccountNumber: savingAccount.code2,
                 customerId: savingAccount.customerId,
@@ -467,7 +492,7 @@ export class LoanAccountsComponent {
                   uiNominee.createdBy = nominee.createdBy;
                   uiNominee.status = '';
                   this.uiSecurities.push(uiNominee);
-                 });
+                });
               }
 
               //depositAccount.jointList
@@ -484,7 +509,7 @@ export class LoanAccountsComponent {
                   uiJointCust.status = '';
                   uiJointCust.createdBy = joint.createdBy;
                   this.uiSelectedJointCustomers.push(uiJointCust);
-                 });
+                });
               }
 
               this.isNotJointAccount = !(savingAccount.accountType == 2); // TODO: Need to make it configurable
@@ -510,42 +535,56 @@ export class LoanAccountsComponent {
     }
   }
 
-  calculateMatureDate()
-  {
+  calculateMatureDate() {
     if (this.loanTenureInMonths.value && !isNaN(this.loanTenureInMonths.value)) {
       let matureDate = new Date().setMonth(new Date().getMonth() + parseInt(this.loanTenureInMonths.value))
       if (matureDate) {
         this.parametersForm.patchValue({
-          maturityDate : formatDate(matureDate, 'yyyy-MM-dd', 'en') 
+          maturityDate: formatDate(matureDate, 'yyyy-MM-dd', 'en')
         })
       }
     }
   }
 
-  calculateFirstInstallmentDate()
-  {
+  calculateFirstInstallmentDate() {
     if (this.sactionDate.value) {
       let firstInstallDate = new Date().setDate(new Date(this.sactionDate.value).getDate() + 30)
       if (firstInstallDate) {
         this.parametersForm.patchValue({
-          firstInstallmentDate : formatDate(firstInstallDate, 'yyyy-MM-dd', 'en') 
+          firstInstallmentDate: formatDate(firstInstallDate, 'yyyy-MM-dd', 'en')
         })
       }
     }
   }
 
-  validateFirstInstallmentDate()
-  {
+  validateFirstInstallmentDate() {
     if (this.firstInstallmentDate.value) {
-      let tempFirstInstallmentDate = formatDate(new Date(this.firstInstallmentDate.value),'yyyy-MM-dd','en');
-      let tempSactionDate = formatDate(new Date(this.firstInstallmentDate.value),'yyyy-MM-dd','en');
+      let tempFirstInstallmentDate = formatDate(new Date(this.firstInstallmentDate.value), 'yyyy-MM-dd', 'en');
+      let tempSactionDate = formatDate(new Date(this.sactionDate.value), 'yyyy-MM-dd', 'en');
       if (tempFirstInstallmentDate < tempSactionDate) {
         this.parametersForm.patchValue({
-          firstInstallmentDate : formatDate(new Date().setDate(new Date(this.sactionDate.value).getDate() + 30), 'yyyy-MM-dd', 'en') 
+          firstInstallmentDate: formatDate(new Date().setDate(new Date(this.sactionDate.value).getDate() + 30), 'yyyy-MM-dd', 'en')
         })
 
-        this._toastrService.error('First installment can not be less than saction date', 'Error!');
+        this._toastrService.error('First installment can not be less than sanction date', 'Error!');
       }
+
+      this.installmentsForm.patchValue({
+        instFirstInstallmentDate: formatDate(this.firstInstallmentDate.value, 'yyyy-MM-dd', 'en')
+      })
+    }
+  }
+
+  setIntallmentSactionAmount()
+  {
+    if (this.sactionAmountFormatted.value.length > 0) {
+      this.installmentsForm.patchValue({
+        instSactionAmount: new Intl.NumberFormat('en-IN',{ style: 'decimal' }).format(parseFloat(this.sactionAmountFormatted.value))
+      })
+      this.parametersForm.patchValue({
+        sactionAmount: parseFloat(this.sactionAmountFormatted.value),
+        sactionAmountFormatted: new Intl.NumberFormat('en-IN',{ style: 'decimal' }).format(parseFloat(this.sactionAmountFormatted.value))
+      })
     }
   }
 
@@ -592,8 +631,7 @@ export class LoanAccountsComponent {
     }
   }
 
-  getCustomer(customerId: number)
-  {
+  getCustomer(customerId: number) {
     this._customerService.getCustomer(this._sharedService.applicationUser.branchId, customerId).subscribe((data: any) => {
       console.log(data);
       if (data) {
@@ -694,7 +732,7 @@ export class LoanAccountsComponent {
           if (data) {
             let model = data.data.data;
             if (model) {
-             
+
               let uiJointCust = {} as UiJoint;
               uiJointCust.accountId = 0;
               uiJointCust.id = 0;
@@ -705,12 +743,11 @@ export class LoanAccountsComponent {
               uiJointCust.createdBy = this._sharedService.applicationUser.userName;
               uiJointCust.srNo = this.uiSelectedGuarantorCustomers.length;
               this.uiSelectedGuarantorCustomers.push(uiJointCust);
-      
+
               this.toggleSearchGuarantorCustomers = false;
 
             }
-            else
-            {
+            else {
               this._toastrService.error('Guarantor limit exceeded for selected customor.', 'Error!');
             }
           }
@@ -722,29 +759,26 @@ export class LoanAccountsComponent {
     }
   }
 
-  deleteJoinCustomer(customer: any)
-  {
+  deleteJoinCustomer(customer: any) {
     if (customer) {
       this._savingAccountService.jointCustomerToDelete = customer.customerId;
     }
   }
 
-  deleteGuarantorCustomer(customer: any)
-  {
+  deleteGuarantorCustomer(customer: any) {
     if (customer) {
       this._savingAccountService.guarantorCustomerToDelete = customer.customerId;
     }
   }
 
-  onJointDelete()
-  {
+  onJointDelete() {
     let customerIdToDelete = this._savingAccountService.jointCustomerToDelete;
     if (customerIdToDelete > 0) {
-      
-      let customers = this.uiSelectedJointCustomers.filter(c=>c.customerId == customerIdToDelete);
+
+      let customers = this.uiSelectedJointCustomers.filter(c => c.customerId == customerIdToDelete);
       if (customers && customers.length) {
         customers[0].status = "D";
-      }  
+      }
     }
   }
 
@@ -758,24 +792,20 @@ export class LoanAccountsComponent {
       }
     }
   }
-  
-  cancelJointDelete()
-  {
+
+  cancelJointDelete() {
     this._savingAccountService.jointCustomerToDelete = -1;
   }
 
-  cancelGuarantorDelete()
-  {
+  cancelGuarantorDelete() {
     this._savingAccountService.guarantorCustomerToDelete = -1;
   }
 
-  getCustomerStatus(status: number)
-  {
+  getCustomerStatus(status: number) {
     if (status == 1) {
       return "Active";
     }
-    else
-    {
+    else {
       return "In-Active";
     }
   }
@@ -792,7 +822,7 @@ export class LoanAccountsComponent {
       }
     }
   }
-  
+
   selectLoanType(event: any) {
     if (event) {
       if (event.target.value) {
@@ -812,16 +842,15 @@ export class LoanAccountsComponent {
         this.isNotJointAccount = true;
         if (parseInt(accountType[1]) == 4) { //TODO: Need to make it configurable
           this.accountForm.patchValue({
-             close_Flag: true,
-             accountCloseDate: formatDate(new Date(Date.now()), 'MM/dd/yyyy', 'en')
+            close_Flag: true,
+            accountCloseDate: formatDate(new Date(Date.now()), 'MM/dd/yyyy', 'en')
           })
         }
-        else  
-        {
+        else {
           this.accountForm.patchValue({
             close_Flag: false,
             accountCloseDate: ""
-         })
+          })
         }
       }
     }
@@ -1064,8 +1093,7 @@ export class LoanAccountsComponent {
     })
   }
 
-  authoriseAccount()
-  {
+  authoriseAccount() {
 
 
   }
@@ -1109,7 +1137,7 @@ export class LoanAccountsComponent {
     this.accountForm.patchValue({
       accountType: this.uiAccountTypes[0].constantNo,
       modeOfOperation: this.uiModeOfOperations[0].constantNo,
-      modeOfSignature : this.uiModeOfOperations[0].constantNo,
+      modeOfSignature: this.uiModeOfOperations[0].constantNo,
       staffDirectorOther: this.uiEmployyeTypes[0].code,
       accountStatus: this.uiAccountStatuses[0].constantNo,
       accountOpeningDate: formatDate(new Date(Date.now()), 'yyyy-MM-dd', 'en'),
@@ -1130,7 +1158,7 @@ export class LoanAccountsComponent {
       otherBranchTransfer: this.uiTDSOptions[0].code,
     })
   }
- 
+
   clearJointDetails() {
     this.jointForm.patchValue({
       jointCustomers: [],
@@ -1230,7 +1258,7 @@ export class LoanAccountsComponent {
   get loanType() {
     return this.accountForm.get('loanType')!;
   }
- 
+
   get insuranceDate() {
     return this.accountForm.get('insuranceDate')!;
   }
@@ -1260,6 +1288,9 @@ export class LoanAccountsComponent {
 
   get sactionAmount() {
     return this.parametersForm.get('sactionAmount')!;
+  }
+  get sactionAmountFormatted() {
+    return this.parametersForm.get('sactionAmountFormatted')!;
   }
   get sactionDate() {
     return this.parametersForm.get('sactionDate')!;
@@ -1312,16 +1343,16 @@ export class LoanAccountsComponent {
   }
 
   //
-  
+
   get securityType() {
     return this.securityForm.get('securityType')!;
   }
   get security() {
     return this.securityForm.get('security')!;
   }
-   get securityValue() {
+  get securityValue() {
     return this.securityForm.get('securityValue')!;
-  } 
+  }
   get securityDescription() {
     return this.securityForm.get('securityDescription')!;
   }
@@ -1329,7 +1360,40 @@ export class LoanAccountsComponent {
     return this.securityForm.get('percentage')!;
   }
 
-  //
+  // 
 
-  
+  get instInstallWithInterest() {
+    return this.installmentsForm.get('instInstallWithInterest')!;
+  }
+  get instInstallmentType() {
+    return this.installmentsForm.get('instInstallmentType')!;
+  }
+  get instFirstInstallmentDate() {
+    return this.installmentsForm.get('instFirstInstallmentDate')!;
+  }
+  get instExpiryDate() {
+    return this.installmentsForm.get('instExpiryDate')!;
+  }
+  get instTenureYear() {
+    return this.installmentsForm.get('instTenureYear')!;
+  }
+  get instTenureMonths() {
+    return this.installmentsForm.get('instInstallWithInterest')!;
+  }
+  get instTenureDays() {
+    return this.installmentsForm.get('instTenureDays')!;
+  }
+  get instNumberOfInstallments() {
+    return this.installmentsForm.get('instNumberOfInstallments')!;
+  }
+  get instSactionAmount() {
+    return this.installmentsForm.get('instSactionAmount')!;
+  }
+  get instAmountToBeReceived() {
+    return this.installmentsForm.get('instAmountToBeReceived')!;
+  }
+  get instTotalAmountAfterInstallments() {
+    return this.installmentsForm.get('instTotalAmountAfterInstallments')!;
+  }
+
 }

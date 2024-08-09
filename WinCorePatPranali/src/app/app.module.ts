@@ -10,7 +10,6 @@ import { BrowserAnimationsModule, provideAnimations } from '@angular/platform-br
 import { ToastrModule } from 'ngx-toastr';
 import { SpinnerComponent } from './common/spinner/spinner.component';
 import { LoaderInterceptor } from './common/interceptors/loader.interceptor';
-import { LienFdLoanComponent } from './screens/accounts/loan-accounts/loan-types/lien-fd-loan/lien-fd-loan.component';
 
 @NgModule({
   declarations: [
@@ -18,6 +17,7 @@ import { LienFdLoanComponent } from './screens/accounts/loan-accounts/loan-types
     LoginComponent,
     NotFoundComponent,
     SpinnerComponent,
+    
   ],
   imports: [
     CommonModule,

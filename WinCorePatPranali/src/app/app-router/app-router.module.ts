@@ -51,6 +51,9 @@ import { VehicleLoanComponent } from '../screens/accounts/loan-accounts/loan-typ
 import { GoldLoanComponent } from '../screens/accounts/loan-accounts/loan-types/gold-loan/gold-loan.component';
 import { OtherAccountsComponent } from '../screens/accounts/other-accounts/other-accounts.component';
 import { LienFdLoanComponent } from '../screens/accounts/loan-accounts/loan-types/lien-fd-loan/lien-fd-loan.component';
+import { OpeningBalanceComponent } from '../screens/accounts/opening-balance/opening-balance.component';
+import { AccSearchComponent } from '../common/directives/acc-search/acc-search.component';
+import { BalanceCertificateComponent } from '../screens/accounts/balance-certificate/balance-certificate.component';
 
 @NgModule({
   declarations: [
@@ -100,6 +103,9 @@ import { LienFdLoanComponent } from '../screens/accounts/loan-accounts/loan-type
     VehicleLoanComponent,
     GoldLoanComponent,
     LienFdLoanComponent,
+    OpeningBalanceComponent,
+    AccSearchComponent,
+    BalanceCertificateComponent,
   ],
   imports: [
     CommonModule,

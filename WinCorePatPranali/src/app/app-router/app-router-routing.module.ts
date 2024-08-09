@@ -36,6 +36,8 @@ import { UserComponent } from '../screens/users/user/user.component';
 import { UserSearchComponent } from '../screens/users/user-search/user-search.component';
 import { UserDailyRoleComponent } from '../screens/users/user-daily-role/user-daily-role.component';
 import { OtherAccountsComponent } from '../screens/accounts/other-accounts/other-accounts.component';
+import { OpeningBalanceComponent } from '../screens/accounts/opening-balance/opening-balance.component';
+import { BalanceCertificateComponent } from '../screens/accounts/balance-certificate/balance-certificate.component';
 
 const routes: Routes = [
   {
@@ -80,6 +82,8 @@ const routes: Routes = [
       { path: 'role-access', component: RoleAccessComponent },
       { path: 'activity', component: UserActivityComponent },
       { path: 'daily-role', component: UserDailyRoleComponent },
+      { path: 'opening-balance', component: OpeningBalanceComponent },
+      { path: 'balance-cert', component: BalanceCertificateComponent },
       { path: '**', component: NotFoundComponent },
       { path: '', redirectTo: 'projects', pathMatch: 'full' },
     ]

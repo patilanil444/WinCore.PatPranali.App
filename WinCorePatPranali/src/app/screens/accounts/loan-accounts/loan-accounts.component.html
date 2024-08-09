@@ -342,8 +342,8 @@
                                             <div class="col-md-3 position-relative form-group">
                                                 <label for="txtCode" class="">Saction Amount <span
                                                     class="mandatory">*</span></label>
-                                                <input tabindex="1" type="text" class="form-control"
-                                                    formControlName="sactionAmount">
+                                                <input tabindex="1" type="currency" class="form-control"
+                                                    formControlName="sactionAmountFormatted" (change)="setIntallmentSactionAmount()">
                                             </div>
                                             <div class="col-md-3 position-relative form-group">
                                                 <label for="txtCode" class="">Saction Date <span
@@ -361,7 +361,7 @@
                                             </div>
 
                                             <div class="col-md-3 position-relative form-group">
-                                                <label for="txtCode" class=""> Loan Tenure in Months<span
+                                                <label for="txtCode" class=""> Loan Tenure in Months <span
                                                         class="mandatory">*</span></label>
                                                 <input tabindex="1" type="number" class="mb-2 form-control"
                                                     formControlName="loanTenureInMonths" min="0" (change)="calculateMatureDate()"
@@ -791,44 +791,131 @@
                        <app-lien-fd-loan *ngIf="selectedLoanType==3"></app-lien-fd-loan>
                     </div>
                     <div class="tab-pane tabs-animation fade" id="tab-content-7" role="tabpanel">
-                        <div class="row">
-                            <div class="col-md-12">
-                                <div class="tab-content">
-                                    <div class="row">
-                                        <div class="col-md-12">
-                                            <table style="width: 100%;"
-                                                class="table table-hover table-striped table-bordered dataTable dtr-inline">
-                                                <thead>
-                                                    <tr role="row">
-                                                        <th style="width: 4%;">#</th>
-                                                        <th style="width: 19%;">Installment Date</th>
-                                                        <th style="width: 19%;">Installment Amount</th>
-                                                        <th style="width: 19%;">Principle</th>
-                                                        <th style="width: 19%;">Interest</th>
-                                                        <th style="width: 19%;">Outstanding Balance</th>
-                                                    </tr>
-                                                </thead>
-                                                <tbody>
-                                                    <tr role="row" *ngFor="let uiCustomer of uiSelectedGuarantorCustomers; let i=index" class="odd">
-                                                        <ng-container *ngIf="uiCustomer.status!='D'">
-                                                            <td>{{i+1}}</td>
-                                                            <td>{{uiCustomer.customerNumber}}</td>
-                                                            <td>{{uiCustomer.customerName}}</td>
-                                                            <td>{{uiCustomer.customerName}}</td>
-                                                            <td>{{uiCustomer.customerName}}</td>
-                                                            <td>{{uiCustomer.customerName}}</td>
-                                                        </ng-container>
-                                                    </tr>
-                                                    <tr *ngIf="uiSelectedGuarantorCustomers.length==0">
-                                                        <td colspan="7">No records..</td>
-                                                    </tr>
-                                                </tbody>
-                                            </table>
+                        <form [formGroup]="installmentsForm" #form="ngForm">
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="tab-content">
+                                        <div class="row">
+                                            
+                                            <div class="col-md-3 position-relative form-group">
+                                                <label for="txtCode" class="">First Installment Date </label>
+                                                <input tabindex="1" type="date" class="form-control"
+                                                    formControlName="instFirstInstallmentDate" readonly>
+                                            </div>
+                                            <div class="col-md-3 position-relative form-group">
+                                                <label for="txtCode" class="">Expiry Date </label>
+                                                <input tabindex="1" type="date" class="form-control"
+                                                    formControlName="instExpiryDate" readonly>
+                                            </div>
+                                            <div class="col-md-3 position-relative form-group">
+                                                <label for="txtCode" class="">Sactioned Amount </label>
+                                                <input tabindex="1" type="text" class="form-control"
+                                                    formControlName="instSactionAmount" readonly>
+                                            </div>
+                                            <div class="col-md-3 position-relative form-group">
+                                                <label for="txtCode" class="">Amount To Be Received</label>
+                                                <input tabindex="1" type="text" class="form-control"
+                                                    formControlName="instAmountToBeReceived" readonly>
+                                            </div>
+                                            <div class="col-md-3 position-relative form-group">
+                                                <label for="txtCode" class="">Tenure </label>
+                                                <div class="input-group">
+                                                    <input tabindex="41" type="number" min="0" class="form-control" formControlName="instTenureYear"
+                                                    readonly>
+                                                    <div class="input-group-append"><span class="input-group-text">Years</span></div>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-3 position-relative form-group">
+                                                <label for="txtCode"> &nbsp;</label>
+                                                <div class="input-group">
+                                                    <input tabindex="40" type="number" min="0" class="form-control"
+                                                        formControlName="instTenureMonths" readonly>
+                                                    <div class="input-group-append"><span
+                                                            class="input-group-text">Months</span></div>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-3 position-relative form-group">
+                                                <label for="txtCode"> &nbsp;</label>
+                                                 <div class="input-group">
+                                                    <input tabindex="39" type="number" min="0" class="form-control"
+                                                        formControlName="instTenureDays" readonly>
+                                                    <div class="input-group-append"><span
+                                                            class="input-group-text">Days</span></div>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-3 position-relative form-group">
+                                                <label for="txtCode" class="">Installment With Interest <span
+                                                    class="mandatory">*</span></label>
+                                                    <select class="form-control" tabindex="1" formControlName="instInstallWithInterest">
+                                                        <option *ngFor="let uiInstallmentWithInterest of uiInstallmentWithInterestYN"
+                                                            [ngValue]="uiInstallmentWithInterest.code">
+                                                            {{uiInstallmentWithInterest.name}}
+                                                        </option>
+                                                    </select>
+                                            </div>
+                                            <div class="col-md-3 position-relative form-group">
+                                                <label for="txtCode" class="">Installment Type <span class="mandatory">*</span></label>
+                                                <select class="form-control" tabindex="1" formControlName="instInstallmentType">
+                                                    <option *ngFor="let uiInstallmentType of uiInstallmentTypes" [ngValue]="uiInstallmentType.code">
+                                                        {{uiInstallmentType.name}}
+                                                    </option>
+                                                </select>
+                                            </div>
+                                             <div class="col-md-3 position-relative form-group">
+                                                <label for="txtCode" class="">Number of Installments <span
+                                                    class="mandatory">*</span></label>
+                                                <input tabindex="1" type="text" class="form-control"
+                                                    formControlName="instNumberOfInstallments">
+                                            </div>
+
+                                            
+                                            <div class="col-md-3 position-relative form-group">
+                                                <label for="txtCode" class="">Total Amount After all Installments</label>
+                                                <input tabindex="1" type="text" class="form-control"
+                                                    formControlName="instTotalAmountAfterInstallments" readonly>
+                                            </div>
+
+                                            <div class="col-md-3 position-relative form-group">
+                                                <button class="mt-1 btn btn-primary" style="margin-top: 30px !important;"
+                                                    tabindex="23">Show Installments</button>
+                                            </div>
+                                            
+                                            <div>
+                                                <table style="width: 100%;"
+                                                    class="table table-hover table-striped table-bordered dataTable dtr-inline">
+                                                    <thead>
+                                                        <tr role="row">
+                                                            <th style="width: 4%;">#</th>
+                                                            <th style="width: 19%;">Installment Date</th>
+                                                            <th style="width: 19%;">Installment Amount</th>
+                                                            <th style="width: 19%;">Principle</th>
+                                                            <th style="width: 19%;">Interest</th>
+                                                            <th style="width: 19%;">Outstanding Balance</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        <tr role="row" *ngFor="let uiCustomer of uiSelectedGuarantorCustomers; let i=index" class="odd">
+                                                            <ng-container *ngIf="uiCustomer.status!='D'">
+                                                                <td>{{i+1}}</td>
+                                                                <td>{{uiCustomer.customerNumber}}</td>
+                                                                <td>{{uiCustomer.customerName}}</td>
+                                                                <td>{{uiCustomer.customerName}}</td>
+                                                                <td>{{uiCustomer.customerName}}</td>
+                                                                <td>{{uiCustomer.customerName}}</td>
+                                                            </ng-container>
+                                                        </tr>
+                                                        <tr *ngIf="uiSelectedGuarantorCustomers.length==0">
+                                                            <td colspan="7">No records..</td>
+                                                        </tr>
+                                                    </tbody>
+                                                </table>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
-                        </div>
+                        </form>
+                       
                     </div>
                 </div>
 
