@@ -151,8 +151,8 @@ export class SavingAccountsComponent {
   uiForm61Options: any[] = [];
   uiAccountStatuses: any[] = [];
 
-  toggleSearchCustomers = false;
-  toggleSearchJointCustomers = false;
+  //toggleSearchCustomers = false;
+  // toggleSearchJointCustomers = false;
   isNotJointAccount = true;
   isFDAccount = false;
   isRDAccount = false;
@@ -447,16 +447,20 @@ export class SavingAccountsComponent {
   }
 
   getCustomers(custData: any) {
-    this.uiCustomers = custData;
-    this.toggleSearchCustomers = true;
+    // this.uiCustomers = custData;
+    if(custData && custData.status == 'Active') {
+      this.selectCustomer(custData.id);
+    }
+
+    //this.toggleSearchCustomers = true;
   }
 
   getCustomersForJoint(custData: any) {
-    if (custData && custData.length) {
-      this.uiJointCustomers = custData.filter((c: any) => c.status == 'Active'); // display only active customers
+    if (custData && custData.status == 'Active') {
+      // this.uiJointCustomers = custData.filter((c: any) => c.status == 'Active'); // display only active customers
+      this.selectJointCustomer(custData);
     }
-
-    this.toggleSearchJointCustomers = true;
+    //this.toggleSearchJointCustomers = true;
   }
 
   selectCustomer(customerId: number) {
@@ -541,7 +545,7 @@ export class SavingAccountsComponent {
         uiJointCust.srNo = this.uiSelectedJointCustomers.length;
         this.uiSelectedJointCustomers.push(uiJointCust);
 
-        this.toggleSearchJointCustomers = false;
+        //this.toggleSearchJointCustomers = false;
       }
       else {
         this._toastrService.error('Customer already added', 'Error!');
@@ -949,13 +953,13 @@ export class SavingAccountsComponent {
     })
   }
 
-  openSearchedCustomers() {
-    this.toggleSearchCustomers = !this.toggleSearchCustomers;
-  }
+  // openSearchedCustomers() {
+  //   this.toggleSearchCustomers = !this.toggleSearchCustomers;
+  // }
 
-  openSearchedJointCustomers() {
-    this.toggleSearchJointCustomers = !this.toggleSearchJointCustomers;
-  }
+  // openSearchedJointCustomers() {
+  //   this.toggleSearchJointCustomers = !this.toggleSearchJointCustomers;
+  // }
 
   //
 

@@ -40,7 +40,9 @@ export class CustomerSearchComponent implements OnInit {
 
   getCustomers(custData: any)
   {
-    this.uiCustomers = custData;
+    if (custData && custData.status == 'Active') {
+      this.uiCustomers.push(custData);
+    }
   }
 
   // searchCustomer()

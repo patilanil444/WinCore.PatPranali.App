@@ -24325,3 +24325,38 @@ select.form-control {
 .mandatory{
     color: #3f6ad8;
 }
+
+.mm-up-arrow{
+    /* content: "" !important; */
+    transform: rotate(-180deg);
+  -webkit-transform: rotate(-180deg);
+}
+
+.mm-down-arrow{
+    /* content: "" !important; */
+    transform: rotate(0deg);
+  -webkit-transform: rotate(0deg);
+}
+
+.autocomplete-container{
+    height: calc(2.25rem) !important;
+    border: 1px solid #ced4da !important;
+    border-radius: .25rem !important;
+}
+
+.autocomplete-container .input-container input{
+    height: calc(2.25rem) !important;
+    padding: .375rem .75rem !important;
+    font-size: 1rem !important;
+    font-weight: 400 !important;
+    line-height: 1.5 !important;
+    color: #1b5c9e !important;
+    background-clip: padding-box !important;
+    border: 1px solid #ced4da !important;
+    border-radius: .25rem !important;
+}
+
+.autocomplete-container .suggestions-container ul li a
+{
+    padding: 5px 5px !important;
+}

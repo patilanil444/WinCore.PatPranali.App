@@ -73,8 +73,8 @@ export class OtherAccountsComponent {
   uiZones: any[] = [];
   uiAccountStatuses: any[] = [];
 
-  toggleSearchCustomers = false;
-  toggleSearchJointCustomers = false;
+  // toggleSearchCustomers = false;
+  // toggleSearchJointCustomers = false;
 
   selectedCustomerId = 0;
 
@@ -268,8 +268,11 @@ export class OtherAccountsComponent {
   }
 
   getCustomers(custData: any) {
-    this.uiCustomers = custData;
-    this.toggleSearchCustomers = true;
+    if(custData && custData.status == 'Active') {
+      this.selectCustomer(custData.id);
+    }
+    // this.uiCustomers = custData;
+    // this.toggleSearchCustomers = true;
   }
 
   selectCustomer(customerId: number) {
@@ -512,9 +515,9 @@ export class OtherAccountsComponent {
     })
   }
   
-  openSearchedCustomers() {
-    this.toggleSearchCustomers = !this.toggleSearchCustomers;
-  }
+  // openSearchedCustomers() {
+  //   this.toggleSearchCustomers = !this.toggleSearchCustomers;
+  // }
 
   //
 

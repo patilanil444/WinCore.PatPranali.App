@@ -28,7 +28,7 @@
                             <app-cust-search [ngClass]="{'disabled': !isAddMode}" (customers)="getCustomers($event)">
                             </app-cust-search>
                         </div>
-                        <div class="col-md-12 position-relative">
+                        <!-- <div class="col-md-12 position-relative">
                             <button class="customer-accordion"
                                 [ngClass]="{'customer-panel-active': toggleSearchCustomers===true}"
                                 (click)="openSearchedCustomers()">Searched Customers
@@ -70,10 +70,10 @@
                                     </tbody>
                                 </table>
                             </div>
-                        </div>
+                        </div> -->
                     </div>
                 </form>
-                <ul class="nav nav-tabs" style="margin-top: 10px;">
+                <ul class="nav nav-tabs">
                     <li class="nav-item">
                         <a role="tab" class="nav-link active" id="tab-0" data-toggle="tab" href="#tab-content-0">
                             <span>Customer Details </span>
@@ -453,7 +453,7 @@
                                                     formControlName="operativeInstruction">
                                             </div>
                                         </div>
-                                        <div class="row">
+                                        <!-- <div class="row">
                                             <div class="col-md-12 position-relative">
                                                 <button class="customer-accordion"
                                                     [ngClass]="{'customer-panel-active': toggleSearchJointCustomers===true}"
@@ -500,7 +500,7 @@
                                                     </table>
                                                 </div>
                                             </div>
-                                        </div>
+                                        </div> -->
 
 
                                         <!-- <div class="row">
@@ -577,7 +577,7 @@
                                                *Note : A customer can be guarantor for maximum 2 loan accounts.
                                             </div>
                                         </div>
-                                        <div class="row">
+                                        <!-- <div class="row">
                                             <div class="col-md-12 position-relative">
                                                 <button class="customer-accordion"
                                                     [ngClass]="{'customer-panel-active': toggleSearchGuarantorCustomers===true}"
@@ -624,7 +624,7 @@
                                                     </table>
                                                 </div>
                                             </div>
-                                        </div>
+                                        </div> -->
 
                                         <div class="row">
                                             <div class="col-md-12 position-relative" style="margin: 10px 0 0 0;">

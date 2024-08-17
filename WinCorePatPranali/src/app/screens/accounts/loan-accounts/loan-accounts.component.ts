@@ -160,16 +160,16 @@ export class LoanAccountsComponent {
   uiInstallmentWithInterestYN: any[] = [];
   uiInstallmentTypes: any[] = [];
 
-  toggleSearchCustomers = false;
-  toggleSearchJointCustomers = false;
-  toggleSearchGuarantorCustomers = false;
+  // toggleSearchCustomers = false;
+  // toggleSearchJointCustomers = false;
+  // toggleSearchGuarantorCustomers = false;
   isNotJointAccount = true;
   isLoanAccountSelected = true;
   isFDAccount = false;
   isRDAccount = false;
 
   selectedCustomerId = 0;
-  selectedLoanType = 3;
+  selectedLoanType = 1;
 
   uiCustomers: any[] = [];
   uiJointCustomers: any[] = [];
@@ -604,24 +604,25 @@ export class LoanAccountsComponent {
   }
 
   getCustomers(custData: any) {
-    this.uiCustomers = custData;
-    this.toggleSearchCustomers = true;
+    if(custData && custData.status == 'Active') {
+      this.selectCustomer(custData.id);
+    }
+    // this.toggleSearchCustomers = true;
   }
 
   getCustomersForJoint(custData: any) {
-    if (custData && custData.length) {
-      this.uiJointCustomers = custData.filter((c: any) => c.status == 'Active'); // display only active customers
+    if (custData && custData.status == 'Active') {
+      // this.uiJointCustomers = custData.filter((c: any) => c.status == 'Active'); // display only active customers
+      this.selectJointCustomer(custData);
     }
-
-    this.toggleSearchJointCustomers = true;
   }
 
   getCustomersForGuarantor(custData: any) {
-    if (custData && custData.length) {
-      this.uiGuarantorCustomers = custData.filter((c: any) => c.status == 'Active'); // display only active customers
-    }
 
-    this.toggleSearchGuarantorCustomers = true;
+    if (custData && custData.status == 'Active') {
+      // this.uiJointCustomers = custData.filter((c: any) => c.status == 'Active'); // display only active customers
+      this.selectGuarantorCustomer(custData);
+    }
   }
 
   selectCustomer(customerId: number) {
@@ -706,7 +707,7 @@ export class LoanAccountsComponent {
         uiJointCust.srNo = this.uiSelectedJointCustomers.length;
         this.uiSelectedJointCustomers.push(uiJointCust);
 
-        this.toggleSearchJointCustomers = false;
+        //this.toggleSearchJointCustomers = false;
       }
       else {
         this._toastrService.error('Customer already added', 'Error!');
@@ -744,7 +745,7 @@ export class LoanAccountsComponent {
               uiJointCust.srNo = this.uiSelectedGuarantorCustomers.length;
               this.uiSelectedGuarantorCustomers.push(uiJointCust);
 
-              this.toggleSearchGuarantorCustomers = false;
+              //this.toggleSearchGuarantorCustomers = false;
 
             }
             else {
@@ -1166,17 +1167,17 @@ export class LoanAccountsComponent {
     })
   }
 
-  openSearchedCustomers() {
-    this.toggleSearchCustomers = !this.toggleSearchCustomers;
-  }
+  // openSearchedCustomers() {
+  //   this.toggleSearchCustomers = !this.toggleSearchCustomers;
+  // }
 
-  openSearchedJointCustomers() {
-    this.toggleSearchJointCustomers = !this.toggleSearchJointCustomers;
-  }
+  // openSearchedJointCustomers() {
+  //   this.toggleSearchJointCustomers = !this.toggleSearchJointCustomers;
+  // }
 
-  openSearchedGuarantorCustomers() {
-    this.toggleSearchGuarantorCustomers = !this.toggleSearchGuarantorCustomers;
-  }
+  // openSearchedGuarantorCustomers() {
+  //   this.toggleSearchGuarantorCustomers = !this.toggleSearchGuarantorCustomers;
+  // }
 
   //
 

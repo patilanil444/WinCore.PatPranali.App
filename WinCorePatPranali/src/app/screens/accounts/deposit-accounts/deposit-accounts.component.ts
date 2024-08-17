@@ -172,8 +172,8 @@ export class DepositAccountsComponent {
   uiRenewalTypes: any[] = [];
   uiAccountStatuses:any[] = [];
 
-  toggleSearchCustomers = false;
-  toggleSearchJointCustomers = false;
+  // toggleSearchCustomers = false;
+  // toggleSearchJointCustomers = false;
   isNotJointAccount = true;
   isFDAccount = false;
   isRDAccount = false;
@@ -524,16 +524,19 @@ export class DepositAccountsComponent {
   }
 
   getCustomers(custData: any) {
-    this.uiCustomers = custData;
-    this.toggleSearchCustomers = true;
+    
+    if (custData && custData.status == 'Active') {
+      this.selectCustomer(custData.id);
+    }
+
+    //this.toggleSearchCustomers = true;
   }
 
   getCustomersForJoint(custData: any) {
-    if (custData && custData.length) {
-      this.uiJointCustomers = custData.filter((c: any) => c.status == 'Active'); // display only active customers
+    if (custData && custData.status == 'Active') {
+      this.selectJointCustomer(custData);
     }
-
-    this.toggleSearchJointCustomers = true;
+    // this.toggleSearchJointCustomers = true;
   }
 
   selectCustomer(customerId: number) {
@@ -618,7 +621,7 @@ export class DepositAccountsComponent {
         uiJointCust.srNo = this.uiSelectedJointCustomers.length;
         this.uiSelectedJointCustomers.push(uiJointCust);
 
-        this.toggleSearchJointCustomers = false;
+        //this.toggleSearchJointCustomers = false;
       }
       else {
         this._toastrService.error('Customer already added', 'Error!');
@@ -1124,13 +1127,13 @@ export class DepositAccountsComponent {
     })
   }
 
-  openSearchedCustomers() {
-    this.toggleSearchCustomers = !this.toggleSearchCustomers;
-  }
+  // openSearchedCustomers() {
+  //   this.toggleSearchCustomers = !this.toggleSearchCustomers;
+  // }
 
-  openSearchedJointCustomers() {
-    this.toggleSearchJointCustomers = !this.toggleSearchJointCustomers;
-  }
+  // openSearchedJointCustomers() {
+  //   this.toggleSearchJointCustomers = !this.toggleSearchJointCustomers;
+  // }
 
   //
 

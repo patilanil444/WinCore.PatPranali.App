@@ -1,11 +1,13 @@
-<div class="app-container app-theme-white body-tabs-shadow fixed-sidebar fixed-header">
+<div class="app-container app-theme-white body-tabs-shadow"
+[ngClass]="isSidebarEnabled ? 'fixed-sidebar fixed-header': 'fixed-sidebar fixed-header closed-sidebar'">
     <div class="app-header header-shadow">
         <div class="app-header__logo">
             <div class="logo-src"></div>
             <div class="header__pane ml-auto">
                 <div>
-                    <button type="button" class="hamburger close-sidebar-btn hamburger--elastic"
-                        data-class="closed-sidebar">
+                    <button type="button" data-class="closed-sidebar" 
+                    [ngClass]="isSidebarEnabled ? 'hamburger close-sidebar-btn hamburger--elastic': 'hamburger close-sidebar-btn hamburger--elastic is-active'"
+                         (click)="sidebarClick()">
                         <span class="hamburger-box">
                             <span class="hamburger-inner"></span>
                         </span>
@@ -489,12 +491,13 @@
                         </li>
 
                         <li class="app-sidebar__heading">
-                            <a href="#">
+                            <a (click)="clickMenu('customers')">
                                 <i class="metismenu-icon pe-7s-user icon-gradient bg-love-kiss"></i>
                                 Customers
-                                <i class="metismenu-state-icon pe-7s-angle-down caret-left"></i>
+                                <i class="metismenu-state-icon pe-7s-angle-down caret-left"
+                                 [ngClass]="isCustomerExpanded ? 'pe-7s-angle-down mm-up-arrow': 'pe-7s-angle-down mm-down-arrow'"></i>
                             </a>
-                            <ul>
+                            <ul [ngClass]="isCustomerExpanded ? 'mm-collapse mm-show': 'mm-collapse'">
                                 <li>
                                     <a [class.mm-active]="isMenuSelected('customer-search')"
                                         (click)="configClick('customer-search')">
@@ -512,13 +515,15 @@
                             </ul>
 
                         </li>
+
                         <li class="app-sidebar__heading">
-                            <a href="#">
+                            <a (click)="clickMenu('accounts')">
                                 <i class="metismenu-icon pe-7s-note2 icon-gradient bg-love-kiss"></i>
                                 Accounts
-                                <i class="metismenu-state-icon pe-7s-angle-down caret-left"></i>
+                                <i class="metismenu-state-icon pe-7s-angle-down caret-left"
+                                [ngClass]="isAccountsExpanded ? 'pe-7s-angle-down mm-up-arrow': 'pe-7s-angle-down'"></i>
                             </a>
-                            <ul>
+                            <ul [ngClass]="isAccountsExpanded ? 'mm-collapse mm-show': 'mm-collapse'">
                                 <li>
                                     <a [class.mm-active]="isMenuSelected('account-search')"
                                         (click)="configClick('account-search')">
@@ -548,9 +553,89 @@
                                     </a>
                                 </li>
                             </ul>
-
                         </li>
 
+                        <li class="app-sidebar__heading">
+                            <a (click)="clickMenu('registers')">
+                                <i class="metismenu-icon pe-7s-note icon-gradient bg-love-kiss"></i>
+                                    Registers
+                                <i class="metismenu-state-icon pe-7s-angle-down caret-left"
+                                [ngClass]="isRegistersExpanded ? 'pe-7s-angle-down mm-up-arrow': 'pe-7s-angle-down'"></i>
+                            </a>
+                            <ul [ngClass]="isRegistersExpanded ? 'mm-collapse mm-show': 'mm-collapse'">
+                                <li>
+                                    <a [class.mm-active]="isMenuSelected('cheque-request')"
+                                        (click)="configClick('cheque-request')">
+                                        <i class="metismenu-icon pe-7s-next-2"></i>
+                                        Cheque Book Request
+                                    </a>
+                                </li>
+                               
+                                <li>
+                                    <a [class.mm-active]="isMenuSelected('cheque-book-issue')"
+                                        (click)="configClick('cheque-book-issue')">
+                                        <i class="metismenu-icon pe-7s-note2"></i>
+                                        Cheque Book Issue
+                                    </a>
+                                </li>
+                                <li>
+                                    <a [class.mm-active]="isMenuSelected('opening-balance')"
+                                    (click)="configClick('opening-balance')">
+                                        <i class="metismenu-icon pe-7s-note2"></i>
+                                        Cheque Book Register
+                                    </a>
+                                </li>
+                                <li>
+                                    <a [class.mm-active]="isMenuSelected('balance-cert')"
+                                        (click)="configClick('balance-cert')">
+                                        <i class="metismenu-icon pe-7s-note2"></i>
+                                        Stop / Release Cheque
+                                    </a>
+                                </li>
+                                <li>
+                                    <a [class.mm-active]="isMenuSelected('balance-cert')"
+                                        (click)="configClick('balance-cert')">
+                                        <i class="metismenu-icon pe-7s-note2"></i>
+                                        Stop Payment Register
+                                    </a>
+                                </li>
+                                <li>
+                                    <a [class.mm-active]="isMenuSelected('balance-cert')"
+                                        (click)="configClick('balance-cert')">
+                                        <i class="metismenu-icon pe-7s-note2"></i>
+                                        Cheque Information
+                                    </a>
+                                </li>
+                                <li>
+                                    <a [class.mm-active]="isMenuSelected('balance-cert')"
+                                        (click)="configClick('balance-cert')">
+                                        <i class="metismenu-icon pe-7s-note2"></i>
+                                        Passbook Issue
+                                    </a>
+                                </li>
+                                <li>
+                                    <a [class.mm-active]="isMenuSelected('balance-cert')"
+                                        (click)="configClick('balance-cert')">
+                                        <i class="metismenu-icon pe-7s-note2"></i>
+                                        Passbook Printing
+                                    </a>
+                                </li>
+                                <li>
+                                    <a [class.mm-active]="isMenuSelected('balance-cert')"
+                                        (click)="configClick('balance-cert')">
+                                        <i class="metismenu-icon pe-7s-note2"></i>
+                                        Leing Marking
+                                    </a>
+                                </li>
+                                <li>
+                                    <a [class.mm-active]="isMenuSelected('balance-cert')"
+                                        (click)="configClick('balance-cert')">
+                                        <i class="metismenu-icon pe-7s-note2"></i>
+                                        Leing Marking
+                                    </a>
+                                </li>
+                            </ul>
+                        </li>
                         <!-- <li class="app-sidebar__heading">
                             <a href="#">
                                 <i class="metismenu-icon pe-7s-timer icon-gradient bg-malibu-beach"></i>
@@ -874,12 +959,13 @@
                         </li> -->
 
                         <li class="app-sidebar__heading">
-                            <a href="#">
+                            <a (click)="clickMenu('masters')">
                                 <i class="metismenu-icon pe-7s-settings icon-gradient bg-sunny-morning"></i>
                                 Masters
-                                <i class="metismenu-state-icon pe-7s-angle-down caret-left"></i>
+                                <i class="metismenu-state-icon pe-7s-angle-down caret-left"
+                                [ngClass]="isMastersExpanded ? 'pe-7s-angle-down mm-up-arrow': 'pe-7s-angle-down'"></i>
                             </a>
-                            <ul>
+                            <ul [ngClass]="isMastersExpanded ? 'mm-collapse mm-show': 'mm-collapse'">
                                 <li>
                                     <a [class.mm-active]="isMenuSelected('banks')" (click)="configClick('banks')">
                                         <i class="metismenu-icon"></i>
@@ -1012,12 +1098,13 @@
                         </li> -->
 
                         <li class="app-sidebar__heading">
-                            <a href="#">
+                            <a (click)="clickMenu('users')">
                                 <i class="metismenu-icon pe-7s-users icon-gradient bg-malibu-beach"></i>
                                 Users
-                                <i class="metismenu-state-icon pe-7s-angle-down caret-left"></i>
+                                <i class="metismenu-state-icon pe-7s-angle-down caret-left"
+                                [ngClass]="isUsersExpanded ? 'pe-7s-angle-down mm-up-arrow': 'pe-7s-angle-down'"></i>
                             </a>
-                            <ul>
+                            <ul [ngClass]="isUsersExpanded ? 'mm-collapse mm-show': 'mm-collapse'">
                                 <li>
                                     <a [class.mm-active]="isMenuSelected('user-search')"
                                         (click)="configClick('user-search')">

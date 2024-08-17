@@ -5,7 +5,7 @@
                 <form [formGroup]="balanceForm" #form="ngForm">
                     <h5 class="card-title">Account Opening Balance Feeding</h5>
                     <div class="row">
-                        <div class="col-md-12 position-relative">
+                        <div class="col-md-6 position-relative">
                             <app-acc-search [generalLedgers]="uiAllGeneralLedgers"
                                 (accounts)="getAccounts($event)"></app-acc-search>
                         </div>

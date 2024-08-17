@@ -54,6 +54,12 @@ import { LienFdLoanComponent } from '../screens/accounts/loan-accounts/loan-type
 import { OpeningBalanceComponent } from '../screens/accounts/opening-balance/opening-balance.component';
 import { AccSearchComponent } from '../common/directives/acc-search/acc-search.component';
 import { BalanceCertificateComponent } from '../screens/accounts/balance-certificate/balance-certificate.component';
+import { BackOfficeEntryComponent } from '../screens/transactions/back-office-entry/back-office-entry.component';
+import { ChequeBookRequestComponent } from '../screens/registers/cheque-book-request/cheque-book-request.component';
+import { ChequeBookIssueComponent } from '../screens/registers/cheque-book-issue/cheque-book-issue.component';
+// import { AutocompleteComponent } from '../common/directives/autocomplete/autocomplete.component';
+import { AutoAccSearchComponent } from '../common/directives/auto-acc-search/auto-acc-search.component';
+import { AutocompleteLibModule } from 'angular-ng-autocomplete';
 
 @NgModule({
   declarations: [
@@ -106,6 +112,11 @@ import { BalanceCertificateComponent } from '../screens/accounts/balance-certifi
     OpeningBalanceComponent,
     AccSearchComponent,
     BalanceCertificateComponent,
+    BackOfficeEntryComponent,
+    ChequeBookRequestComponent,
+    ChequeBookIssueComponent,
+    // AutocompleteComponent,
+    AutoAccSearchComponent,
   ],
   imports: [
     CommonModule,
@@ -114,7 +125,7 @@ import { BalanceCertificateComponent } from '../screens/accounts/balance-certifi
     AppRouterRoutingModule,
     NgxPaginationModule,
     BsDatepickerModule.forRoot(),
-    SelectDropDownModule,
+    SelectDropDownModule, AutocompleteLibModule
   ],
   providers: [],// Toastr providers
 })

@@ -1,0 +1,113 @@
+<div class="row">
+    <div class="col-md-12">
+        <div class="main-card mb-3 card">
+            <div class="card-body">
+                <form [formGroup]="bookIssueForm" #form="ngForm">
+                    <h5 class="card-title">Cheque Book Issue</h5>
+                    <div class="row">
+                        <div class="col-md-3 position-relative form-group">
+                            <label for="txtName" class="">Book Serial Number</label>
+                            <div class="input-group">
+                                <input id="txtName" tabindex="2" type="number"
+                                class="form-control" required maxlength="100" formControlName="serialNumber" autocomplete="off">
+                            </div>
+                        </div>
+                        <div class="col-md-3 position-relative form-group">
+                            <button class="mt-1 btn btn-info" style="margin-top: 30px !important;" (click)="showBookDetails()">Show details</button>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-3 position-relative form-group">
+                            <label for="txtName" class="">Cheque Numbers</label>
+                            <div style="display: flex;">
+                                <input name="districtName" id="txtName" tabindex="2" type="number"
+                                class="col-md-5 form-control" formControlName="chequeNumFrom" autocomplete="off">
+                           <span style="margin: 5px;">To</span>
+                            <input name="districtName" id="txtName" tabindex="2" type="number"
+                                class="col-md-6 form-control"  formControlName="chequeNumTo" autocomplete="off">
+                            </div>
+                        </div>
+                       
+                        <div class="col-md-3 position-relative form-group">
+                            <label for="txtName" class="">Issued Cheques</label>
+                            <input name="districtName" id="txtName" tabindex="2" type="number"
+                                class="form-control" required maxlength="100" formControlName="issuedCheques" autocomplete="off">
+                        </div>
+                        <div class="col-md-3 position-relative form-group">
+                            <label for="txtName" class="">Restricted Cheques</label>
+                            <input name="districtName" id="txtName" tabindex="2" type="number"
+                                class="form-control" required maxlength="100" formControlName="restrictedCheques" autocomplete="off">
+                        </div>
+                        <div class="col-md-3 position-relative form-group">
+                            <label for="txtName" class="">Executed Cheques</label>
+                            <input name="districtName" id="txtName" tabindex="2" type="number"
+                                class="form-control" required maxlength="100" formControlName="executedCheques" autocomplete="off">
+                        </div>
+                    </div>
+                    <div class="divider"></div>
+                    <div class="row">
+                        <div class="col-md-6 position-relative">
+                            <app-auto-acc-search [generalLedgers]="uiSavingGeneralLedgers"
+                                (accounts)="getAccounts($event)"></app-auto-acc-search>
+                        </div>
+                        
+                        <!-- <div class="row" style="margin-bottom: 10px;">
+                            <div class="col-lg-12">
+                                <table class="mb-0 table table-striped">
+                                    <thead>
+                                        <tr>
+                                            <th width="10%">Select</th>
+                                            <th width="15%">General Ledger</th>
+                                            <th width="15%">Account Number</th>
+                                            <th width="15%">Customer Number</th>
+                                            <th width="20%">Name</th>
+                                            <th width="15%">Rate Of Interest</th>
+                                            <th width="10%">Status</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr
+                                            *ngFor="let uiAccount of uiAccounts | paginate: { itemsPerPage: 10, currentPage: p, totalItems: total }">
+                                            <td style="padding: .25rem;" class="sorting_1 dtr-control">
+                                                <button class="mb-2 mr-2 btn btn-link"
+                                                    style="--bs-btn-padding-x:none !important; padding:0 !important;"
+                                                    (click)="selectAccount(uiAccount.accountsId)">Select</button>
+                                            </td>
+                                            <td scope="row">{{uiAccount.glName}}</td>
+                                            <td>{{uiAccount.accountNo}}</td>
+                                            <td>{{uiAccount.customerCodeStr}}</td>
+                                            <td>{{uiAccount.custName}}</td>
+                                            <td>{{uiAccount.int_Rate}}</td>
+                                            <td>
+                                                <div class="badge"
+                                                    [ngClass]="{'badge-danger': (uiAccount.status==='Freeze'|| uiAccount.status==='Closed'), 'badge-success' : uiAccount.status=== 'Open', 'badge-warning' : uiAccount.status=== 'Dormant'}">
+                                                    {{uiAccount.status}}
+                                                </div>
+                                            </td>
+                                        </tr>
+                                        <tr *ngIf="uiAccounts.length==0">
+                                            <td colspan="7">No records found..</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+        
+                        <div class="d-flex justify-content-center">
+                            <pagination-controls (pageChange)="pageChangeEvent($event)"></pagination-controls>
+                        </div>      -->
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6 position-relative">
+                            <button class="mt-1 btn btn-primary" (click)="saveRequest()">Submit</button>
+                            <button class="mt-1 btn btn-left-margin10 btn-danger" (click)="clear()">Clear</button>
+                        </div>
+                    </div>
+                    <div class="row" style="margin-top: 10px;">
+                      
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

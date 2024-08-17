@@ -28,7 +28,7 @@
                             <app-cust-search tabindex="3" [ngClass]="{'disabled': !isAddMode}" (customers)="getCustomers($event)">
                             </app-cust-search>
                         </div>
-                        <div class="col-md-12 position-relative">
+                        <!-- <div class="col-md-12 position-relative">
                             <button class="customer-accordion" tabindex="4"
                                 [ngClass]="{'customer-panel-active': toggleSearchCustomers===true}"
                                 (click)="openSearchedCustomers()">Searched Customers
@@ -70,10 +70,10 @@
                                     </tbody>
                                 </table>
                             </div>
-                        </div>
+                        </div> -->
                     </div>
                 </form>
-                <ul class="nav nav-tabs" style="margin-top: 10px;">
+                <ul class="nav nav-tabs">
                     <li class="nav-item">
                         <a role="tab" class="nav-link active" id="tab-0" data-toggle="tab" href="#tab-content-0">
                             <span>Customer Details </span>
@@ -483,7 +483,7 @@
                                                     formControlName="operativeInstruction">
                                             </div>
                                         </div>
-                                        <div class="row">
+                                        <!-- <div class="row">
                                             <div class="col-md-12 position-relative">
                                                 <button class="customer-accordion" 
                                                     [ngClass]="{'customer-panel-active': toggleSearchJointCustomers===true}"
@@ -530,17 +530,8 @@
                                                     </table>
                                                 </div>
                                             </div>
-                                        </div>
-
-
-                                        <!-- <div class="row">
-                                            <div style="display: flex; margin-bottom: 10px;">
-                                                <button class="mt-1 btn btn-primary" (click)="saveAccount()"
-                                                    tabindex="23">Add</button>
-                                                <button class="mt-1 btn btn-left-margin10 btn-danger"
-                                                    (click)="clear()" tabindex="24">Clear</button>
-                                            </div>
                                         </div> -->
+
                                         <div class="row">
                                             <div class="col-md-12 position-relative" style="margin: 10px 0 0 0;">
                                                 <h5 class="card-title" style="color: #bb3fd8 !important;">Joint

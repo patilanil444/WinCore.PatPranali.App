@@ -28,7 +28,7 @@
                             <app-cust-search tabindex="3" [ngClass]="{'disabled': !isAddMode}" (customers)="getCustomers($event)">
                             </app-cust-search>
                         </div>
-                        <div class="col-md-12 position-relative">
+                        <!-- <div class="col-md-12 position-relative">
                             <button class="customer-accordion" tabindex="4"
                                 [ngClass]="{'customer-panel-active': toggleSearchCustomers===true}"
                                 (click)="openSearchedCustomers()">Searched Customers
@@ -70,10 +70,10 @@
                                     </tbody>
                                 </table>
                             </div>
-                        </div>
+                        </div> -->
                     </div>
                 </form>
-                <ul class="nav nav-tabs" style="margin-top: 10px;">
+                <ul class="nav nav-tabs">
                     <li class="nav-item">
                         <a role="tab" class="nav-link active" id="tab-0" data-toggle="tab" href="#tab-content-0">
                             <span>Customer Details </span>
@@ -513,64 +513,7 @@
                                                     formControlName="operativeInstruction">
                                             </div>
                                         </div>
-                                        <div class="row">
-                                            <div class="col-md-12 position-relative">
-                                                <button class="customer-accordion"
-                                                    [ngClass]="{'customer-panel-active': toggleSearchJointCustomers===true}"
-                                                    (click)="openSearchedJointCustomers()">Searched Customers
-                                                </button>
-                                                <div class="customer-panel" *ngIf="toggleSearchJointCustomers">
-                                                    <table style="width: 100%;"
-                                                        class="table table-hover table-striped table-bordered dataTable dtr-inline">
-                                                        <thead>
-                                                            <tr role="row">
-                                                                <th style="width: 5%;">Add</th>
-                                                                <th style="width: 18%;">Customer Number</th>
-                                                                <th style="width: 18%;">Customer Name</th>
-                                                                <th style="width: 18%">Mobile</th>
-                                                                <th style="width: 18%">Date</th>
-                                                                <th style="width: 18%">PAN</th>
-                                                                <th style="width: 5%">Status</th>
-                                                            </tr>
-                                                        </thead>
-                                                        <tbody>
-                                                            <tr role="row" *ngFor="let uiCustomer of uiJointCustomers"
-                                                                class="odd">
-                                                                <td class="sorting_1 dtr-control"><button
-                                                                        class="mb-2 mr-2 btn btn-link"
-                                                                        style="--bs-btn-padding-x:none !important; padding:0 !important;"
-                                                                        (click)="selectJointCustomer(uiCustomer)">Add</button>
-                                                                </td>
-                                                                <td>{{uiCustomer.id}}</td>
-                                                                <td>{{uiCustomer.custName}}</td>
-                                                                <td>{{uiCustomer.mobile}}</td>
-                                                                <td>{{uiCustomer.joinDate}}</td>
-                                                                <td>{{uiCustomer.pan}}</td>
-                                                                <td>
-                                                                    <div class="badge"
-                                                                        [ngClass]="{'badge-danger': uiCustomer.status==='Deleted', 'badge-success' : uiCustomer.status=== 'Active', 'badge-warning' : uiCustomer.status=== 'In-Active'}">
-                                                                        {{uiCustomer.status}}
-                                                                    </div>
-                                                                </td>
-                                                            </tr>
-                                                            <tr *ngIf="uiJointCustomers.length==0">
-                                                                <td colspan="7">No records..</td>
-                                                            </tr>
-                                                        </tbody>
-                                                    </table>
-                                                </div>
-                                            </div>
-                                        </div>
-
-
-                                        <!-- <div class="row">
-                                            <div style="display: flex; margin-bottom: 10px;">
-                                                <button class="mt-1 btn btn-primary" (click)="saveAccount()"
-                                                    tabindex="23">Add</button>
-                                                <button class="mt-1 btn btn-left-margin10 btn-danger"
-                                                    (click)="clear()" tabindex="24">Clear</button>
-                                            </div>
-                                        </div> -->
+                                      
                                         <div class="row">
                                             <div class="col-md-12 position-relative" style="margin: 10px 0 0 0;">
                                                 <h5 class="card-title" style="color: #bb3fd8 !important;">Joint

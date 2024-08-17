@@ -38,6 +38,8 @@ import { UserDailyRoleComponent } from '../screens/users/user-daily-role/user-da
 import { OtherAccountsComponent } from '../screens/accounts/other-accounts/other-accounts.component';
 import { OpeningBalanceComponent } from '../screens/accounts/opening-balance/opening-balance.component';
 import { BalanceCertificateComponent } from '../screens/accounts/balance-certificate/balance-certificate.component';
+import { ChequeBookRequestComponent } from '../screens/registers/cheque-book-request/cheque-book-request.component';
+import { ChequeBookIssueComponent } from '../screens/registers/cheque-book-issue/cheque-book-issue.component';
 
 const routes: Routes = [
   {
@@ -84,6 +86,8 @@ const routes: Routes = [
       { path: 'daily-role', component: UserDailyRoleComponent },
       { path: 'opening-balance', component: OpeningBalanceComponent },
       { path: 'balance-cert', component: BalanceCertificateComponent },
+      { path: 'cheque-request', component: ChequeBookRequestComponent },
+      { path: 'cheque-book-issue', component: ChequeBookIssueComponent },
       { path: '**', component: NotFoundComponent },
       { path: '', redirectTo: 'projects', pathMatch: 'full' },
     ]
