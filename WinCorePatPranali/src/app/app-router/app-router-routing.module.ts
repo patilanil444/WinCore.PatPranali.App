@@ -40,6 +40,7 @@ import { OpeningBalanceComponent } from '../screens/accounts/opening-balance/ope
 import { BalanceCertificateComponent } from '../screens/accounts/balance-certificate/balance-certificate.component';
 import { ChequeBookRequestComponent } from '../screens/registers/cheque-book-request/cheque-book-request.component';
 import { ChequeBookIssueComponent } from '../screens/registers/cheque-book-issue/cheque-book-issue.component';
+// import { LoanDetailsComponent } from '../screens/accounts/loan-details/loan-details.component';
 
 const routes: Routes = [
   {
@@ -88,6 +89,7 @@ const routes: Routes = [
       { path: 'balance-cert', component: BalanceCertificateComponent },
       { path: 'cheque-request', component: ChequeBookRequestComponent },
       { path: 'cheque-book-issue', component: ChequeBookIssueComponent },
+      // { path: 'loan-details', component: LoanDetailsComponent },
       { path: '**', component: NotFoundComponent },
       { path: '', redirectTo: 'projects', pathMatch: 'full' },
     ]

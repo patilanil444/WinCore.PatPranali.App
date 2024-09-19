@@ -10,6 +10,7 @@ import { IGeneralDTO } from 'src/app/common/models/common-ui-models';
 export class LoanAccountsService {
   serviceBaseURL = "";
   jointCustomerToDelete = -1;
+  guarantorCustomerToDelete = -1;
 
   constructor(private http: HttpClient) { }
 
@@ -21,13 +22,13 @@ export class LoanAccountsService {
     return this.dto.asObservable();
   }
 
-  getDepositAccount(accountsId: number) {
+  getLoanAccount(accountsId: number) {
     let options = GlobleDeclarations.getHeaderOptions();
-    return this.http.get(GlobleDeclarations.apiBaseURL + "api/DepositAccount/deposit-account?accountsId=" + accountsId, options);
+    return this.http.get(GlobleDeclarations.apiBaseURL + "api/LoanAccount/loan-account?accountsId=" + accountsId, options);
   }
 
-  saveDepositAccount(accountModel: any): any {
+  saveLoanAccount(accountModel: any): any {
     let options = GlobleDeclarations.getHeaderOptions();
-    return this.http.post(GlobleDeclarations.apiBaseURL + "api/DepositAccount/create-deposit-account", accountModel, options);
+    return this.http.post(GlobleDeclarations.apiBaseURL + "api/LoanAccount/save-loan-account", accountModel, options);
   }
 }

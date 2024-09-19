@@ -2,6 +2,7 @@ import { DatePipe, formatDate } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ToastrService } from 'ngx-toastr';
+import { AccountDeclarations } from 'src/app/common/account-declarations';
 import { AccountsService } from 'src/app/services/accounts/accounts/accounts.service';
 
 @Component({
@@ -16,11 +17,15 @@ export class GoldLoanComponent implements OnInit {
   goldLoanForm!: FormGroup;
   uigoldTypes: any[] = [];
   uiAddedGolds: any[] = [];
+  uiChangesInInterestRateYN: any[] = [];
 
   p_gold: number = 1;
   total_golds: number = 0;
 
   ngOnInit(): void {
+
+    this.uiChangesInInterestRateYN = AccountDeclarations.changesInInterestRateYN;
+    
     this.goldLoanForm = new FormGroup({
       receiptNo: new FormControl("", [Validators.required]),
       goldType: new FormControl(0, [Validators.required]),
@@ -30,11 +35,12 @@ export class GoldLoanComponent implements OnInit {
       periodInMonths: new FormControl("", [Validators.required]),
       paidDate: new FormControl(formatDate(new Date(Date.now()), 'yyyy-MM-dd', 'en'), []),
       //expiryDate: new FormControl(formatDate(new Date(Date.now()), 'yyyy-MM-dd', 'en'), []),
-      expiryDate: new FormControl(new DatePipe('en-US').transform(new Date(Date.now()), 'dd/MM/yyyy'), []),
-
+      maturityDate: new FormControl(formatDate(new Date(Date.now()), 'yyyy-MM-dd', 'en', 'dd/MM/yyyy'), []),
       
       // amount: new FormControl("", []),
     });
+
+    this.maturityDate.disable();
 
     this.getGoldTypes().then(result => {
 
@@ -57,6 +63,24 @@ export class GoldLoanComponent implements OnInit {
         }
       })
     })
+  }
+
+  modifyMaturityDate()
+  {
+    if (this.paidDate.value && this.periodInMonths.value) {
+      if (!isNaN(parseInt(this.periodInMonths.value)) && parseInt(this.periodInMonths.value) > 0) {
+        let paidDate = new Date(this.paidDate.value);
+        paidDate.setMonth(paidDate.getMonth() + parseInt(this.periodInMonths.value));
+        
+        this.goldLoanForm.patchValue({
+          maturityDate: formatDate(paidDate, 'yyyy-MM-dd', 'en'),
+        })
+      }
+      else
+      {
+        this._toastrService.warning('Invalid period or paid date!.', 'Warning!');
+      }
+    }
   }
 
   validGoldLoanForm() {
@@ -108,8 +132,8 @@ export class GoldLoanComponent implements OnInit {
   get periodInMonths() {
     return this.goldLoanForm.get('periodInMonths')!;
   }
-  get expiryDate() {
-    return this.goldLoanForm.get('expiryDate')!;
+  get maturityDate() {
+    return this.goldLoanForm.get('maturityDate')!;
   }
   get receiptNo() {
     return this.goldLoanForm.get('receiptNo')!;
@@ -131,5 +155,9 @@ export class GoldLoanComponent implements OnInit {
   // }
   get paidDate() {
     return this.goldLoanForm.get('paidDate')!;
+  }
+  
+  get changesInInterestApplicable() {
+    return this.goldLoanForm.get('changesInInterestApplicable')!;
   }
 }

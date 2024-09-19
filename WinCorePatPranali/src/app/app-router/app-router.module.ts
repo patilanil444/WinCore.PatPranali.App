@@ -60,6 +60,7 @@ import { ChequeBookIssueComponent } from '../screens/registers/cheque-book-issue
 // import { AutocompleteComponent } from '../common/directives/autocomplete/autocomplete.component';
 import { AutoAccSearchComponent } from '../common/directives/auto-acc-search/auto-acc-search.component';
 import { AutocompleteLibModule } from 'angular-ng-autocomplete';
+// import { LoanDetailsComponent } from '../screens/accounts/loan-details/loan-details.component';
 
 @NgModule({
   declarations: [
@@ -117,6 +118,7 @@ import { AutocompleteLibModule } from 'angular-ng-autocomplete';
     ChequeBookIssueComponent,
     // AutocompleteComponent,
     AutoAccSearchComponent,
+    // LoanDetailsComponent,
   ],
   imports: [
     CommonModule,

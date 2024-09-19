@@ -7,7 +7,7 @@
                 <h5 class="card-title">Search customer</h5>
                 <div class="row">
                     <div class="col-md-9">
-                        <app-cust-search (customers)="getCustomers($event)">
+                        <app-cust-search (customers)="getCustomers($event)" [allowMultiSearch]="false">
                         </app-cust-search>
                     </div>
                     <div class="col-md-3">

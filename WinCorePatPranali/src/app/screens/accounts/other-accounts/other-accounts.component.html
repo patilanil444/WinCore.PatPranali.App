@@ -25,7 +25,8 @@
                             </div>
                         </div>
                         <div class="col-md-6 position-relative">
-                            <app-cust-search tabindex="3" [ngClass]="{'disabled': !isAddMode}" (customers)="getCustomers($event)">
+                            <app-cust-search tabindex="3" [ngClass]="{'disabled': !isAddMode}" 
+                            (customers)="getCustomers($event)" [allowMultiSearch]="false">
                             </app-cust-search>
                         </div>
                         <!-- <div class="col-md-12 position-relative">

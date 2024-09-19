@@ -10,6 +10,7 @@ import { GeneralLedgerService } from 'src/app/services/masters/general-ledger/ge
 import { SharedService } from 'src/app/services/shared.service';
 import { OtherAccountsService } from 'src/app/services/accounts/other-accounts/other-accounts.service';
 import { AccountsService } from 'src/app/services/accounts/accounts/accounts.service';
+import { LoanAccountsService } from 'src/app/services/accounts/loan-accounts/loan-accounts.service';
 
 @Component({
   selector: 'app-account-search',
@@ -45,7 +46,8 @@ export class AccountSearchComponent implements OnInit {
     private _accountsService: AccountsService,
     private _depositAccountService: DepositAccountService,
     private _savingAccountService: SavingAccountService,
-    private _otherAccountsService: OtherAccountsService) { }
+    private _otherAccountsService: OtherAccountsService,
+    private _loanAccountsService: LoanAccountsService) { }
 
   ngOnInit(): void {
     this.searchForm = new FormGroup({
@@ -158,6 +160,8 @@ export class AccountSearchComponent implements OnInit {
   addAccount(route: string) {
     this._depositAccountService.setDTO({});
     this._savingAccountService.setDTO({});
+    this._loanAccountsService.setDTO({});
+    this._otherAccountsService.setDTO({});
     this.configClick(route);
   }
 
@@ -182,8 +186,9 @@ export class AccountSearchComponent implements OnInit {
       this._otherAccountsService.setDTO(dtObject);
       this.configClick("other-accounts");
     }
-    else if (uiAccount.glGroup == 'G') {
-      
+    else if (uiAccount.glGroup == 'L' || uiAccount.glGroup == 'L') {
+      this._loanAccountsService.setDTO(dtObject);
+      this.configClick("loan-accounts");
     }
     else if (uiAccount.glGroup == 'B') {
       

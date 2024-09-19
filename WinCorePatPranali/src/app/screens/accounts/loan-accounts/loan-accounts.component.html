@@ -25,7 +25,8 @@
                             </div>
                         </div>
                         <div class="col-md-6 position-relative">
-                            <app-cust-search [ngClass]="{'disabled': !isAddMode}" (customers)="getCustomers($event)">
+                            <app-cust-search [ngClass]="{'disabled': !isAddMode}" (customers)="getCustomers($event)"
+                            [allowMultiSearch]="false">
                             </app-cust-search>
                         </div>
                         <!-- <div class="col-md-12 position-relative">
@@ -84,36 +85,15 @@
                             <span>Account Details</span>
                         </a>
                     </li>
-                    <li class="nav-item">
-                        <a role="tab" class="nav-link" id="tab-1" data-toggle="tab" href="#tab-content-2">
-                            <span>Parameters</span>
-                        </a>
-                    </li>
                    
-                    <li class="nav-item" [ngClass]="{'disabled': isNotJointAccount}">
-                        <a role="tab" class="nav-link" id="tab-3" data-toggle="tab" href="#tab-content-3">
+                    <li class="nav-item" [ngClass]="{'disabled': !isJointAccount}">
+                        <a role="tab" class="nav-link" id="tab-3" data-toggle="tab" href="#tab-content-2">
                             <span>Joint Account</span>
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a role="tab" class="nav-link" id="tab-3" data-toggle="tab" href="#tab-content-4">
+                        <a role="tab" class="nav-link" id="tab-3" data-toggle="tab" href="#tab-content-3">
                             <span>Guarantor</span>
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a role="tab" class="nav-link" id="tab-3" data-toggle="tab" href="#tab-content-5">
-                            <span>Security</span>
-                        </a>
-                    </li>
-                    <li class="nav-item" >
-                        <!-- [ngClass]="{'disabled': isLoanAccountSelected}" -->
-                        <a role="tab" class="nav-link" id="tab-3" data-toggle="tab" href="#tab-content-6">
-                            <span>Loan Details</span>
-                        </a>
-                    </li>
-                    <li class="nav-item" >
-                        <a role="tab" class="nav-link" id="tab-3" data-toggle="tab" href="#tab-content-7">
-                            <span>Installments</span>
                         </a>
                     </li>
                 </ul>
@@ -258,7 +238,7 @@
                                                 </select>
                                             </div>
 
-                                            <div class="col-md-3 position-relative form-group">
+                                            <!-- <div class="col-md-3 position-relative form-group">
                                                 <label for="txtCode" class="">Loan Type <span
                                                         class="mandatory">*</span></label>
                                                 <select class="mb-2 form-control" tabindex="1"
@@ -268,7 +248,7 @@
                                                         {{uiLoanType.constantname}}
                                                     </option>
                                                 </select>
-                                            </div>
+                                            </div> -->
 
                                             <div class="col-md-3 position-relative form-group">
                                                 <label for="txtCode" class="">Contact Person <span
@@ -293,14 +273,6 @@
                                                     formControlName="insuranceDate">
                                             </div>
 
-                                           
-                                            
-                                            <div class="col-md-3 position-relative form-group">
-                                                <label for="txtCode" class="">Passbook Date <span
-                                                        class="mandatory">*</span></label>
-                                                <input tabindex="1" type="date" class="form-control"
-                                                    formControlName="passbookDate">
-                                            </div>
 
                                             <div class="col-md-3 position-relative form-group">
                                                 <label for="txtCode" class="">Last Interest Date <span
@@ -316,11 +288,11 @@
                                                     formControlName="lastTransactionDate">
                                             </div>
                                            
-                                            <div class="col-md-3 position-relative form-group">
+                                            <!-- <div class="col-md-3 position-relative form-group">
                                                 <label for="txtCode" class="">Last Penal Date </label>
                                                 <input tabindex="1" type="date" class="form-control"
                                                     formControlName="lastPenalDate">
-                                            </div>
+                                            </div> -->
 
                                             <div class="col-md-3 position-relative form-group">
                                                 <label for="txtCode" class="">Account Close Date</label>
@@ -334,116 +306,14 @@
                         </form>
                     </div>
                     <div class="tab-pane tabs-animation fade" id="tab-content-2" role="tabpanel">
-                        <form [formGroup]="parametersForm" #form="ngForm">
-                            <div class="row">
-                                <div class="col-md-12">
-                                    <div class="tab-content">
-                                        <div class="row">
-                                            <div class="col-md-3 position-relative form-group">
-                                                <label for="txtCode" class="">Saction Amount <span
-                                                    class="mandatory">*</span></label>
-                                                <input tabindex="1" type="currency" class="form-control"
-                                                    formControlName="sactionAmountFormatted" (change)="setIntallmentSactionAmount()">
-                                            </div>
-                                            <div class="col-md-3 position-relative form-group">
-                                                <label for="txtCode" class="">Saction Date <span
-                                                    class="mandatory">*</span></label>
-                                                <input tabindex="1" type="date" class="form-control"
-                                                    formControlName="sactionDate" (change)="calculateFirstInstallmentDate()">
-                                            </div>
-                                            <div class="col-md-3 position-relative form-group">
-                                                <label for="txtCode" class="">Saction By <span class="mandatory">*</span></label>
-                                                <select class="mb-2 form-control" tabindex="1" formControlName="sanctionBy">
-                                                    <option *ngFor="let uiDirector of uiDirectors" [ngValue]="uiDirector.id">
-                                                        {{uiDirector.directorName}}
-                                                    </option>
-                                                </select>
-                                            </div>
-
-                                            <div class="col-md-3 position-relative form-group">
-                                                <label for="txtCode" class=""> Loan Tenure in Months <span
-                                                        class="mandatory">*</span></label>
-                                                <input tabindex="1" type="number" class="mb-2 form-control"
-                                                    formControlName="loanTenureInMonths" min="0" (change)="calculateMatureDate()"
-                                                    onKeyPress="if(this.value.length >=4) return false;">
-                                            </div>
-
-                                            <div class="col-md-3 position-relative form-group">
-                                                <label for="txtCode" class="">Interest Rate <span
-                                                        class="mandatory">*</span></label>
-                                                <input tabindex="1" type="number" class="mb-2 form-control"
-                                                    formControlName="interestRate" min="0" 
-                                                    onKeyPress="if(this.value.length >=3) return false;">
-                                            </div>
-
-                                            <div class="col-md-3 position-relative form-group">
-                                                <label for="txtCode" class="">Amount Advances <span
-                                                        class="mandatory">*</span></label>
-                                                <input tabindex="1" type="number" min="0" class="form-control"
-                                                    formControlName="amountAdvances">
-                                            </div>
-
-                                            <div class="col-md-3 position-relative form-group">
-                                                <label for="txtCode" class="">Changes In Interest Rate Applicable</label>
-                                                <select class="mb-2 form-control" tabindex="1" formControlName="changesInInterestApplicable">
-                                                    <option *ngFor="let uiChangesInInterestRate of uiChangesInInterestRateYN"
-                                                        [ngValue]="uiChangesInInterestRate.code">
-                                                        {{uiChangesInInterestRate.name}}
-                                                    </option>
-                                                </select>
-                                            </div>
-
-                                            <div class="col-md-3 position-relative form-group">
-                                                <label for="txtCode" class="">Maturity Date <span
-                                                        class="mandatory">*</span></label>
-                                                <input tabindex="1" type="date" class="mb-2 form-control"
-                                                    formControlName="maturityDate">
-                                            </div>
-
-                                            <div class="col-md-3 position-relative form-group">
-                                                <label for="txtCode" class="">Resolution No</label>
-                                                <input tabindex="1" type="text" class="form-control"
-                                                    formControlName="resolutionNo">
-                                            </div>
-
-                                            <div class="col-md-3 position-relative form-group">
-                                                <label for="txtCode" class="">Resolution Date</label>
-                                                <input tabindex="1" type="date" class="form-control"
-                                                    formControlName="resolutionDate">
-                                            </div>
-
-                                            <div class="col-md-3 position-relative form-group">
-                                                <label for="txtCode" class="">First Installment Date <span
-                                                    class="mandatory">*</span></label>
-                                                <input tabindex="1" type="date" class="form-control"
-                                                    formControlName="firstInstallmentDate" (change)="validateFirstInstallmentDate()">
-                                            </div>
-                                           
-                                            <div class="col-md-3 position-relative form-group">
-                                                <label for="txtCode" class="">Installment Type <span
-                                                        class="mandatory">*</span></label>
-                                                <select class="mb-2 form-control" tabindex="1" formControlName="installmentType">
-                                                    <option *ngFor="let uiCurrency of uiCurrencies"
-                                                        [ngValue]="uiCurrency.currencyId">
-                                                        {{uiCurrency.currencyCode}}
-                                                    </option>
-                                                </select>
-                                            </div>
-
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </form>
-                    </div>
-                    <div class="tab-pane tabs-animation fade" id="tab-content-3" role="tabpanel">
                         <form [formGroup]="jointForm" #form="ngForm">
                             <div class="row">
                                 <div class="col-md-12">
                                     <div class="tab-content">
                                         <div class="row">
                                             <div class="col-md-6 position-relative form-group">
-                                                <app-cust-search (customers)="getCustomersForJoint($event)">
+                                                <app-cust-search (customers)="getCustomersForJoint($event)"
+                                                [allowMultiSearch]="false">
                                                 </app-cust-search>
                                             </div>
 
@@ -563,14 +433,15 @@
                             </div>
                         </form>
                     </div>
-                    <div class="tab-pane tabs-animation fade" id="tab-content-4" role="tabpanel">
+                    <div class="tab-pane tabs-animation fade" id="tab-content-3" role="tabpanel">
                         <form [formGroup]="guarantorForm" #form="ngForm">
                             <div class="row">
                                 <div class="col-md-12">
                                     <div class="tab-content">
                                         <div class="row">
                                             <div class="col-md-6 position-relative form-group">
-                                                <app-cust-search (customers)="getCustomersForGuarantor($event)">
+                                                <app-cust-search (customers)="getCustomersForGuarantor($event)"
+                                                [allowMultiSearch]="false">
                                                 </app-cust-search>
                                             </div>
                                             <div class="col-md-6 position-relative form-group">
@@ -676,255 +547,16 @@
                             </div>
                         </form>
                     </div>
-                    <div class="tab-pane tabs-animation fade" id="tab-content-5" role="tabpanel">
-                        <form [formGroup]="securityForm" #form="ngForm">
-                            <div class="row">
-                                <div class="col-md-12">
-                                    <div class="tab-content">
-                                        <div class="row">
-                                            <div class="col-md-3 position-relative form-group">
-                                                <label for="txtCode" class="">Security Type <span
-                                                        class="mandatory">*</span></label>
-                                                <select class="mb-2 form-control" tabindex="27"
-                                                    formControlName="securityType">
-                                                    <option *ngFor="let uiSecurityType of uiSecurityTypes"
-                                                        [ngValue]="uiSecurityType.id">
-                                                        {{uiSecurityType.name}}
-                                                    </option>
-                                                </select>
-                                            </div>
-                                            <div class="col-md-3 position-relative form-group">
-                                                <label for="txtCode" class="">Security  <span
-                                                        class="mandatory">*</span></label>
-                                                <input tabindex="26" type="text" class="form-control"
-                                                    formControlName="security">
-                                            </div>
-                                            
-                                            <div class="col-md-3 position-relative form-group">
-                                                <label for="txtCode" class="">Security Value <span
-                                                        class="mandatory">*</span></label>
-                                                <input tabindex="28" type="number" min="0"  class="form-control"
-                                                    formControlName="securityValue">
-                                            </div>
-                                           
-                                            <div class="col-md-3 position-relative form-group">
-                                                <label for="txtCode" class="">Security Description <span
-                                                        class="mandatory">*</span></label>
-                                                <input tabindex="29" type="text" class="form-control"
-                                                    formControlName="securityDescription">
-                                            </div>
-                                            <div class="col-md-3 position-relative form-group">
-                                                <label for="txtCode" class="">Percentage <span
-                                                        class="mandatory">*</span></label>
-                                                <input tabindex="28" type="number" min="0"  class="form-control"
-                                                    formControlName="percentage" onKeyPress="if(this.value >= 100) return false;">
-                                            </div>
-                                        </div>
-                                        <div class="row">
-                                            <div style="display: flex; margin-bottom: 10px;">
-                                                <button class="mt-1 btn btn-primary" (click)="addSecurity()"
-                                                    tabindex="31">Save Security</button>
-                                                <button class="mt-1 btn btn-left-margin10 btn-danger"
-                                                    (click)="clearSecurity()" tabindex="24">Clear</button>
-                                            </div>
-                                        </div>
-
-                                        <div class="row">
-                                            <div class="col-md-12">
-                                                <table class="mb-0 table table-bordered">
-                                                    <thead>
-                                                        <tr>
-                                                            <th width="20%">Security Type</th>
-                                                            <th width="20%">Security</th>
-                                                            <th width="20%">Value</th>
-                                                            <th width="20%">Percentage</th>
-                                                            <th width="20%">Actions</th>
-                                                        </tr>
-                                                    </thead>
-                                                    <tbody>
-                                                        <tr
-                                                            *ngFor="let uiSecurity of uiSecurities | paginate: { itemsPerPage: 10, currentPage: p_security, totalItems: total_securities }; let ind = index">
-                                                            <ng-container *ngIf="uiSecurity.status!='D'">
-                                                                <td>{{uiSecurity.nomineeName}}</td>
-                                                                <td>{{uiSecurity.relationName}}</td>
-                                                                <td>{{uiSecurity.percentage}}</td>
-                                                                <td>{{uiSecurity.nomineeAddress}}</td>
-                                                                <td>
-                                                                    <div class="widget-content-right">
-                                                                        <button type="button" placeholder="Edit record"
-                                                                            class="btn-shadow btn btn-info btn-actions"
-                                                                            (click)="editSecurity(uiSecurity, ind)">
-                                                                            <span class="btn-icon-wrapper opacity-10">
-                                                                                <i class="fa fa-edit fa-w-10"></i>
-                                                                            </span>
-                                                                        </button>
-                                                                        <button type="button"
-                                                                            placeholder="Delete record"
-                                                                            class="btn-shadow btn btn-danger btn-actions"
-                                                                            data-toggle="modal"
-                                                                            (click)="deleteSecurity(uiSecurity, ind)">
-                                                                            <span class="btn-icon-wrapper opacity-10">
-                                                                                <i class="fa fa-trash fa-w-20"></i>
-                                                                            </span>
-                                                                        </button>
-                                                                    </div>
-                                                                </td>
-                                                            </ng-container>
-                                                        </tr>
-                                                        <tr *ngIf="uiSecurities.length==0">
-                                                            <td colspan="4">No records found..</td>
-                                                        </tr>
-                                                    </tbody>
-                                                </table>
-                                            </div>
-
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </form>
-                    </div>
-                   
-                    <div class="tab-pane tabs-animation fade" id="tab-content-6" role="tabpanel">
-                       <app-vehicle-loan *ngIf="selectedLoanType==0 || selectedLoanType==1"></app-vehicle-loan>
-                       <app-gold-loan *ngIf="selectedLoanType==2"></app-gold-loan>
-                       <app-lien-fd-loan *ngIf="selectedLoanType==3"></app-lien-fd-loan>
-                    </div>
-                    <div class="tab-pane tabs-animation fade" id="tab-content-7" role="tabpanel">
-                        <form [formGroup]="installmentsForm" #form="ngForm">
-                            <div class="row">
-                                <div class="col-md-12">
-                                    <div class="tab-content">
-                                        <div class="row">
-                                            
-                                            <div class="col-md-3 position-relative form-group">
-                                                <label for="txtCode" class="">First Installment Date </label>
-                                                <input tabindex="1" type="date" class="form-control"
-                                                    formControlName="instFirstInstallmentDate" readonly>
-                                            </div>
-                                            <div class="col-md-3 position-relative form-group">
-                                                <label for="txtCode" class="">Expiry Date </label>
-                                                <input tabindex="1" type="date" class="form-control"
-                                                    formControlName="instExpiryDate" readonly>
-                                            </div>
-                                            <div class="col-md-3 position-relative form-group">
-                                                <label for="txtCode" class="">Sactioned Amount </label>
-                                                <input tabindex="1" type="text" class="form-control"
-                                                    formControlName="instSactionAmount" readonly>
-                                            </div>
-                                            <div class="col-md-3 position-relative form-group">
-                                                <label for="txtCode" class="">Amount To Be Received</label>
-                                                <input tabindex="1" type="text" class="form-control"
-                                                    formControlName="instAmountToBeReceived" readonly>
-                                            </div>
-                                            <div class="col-md-3 position-relative form-group">
-                                                <label for="txtCode" class="">Tenure </label>
-                                                <div class="input-group">
-                                                    <input tabindex="41" type="number" min="0" class="form-control" formControlName="instTenureYear"
-                                                    readonly>
-                                                    <div class="input-group-append"><span class="input-group-text">Years</span></div>
-                                                </div>
-                                            </div>
-                                            <div class="col-md-3 position-relative form-group">
-                                                <label for="txtCode"> &nbsp;</label>
-                                                <div class="input-group">
-                                                    <input tabindex="40" type="number" min="0" class="form-control"
-                                                        formControlName="instTenureMonths" readonly>
-                                                    <div class="input-group-append"><span
-                                                            class="input-group-text">Months</span></div>
-                                                </div>
-                                            </div>
-                                            <div class="col-md-3 position-relative form-group">
-                                                <label for="txtCode"> &nbsp;</label>
-                                                 <div class="input-group">
-                                                    <input tabindex="39" type="number" min="0" class="form-control"
-                                                        formControlName="instTenureDays" readonly>
-                                                    <div class="input-group-append"><span
-                                                            class="input-group-text">Days</span></div>
-                                                </div>
-                                            </div>
-                                            <div class="col-md-3 position-relative form-group">
-                                                <label for="txtCode" class="">Installment With Interest <span
-                                                    class="mandatory">*</span></label>
-                                                    <select class="form-control" tabindex="1" formControlName="instInstallWithInterest">
-                                                        <option *ngFor="let uiInstallmentWithInterest of uiInstallmentWithInterestYN"
-                                                            [ngValue]="uiInstallmentWithInterest.code">
-                                                            {{uiInstallmentWithInterest.name}}
-                                                        </option>
-                                                    </select>
-                                            </div>
-                                            <div class="col-md-3 position-relative form-group">
-                                                <label for="txtCode" class="">Installment Type <span class="mandatory">*</span></label>
-                                                <select class="form-control" tabindex="1" formControlName="instInstallmentType">
-                                                    <option *ngFor="let uiInstallmentType of uiInstallmentTypes" [ngValue]="uiInstallmentType.code">
-                                                        {{uiInstallmentType.name}}
-                                                    </option>
-                                                </select>
-                                            </div>
-                                             <div class="col-md-3 position-relative form-group">
-                                                <label for="txtCode" class="">Number of Installments <span
-                                                    class="mandatory">*</span></label>
-                                                <input tabindex="1" type="text" class="form-control"
-                                                    formControlName="instNumberOfInstallments">
-                                            </div>
-
-                                            
-                                            <div class="col-md-3 position-relative form-group">
-                                                <label for="txtCode" class="">Total Amount After all Installments</label>
-                                                <input tabindex="1" type="text" class="form-control"
-                                                    formControlName="instTotalAmountAfterInstallments" readonly>
-                                            </div>
-
-                                            <div class="col-md-3 position-relative form-group">
-                                                <button class="mt-1 btn btn-primary" style="margin-top: 30px !important;"
-                                                    tabindex="23">Show Installments</button>
-                                            </div>
-                                            
-                                            <div>
-                                                <table style="width: 100%;"
-                                                    class="table table-hover table-striped table-bordered dataTable dtr-inline">
-                                                    <thead>
-                                                        <tr role="row">
-                                                            <th style="width: 4%;">#</th>
-                                                            <th style="width: 19%;">Installment Date</th>
-                                                            <th style="width: 19%;">Installment Amount</th>
-                                                            <th style="width: 19%;">Principle</th>
-                                                            <th style="width: 19%;">Interest</th>
-                                                            <th style="width: 19%;">Outstanding Balance</th>
-                                                        </tr>
-                                                    </thead>
-                                                    <tbody>
-                                                        <tr role="row" *ngFor="let uiCustomer of uiSelectedGuarantorCustomers; let i=index" class="odd">
-                                                            <ng-container *ngIf="uiCustomer.status!='D'">
-                                                                <td>{{i+1}}</td>
-                                                                <td>{{uiCustomer.customerNumber}}</td>
-                                                                <td>{{uiCustomer.customerName}}</td>
-                                                                <td>{{uiCustomer.customerName}}</td>
-                                                                <td>{{uiCustomer.customerName}}</td>
-                                                                <td>{{uiCustomer.customerName}}</td>
-                                                            </ng-container>
-                                                        </tr>
-                                                        <tr *ngIf="uiSelectedGuarantorCustomers.length==0">
-                                                            <td colspan="7">No records..</td>
-                                                        </tr>
-                                                    </tbody>
-                                                </table>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </form>
-                       
-                    </div>
                 </div>
 
                 <div class="row">
                     <div class="col-md-6 position-relative">
-                        <button class="mt-1 btn btn-primary" (click)="saveSavingAccount()"
+                        <button class="mt-1 btn btn-primary" (click)="saveLoanAccount()"
                             tabindex="23">Submit</button>
-                            <button class="mt-1 btn btn-left-margin10 btn-success" (click)="authoriseAccount()"
-                            tabindex="24">Authorise Account</button>
+                            <!-- <button class="mt-1 btn btn-left-margin10 btn-success" (click)="authoriseAccount()"
+                            tabindex="24">Authorise Account</button> -->
+                            <button class="mt-1 btn btn-left-margin10 btn-success" (click)="accountDetails()"
+                            tabindex="24">Details</button>
                         <button class="mt-1 btn btn-left-margin10 btn-danger" (click)="clear()"
                             tabindex="25">Clear</button>
                     </div>

@@ -1,4 +1,4 @@
-import { Component, EventEmitter, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { CustomerDeclarations } from '../../customer-declarations';
 import { CustomerService } from 'src/app/services/customers/customer/customer.service';
@@ -18,6 +18,7 @@ export class CustSearchComponent implements OnInit {
   uiCustomers: any[] = [];
   keyword = "customerCodeStr";
   @Output() customers  = new EventEmitter<any>();
+  @Input() allowMultiSearch : boolean = true;
 
   constructor( private _customerService: CustomerService, private _sharedService: SharedService,
     private _toastrService: ToastrService) { }
@@ -25,7 +26,7 @@ export class CustSearchComponent implements OnInit {
   ngOnInit(): void {
     this.uiCustomerSearchBy = CustomerDeclarations.customerSearchBy;
     this.searchForm = new FormGroup({
-      searchBy: new FormControl(this.uiCustomerSearchBy[0].code, []),
+      searchBy: new FormControl(this.uiCustomerSearchBy[1].code, []),
       searchText: new FormControl("", []),
       searchedCustomerId: new FormControl(0, []),
     });
@@ -63,7 +64,9 @@ export class CustSearchComponent implements OnInit {
                this.uiCustomers = tempCustomers;
            }
          }
-         //this.customers.emit(this.uiCustomers);
+         if (this.allowMultiSearch) {
+          this.customers.emit(this.uiCustomers);
+         }
        })
      }
      else 
@@ -131,7 +134,7 @@ export class CustSearchComponent implements OnInit {
   clear()
   {
     this.searchForm.patchValue({
-      searchBy: this.uiCustomerSearchBy[0].code,
+      searchBy: this.uiCustomerSearchBy[1].code,
       searchText: ""
     });
   }
