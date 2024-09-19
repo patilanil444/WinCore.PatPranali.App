@@ -1,1 +1,84 @@
-<p>login works!</p>
+<!-- <body class="align">
+    <div class="login">
+        <header class="login__header">
+            <h2><svg class="icon">
+                    <use xlink:href="#icon-lock" />
+                </svg>User Login</h2>
+        </header>
+
+        <form class="login__form">
+            <div>
+                <label for="email">E-mail address</label>
+                <input type="email" id="email" name="email" placeholder="mail@address.com">
+            </div>
+            <div>
+                <label for="password">Password</label>
+                <input type="password" id="password" name="password" placeholder="password">
+            </div>
+            <div>
+                <input class="button" type="submit" value="Login" (click)="login()">
+            </div>
+        </form>
+    </div>
+
+    <svg xmlns="http://www.w3.org/2000/svg" class="icons">
+        <symbol id="icon-lock" viewBox="0 0 448 512">
+            <path
+                d="M400 224h-24v-72C376 68.2 307.8 0 224 0S72 68.2 72 152v72H48c-26.5 0-48 21.5-48 48v192c0 26.5 21.5 48 48 48h352c26.5 0 48-21.5 48-48V272c0-26.5-21.5-48-48-48zm-104 0H152v-72c0-39.7 32.3-72 72-72s72 32.3 72 72v72z" />
+        </symbol>
+    </svg>
+</body> -->
+
+
+<div class="app-container">
+    <div class="h-100 bg-plum-plate bg-animation">
+        <div class="d-flex h-100 justify-content-center align-items-center">
+            <div class="mx-auto app-login-box col-md-8">
+                <div class="app-logo-inverse mx-auto mb-3"></div>
+                <div class="modal-dialog w-100 mx-auto">
+                    <div class="modal-content">
+                        <div class="modal-body">
+                            <div class="h5 modal-title text-center">
+                                <h4 class="mt-2">
+                                    <div>Welcome back,</div>
+                                    <span>Please login to your account.</span>
+                                </h4>
+                            </div>
+                            <form class="">
+                                <div class="form-row">
+                                    <div class="col-md-12">
+                                        <div class="position-relative form-group">
+                                            <input name="email" id="exampleEmail" placeholder="Username here..."
+                                                type="email" class="form-control">
+                                        </div>
+                                    </div>
+                                    <div class="col-md-12">
+                                        <div class="position-relative form-group">
+                                            <input name="password" id="examplePassword" placeholder="Password here..."
+                                                type="password" class="form-control">
+                                        </div>
+                                    </div>
+                                </div>
+                                    <!-- <div class="position-relative form-check">
+                                        <input name="check" id="exampleCheck" type="checkbox" class="form-check-input">
+                                        <label for="exampleCheck" class="form-check-label">Keep me logged in</label>
+                                    </div> -->
+                            </form>
+                            <div class="divider"></div>
+                            <h6 class="mb-0">No account? Please contact your administrator to create new one.</h6>
+                        </div>
+                        <div class="modal-footer clearfix">
+                            <!-- <div class="float-left">
+                                <a href="javascript:void(0);" class="btn-lg btn btn-link">Recover Password</a>
+                            </div> -->
+                            <div class="float-right">
+                                <button class="btn btn-primary btn-lg" (click)="login()">Login to Dashboard</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="text-center text-white opacity-8 mt-3">Copyright © ArchitectUI 2019</div>
+            </div>
+        </div>
+    </div>
+</div>

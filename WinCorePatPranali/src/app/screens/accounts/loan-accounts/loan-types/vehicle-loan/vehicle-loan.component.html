@@ -1,0 +1,51 @@
+<div>
+    <form [formGroup]="vehicleLoanForm" #form="ngForm">
+        <div class="row">
+            <div class="col-md-12">
+                <h5 class="card-title">Vehicle Details</h5>
+            </div>
+            <div class="col-md-12">
+                <div class="tab-content">
+                    <div class="row">
+                        <div class="col-md-3 position-relative form-group">
+                            <label for="txtCode" class="">Register Number</label>
+                            <input tabindex="1" type="text" class="form-control"
+                                formControlName="registerNumber">
+                        </div>
+                        <div class="col-md-3 position-relative form-group">
+                            <label for="txtCode" class="">Manufacturer</label>
+                            <input tabindex="1" type="text" class="form-control"
+                                formControlName="manufacturer">
+                        </div>
+                        <div class="col-md-3 position-relative form-group">
+                            <label for="txtCode" class="">Model</label>
+                            <input tabindex="1" type="text" class="form-control"
+                                formControlName="model">
+                        </div>
+                        <div class="col-md-3 position-relative form-group">
+                            <label for="txtCode" class="">Engine Number</label>
+                            <input tabindex="1" type="text" class="form-control"
+                                formControlName="engineNumber">
+                        </div>
+                        <div class="col-md-3 position-relative form-group">
+                            <label for="txtCode" class="">Chasis Number</label>
+                            <input tabindex="1" type="text" class="form-control"
+                                formControlName="chasisNumber">
+                        </div>
+                        <div class="col-md-3 position-relative form-group">
+                            <label for="txtCode" class="">Invoice Amount</label>
+                            <input tabindex="1" type="text" class="form-control"
+                                formControlName="invoiceAmount">
+                        </div>
+                        <div class="col-md-3 position-relative form-group">
+                            <label for="txtCode" class="">Dealer</label>
+                            <input tabindex="1" type="text" class="form-control"
+                                formControlName="dealer">
+                        </div>
+                        
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>

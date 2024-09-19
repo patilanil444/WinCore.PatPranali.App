@@ -59,6 +59,13 @@ export interface IGeneralDTO
     maxId: number,
 }
 
+export enum UiEnumAccountStatus {
+    OPEN = 1,
+    FREEZE = 2,
+    DORMANT = 3,
+    CLOSE = 4
+}
+
 export enum UiEnumGeneralMaster {
     GENDER = 1,
     TITLE = 2,
@@ -84,7 +91,9 @@ export enum UiEnumGeneralMaster {
     OPRMODE = 22,
     GLGROUP = 23,
     SCHEDULE = 24,
-    TDSREASON = 25
+    TDSREASON = 25,
+    ACSTATUS = 26,
+    LOANTYPE = 27
     // GENDER = 1,
     // TITLE = 2,
     // ACTYPE = 3,

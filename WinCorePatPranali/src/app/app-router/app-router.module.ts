@@ -42,6 +42,25 @@ import { MemberFormComponent } from '../screens/customers/member/member-form/mem
 import { CustSearchComponent } from '../common/directives/cust-search/cust-search.component';
 import { AccountSearchComponent } from '../screens/accounts/account-search/account-search.component';
 import { SavingAccountsComponent } from '../screens/accounts/saving-accounts/saving-accounts.component';
+import { UserSearchComponent } from '../screens/users/user-search/user-search.component';
+import { UserComponent } from '../screens/users/user/user.component';
+import { RoleAccessComponent } from '../screens/users/role-access/role-access.component';
+import { UserActivityComponent } from '../screens/users/user-activity/user-activity.component';
+import { UserDailyRoleComponent } from '../screens/users/user-daily-role/user-daily-role.component';
+import { VehicleLoanComponent } from '../screens/accounts/loan-accounts/loan-types/vehicle-loan/vehicle-loan.component';
+import { GoldLoanComponent } from '../screens/accounts/loan-accounts/loan-types/gold-loan/gold-loan.component';
+import { OtherAccountsComponent } from '../screens/accounts/other-accounts/other-accounts.component';
+import { LienFdLoanComponent } from '../screens/accounts/loan-accounts/loan-types/lien-fd-loan/lien-fd-loan.component';
+import { OpeningBalanceComponent } from '../screens/accounts/opening-balance/opening-balance.component';
+import { AccSearchComponent } from '../common/directives/acc-search/acc-search.component';
+import { BalanceCertificateComponent } from '../screens/accounts/balance-certificate/balance-certificate.component';
+import { BackOfficeEntryComponent } from '../screens/transactions/back-office-entry/back-office-entry.component';
+import { ChequeBookRequestComponent } from '../screens/registers/cheque-book-request/cheque-book-request.component';
+import { ChequeBookIssueComponent } from '../screens/registers/cheque-book-issue/cheque-book-issue.component';
+// import { AutocompleteComponent } from '../common/directives/autocomplete/autocomplete.component';
+import { AutoAccSearchComponent } from '../common/directives/auto-acc-search/auto-acc-search.component';
+import { AutocompleteLibModule } from 'angular-ng-autocomplete';
+// import { LoanDetailsComponent } from '../screens/accounts/loan-details/loan-details.component';
 
 @NgModule({
   declarations: [
@@ -82,6 +101,24 @@ import { SavingAccountsComponent } from '../screens/accounts/saving-accounts/sav
     CustSearchComponent,
     AccountSearchComponent,
     SavingAccountsComponent,
+    OtherAccountsComponent,
+    UserSearchComponent,
+    UserComponent,
+    RoleAccessComponent,
+    UserActivityComponent,
+    UserDailyRoleComponent,
+    VehicleLoanComponent,
+    GoldLoanComponent,
+    LienFdLoanComponent,
+    OpeningBalanceComponent,
+    AccSearchComponent,
+    BalanceCertificateComponent,
+    BackOfficeEntryComponent,
+    ChequeBookRequestComponent,
+    ChequeBookIssueComponent,
+    // AutocompleteComponent,
+    AutoAccSearchComponent,
+    // LoanDetailsComponent,
   ],
   imports: [
     CommonModule,
@@ -90,7 +127,7 @@ import { SavingAccountsComponent } from '../screens/accounts/saving-accounts/sav
     AppRouterRoutingModule,
     NgxPaginationModule,
     BsDatepickerModule.forRoot(),
-    SelectDropDownModule,
+    SelectDropDownModule, AutocompleteLibModule
   ],
   providers: [],// Toastr providers
 })

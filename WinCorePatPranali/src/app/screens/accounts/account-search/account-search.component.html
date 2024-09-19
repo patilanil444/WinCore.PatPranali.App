@@ -38,7 +38,7 @@
                                     <button type="button" tabindex="0" class="dropdown-item" (click)="addAccount('saving-accounts')">Saving</button>
                                     <button type="button" tabindex="0" class="dropdown-item" (click)="addAccount('deposit-accounts')">Deposit</button>
                                     <button type="button" tabindex="0" class="dropdown-item" (click)="addAccount('loan-accounts')">Loan</button>
-                                    <button type="button" tabindex="0" class="dropdown-item" (click)="addAccount('banks')">Other</button>
+                                    <button type="button" tabindex="0" class="dropdown-item" (click)="addAccount('other-accounts')">Other</button>
                                 </div>
                             </div>
     
@@ -66,7 +66,6 @@
                         </div>
                     </div>
                 </form>
-              
 
                 <div class="row" style="margin-bottom: 10px;">
                     <div class="col-lg-12">
@@ -92,7 +91,7 @@
                                     <td>{{uiAccount.int_Rate}}</td>
                                     <td>
                                         <div class="badge"
-                                            [ngClass]="{'badge-danger': uiAccount.status==='Deleted', 'badge-success' : uiAccount.status=== 'Active', 'badge-warning' : uiAccount.status=== 'In-Active'}">
+                                            [ngClass]="{'badge-danger': (uiAccount.status==='Freeze'|| uiAccount.status==='Closed'), 'badge-success' : uiAccount.status=== 'Open', 'badge-warning' : uiAccount.status=== 'Dormant'}">
                                             {{uiAccount.status}}
                                         </div>
 

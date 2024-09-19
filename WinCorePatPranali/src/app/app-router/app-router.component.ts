@@ -9,6 +9,14 @@ import { SharedService } from '../services/shared.service';
 })
 export class AppRouterComponent implements OnInit, AfterViewInit{
 
+  isCustomerExpanded = false;
+  isAccountsExpanded = false;
+  isMastersExpanded = false;
+  isUsersExpanded = false;
+  isRegistersExpanded = false;
+
+  isSidebarEnabled = true;
+
   constructor(private router: Router, private activatedRoute: ActivatedRoute,
     private _sharedService: SharedService) { }
 
@@ -36,6 +44,31 @@ export class AppRouterComponent implements OnInit, AfterViewInit{
   configClick(routeValue: string) {
     sessionStorage.setItem("configMenu", routeValue);
     this.router.navigate(['/app/'+ routeValue]);
+  }
+
+  clickMenu(menu: string)
+  {
+    if (menu == 'customers') {
+      this.isCustomerExpanded = !this.isCustomerExpanded;
+    }
+    else  if (menu == 'accounts') {
+      this.isAccountsExpanded = !this.isAccountsExpanded;
+    }
+    else  if (menu == 'registers') {
+      this.isRegistersExpanded = !this.isRegistersExpanded;
+    }
+    else  if (menu == 'masters') {
+      this.isMastersExpanded = !this.isMastersExpanded;
+    }
+    else  if (menu == 'users') {
+      this.isUsersExpanded = !this.isUsersExpanded;
+    }
+
+  }
+
+  sidebarClick()
+  {
+    this.isSidebarEnabled = !this.isSidebarEnabled;
   }
 
   isMenuSelected(routeValue: string)

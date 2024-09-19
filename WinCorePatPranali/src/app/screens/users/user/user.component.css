@@ -1,0 +1,11 @@
+.p-viewer {
+    z-index: 9999;
+    position: absolute;
+    right: 10px;
+    margin-top: 7px;
+    cursor: pointer;
+}
+
+.fa-eye {
+	color: #000;
+}

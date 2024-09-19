@@ -1,0 +1,191 @@
+<div>
+    <form [formGroup]="lienFDForm" #form="ngForm">
+        <div class="row">
+            <div class="tab-content">
+                <div class="col-md-12">
+                    <div class="row">
+                        <div class="col-md-6 search-box-color mb-2">
+                            <div class="row">
+                                <div class="col-md-6 position-relative form-group">
+                                    <label for="txtCode" class="">Branch </label>
+                                    <select class="form-control" tabindex="27" formControlName="branchId">
+                                        <option *ngFor="let uiBranch of uiBranches" [ngValue]="uiBranch.branchCode">
+                                            {{uiBranch.branchName}}
+                                        </option>
+                                    </select>
+                                </div>
+                                <div class="col-md-6 position-relative form-group">
+                                    <label for="txtCode" class="">General Ledger </label>
+                                    <div class="input-group">
+                                        <ngx-select-dropdown [config]="config" tabindex="1"
+                                         [options]="uiDepositGeneralLedgers" formControlName="lienFDGL"
+                                            style="width: 100%;" [multiple]="false">
+                                        </ngx-select-dropdown>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6 position-relative form-group">
+                                    <label for="txtCode" class="">Account Search </label>
+                                    <input tabindex="28" type="text" class="form-control"
+                                    placeholder="Account Number" formControlName="accountNumberSearch">
+                                </div>
+                                <div class="col-md-6 position-relative form-group" style="margin-top: 30px;">
+                                    <button class="btn btn-info" tabindex="2" (click)="searchLienFDAccount()"><i class="fa fa-search"></i> Search</button>
+                                </div>
+                            </div>
+                        </div>
+                
+                        <div class="col-md-6">
+                            <!-- <button class="customer-accordion" [ngClass]="{'customer-panel-active': toggleSearchCustomers===true}"
+                                (click)="openSearchedCustomers()">Searched Customers
+                            </button> -->
+                            <div class="customer-panel">
+                                <table style="width: 100%;" class="table table-hover table-striped table-bordered dataTable dtr-inline">
+                                    <thead>
+                                        <tr  role="row">
+                                            <th style="width: 20%; padding: .25rem;">Select</th>
+                                            <th style="width: 30%; padding: .25rem;">Account Number</th>
+                                            <th style="width: 30%; padding: .25rem;">Customer Number</th>
+                                            <th style="width: 20%; padding: .25rem;">Status</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr role="row" *ngFor="let uiFDAccount of uiFDAccounts" class="odd">
+                                            <td style="padding: .25rem;" class="sorting_1 dtr-control">
+                                                <button class="mb-2 mr-2 btn btn-link"
+                                                    style="--bs-btn-padding-x:none !important; padding:0 !important;"
+                                                    (click)="selectLienFDAccount(uiFDAccount.accountsId)">Select</button>
+                                            </td>
+                                            <td>{{uiFDAccount.accountNo}}</td>
+                                            <td>{{uiFDAccount.customerCodeStr}}</td>
+                                            <td>
+                                                <div class="badge"
+                                                    [ngClass]="{'badge-danger': (uiFDAccount.status==='Freeze'|| uiFDAccount.status==='Closed'), 'badge-success' : uiFDAccount.status=== 'Open', 'badge-warning' : uiFDAccount.status=== 'Dormant'}">
+                                                    {{uiFDAccount.status}}
+                                                </div>
+                                            </td>
+                                        </tr>
+                                        <tr *ngIf="uiFDAccounts.length==0">
+                                            <td colspan="4">No records..</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+        
+                <div class="col-md-12">
+                    <div class="row">
+                        <h5 class="card-title"> Account Number - {{accountNumber.value}}</h5>
+                    </div>
+                </div>
+        
+                <div class="col-md-12">
+                    <div class="row">
+                        <div class="col-md-3 position-relative form-group" style="border:1px splid lightgray;">
+                            <label for="txtCode">FD Amount </label>
+                            <input tabindex="29" type="text" class="form-control" formControlName="fdAmount" readonly>
+                        </div>
+                        <div class="col-md-3 position-relative form-group">
+                            <label for="txtCode">Opening Date </label>
+                            <input tabindex="29" type="text" class="form-control" formControlName="fdOpenDate" readonly>
+                        </div>
+                        <div class="col-md-3 position-relative form-group">
+                            <label for="txtCode">Expiry Date</label>
+                            <input tabindex="29" type="text" class="form-control" formControlName="fdExpiryDate" readonly>
+                        </div>
+                        <div class="col-md-3 position-relative form-group">
+                            <label for="txtCode">Maturity Date </label>
+                            <input tabindex="29" type="text" class="form-control" formControlName="fdMatureDate" readonly>
+                        </div>
+                        <div class="col-md-3 position-relative form-group">
+                            <label for="txtCode" class="">Mark On <span class="mandatory">*</span></label>
+                            <input tabindex="29" type="date" class="form-control" formControlName="markOn">
+                        </div>
+                        <div class="col-md-3 position-relative form-group">
+                            <label for="txtCode" class="">Mark By <span class="mandatory">*</span></label>
+                            <input tabindex="29" type="text" class="form-control" formControlName="markBy">
+                        </div>
+                        <div class="col-md-3 position-relative form-group">
+                            <label for="txtCode" class="">Release On </label>
+                            <input tabindex="29" type="date" class="form-control" formControlName="releaseOn">
+                        </div>
+                        <div class="col-md-3 position-relative form-group">
+                            <label for="txtCode" class="">Release By </label>
+                            <input tabindex="29" type="text" class="form-control" formControlName="releaseBy">
+                        </div>
+                    </div>
+                </div>
+        
+                <div class="col-md-12">
+                    <div class="row">
+                        <div style="display: flex; margin-bottom: 10px;">
+                            <button class="mt-1 btn btn-primary" (click)="AddFD()" tabindex="31">Save FD</button>
+                            <button class="mt-1 btn btn-left-margin10 btn-danger" (click)="clearFD()"
+                                tabindex="24">Clear</button>
+                        </div>
+                    </div>
+                </div>
+        
+                <div class="col-md-12">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <table class="mb-0 table table-bordered">
+                                <thead>
+                                    <tr>
+                                        <th width="9%">Branch</th>
+                                        <th width="13%">General Ledger</th>
+                                        <th width="13%">A/C Number</th>
+                                        <th width="9%">FD Amount</th>
+                                        <th width="8%">Opening</th>
+                                        <th width="8%">Maturity</th>
+                                        <th width="8%">Mark On</th>
+                                        <th width="10%">Mark By</th>
+                                        <th width="8%">Release On</th>
+                                        <th width="10%">Release By</th>
+                                        <th width="4%">Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr
+                                        *ngFor="let uiAddedFDAccount of uiAddedFDAccounts | paginate: { itemsPerPage: 10, currentPage: p_FD, totalItems: total_FDs }; let ind = index">
+                                        <ng-container *ngIf="uiAddedFDAccount.status!='D'">
+                                            <td>{{uiAddedFDAccount.branch}}</td>
+                                            <td>{{uiAddedFDAccount.gl}}</td>
+                                            <td>{{uiAddedFDAccount.accountNumber}}</td>
+                                            <td>{{uiAddedFDAccount.fdAmount}}</td>
+                                            <td>{{uiAddedFDAccount.opening}}</td>
+                                            <td>{{uiAddedFDAccount.maturity}}</td>
+                                            <td>{{uiAddedFDAccount.markOn}}</td>
+                                            <td>{{uiAddedFDAccount.markBy}}</td>
+                                            <td>{{uiAddedFDAccount.releaseOn}}</td>
+                                            <td>{{uiAddedFDAccount.releaseBy}}</td>
+                                            <td>
+                                                <div class="widget-content-right">
+                                                    <button type="button" placeholder="Delete record"
+                                                        class="btn-shadow btn btn-danger btn-actions" data-toggle="modal"
+                                                        (click)="deleteAccount(uiAddedFDAccount, ind)">
+                                                        <span class="btn-icon-wrapper opacity-10">
+                                                            <i class="fa fa-trash fa-w-20"></i>
+                                                        </span>
+                                                    </button>
+                                                </div>
+                                            </td>
+                                        </ng-container>
+                                    </tr>
+                                    <tr *ngIf="uiAddedFDAccounts.length==0">
+                                        <td colspan="11">No records found..</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+        
+                    </div>
+                </div>
+        
+            </div>
+        </div>
+    </form>
+</div>

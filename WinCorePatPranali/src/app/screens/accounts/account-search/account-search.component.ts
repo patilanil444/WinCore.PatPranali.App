@@ -3,10 +3,14 @@ import { FormControl, FormGroup } from '@angular/forms';
 import { Router } from '@angular/router';
 import { NgxDropdownConfig } from 'ngx-select-dropdown';
 import { ToastrService } from 'ngx-toastr';
-import { IGeneralDTO } from 'src/app/common/models/common-ui-models';
+import { IGeneralDTO, UiEnumAccountStatus } from 'src/app/common/models/common-ui-models';
 import { DepositAccountService } from 'src/app/services/accounts/deposit-accounts/deposit-account.service';
+import { SavingAccountService } from 'src/app/services/accounts/saving-accounts/saving-account.service';
 import { GeneralLedgerService } from 'src/app/services/masters/general-ledger/general-ledger.service';
 import { SharedService } from 'src/app/services/shared.service';
+import { OtherAccountsService } from 'src/app/services/accounts/other-accounts/other-accounts.service';
+import { AccountsService } from 'src/app/services/accounts/accounts/accounts.service';
+import { LoanAccountsService } from 'src/app/services/accounts/loan-accounts/loan-accounts.service';
 
 @Component({
   selector: 'app-account-search',
@@ -39,7 +43,11 @@ export class AccountSearchComponent implements OnInit {
 
   constructor(private router: Router, private _sharedService: SharedService,
     private _toastrService: ToastrService, private _generalLedgerService: GeneralLedgerService,
-    private _depositAccountService: DepositAccountService) { }
+    private _accountsService: AccountsService,
+    private _depositAccountService: DepositAccountService,
+    private _savingAccountService: SavingAccountService,
+    private _otherAccountsService: OtherAccountsService,
+    private _loanAccountsService: LoanAccountsService) { }
 
   ngOnInit(): void {
     this.searchForm = new FormGroup({
@@ -91,7 +99,8 @@ export class AccountSearchComponent implements OnInit {
     }
 
     if (ledgerId > 0 || custNumber.length || accNumber.length) {
-      this._depositAccountService.SearchAccountsAsync(this._sharedService.applicationUser.branchId, ledgerId, custNumber, accNumber).subscribe((data: any) => {
+      this._accountsService.SearchAccountsAsync(this._sharedService.applicationUser.branchId, 
+        ledgerId, custNumber, accNumber).subscribe((data: any) => {
         console.log(data);
         if (data) {
           let accounts = data.data.data;
@@ -99,7 +108,7 @@ export class AccountSearchComponent implements OnInit {
             this.uiAccounts = accounts.map((acc: any) => (
               {
                 ...acc,
-                status: this.getStatus(acc.active)
+                status: this.getStatus(acc.accountStatus)
               }))
             //this.uiDepositGeneralLedgers = this.uiAllGeneralLedgers.filter(gl => gl.glGroup == 'D');
           }
@@ -109,12 +118,19 @@ export class AccountSearchComponent implements OnInit {
   }
 
   getStatus(status: number) {
-    if (status == 1) {
-      return "Active";
+    if (status == UiEnumAccountStatus.OPEN) {
+      return "Open";
     }
-    else {
-      return "In-Active";
+    else if (status == UiEnumAccountStatus.FREEZE) {
+      return "Freeze";
     }
+    else if (status == UiEnumAccountStatus.DORMANT) {
+      return "Dormant";
+    }
+    else if (status == UiEnumAccountStatus.CLOSE) {
+      return "Closed";
+    }
+    return "";
   }
 
   pageChangeEvent(event: number) {
@@ -123,8 +139,7 @@ export class AccountSearchComponent implements OnInit {
 
 
   cancelDelete() {
-
-
+    
   }
 
   delete(uiCustomer: any) {
@@ -144,29 +159,36 @@ export class AccountSearchComponent implements OnInit {
 
   addAccount(route: string) {
     this._depositAccountService.setDTO({});
+    this._savingAccountService.setDTO({});
+    this._loanAccountsService.setDTO({});
+    this._otherAccountsService.setDTO({});
     this.configClick(route);
   }
 
   edit(uiAccount: any) {
     let dtObject: IGeneralDTO = {
-      route: "customer",
+      route: "accounts",
       action: "editRecord",
       id: uiAccount.accountsId,
       maxId: 0,
     }
     if (uiAccount.glGroup == 'D' && uiAccount.glType =='S') {
       // Saving accounts
+      this._savingAccountService.setDTO(dtObject);
+      this.configClick("saving-accounts");
     }
     else if (uiAccount.glGroup == 'D' && uiAccount.glType !='S') {
       // Deposit accounts
       this._depositAccountService.setDTO(dtObject);
       this.configClick("deposit-accounts");
     }
-    else if (uiAccount.glGroup == 'L') {
-      
+    else if (uiAccount.glGroup == 'B' || uiAccount.glGroup == 'G') {
+      this._otherAccountsService.setDTO(dtObject);
+      this.configClick("other-accounts");
     }
-    else if (uiAccount.glGroup == 'G') {
-      
+    else if (uiAccount.glGroup == 'L' || uiAccount.glGroup == 'L') {
+      this._loanAccountsService.setDTO(dtObject);
+      this.configClick("loan-accounts");
     }
     else if (uiAccount.glGroup == 'B') {
       

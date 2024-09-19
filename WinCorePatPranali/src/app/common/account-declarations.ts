@@ -25,5 +25,17 @@ export class AccountDeclarations
 
     static renewalTypes = [new UiStaticType(1, "Y", "Yes"),
     new UiStaticType(2, "N", "No")];
-    
+
+    static changesInInterestRateYN = [new UiStaticType(1, "Y", "Yes"),
+    new UiStaticType(2, "N", "No")];
+
+    static InstallmentWithInterestYN = [new UiStaticType(1, "Y", "Yes"),
+    new UiStaticType(2, "N", "No")];
+
+    static loanInstallmentTypes = [
+    new UiStaticType(1, "M", "Monthly"),
+    new UiStaticType(2, "Q", "Quarterly"),
+    new UiStaticType(3, "H", "Half Yearly"),
+    new UiStaticType(4, "Y", "Yearly"),
+    new UiStaticType(5, "S", "Single Installment")];
 }

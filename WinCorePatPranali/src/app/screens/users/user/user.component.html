@@ -1,0 +1,191 @@
+<div class="row">
+    <div class="col-md-12">
+        <div class="main-card mb-3 card">
+            <div class="card-body">
+                <form [formGroup]="userForm" #form="ngForm">
+                    <h5 class="card-title">User</h5>
+                    <div class="row">
+                        <div class="col-md-3 position-relative form-group">
+                            <label class="">Name <span class="mandatory">*</span></label>
+                            <input type="text" tabindex="1" autocomplete="off" placeholder="Name" id="txtName"
+                                class="form-control" formControlName="name" maxlength="50"
+                                [class.is-invalid]="name.invalid && (name.dirty || name.touched)">
+                            <div *ngIf="name.invalid && (name.dirty || name.touched)" class="invalid-feedback">
+                                <div *ngIf="name.errors?.['required']">
+                                    Name is required.
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-3 position-relative form-group">
+                            <label class="">Mobile <span class="mandatory">*</span></label>
+                            <input type="text" tabindex="2" autocomplete="off" placeholder="Mobile" id="txtMobile"
+                                class="form-control" formControlName="mobile" required maxlength="15"
+                                [class.is-invalid]="mobile.invalid && (mobile.dirty || mobile.touched)">
+                            <div *ngIf="mobile.invalid && (mobile.dirty || mobile.touched)" class="invalid-feedback">
+                                <div *ngIf="mobile.errors?.['required']">
+                                    Mobile number is required.
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-3 position-relative form-group">
+                            <label class="">Email <span class="mandatory">*</span></label>
+                            <input type="email" tabindex="3" autocomplete="off" placeholder="Email" id="txtEmail"
+                                class="form-control" formControlName="email" required maxlength="50"
+                                [class.is-invalid]="email.invalid && (email.dirty || email.touched)">
+                            <div *ngIf="email.invalid && (email.dirty || email.touched)" class="invalid-feedback">
+                                <div *ngIf="email.errors?.['required']">
+                                    Enter correct email address.
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-3 position-relative form-group">
+                            <label for="txtCode" class="">Role <span class="mandatory">*</span></label>
+                            <select class="mb-2 form-control" tabindex="4" formControlName="role">
+                                <option *ngFor="let uiUserRole of uiUserRoles" [ngValue]="uiUserRole.id">
+                                    {{uiUserRole.userRole}}
+                                </option>
+                            </select>
+                        </div>
+
+                        <div class="col-md-3 position-relative form-group">
+                            <label class="">Username <span class="mandatory">*</span></label>
+                            <input type="text" tabindex="5" autocomplete="off" placeholder="Username" id="txtUsername"
+                                class="form-control" formControlName="username" required maxlength="50"
+                                [class.is-invalid]="username.invalid && (username.dirty || username.touched)">
+                            <div *ngIf="username.invalid && (username.dirty || username.touched)"
+                                class="invalid-feedback">
+                                <div *ngIf="username.errors?.['required']">
+                                    Username is required.
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-3 position-relative form-group">
+                            <label class="">Password <span class="mandatory">*</span></label>
+                            <div class="input-group">
+                                <input [type]="showPassword ? 'text' : 'password'" tabindex="6" autocomplete="off"
+                                    placeholder="Password" id="txtPassword" class="form-control"
+                                    formControlName="password" required maxlength="50"
+                                    [class.is-invalid]="password.invalid && (password.dirty || password.touched)">
+                                <div *ngIf="password.invalid && (password.dirty || password.touched)"
+                                    class="invalid-feedback">
+                                    <div *ngIf="password.errors?.['required']">
+                                        Password is required.
+                                    </div>
+                                </div>
+                                <div class="input-group-append"> <span class="p-viewer" (click)="togglePasswordShow()">
+                                        <i class="fa fa-eye" aria-hidden="true"></i>
+                                    </span></div>
+                            </div>
+                        </div>
+                        <div class="col-md-3 position-relative form-group">
+                            <label class="">Password Expiry Date (90 Days) <span class="mandatory">*</span></label>
+                            <input type="date" tabindex="7" autocomplete="off" id="txtExpiryDate" class="form-control"
+                                formControlName="passwordExpiryDate" required>
+                        </div>
+                    </div>
+                    <div class="divider"></div>
+                    <div class="row">
+                        <div class="col-md-3 position-relative form-group">
+                            <label class="">Transfer Limit <span class="mandatory">*</span></label>
+                            <input type="text" tabindex="8" autocomplete="off"
+                                class="form-control" formControlName="transfer_Limit"
+                                [class.is-invalid]="transfer_Limit.invalid && (transfer_Limit.dirty || transfer_Limit.touched)">
+                            <div *ngIf="transfer_Limit.invalid && (transfer_Limit.dirty || transfer_Limit.touched)"
+                                class="invalid-feedback">
+                                <div *ngIf="transfer_Limit.errors?.['required']">
+                                    Transfer limit is required.
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-3 position-relative form-group">
+                            <label class="">Cash Receipt Limit <span class="mandatory">*</span></label>
+                            <input type="text" tabindex="8" autocomplete="off"
+                                class="form-control" formControlName="cash_receipt"
+                                [class.is-invalid]="cash_receipt.invalid && (cash_receipt.dirty || cash_receipt.touched)">
+                            <div *ngIf="cash_receipt.invalid && (cash_receipt.dirty || cash_receipt.touched)"
+                                class="invalid-feedback">
+                                <div *ngIf="cash_receipt.errors?.['required']">
+                                    Cash receipt limit is required.
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-3 position-relative form-group">
+                            <label class="">Cash Payment Limit <span class="mandatory">*</span></label>
+                            <input type="text" tabindex="9" autocomplete="off"
+                                class="form-control" formControlName="cash_payment"
+                                [class.is-invalid]="cash_payment.invalid && (cash_payment.dirty || cash_payment.touched)">
+                            <div *ngIf="cash_payment.invalid && (cash_payment.dirty || cash_payment.touched)"
+                                class="invalid-feedback">
+                                <div *ngIf="cash_payment.errors?.['required']">
+                                    Cash payment limit is required.
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-3 position-relative form-group">
+                            <label class="">Passing Receipt Limit <span class="mandatory">*</span></label>
+                            <input type="text" tabindex="10" autocomplete="off" 
+                                class="form-control" formControlName="passing_receipt"
+                                [class.is-invalid]="passing_receipt.invalid && (passing_receipt.dirty || passing_receipt.touched)">
+                            <div *ngIf="passing_receipt.invalid && (passing_receipt.dirty || passing_receipt.touched)"
+                                class="invalid-feedback">
+                                <div *ngIf="passing_receipt.errors?.['required']">
+                                    Passing receipt limit is required.
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-3 position-relative form-group">
+                            <label class="">Passing Payment Limit <span class="mandatory">*</span></label>
+                            <input type="text" tabindex="11" autocomplete="off"
+                                class="form-control" formControlName="passing_payment"
+                                [class.is-invalid]="passing_payment.invalid && (passing_payment.dirty || passing_payment.touched)">
+                            <div *ngIf="passing_payment.invalid && (passing_payment.dirty || passing_payment.touched)"
+                                class="invalid-feedback">
+                                <div *ngIf="passing_payment.errors?.['required']">
+                                    Passing payment limit is required.
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="divider"> </div>
+                    <div class="row" style="margin-left: 10px;">
+                            <div class="col-md-3 position-relative form-group form-check">
+                                <label class="form-check-label">
+                                    <input type="checkbox" tabindex="12" formControlName="allow_add" class="form-check-input">Allow
+                                    Add</label>
+                            </div>
+                            <div class="col-md-3 position-relative form-check">
+                                <label class="form-check-label">
+                                    <input type="checkbox" tabindex="13" formControlName="allow_change" class="form-check-input">Allow
+                                    Change</label>
+                            </div>
+                            <div class="col-md-3 position-relative form-group form-check">
+                                <label class="form-check-label">
+                                    <input type="checkbox" tabindex="14" formControlName="allow_delete" class="form-check-input">Allow
+                                    Delete</label>
+                            </div>
+                            <div class="col-md-3 position-relative form-group form-check">
+                                <label class="form-check-label">
+                                    <input type="checkbox" tabindex="15" formControlName="allow_list" class="form-check-input">Allow
+                                    List</label>
+                            </div>
+                            <div class="col-md-3 position-relative form-group form-check">
+                                <label class="form-check-label">
+                                    <input type="checkbox" tabindex="16" formControlName="isAuthority" class="form-check-input">Is Authority</label>
+                            </div>
+                    </div>
+                    <div class="divider"></div>
+                    <div class="row">
+                        <div class="col-md-6 position-relative">
+                            <button type="button" class="mt-1 btn btn-primary" tabindex="17"
+                                (click)="saveUser()">Submit</button>
+                            <button class="mt-1 btn btn-left-margin10 btn-danger" tabindex="18"
+                                (click)="clear()">Clear</button>
+                            <button class="mt-1 btn btn-left-margin10 btn-secondary" tabindex="19"
+                                (click)="configClick('user-search')">User List</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

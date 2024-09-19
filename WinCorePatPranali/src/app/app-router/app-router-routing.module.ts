@@ -30,6 +30,17 @@ import { MemberFormComponent } from '../screens/customers/member/member-form/mem
 import { MasterDataResolverService } from '../common/resolvers/master-data-resolver.service';
 import { AccountSearchComponent } from '../screens/accounts/account-search/account-search.component';
 import { SavingAccountsComponent } from '../screens/accounts/saving-accounts/saving-accounts.component';
+import { UserActivityComponent } from '../screens/users/user-activity/user-activity.component';
+import { RoleAccessComponent } from '../screens/users/role-access/role-access.component';
+import { UserComponent } from '../screens/users/user/user.component';
+import { UserSearchComponent } from '../screens/users/user-search/user-search.component';
+import { UserDailyRoleComponent } from '../screens/users/user-daily-role/user-daily-role.component';
+import { OtherAccountsComponent } from '../screens/accounts/other-accounts/other-accounts.component';
+import { OpeningBalanceComponent } from '../screens/accounts/opening-balance/opening-balance.component';
+import { BalanceCertificateComponent } from '../screens/accounts/balance-certificate/balance-certificate.component';
+import { ChequeBookRequestComponent } from '../screens/registers/cheque-book-request/cheque-book-request.component';
+import { ChequeBookIssueComponent } from '../screens/registers/cheque-book-issue/cheque-book-issue.component';
+// import { LoanDetailsComponent } from '../screens/accounts/loan-details/loan-details.component';
 
 const routes: Routes = [
   {
@@ -45,6 +56,7 @@ const routes: Routes = [
       { path: 'deposit-accounts', component: DepositAccountsComponent },
       { path: 'saving-accounts', component: SavingAccountsComponent },
       { path: 'loan-accounts', component: LoanAccountsComponent },
+      { path: 'other-accounts', component: OtherAccountsComponent },
       { path: 'bank', component: BankMasterFormComponent },
       { path: 'banks', component: BankMasterComponent },
       { path: 'branch', component: BranchMasterFormComponent },
@@ -68,6 +80,16 @@ const routes: Routes = [
       { path: 'member-list', component: MemberSearchComponent },
       { path: 'member', component: MemberFormComponent },
       { path: 'account-search', component: AccountSearchComponent },
+      { path: 'user-search', component: UserSearchComponent },
+      { path: 'user', component: UserComponent },
+      { path: 'role-access', component: RoleAccessComponent },
+      { path: 'activity', component: UserActivityComponent },
+      { path: 'daily-role', component: UserDailyRoleComponent },
+      { path: 'opening-balance', component: OpeningBalanceComponent },
+      { path: 'balance-cert', component: BalanceCertificateComponent },
+      { path: 'cheque-request', component: ChequeBookRequestComponent },
+      { path: 'cheque-book-issue', component: ChequeBookIssueComponent },
+      // { path: 'loan-details', component: LoanDetailsComponent },
       { path: '**', component: NotFoundComponent },
       { path: '', redirectTo: 'projects', pathMatch: 'full' },
     ]

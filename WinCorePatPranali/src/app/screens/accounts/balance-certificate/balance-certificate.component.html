@@ -1,0 +1,77 @@
+<div class="row">
+    <div class="col-md-12">
+        <div class="main-card mb-3 card">
+            <div class="card-body">
+
+                <h5 class="card-title">Balance Certificate Printing</h5>
+                <div class="row">
+                    <div class="col-md-12 position-relative">
+                        <app-acc-search [generalLedgers]="uiAllGeneralLedgers"
+                            (accounts)="getAccounts($event)"></app-acc-search>
+                    </div>
+                </div>
+
+                <div class="row" style="margin-bottom: 10px;">
+                    <div class="col-lg-12">
+                        <table class="mb-0 table table-striped">
+                            <thead>
+                                <tr>
+                                    <th width="10%">Select</th>
+                                    <th width="15%">General Ledger</th>
+                                    <th width="15%">Account Number</th>
+                                    <th width="15%">Customer Number</th>
+                                    <th width="20%">Name</th>
+                                    <th width="15%">Rate Of Interest</th>
+                                    <th width="10%">Status</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr
+                                    *ngFor="let uiAccount of uiAccounts | paginate: { itemsPerPage: 10, currentPage: p, totalItems: total }">
+                                    <td style="padding: .25rem;" class="sorting_1 dtr-control">
+                                        <button class="mb-2 mr-2 btn btn-link"
+                                            style="--bs-btn-padding-x:none !important; padding:0 !important;"
+                                            (click)="selectAccount(uiAccount.accountsId)">Select</button>
+                                    </td>
+                                    <td scope="row">{{uiAccount.glName}}</td>
+                                    <td>{{uiAccount.accountNo}}</td>
+                                    <td>{{uiAccount.customerCodeStr}}</td>
+                                    <td>{{uiAccount.custName}}</td>
+                                    <td>{{uiAccount.int_Rate}}</td>
+                                    <td>
+                                        <div class="badge"
+                                            [ngClass]="{'badge-danger': (uiAccount.status==='Freeze'|| uiAccount.status==='Closed'), 'badge-success' : uiAccount.status=== 'Open', 'badge-warning' : uiAccount.status=== 'Dormant'}">
+                                            {{uiAccount.status}}
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr *ngIf="uiAccounts.length==0">
+                                    <td colspan="7">No records found..</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <div class="d-flex justify-content-center">
+                    <pagination-controls (pageChange)="pageChangeEvent($event)"></pagination-controls>
+                </div>
+                <div class="divider"> </div>
+                <div class="row">
+                    <div class="col-md-3 position-relative form-group">
+                        <label for="txtCode" class="">As On Date</label>
+                        <input tabindex="2" type="date" [(ngModel)]="asOnDate" class="form-control">
+                    </div>
+                </div>
+                <div class="divider"> </div>
+                <div class="row">
+                    <div class="col-md-6 position-relative">
+                        <button class="mt-1 btn btn-primary" tabindex="24" (click)="printCertificate()">Submit</button>
+                    </div>
+
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>

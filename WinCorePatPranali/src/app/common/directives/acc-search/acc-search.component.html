@@ -1,0 +1,33 @@
+<div>
+    <form [formGroup]="searchForm" #form="ngForm">
+        <div class="row">
+            <div class="tab-content">
+                <div class="col-md-12">
+                    <div class="row">
+                        <div class="col-md-12 search-box-color mb-2">
+                            <div class="row">
+                                <div class="col-md-5 position-relative form-group">
+                                    <label for="txtCode" class="">General Ledger </label>
+                                    <div class="input-group">
+                                        <ngx-select-dropdown [config]="config" tabindex="1" [options]="generalLedgers"
+                                            formControlName="generalLedger" style="width: 100%;" [multiple]="false">
+                                        </ngx-select-dropdown>
+                                    </div>
+                                </div>
+                                <div class="col-md-5 position-relative form-group">
+                                    <label for="txtCode" class="">Account Search </label>
+                                    <input tabindex="28" type="text" class="form-control" placeholder="Account Number"
+                                        formControlName="searchText">
+                                </div>
+                                <div class="col-md-2 position-relative form-group" style="display: grid; margin-top: 30px;">
+                                    <button class="btn btn-info" style="float: right;" tabindex="2" (click)="searchAccount()"><i
+                                            class="fa fa-search"></i> Search</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
