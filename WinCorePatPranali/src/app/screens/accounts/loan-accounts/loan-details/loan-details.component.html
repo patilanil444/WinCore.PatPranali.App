@@ -1,0 +1,323 @@
+<div class="row">
+    <div class="col-lg-12">
+        <div class="main-card mb-3 card">
+            <div class="card-body">
+                <h5 class="card-title">Loan account details</h5>
+                <form [formGroup]="summaryForm" #form="ngForm">
+                    <div class="row">
+                        <div class="col-md-3 position-relative">
+                            <label for="txtCode" class="">General Ledger</label>
+                            <div class="input-group">
+                                <ngx-select-dropdown [config]="config" tabindex="1" [options]="uiLoanGeneralLedgers"
+                                    style="width: 100%;" formControlName="generalLedger"
+                                    [multiple]="false" [ngClass]="{'disabled': true}"></ngx-select-dropdown>
+                            </div>
+                        </div>
+
+                        <div class="col-md-3 position-relative form-group">
+                            <label for="txtCode" class="">Account Number</label>
+                            <div class="input-group">
+                                <input tabindex="2" type="text" readonly class="form-control" formControlName="glAccountNumberStr">
+                            </div>
+                        </div>
+                        <div class="col-md-3 position-relative form-group">
+                            <label for="txtCode" class="">Customer Number</label>
+                            <div class="input-group">
+                                <input tabindex="3" type="text" readonly class="form-control" formControlName="customerCode">
+                            </div>
+                        </div>
+                        <div class="col-md-3 position-relative form-group">
+                            <label for="txtCode" class="">Customer Name</label>
+                            <div class="input-group">
+                                <input tabindex="4" type="text" readonly class="form-control" formControlName="customerName">
+                            </div>
+                        </div>
+                    </div>
+                </form>
+                <ul class="nav nav-tabs">
+                    <li class="nav-item">
+                        <a role="tab" class="nav-link active" id="tab-3" data-toggle="tab" href="#tab-content-0">
+                            <span>Parameters</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a role="tab" class="nav-link" id="tab-3" data-toggle="tab" href="#tab-content-1">
+                            <span>Gold Loan</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a role="tab" class="nav-link" id="tab-3" data-toggle="tab" href="#tab-content-2">
+                            <span>Deposit Loan</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a role="tab" class="nav-link" id="tab-3" data-toggle="tab" href="#tab-content-3">
+                            <span>Installment Loan</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a role="tab" class="nav-link" id="tab-3" data-toggle="tab" href="#tab-content-4">
+                            <span>Installments</span>
+                        </a>
+                    </li>
+                </ul>
+
+                <div class="tab-content">
+                    <div class="tab-pane tabs-animation fade show active" id="tab-content-0" role="tabpanel">
+                        <!-- Parameters -->
+                        <form [formGroup]="parametersForm" #form="ngForm">
+                            <div class="row">
+                                <div class="col-md-3 position-relative form-group">
+                                    <label for="txtCode" class="">Saction Amount <span class="mandatory">*</span></label>
+                                    <input tabindex="1" type="number" class="form-control" formControlName="sanctionAmount"
+                                        (change)="setIntallmentSactionAmount()">
+                                </div>
+                                <div class="col-md-3 position-relative form-group">
+                                    <label for="txtCode" class="">Saction Date <span class="mandatory">*</span></label>
+                                    <input tabindex="1" type="date" class="form-control" formControlName="sanctionDate"
+                                        (change)="calculateFirstInstallmentDate()">
+                                </div>
+                                <div class="col-md-3 position-relative form-group">
+                                    <label for="txtCode" class="">Saction By <span class="mandatory">*</span></label>
+                                    <select class="mb-2 form-control" tabindex="1" formControlName="sanctionBy">
+                                        <option *ngFor="let uiDirector of uiDirectors" [ngValue]="uiDirector.id">
+                                            {{uiDirector.directorName}}
+                                        </option>
+                                    </select>
+                                </div>
+                    
+                                <div class="col-md-3 position-relative form-group">
+                                    <label for="txtCode" class=""> Loan Tenure in Months <span class="mandatory">*</span></label>
+                                    <input tabindex="1" type="number" class="mb-2 form-control" formControlName="loanTenureInMonths" min="0"
+                                        (change)="calculateMatureDate()" onKeyPress="if(this.value.length >=4) return false;">
+                                </div>
+                                <div class="col-md-3 position-relative form-group">
+                                    <label for="txtCode" class="">Actual Loan Amount <span class="mandatory">*</span></label>
+                                    <input tabindex="1" type="number" class="form-control" formControlName="actualLoanAmount"
+                                        (change)="setIntallmentActualAmount()">
+                                </div>
+                                <div class="col-md-3 position-relative form-group">
+                                    <label for="txtCode" class="">Interest Rate <span class="mandatory">*</span></label>
+                                    <input tabindex="1" type="number" class="mb-2 form-control" formControlName="interestRate" min="0"
+                                        onKeyPress="if(this.value.length >=3) return false;">
+                                </div>
+                    
+                                <div class="col-md-3 position-relative form-group">
+                                    <label for="txtCode" class="">Amount Advances <span class="mandatory">*</span></label>
+                                    <input tabindex="1" type="number" min="0" class="form-control" formControlName="amountAdvances">
+                                </div>
+                    
+                                <div class="col-md-3 position-relative form-group">
+                                    <label for="txtCode" class="">Changes In Interest Rate Applicable</label>
+                                    <select class="mb-2 form-control" tabindex="1" formControlName="changesInInterestApplicable">
+                                        <option *ngFor="let uiChangesInInterestRate of uiChangesInInterestRateYN"
+                                            [ngValue]="uiChangesInInterestRate.code">
+                                            {{uiChangesInInterestRate.name}}
+                                        </option>
+                                    </select>
+                                </div>
+                    
+                                <div class="col-md-3 position-relative form-group">
+                                    <label for="txtCode" class="">Maturity Date <span class="mandatory">*</span></label>
+                                    <input tabindex="1" type="date" class="mb-2 form-control" formControlName="maturityDate">
+                                </div>
+                    
+                                <div class="col-md-3 position-relative form-group">
+                                    <label for="txtCode" class="">Resolution No</label>
+                                    <input tabindex="1" type="text" class="form-control" formControlName="resolutionNo">
+                                </div>
+                    
+                                <div class="col-md-3 position-relative form-group">
+                                    <label for="txtCode" class="">Resolution Date</label>
+                                    <input tabindex="1" type="date" class="form-control" formControlName="resolutionDate">
+                                </div>
+
+                                <div class="col-md-3 position-relative form-group">
+                                    <label for="txtCode" class="">Paid On <span class="mandatory">*</span></label>
+                                    <input tabindex="7" type="date" class="form-control" formControlName="paidDate"
+                                        (change)="modifyMaturityDate()">
+                                </div>
+
+                            </div>
+                            
+                        </form>
+                    </div>
+
+                    <div class="tab-pane tabs-animation fade" id="tab-content-1" role="tabpanel">
+                        <app-gold-loan (goldLoanDetails)="getGoldLoanDetails($event)"></app-gold-loan>
+                    </div>
+
+                    <div class="tab-pane tabs-animation fade" id="tab-content-2" role="tabpanel">
+                        <ul class="nav nav-tabs">
+                            <li class="nav-item">
+                                <a role="tab" class="nav-link active" id="tab-1" data-toggle="tab" href="#subtab-content-fd-0">
+                                    <span>Lien FD</span>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a role="tab" class="nav-link" id="tab-0" data-toggle="tab" href="#subtab-content-fd-1">
+                                    <span>Cash Credit</span>
+                                </a>
+                            </li>
+                           
+                            <li class="nav-item">
+                                <a role="tab" class="nav-link" id="tab-0" data-toggle="tab" href="#subtab-content-fd-2">
+                                    <span>Over Draft </span>
+                                </a>
+                            </li>
+                        </ul>
+
+                        <div class="tab-content">
+                            <div class="tab-pane tabs-animation fade show active" id="subtab-content-fd-0" role="tabpanel">
+                                <app-lien-fd-loan (depositLoanDetails)="getDepositLoanDetails($event)"></app-lien-fd-loan>
+                            </div>
+
+                            <div class="tab-pane tabs-animation fade" id="subtab-content-fd-1" role="tabpanel">
+                                <app-cash-credit-loan></app-cash-credit-loan>
+                            </div>
+                            <div class="tab-pane tabs-animation fade" id="subtab-content-fd-2" role="tabpanel">
+                               
+                            </div>
+                           
+                        </div>
+                    </div>
+
+                    <div class="tab-pane tabs-animation fade" id="tab-content-3" role="tabpanel">
+
+                        <ul class="nav nav-tabs">
+                            <li class="nav-item">
+                                <a role="tab" class="nav-link active" id="tab-0" data-toggle="tab" href="#subtab-content-inst-0">
+                                    <span>Vehicle </span>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a role="tab" class="nav-link" id="tab-0" data-toggle="tab" href="#subtab-content-inst-1">
+                                    <span>Mortgage</span>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a role="tab" class="nav-link" id="tab-1" data-toggle="tab" href="#subtab-content-inst-2">
+                                    <span>Gold Loan</span>
+                                </a>
+                            </li>
+                           
+                            <!-- <li class="nav-item">
+                                <a role="tab" class="nav-link" id="tab-3" data-toggle="tab" href="#subtab-content-3">
+                                    <span>Installments</span>
+                                </a>
+                            </li> -->
+                        </ul>
+
+                        <div class="tab-content">
+                            <div class="tab-pane tabs-animation fade show active" id="subtab-content-inst-0" role="tabpanel">
+                                <app-vehicle-loan (vehicleDetails)="getVehicleDetails($event)"></app-vehicle-loan>
+                            </div>
+                            <div class="tab-pane tabs-animation fade" id="subtab-content-inst-1" role="tabpanel">
+                               <app-loan-security (loanSecurityDetails)="getLoanSecurityDetails($event)"></app-loan-security>
+                            </div>
+                            <div class="tab-pane tabs-animation fade" id="subtab-content-inst-2" role="tabpanel">
+                                
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="tab-pane tabs-animation fade" id="tab-content-4" role="tabpanel">
+                        <form [formGroup]="installmentsForm" #form="ngForm">
+                            
+                            <div class="row">
+                                <div class="col-md-2 position-relative form-group">
+                                    <label for="txtCode" class="">Installment Type <span class="mandatory">*</span></label>
+                                    <select class="form-control" tabindex="1" formControlName="instInstallmentType" (change)="changeInstallmentType()">
+                                        <option *ngFor="let uiInstallmentType of uiInstallmentTypes" [ngValue]="uiInstallmentType.code">
+                                            {{uiInstallmentType.name}}
+                                        </option>
+                                    </select>
+                                </div>
+                    
+                                <div class="col-md-2 position-relative form-group">
+                                    <label for="txtCode" class="">Number of Installments <span class="mandatory">*</span></label>
+                                    <input tabindex="1" type="number" class="form-control" formControlName="instNumberOfInstallments">
+                                </div>
+                    
+                                <div class="col-md-2 position-relative form-group">
+                                    <label for="txtCode" class="">First Installment Date <span class="mandatory">*</span></label>
+                                    <input tabindex="1" type="date" class="form-control" formControlName="instFirstInstallmentDate"
+                                        (change)="validateFirstInstallmentDate()">
+                                </div>
+                    
+                                <div class="col-md-2 position-relative form-group">
+                                    <label for="txtCode" class="">Installment With Interest <span class="mandatory">*</span></label>
+                                    <select class="form-control" tabindex="1" formControlName="instInstallWithInterest">
+                                        <option *ngFor="let uiInstallmentWithInterest of uiInstallmentWithInterestYN"
+                                            [ngValue]="uiInstallmentWithInterest.code">
+                                            {{uiInstallmentWithInterest.name}}
+                                        </option>
+                                    </select>
+                                </div>
+                    
+                                <div class="col-md-2 position-relative form-group">
+                                    <button class="mt-1 btn btn-primary" style="margin-top: 30px !important;" tabindex="23" (click)="showInstallments()">Show
+                                        Installments</button>
+                                </div>
+
+                                <div class="col-md-2 position-relative form-group">
+                                    <label for="txtCode" class="">Amount To Be Received</label>
+                                    <input tabindex="1" type="text" class="form-control" formControlName="instAmountToBeReceived" readonly>
+                                </div>
+                    
+                                <div style="margin-top: 10px;">
+                                    <table style="width: 100%;" class="table table-hover table-striped table-bordered dataTable dtr-inline">
+                                        <thead>
+                                            <tr role="row">
+                                                <th style="width: 4%;">#</th>
+                                                <th style="width: 16%;">Installment Date</th>
+                                                <th style="width: 16%;">Interest Rate</th>
+                                                <th style="width: 16%;">Interest</th>
+                                                <th style="width: 16%;">Principle</th>
+                                                <th style="width: 16%;">Installment Amount</th>
+                                                <th style="width: 16%;">Outstanding Balance</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr role="row" *ngFor="let installment of uiAllInstallments | paginate: { itemsPerPage: 10, currentPage: p_installments, totalItems: total_installments }; let i = index" class="odd">
+                                                <td>{{i+1}}</td>
+                                                <td>{{installment.installmentDate}}</td>
+                                                <td>{{installment.interestRate}}</td>
+                                                <td>{{installment.interestAmount}}</td>
+                                                <td>{{installment.principleAmount}}</td>
+                                                <td>{{installment.installmentAmount}}</td>
+                                                <td>{{installment.outstandingAmount}}</td>
+                                            </tr>
+                                            <tr *ngIf="uiAllInstallments.length==0">
+                                                <td colspan="7">No records..</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                                <div class="d-flex justify-content-center">
+                                    <pagination-controls (pageChange)="pageChangeEvent($event)"></pagination-controls>
+                                  </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-6 position-relative">
+                        <button class="mt-1 btn btn-primary" (click)="saveLoanDetails()"
+                            tabindex="23">Submit</button>
+                            <button class="mt-1 btn btn-left-margin10 btn-success" (click)="authoriseAccount()"
+                            tabindex="24">Authorise Account</button>
+                            <button class="mt-1 btn btn-left-margin10 btn-info" (click)="accountDetails()"
+                            tabindex="24">Back to Account</button>
+                        <button class="mt-1 btn btn-left-margin10 btn-danger" (click)="clear()"
+                            tabindex="25">Clear</button>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+    </div>
+</div>
+

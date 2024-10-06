@@ -1,5 +1,5 @@
 import { DatePipe, formatDate } from '@angular/common';
-import { Component, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ToastrService } from 'ngx-toastr';
 import { AccountDeclarations } from 'src/app/common/account-declarations';
@@ -12,35 +12,38 @@ import { AccountsService } from 'src/app/services/accounts/accounts/accounts.ser
 })
 export class GoldLoanComponent implements OnInit {
 
-  constructor(private _accountsService: AccountsService,private _toastrService: ToastrService,) { }
+  constructor(private _accountsService: AccountsService, private _toastrService: ToastrService,) { }
 
+  goldForm!: FormGroup;
   goldLoanForm!: FormGroup;
   uigoldTypes: any[] = [];
   uiAddedGolds: any[] = [];
+
+  uiGoldItems: any[] = [];
   uiChangesInInterestRateYN: any[] = [];
 
+  @Input() uiDirectors: any[] = [];
+  @Output() goldLoanDetails = new EventEmitter<any>();
+  
   p_gold: number = 1;
   total_golds: number = 0;
 
   ngOnInit(): void {
 
     this.uiChangesInInterestRateYN = AccountDeclarations.changesInInterestRateYN;
-    
-    this.goldLoanForm = new FormGroup({
+
+    this.goldForm = new FormGroup({
       receiptNo: new FormControl("", [Validators.required]),
       goldType: new FormControl(0, [Validators.required]),
       grossWeight: new FormControl("", [Validators.required]),
       netWeight: new FormControl("", [Validators.required]),
       ratePerGram: new FormControl("", [Validators.required]),
-      periodInMonths: new FormControl("", [Validators.required]),
-      paidDate: new FormControl(formatDate(new Date(Date.now()), 'yyyy-MM-dd', 'en'), []),
-      //expiryDate: new FormControl(formatDate(new Date(Date.now()), 'yyyy-MM-dd', 'en'), []),
-      maturityDate: new FormControl(formatDate(new Date(Date.now()), 'yyyy-MM-dd', 'en', 'dd/MM/yyyy'), []),
-      
-      // amount: new FormControl("", []),
+      amount: new FormControl("", []),
     });
 
-    this.maturityDate.disable();
+    this.goldLoanForm = new FormGroup({
+      totalAmount: new FormControl(0, []),
+    });
 
     this.getGoldTypes().then(result => {
 
@@ -53,7 +56,7 @@ export class GoldLoanComponent implements OnInit {
         console.log(data);
         if (data) {
           this.uigoldTypes = data.data.data;
-          this.goldLoanForm.patchValue({
+          this.goldForm.patchValue({
             goldType: this.uigoldTypes[0].id,
           })
           resolve(true);
@@ -65,39 +68,44 @@ export class GoldLoanComponent implements OnInit {
     })
   }
 
-  modifyMaturityDate()
-  {
-    if (this.paidDate.value && this.periodInMonths.value) {
-      if (!isNaN(parseInt(this.periodInMonths.value)) && parseInt(this.periodInMonths.value) > 0) {
-        let paidDate = new Date(this.paidDate.value);
-        paidDate.setMonth(paidDate.getMonth() + parseInt(this.periodInMonths.value));
-        
-        this.goldLoanForm.patchValue({
-          maturityDate: formatDate(paidDate, 'yyyy-MM-dd', 'en'),
+  calculateTotalAmount() {
+    // validate gross and net weight
+    if (this.netWeight.value && this.grossWeight.value) {
+      if (parseFloat(this.grossWeight.value) < this.netWeight.value) {
+        this._toastrService.error('Gross weight can not be less than net weight.', 'Error!');
+        return;
+      }
+    }
+
+    // calculate total amount
+    if (this.netWeight.value && this.ratePerGram.value) {
+      if (this.netWeight.value > 0 && this.ratePerGram.value > 0) {
+        this.goldForm.patchValue({
+          amount: parseFloat(this.netWeight.value) * parseFloat(this.ratePerGram.value),
         })
       }
-      else
-      {
-        this._toastrService.warning('Invalid period or paid date!.', 'Warning!');
+      else {
+        this.goldForm.patchValue({
+          amount: 0,
+        })
       }
     }
   }
 
   validGoldLoanForm() {
-    if (this.goldLoanForm.invalid) {
-      for (const control of Object.keys(this.goldLoanForm.controls)) {
-        this.goldLoanForm.controls[control].markAsTouched();
+    if (this.goldForm.invalid) {
+      for (const control of Object.keys(this.goldForm.controls)) {
+        this.goldForm.controls[control].markAsTouched();
       }
       return false;
     }
     return true;
   }
 
-  addGold()
-  { 
+  addGold() {
     if (this.validGoldLoanForm()) {
 
-      let goldTypes = this.uigoldTypes.filter(gt=>gt.id == this.goldType.value);
+      let goldTypes = this.uigoldTypes.filter(gt => gt.id == this.goldType.value);
       if (goldTypes && goldTypes.length) {
         let goldItem = {
           receiptNo: this.receiptNo.value,
@@ -107,57 +115,95 @@ export class GoldLoanComponent implements OnInit {
           netWeight: this.netWeight.value,
           ratePerGram: this.ratePerGram.value,
           amount: (parseFloat(this.ratePerGram.value) * parseFloat(this.netWeight.value)).toFixed(2),
-          paidDate : formatDate(new Date(this.paidDate.value), 'yyyy-MM-dd', 'en')
+          //paidDate : formatDate(new Date(this.paidDate.value), 'yyyy-MM-dd', 'en')
         };
-  
+
         this.uiAddedGolds.push(goldItem);
+
+        this.calculateTotalGoldAmount();
+
+        this.goldLoanDetails.emit(this.uiAddedGolds);
+
+        this.clearGold();
       }
     }
-    else
-    {
+    else {
       this._toastrService.error('Please enter mandatory fields in gold details.', 'Error!');
     }
   }
 
-  clearGold()
-  {
+  calculateTotalGoldAmount() {
+    let totalLoanAmount = 0;
+    this.uiAddedGolds.forEach(item => {
+      if (item.status != "D") {
+        totalLoanAmount = totalLoanAmount + parseFloat(item.amount);
+      }
+    });
 
+    this.goldLoanForm.patchValue({
+      totalAmount: totalLoanAmount
+    })
   }
 
-  deleteGold(uiAddedGold: any, index: number)
-  {
+  clearGold() {
+    this.goldForm.patchValue({
+      receiptNo: "",
+      goldType: this.uigoldTypes[0].id,
+      grossWeight: "",
+      netWeight: "",
+      ratePerGram: "",
+      amount: "",
+    });
+  }
+  goldIndexToDelete = 0;
 
+  deleteGold(uiAddedGold: any, index: number) {
+    if (uiAddedGold) {
+      this.goldIndexToDelete = index;
+    }
   }
 
-  get periodInMonths() {
-    return this.goldLoanForm.get('periodInMonths')!;
+  cancelDelete() {
+    this.goldIndexToDelete = -1;
   }
-  get maturityDate() {
-    return this.goldLoanForm.get('maturityDate')!;
+
+  onDelete() {
+    let goldIndexToDelete = this.goldIndexToDelete;
+    if (goldIndexToDelete > -1) {
+
+      let gold = this.uiAddedGolds[goldIndexToDelete];
+      this.uiAddedGolds.splice(goldIndexToDelete, 1);
+      if (gold) {
+        gold.status = "D";
+      }
+
+      this.calculateTotalGoldAmount();
+    }
   }
+
+  ///
+
   get receiptNo() {
-    return this.goldLoanForm.get('receiptNo')!;
+    return this.goldForm.get('receiptNo')!;
   }
   get goldType() {
-    return this.goldLoanForm.get('goldType')!;
+    return this.goldForm.get('goldType')!;
   }
   get grossWeight() {
-    return this.goldLoanForm.get('grossWeight')!;
+    return this.goldForm.get('grossWeight')!;
   }
   get netWeight() {
-    return this.goldLoanForm.get('netWeight')!;
+    return this.goldForm.get('netWeight')!;
   }
   get ratePerGram() {
-    return this.goldLoanForm.get('ratePerGram')!;
+    return this.goldForm.get('ratePerGram')!;
   }
-  // get amount() {
-  //   return this.goldLoanForm.get('amount')!;
-  // }
-  get paidDate() {
-    return this.goldLoanForm.get('paidDate')!;
+  get amount() {
+    return this.goldForm.get('amount')!;
   }
-  
-  get changesInInterestApplicable() {
-    return this.goldLoanForm.get('changesInInterestApplicable')!;
+
+  get totalAmount() {
+    return this.goldLoanForm.get('totalAmount')!;
   }
+
 }

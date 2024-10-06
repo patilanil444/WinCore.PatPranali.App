@@ -10,7 +10,6 @@ import { BrowserAnimationsModule, provideAnimations } from '@angular/platform-br
 import { ToastrModule } from 'ngx-toastr';
 import { SpinnerComponent } from './common/spinner/spinner.component';
 import { LoaderInterceptor } from './common/interceptors/loader.interceptor';
-import { AutoAccSearchComponent } from './common/directives/auto-acc-search/auto-acc-search.component';
 
 @NgModule({
   declarations: [
@@ -18,9 +17,6 @@ import { AutoAccSearchComponent } from './common/directives/auto-acc-search/auto
     LoginComponent,
     NotFoundComponent,
     SpinnerComponent,
- 
-   
-    
   ],
   imports: [
     CommonModule,

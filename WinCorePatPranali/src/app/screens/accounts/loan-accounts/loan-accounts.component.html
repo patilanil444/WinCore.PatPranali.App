@@ -555,8 +555,8 @@
                             tabindex="23">Submit</button>
                             <!-- <button class="mt-1 btn btn-left-margin10 btn-success" (click)="authoriseAccount()"
                             tabindex="24">Authorise Account</button> -->
-                            <button class="mt-1 btn btn-left-margin10 btn-success" (click)="accountDetails()"
-                            tabindex="24">Details</button>
+                        <button class="mt-1 btn btn-left-margin10 btn-success" (click)="accountDetails()"
+                            tabindex="24" [ngClass]="{'disabled': isAddMode}">Loan Details</button>
                         <button class="mt-1 btn btn-left-margin10 btn-danger" (click)="clear()"
                             tabindex="25">Clear</button>
                     </div>

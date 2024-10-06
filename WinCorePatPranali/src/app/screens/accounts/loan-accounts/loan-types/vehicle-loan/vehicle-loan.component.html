@@ -6,46 +6,137 @@
             </div>
             <div class="col-md-12">
                 <div class="tab-content">
-                    <div class="row">
+                    <div class="row" style="margin-bottom: 10px;">
                         <div class="col-md-3 position-relative form-group">
-                            <label for="txtCode" class="">Register Number</label>
+                            <label for="txtCode" class="">Register Number <span
+                                class="mandatory">*</span></label>
                             <input tabindex="1" type="text" class="form-control"
                                 formControlName="registerNumber">
                         </div>
                         <div class="col-md-3 position-relative form-group">
-                            <label for="txtCode" class="">Manufacturer</label>
+                            <label for="txtCode" class="">Manufacturer <span
+                                class="mandatory">*</span></label>
                             <input tabindex="1" type="text" class="form-control"
                                 formControlName="manufacturer">
                         </div>
                         <div class="col-md-3 position-relative form-group">
-                            <label for="txtCode" class="">Model</label>
+                            <label for="txtCode" class="">Model <span
+                                class="mandatory">*</span></label>
                             <input tabindex="1" type="text" class="form-control"
                                 formControlName="model">
                         </div>
                         <div class="col-md-3 position-relative form-group">
-                            <label for="txtCode" class="">Engine Number</label>
+                            <label for="txtCode" class="">Engine Number <span
+                                class="mandatory">*</span></label>
                             <input tabindex="1" type="text" class="form-control"
                                 formControlName="engineNumber">
                         </div>
                         <div class="col-md-3 position-relative form-group">
-                            <label for="txtCode" class="">Chasis Number</label>
+                            <label for="txtCode" class="">Chasis Number <span
+                                class="mandatory">*</span></label>
                             <input tabindex="1" type="text" class="form-control"
                                 formControlName="chasisNumber">
                         </div>
                         <div class="col-md-3 position-relative form-group">
-                            <label for="txtCode" class="">Invoice Amount</label>
+                            <label for="txtCode" class="">Invoice Amount <span
+                                class="mandatory">*</span></label>
                             <input tabindex="1" type="text" class="form-control"
                                 formControlName="invoiceAmount">
                         </div>
                         <div class="col-md-3 position-relative form-group">
-                            <label for="txtCode" class="">Dealer</label>
+                            <label for="txtCode" class="">Dealer <span
+                                class="mandatory">*</span></label>
                             <input tabindex="1" type="text" class="form-control"
                                 formControlName="dealer">
                         </div>
-                        
+                        <div class="col-md-3 position-relative form-group">
+                            <div style="margin-top: 25px;">
+                                <button class="mt-1 btn btn-primary" (click)="addVehicle()"
+                                tabindex="31">Add</button>
+                            <button class="mt-1 btn btn-left-margin10 btn-danger"
+                                (click)="clearVehicle()" tabindex="24">Clear</button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <table class="mb-0 table table-bordered">
+                                <thead>
+                                    <tr>
+                                        <th width="12%">Register Number</th>
+                                        <th width="12%">Manufacturer</th>
+                                        <th width="12%">Model</th>
+                                        <th width="12%">Engine Number</th>
+                                        <th width="12%">Chasis Number</th>
+                                        <th width="12%">Invoice Amount</th>
+                                        <th width="12%">Dealer</th>
+                                        <th width="12%">Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr
+                                        *ngFor="let uiVehicle of uiVehicles | paginate: { itemsPerPage: 10, currentPage: p_vehicle, totalItems: total_Vehicles }; let ind = index">
+                                        <ng-container *ngIf="uiVehicle.status!='D'">
+                                            <td>{{uiVehicle.registerNumber}}</td>
+                                            <td>{{uiVehicle.manufacturer}}</td>
+                                            <td>{{uiVehicle.model}}</td>
+                                            <td>{{uiVehicle.engineNumber}}</td>
+                                            <td>{{uiVehicle.chasisNumber}}</td>
+                                            <td>{{uiVehicle.invoiceAmount}}</td>
+                                            <td>{{uiVehicle.dealer}}</td>
+                                            <td>
+                                                <div class="widget-content-right">
+                                                    <button type="button" placeholder="Edit record"
+                                                        class="btn-shadow btn btn-info btn-actions"
+                                                        (click)="editVehicle(uiVehicle, ind)">
+                                                        <span class="btn-icon-wrapper opacity-10">
+                                                            <i class="fa fa-edit fa-w-10"></i>
+                                                        </span>
+                                                    </button>
+                                                    <button type="button"
+                                                        placeholder="Delete record"
+                                                        class="btn-shadow btn btn-danger btn-actions"
+                                                        (click)="deleteVehicle(uiVehicle, ind)"
+                                                        data-toggle="modal">   <!-- data-target="#deleteModal" -->
+                                                        <span class="btn-icon-wrapper opacity-10">
+                                                            <i class="fa fa-trash fa-w-20"></i>
+                                                        </span>
+                                                    </button>
+                                                </div>
+                                            </td>
+                                        </ng-container>
+                                    </tr>
+                                    <tr *ngIf="uiVehicles.length==0">
+                                        <td colspan="8">No records found..</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+    
                     </div>
                 </div>
             </div>
         </div>
     </form>
 </div>
+
+<!-- <div id="deleteModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+    aria-hidden="true" data-backdrop="false">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Delete</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="cancelDelete()">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <p class="mb-0">Are you sure do you want to delete?</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-danger" data-dismiss="modal" (click)="onDelete()">Yes</button>
+                <button type="button" class="btn btn-primary" data-dismiss="modal" (click)="cancelDelete()">No</button>
+            </div>
+        </div>
+    </div>
+</div> -->

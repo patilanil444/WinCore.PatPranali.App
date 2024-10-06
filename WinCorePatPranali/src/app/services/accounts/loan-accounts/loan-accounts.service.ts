@@ -11,6 +11,8 @@ export class LoanAccountsService {
   serviceBaseURL = "";
   jointCustomerToDelete = -1;
   guarantorCustomerToDelete = -1;
+  customerName = "";
+  customerCodeStr = "";
 
   constructor(private http: HttpClient) { }
 
@@ -30,5 +32,10 @@ export class LoanAccountsService {
   saveLoanAccount(accountModel: any): any {
     let options = GlobleDeclarations.getHeaderOptions();
     return this.http.post(GlobleDeclarations.apiBaseURL + "api/LoanAccount/save-loan-account", accountModel, options);
+  }
+
+  saveLoanDetails(accountModel: any): any {
+    let options = GlobleDeclarations.getHeaderOptions();
+    return this.http.post(GlobleDeclarations.apiBaseURL + "api/LoanAccount/save-loan-details", accountModel, options);
   }
 }

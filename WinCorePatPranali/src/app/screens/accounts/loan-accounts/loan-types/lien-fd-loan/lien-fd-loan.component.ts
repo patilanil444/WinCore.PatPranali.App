@@ -1,5 +1,5 @@
 import { formatDate } from '@angular/common';
-import { Component, OnInit } from '@angular/core';
+import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { NgxDropdownConfig } from 'ngx-select-dropdown';
 import { ToastrService } from 'ngx-toastr';
@@ -18,6 +18,7 @@ import { SharedService } from 'src/app/services/shared.service';
 export class LienFdLoanComponent implements OnInit {
 
   lienFDForm!: FormGroup;
+  fdTotalForm!: FormGroup;
 
   uiBranches: any[] = [];
   uiFDAccounts: any[] = [];
@@ -25,6 +26,8 @@ export class LienFdLoanComponent implements OnInit {
 
   uiAllGeneralLedgers: any[] = [];
   uiDepositGeneralLedgers: any[] = [];
+
+  @Output() depositLoanDetails = new EventEmitter<any>();
 
   p_FD: number = 1;
   total_FDs: number = 0;
@@ -65,6 +68,9 @@ export class LienFdLoanComponent implements OnInit {
       releaseBy : new FormControl("", []),
     });
 
+    this.fdTotalForm = new FormGroup({
+      totalAmount: new FormControl(0, []),
+    });
 
     this.getBranches();
     this.getGeneralLedgers();
@@ -201,6 +207,10 @@ export class LienFdLoanComponent implements OnInit {
             status:'A'
           };
           this.uiAddedFDAccounts.push(validFd);
+
+          this.depositLoanDetails.emit(this.uiAddedFDAccounts);
+
+          this.calculateTotalAmount();
         }
         else {
           this._toastrService.error('Please search FD to add.', 'Error!');
@@ -214,6 +224,19 @@ export class LienFdLoanComponent implements OnInit {
     {
       this._toastrService.error('Please search FD to add.', 'Error!');
     }  
+  }
+
+  calculateTotalAmount() {
+    let totalLoanAmount = 0;
+    this.uiAddedFDAccounts.forEach(item => {
+      if (item.status != "D") {
+        totalLoanAmount = totalLoanAmount + parseFloat(item.fdAmount);
+      }
+    });
+
+    this.fdTotalForm.patchValue({
+      totalAmount: totalLoanAmount
+    })
   }
 
   clearFD()
@@ -277,5 +300,11 @@ export class LienFdLoanComponent implements OnInit {
   }
   get releaseBy() {
     return this.lienFDForm.get('releaseBy')!;
+  }
+
+  ///
+
+  get totalAmount() {
+    return this.fdTotalForm.get('totalAmount')!;
   }
 }

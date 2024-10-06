@@ -175,6 +175,8 @@ export class LoanAccountsComponent {
   uiCustomers: any[] = [];
   uiJointCustomers: any[] = [];
   uiGuarantorCustomers: any[] = [];
+  uiSecurityTypes: any[] = [];
+  uiDirectors: any[] = [];
 
   uiSelectedJointCustomers: any[] = [];
   uiSelectedGuarantorCustomers: any[] = [];
@@ -288,13 +290,13 @@ export class LoanAccountsComponent {
 
         // this.getSecurities().then(sResult => {
         //   if (sResult) {
-        //     this.getDirectors().then(dResult => {
-        //       if (dResult) {
-        //         this.loadForm();
-        //       }
-        //     }).catch(error => {
-        //       this._toastrService.error('Error loading general ledgers', 'Error!');
-        //     });
+          // this.getDirectors().then(dResult => {
+          //   if (dResult) {
+          //     this.loadForm();
+          //   }
+          // }).catch(error => {
+          //   this._toastrService.error('Error loading general ledgers', 'Error!');
+          // });
         //   }
         // }).catch(error => {
         //   this._toastrService.error('Error loading security types', 'Error!');
@@ -344,11 +346,11 @@ export class LoanAccountsComponent {
   //       console.log(data);
   //       if (data) {
   //         this.uiSecurityTypes = data.data.data;
-  //         if (this.uiSecurityTypes && this.uiSecurityTypes.length) {
-  //           this.securityForm.patchValue({
-  //             securityType: this.uiSecurityTypes[0].id
-  //           })
-  //         }
+  //         // if (this.uiSecurityTypes && this.uiSecurityTypes.length) {
+  //         //   this.securityForm.patchValue({
+  //         //     securityType: this.uiSecurityTypes[0].id
+  //         //   })
+  //         // }
   //         resolve(true);
   //       }
   //       else {
@@ -364,11 +366,11 @@ export class LoanAccountsComponent {
   //       console.log(data);
   //       if (data) {
   //         this.uiDirectors = data.data.data;
-  //         if (this.uiDirectors && this.uiDirectors.length) {
-  //           this.parametersForm.patchValue({
-  //             sanctionBy: this.uiDirectors[0].id
-  //           })
-  //         }
+  //         // if (this.uiDirectors && this.uiDirectors.length) {
+  //         //   this.parametersForm.patchValue({
+  //         //     sanctionBy: this.uiDirectors[0].id
+  //         //   })
+  //         // }
   //         resolve(true);
   //       }
   //       else {
@@ -515,58 +517,9 @@ export class LoanAccountsComponent {
     }
   }
 
-  calculateMatureDate() {
-    // if (this.loanTenureInMonths.value && !isNaN(this.loanTenureInMonths.value)) {
-    //   let matureDate = new Date().setMonth(new Date().getMonth() + parseInt(this.loanTenureInMonths.value))
-    //   if (matureDate) {
-    //     // this.parametersForm.patchValue({
-    //     //   maturityDate: formatDate(matureDate, 'yyyy-MM-dd', 'en')
-    //     // })
-    //   }
-    // }
-  }
+ 
 
-  calculateFirstInstallmentDate() {
-    // if (this.sactionDate.value) {
-    //   let firstInstallDate = new Date().setDate(new Date(this.sactionDate.value).getDate() + 30)
-    //   if (firstInstallDate) {
-    //     // this.parametersForm.patchValue({
-    //     //   firstInstallmentDate: formatDate(firstInstallDate, 'yyyy-MM-dd', 'en')
-    //     // })
-    //   }
-    // }
-  }
-
-  validateFirstInstallmentDate() {
-    // if (this.firstInstallmentDate.value) {
-    //   let tempFirstInstallmentDate = formatDate(new Date(this.firstInstallmentDate.value), 'yyyy-MM-dd', 'en');
-    //   let tempSactionDate = formatDate(new Date(this.sactionDate.value), 'yyyy-MM-dd', 'en');
-    //   if (tempFirstInstallmentDate < tempSactionDate) {
-    //     // this.parametersForm.patchValue({
-    //     //   firstInstallmentDate: formatDate(new Date().setDate(new Date(this.sactionDate.value).getDate() + 30), 'yyyy-MM-dd', 'en')
-    //     // })
-
-    //     this._toastrService.error('First installment can not be less than sanction date', 'Error!');
-    //   }
-
-    //   // this.installmentsForm.patchValue({
-    //   //   instFirstInstallmentDate: formatDate(this.firstInstallmentDate.value, 'yyyy-MM-dd', 'en')
-    //   // })
-    // }
-  }
-
-  setIntallmentSactionAmount()
-  {
-    // if (this.sactionAmountFormatted.value.length > 0) {
-    //   // this.installmentsForm.patchValue({
-    //   //   instSactionAmount: new Intl.NumberFormat('en-IN',{ style: 'decimal' }).format(parseFloat(this.sactionAmountFormatted.value))
-    //   // })
-    //   // this.parametersForm.patchValue({
-    //   //   sactionAmount: parseFloat(this.sactionAmountFormatted.value),
-    //   //   sactionAmountFormatted: new Intl.NumberFormat('en-IN',{ style: 'decimal' }).format(parseFloat(this.sactionAmountFormatted.value))
-    //   // })
-    // }
-  }
+ 
 
   getMaxAccountNumber(glId: number) {
     this._accountsService.getMaxAccountNumber(this._sharedService.applicationUser.branchId, glId).subscribe((data: any) => {
@@ -659,6 +612,9 @@ export class LoanAccountsComponent {
         this.summaryForm.patchValue({
           customerId: customerId,
         })
+
+        this._loanAccountsService.customerName = customer.custName;
+        this._loanAccountsService.customerCodeStr = customer.customerCodeStr;
       }
     })
   }
@@ -1165,6 +1121,11 @@ export class LoanAccountsComponent {
     })
   }
 
+  accountDetails()
+  {
+     this.configClick("loan-details");
+  }
+
   // Customers
 
   get customerNumber() {
@@ -1330,12 +1291,6 @@ export class LoanAccountsComponent {
   }
 
   // 
-
-  accountDetails()
-  {
-    this.configClick("loan-details");
-  }
-
   configClick(routeValue: string) {
     sessionStorage.setItem("configMenu", routeValue);
     this.router.navigate(['/app/' + routeValue]);

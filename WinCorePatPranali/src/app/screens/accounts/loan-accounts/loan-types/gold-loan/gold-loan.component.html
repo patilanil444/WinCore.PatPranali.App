@@ -1,151 +1,145 @@
-<div>
-    <form [formGroup]="goldLoanForm" #form="ngForm">
-        
-        
-        <div class="row">
-            <div class="col-md-12">
-                <h5 class="card-title">Gold Details</h5>
-            </div>
-            <div class="col-md-12">
-                <div class="tab-content">
-    
-                    <div class="row" style="margin-bottom: 10px;">
-    
-                        <div class="col-md-2 position-relative form-group">
-                            <label for="txtCode" class="">Receipt No <span class="mandatory">*</span></label>
-                            <input tabindex="1" type="text" class="form-control" formControlName="receiptNo">
-                        </div>
-                        <div class="col-md-2 position-relative form-group">
-                            <label for="txtCode" class="">Gold Type <span class="mandatory">*</span></label>
-                            <select class="form-control" tabindex="2" formControlName="goldType">
-                                <option *ngFor="let uigoldType of uigoldTypes" [ngValue]="uigoldType.id">
-                                    {{uigoldType.name}}
-                                </option>
-                            </select>
-                        </div>
-                        <div class="col-md-2 position-relative form-group">
-                            <label for="txtCode" class="">Gross Weight <span class="mandatory">*</span></label>
-                            <div class="input-group">
-                                <input tabindex="3" type="number" class="form-control" formControlName="grossWeight">
-                                <div class="input-group-append"><span class="input-group-text">Gram</span></div>
-                            </div>
-                        </div>
-                        <div class="col-md-2 position-relative form-group">
-                            <label for="txtCode" class="">Net Weight <span class="mandatory">*</span></label>
-                            <div class="input-group">
-                                <input tabindex="4" type="number" class="form-control" formControlName="netWeight">
-                                <div class="input-group-append"><span class="input-group-text">Gram</span></div>
-                            </div>
-                        </div>
-                        <div class="col-md-2 position-relative form-group">
-                            <label for="txtCode" class="">Rate Per Gram <span class="mandatory">*</span></label>
-                            <input tabindex="5" type="number" class="form-control" formControlName="ratePerGram">
-                        </div>
-                        <div class="col-md-2 position-relative form-group">
-                            <div style="display: flex; margin-top: 25px;">
-                                <button class="mt-1 btn btn-primary" (click)="addGold()" tabindex="9">Add</button>
-                                <button class="mt-1 btn btn-left-margin10 btn-danger" (click)="clearGold()"
-                                    tabindex="10">Clear</button>
-                            </div>
-                        </div>
-                        <!-- <div class="col-md-3 position-relative form-group">
-                                <label for="txtCode" class="">Amount</label>
-                                <input tabindex="1" type="text" class="form-control"
-                                    formControlName="amount">
-                            </div> -->
-                    </div>
+<div class="row">
+    <div class="col-md-12">
+        <form [formGroup]="goldForm" #form="ngForm">
+            <div class="row">
+                <div class="col-md-12">
+                    <h5 class="card-title">Gold Details</h5>
                 </div>
-            </div>
-           
-            <div class="col-md-12">
-                <div class="tab-content">
-                    <div class="row">
-                        <table class="mb-0 table table-bordered">
-                            <thead>
-                                <tr>
-                                    <th width="5%">#</th>
-                                    <th width="15%">Gold Type</th>
-                                    <th width="15%">Gross Weight</th>
-                                    <th width="15%">Net Weight</th>
-                                    <th width="15%">Rate</th>
-                                    <th width="15%">Amount</th>
-                                    <th width="15%">Paid Date</th>
-                                    <th width="5%">Actions</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr
-                                    *ngFor="let uiAddedGold of uiAddedGolds | paginate: { itemsPerPage: 10, currentPage: p_gold, totalItems: total_golds }; let ind = index">
-                                    <ng-container *ngIf="uiAddedGold.status!='D'">
-                                        <td>{{ind + 1}}</td>
-                                        <td>{{uiAddedGold.goldTypeText}}</td>
-                                        <td>{{uiAddedGold.grossWeight}}</td>
-                                        <td>{{uiAddedGold.netWeight}}</td>
-                                        <td>{{uiAddedGold.ratePerGram}}</td>
-                                        <td>{{uiAddedGold.amount}}</td>
-                                        <td>{{uiAddedGold.paidDate}}</td>
-                                        <td>
-                                            <div class="widget-content-right">
-                                                <button type="button" placeholder="Delete record"
-                                                    class="btn-shadow btn btn-danger btn-actions" data-toggle="modal"
-                                                    (click)="deleteGold(uiAddedGold, ind)">
-                                                    <span class="btn-icon-wrapper opacity-10">
-                                                        <i class="fa fa-trash fa-w-20"></i>
-                                                    </span>
-                                                </button>
-                                            </div>
-                                        </td>
-                                    </ng-container>
-                                </tr>
-                                <tr *ngIf="uiAddedGolds.length==0">
-                                    <td colspan="8">No records found..</td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="divider"></div>
-        <div class="row">
-            <div class="col-md-3 position-relative form-group">
-                <label for="txtCode" class="">Interest Rate <span class="mandatory">*</span></label>
-                <input tabindex="1" type="number" class="mb-2 form-control" formControlName="interestRate" min="0"
-                    onKeyPress="if(this.value.length >=3) return false;">
-            </div>
-    
-            <div class="col-md-3 position-relative form-group">
-                <label for="txtCode" class="">Amount Advances <span class="mandatory">*</span></label>
-                <input tabindex="1" type="number" min="0" class="form-control" formControlName="amountAdvances">
-            </div>
-    
-            <div class="col-md-3 position-relative form-group">
-                <label for="txtCode" class="">Changes In Interest Rate Applicable</label>
-                <select class="mb-2 form-control" tabindex="1" formControlName="changesInInterestApplicable">
-                    <option *ngFor="let uiChangesInInterestRate of uiChangesInInterestRateYN"
-                        [ngValue]="uiChangesInInterestRate.code">
-                        {{uiChangesInInterestRate.name}}
-                    </option>
-                </select>
-            </div>
-            <div class="col-md-3 position-relative form-group">
-                <label for="txtCode" class="">Period <span class="mandatory">*</span></label>
-                <div class="input-group">
-                    <input tabindex="6" type="number" class="form-control" formControlName="periodInMonths"
-                        (change)="modifyMaturityDate()">
-                    <div class="input-group-append"><span class="input-group-text">Months</span></div>
-                </div>
-            </div>
-            <div class="col-md-3 position-relative form-group">
-                <label for="txtCode" class="">Paid On <span class="mandatory">*</span></label>
-                <input tabindex="7" type="date" class="form-control" formControlName="paidDate"
-                    (change)="modifyMaturityDate()">
-            </div>
-            <div class="col-md-3 position-relative form-group">
-                <label for="txtCode" class="">Maturity Date <span class="mandatory">*</span></label>
-                <input tabindex="8" type="date" class="form-control" formControlName="maturityDate">
-            </div>
-        </div>
+                <div class="col-md-12">
+                    <div class="tab-content">
 
-    </form>
+                        <div class="row" style="margin-bottom: 10px;">
+
+                            <div class="col-md-3 position-relative form-group">
+                                <label for="txtCode" class="">Receipt No <span class="mandatory">*</span></label>
+                                <input tabindex="5" type="text" class="form-control" formControlName="receiptNo">
+                            </div>
+                            <div class="col-md-3 position-relative form-group">
+                                <label for="txtCode" class="">Gold Type <span class="mandatory">*</span></label>
+                                <select class="form-control" tabindex="6" formControlName="goldType">
+                                    <option *ngFor="let uigoldType of uigoldTypes" [ngValue]="uigoldType.id">
+                                        {{uigoldType.name}}
+                                    </option>
+                                </select>
+                            </div>
+                            <div class="col-md-3 position-relative form-group">
+                                <label for="txtCode" class="">Gross Weight <span class="mandatory">*</span></label>
+                                <div class="input-group">
+                                    <input tabindex="7" type="number" class="form-control"
+                                        formControlName="grossWeight">
+                                    <div class="input-group-append"><span class="input-group-text">Gram</span></div>
+                                </div>
+                            </div>
+                            <div class="col-md-3 position-relative form-group">
+                                <label for="txtCode" class="">Net Weight <span class="mandatory">*</span></label>
+                                <div class="input-group">
+                                    <input tabindex="8" type="number" class="form-control" formControlName="netWeight"
+                                        (change)="calculateTotalAmount()">
+                                    <div class="input-group-append"><span class="input-group-text">Gram</span></div>
+                                </div>
+                            </div>
+                            <div class="col-md-3 position-relative form-group">
+                                <label for="txtCode" class="">Rate Per Gram <span class="mandatory">*</span></label>
+                                <input tabindex="9" type="number" class="form-control" formControlName="ratePerGram"
+                                    (change)="calculateTotalAmount()">
+                            </div>
+                            <div class="col-md-3 position-relative form-group">
+                                <label for="txtCode" class="">Amount</label>
+                                <input tabindex="10" type="text" class="form-control" readonly formControlName="amount">
+                            </div>
+                            <div class="col-md-3 position-relative form-group">
+                                <div style="display: flex; margin-top: 25px;">
+                                    <button class="mt-1 btn btn-primary" (click)="addGold()" tabindex="11">Add</button>
+                                    <button class="mt-1 btn btn-left-margin10 btn-danger" (click)="clearGold()"
+                                        tabindex="12">Clear</button>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-12">
+                    <table class="mb-0 table table-bordered">
+                        <thead>
+                            <tr>
+                                <th width="5%">#</th>
+                                <th width="15%">Gold Type</th>
+                                <th width="15%">Gross Weight</th>
+                                <th width="15%">Net Weight</th>
+                                <th width="15%">Rate</th>
+                                <th width="15%">Amount</th>
+                                <!-- <th width="15%">Paid Date</th> -->
+                                <th width="5%">Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr
+                                *ngFor="let uiAddedGold of uiAddedGolds | paginate: { itemsPerPage: 10, currentPage: p_gold, totalItems: total_golds }; let ind = index">
+                                <ng-container *ngIf="uiAddedGold.status!='D'">
+                                    <td>{{ind + 1}}</td>
+                                    <td>{{uiAddedGold.goldTypeText}}</td>
+                                    <td>{{uiAddedGold.grossWeight}}</td>
+                                    <td>{{uiAddedGold.netWeight}}</td>
+                                    <td>{{uiAddedGold.ratePerGram}}</td>
+                                    <td>{{uiAddedGold.amount}}</td>
+                                    <!-- <td>{{uiAddedGold.paidDate}}</td> -->
+                                    <td>
+                                        <div class="widget-content-right">
+                                            <button type="button" placeholder="Delete record"
+                                                class="btn-shadow btn btn-danger btn-actions" 
+                                                (click)="deleteGold(uiAddedGold, ind)"
+                                                data-toggle="modal" data-target="#deleteModal">
+                                                <span class="btn-icon-wrapper opacity-10">
+                                                    <i class="fa fa-trash fa-w-20"></i>
+                                                </span>
+                                            </button>
+                                        </div>
+                                    </td>
+                                </ng-container>
+                            </tr>
+                            <tr *ngIf="uiAddedGolds.length==0">
+                                <td colspan="8">No records found..</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </form>
+
+        <form [formGroup]="goldLoanForm" #form="ngForm">
+            <div class="row" style="margin-top: 10px;">
+                <div class="col-md-12">
+                    <div class="tab-content">
+                        <div class="row" >
+                            <div class="col-md-3 position-relative form-group">
+                                <label for="txtCode" class="">Total Gold Amount</label>
+                                <input tabindex="13" type="number" class="form-control" readonly formControlName="totalAmount">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+<div id="deleteModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+    aria-hidden="true" data-backdrop="false">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Delete</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="cancelDelete()">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <p class="mb-0">Are you sure do you want to delete?</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-danger" data-dismiss="modal" (click)="onDelete()">Yes</button>
+                <button type="button" class="btn btn-primary" data-dismiss="modal" (click)="cancelDelete()">No</button>
+            </div>
+        </div>
+    </div>
 </div>

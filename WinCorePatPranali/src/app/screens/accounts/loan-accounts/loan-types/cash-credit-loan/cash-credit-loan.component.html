@@ -1,0 +1,119 @@
+<div class="row">
+    <div class="col-md-12">
+        <form [formGroup]="securityForm" #form="ngForm">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="tab-content">
+                        <div class="row">
+                            <div class="col-md-3 position-relative form-group">
+                                <label for="txtCode" class="">Security Type <span
+                                        class="mandatory">*</span></label>
+                                <select class="mb-2 form-control" tabindex="27"
+                                    formControlName="securityType">
+                                    <option *ngFor="let uiSecurityType of uiSecurityTypes"
+                                        [ngValue]="uiSecurityType.id">
+                                        {{uiSecurityType.name}}
+                                    </option>
+                                </select>
+                            </div>
+                            <div class="col-md-3 position-relative form-group">
+                                <label for="txtCode" class="">Security  <span
+                                        class="mandatory">*</span></label>
+                                <input tabindex="26" type="text" class="form-control"
+                                    formControlName="security">
+                            </div>
+                            
+                            <div class="col-md-3 position-relative form-group">
+                                <label for="txtCode" class="">Security Value <span
+                                        class="mandatory">*</span></label>
+                                <input tabindex="28" type="number" min="0"  class="form-control"
+                                    formControlName="securityValue">
+                            </div>
+                           
+                            <div class="col-md-3 position-relative form-group">
+                                <label for="txtCode" class="">Security Description <span
+                                        class="mandatory">*</span></label>
+                                <input tabindex="29" type="text" class="form-control"
+                                    formControlName="securityDescription">
+                            </div>
+                           
+                            <div class="col-md-3 position-relative form-group">
+                                <div style="margin-top: 5px;">
+                                    <button class="mt-1 btn btn-primary" (click)="addSecurity()"
+                                    tabindex="31">Add</button>
+                                <button class="mt-1 btn btn-left-margin10 btn-danger"
+                                    (click)="clearSecurity()" tabindex="24">Clear</button>
+                                </div>
+                            </div>
+                        </div>
+        
+                        <div class="row">
+                            <div class="col-md-12">
+                                <table class="mb-0 table table-bordered">
+                                    <thead>
+                                        <tr>
+                                            <th width="25%">Security Type</th>
+                                            <th width="25%">Security</th>
+                                            <th width="25%">Value</th>
+                                            <th width="25%">Actions</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr
+                                            *ngFor="let uiSecurity of uiSecurities | paginate: { itemsPerPage: 10, currentPage: p_security, totalItems: total_securities }; let ind = index">
+                                            <ng-container *ngIf="uiSecurity.status!='D'">
+                                                <td>{{uiSecurity.securityTypeText}}</td>
+                                                <td>{{uiSecurity.security}}</td>
+                                                <td>{{uiSecurity.securityValue}}</td>
+                                                <td>
+                                                    <div class="widget-content-right">
+                                                        <button type="button" placeholder="Edit record"
+                                                            class="btn-shadow btn btn-info btn-actions"
+                                                            (click)="editSecurity(uiSecurity, ind)">
+                                                            <span class="btn-icon-wrapper opacity-10">
+                                                                <i class="fa fa-edit fa-w-10"></i>
+                                                            </span>
+                                                        </button>
+                                                        <button type="button"
+                                                            placeholder="Delete record"
+                                                            class="btn-shadow btn btn-danger btn-actions"
+                                                            data-toggle="modal"
+                                                            (click)="deleteSecurity(uiSecurity, ind)">
+                                                            <span class="btn-icon-wrapper opacity-10">
+                                                                <i class="fa fa-trash fa-w-20"></i>
+                                                            </span>
+                                                        </button>
+                                                    </div>
+                                                </td>
+                                            </ng-container>
+                                        </tr>
+                                        <tr *ngIf="uiSecurities.length==0">
+                                            <td colspan="4">No records found..</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+        
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+        <form [formGroup]="securityValueForm" #form="ngForm">
+            <div class="row" style="margin-top: 10px;">
+                <div class="col-md-12">
+                    <div class="tab-content">
+                        <div class="row" >
+                            <div class="col-md-3 position-relative form-group">
+                                <label for="txtCode" class="">Total Value</label>
+                                <input tabindex="13" type="number" class="form-control" readonly formControlName="totalValue">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+

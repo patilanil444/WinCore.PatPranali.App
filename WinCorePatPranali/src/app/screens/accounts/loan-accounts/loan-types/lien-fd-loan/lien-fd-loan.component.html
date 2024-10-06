@@ -122,7 +122,7 @@
                 <div class="col-md-12">
                     <div class="row">
                         <div style="display: flex; margin-bottom: 10px;">
-                            <button class="mt-1 btn btn-primary" (click)="AddFD()" tabindex="31">Save FD</button>
+                            <button class="mt-1 btn btn-primary" (click)="AddFD()" tabindex="31">Add FD</button>
                             <button class="mt-1 btn btn-left-margin10 btn-danger" (click)="clearFD()"
                                 tabindex="24">Clear</button>
                         </div>
@@ -185,6 +185,20 @@
                     </div>
                 </div>
         
+            </div>
+        </div>
+    </form>
+    <form [formGroup]="fdTotalForm" #form="ngForm">
+        <div class="row" style="margin-top: 10px;">
+            <div class="col-md-12">
+                <div class="tab-content">
+                    <div class="row" >
+                        <div class="col-md-3 position-relative form-group">
+                            <label for="txtCode" class="">Total Amount</label>
+                            <input tabindex="13" type="number" class="form-control" readonly formControlName="totalAmount">
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </form>

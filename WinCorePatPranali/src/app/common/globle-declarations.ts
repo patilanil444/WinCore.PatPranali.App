@@ -3,7 +3,7 @@ import { HttpHeaders } from '@angular/common/http';
 export class GlobleDeclarations
 {
   static apiBaseURL = "https://localhost:7229/";
-
+  //static apiBaseURL = "http://localhost:5668/";
   private static GetHeader() {
     const headers = new HttpHeaders();
     headers.set('Content-Type', 'application/json; charset=utf-8');
