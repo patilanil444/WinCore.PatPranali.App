@@ -50,6 +50,7 @@ export class PriorityListComponent {
       action: "newRecord",
       id: 0,
       maxId: maxId,
+      models: this.uiPriorities
     }
 
     this._priorityMasterService.setDTO(dtObject);
@@ -63,6 +64,7 @@ export class PriorityListComponent {
       action: "editRecord",
       id: uiPriority.id,
       maxId: 0,
+      models: this.uiPriorities
     }
     this._priorityMasterService.setDTO(dtObject);
 

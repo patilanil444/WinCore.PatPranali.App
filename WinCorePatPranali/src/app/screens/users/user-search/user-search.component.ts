@@ -62,6 +62,7 @@ export class UserSearchComponent implements OnInit {
       action: "newRecord",
       id: 0,
       maxId: 0,
+      models: this.uiUsers
     }
 
     this._userService.setDTO(dtObject);
@@ -86,6 +87,7 @@ export class UserSearchComponent implements OnInit {
       action: "editRecord",
       id: uiUser.id,
       maxId: 0,
+      models: this.uiUsers
     }
     this._userService.setDTO(dtObject);
 
@@ -120,6 +122,7 @@ export class UserSearchComponent implements OnInit {
       action: "editRecord",
       id: uiUser.id,
       maxId: 0,
+      models: this.uiUsers
     }
     this._userService.setDTO(dtObject);
 

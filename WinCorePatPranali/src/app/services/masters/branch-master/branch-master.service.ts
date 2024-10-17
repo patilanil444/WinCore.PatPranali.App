@@ -42,6 +42,6 @@ export class BranchMasterService {
 
   deleteBranch(id: number): any {
     let options = GlobleDeclarations.getHeaderOptions();
-    return this.http.delete(GlobleDeclarations.apiBaseURL + "api/branch/delete-branch?id=" + id, options);
+    return this.http.post(GlobleDeclarations.apiBaseURL + "api/branch/delete-branch?id=" + id, options);
   }
 }

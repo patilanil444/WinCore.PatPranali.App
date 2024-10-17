@@ -37,6 +37,7 @@ export class MemberSearchComponent implements OnInit {
       action: "editRecord",
       id: uiMember.id,
       maxId: 0,
+      models: this.uiMembers
     }
     this._memberService.setDTO(dtObject);
 

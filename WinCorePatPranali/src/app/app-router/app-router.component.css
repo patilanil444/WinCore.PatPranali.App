@@ -1,0 +1,26 @@
+.custom-menu-icon{
+    height: 24px !important;
+    width: 24px !important;
+    left: 10px !important;
+    margin-top: -10px !important;
+}
+
+.customers-img{
+    background: url("../../assets/images/customers_2.png");
+}
+
+.accounts-img{
+    background: url("../../assets/images/accounts_1.png");
+}
+
+.transactions-img{
+    background: url("../../assets/images/transactions_6.png");
+}
+
+.masters-img{
+    background: url("../../assets/images/masters.png");
+}
+
+.users-img{
+    background: url("../../assets/images/users.png");
+}

@@ -48,7 +48,7 @@ export class DistrictMasterFormComponent implements OnInit {
     });
 
     this._districtMasterService.getDTO().subscribe(obj => this.dto = obj);
-    if (this.dto) {
+    if (this.dto.id >= 0) {
       this.id = this.dto.id;
       if (this.dto.id == 0) {
         this.isAddMode = true;
@@ -75,6 +75,10 @@ export class DistrictMasterFormComponent implements OnInit {
         })
       }
     }
+    else
+    {
+      this.configClick('districts');
+    }
   }
 
   get name() {
@@ -87,6 +91,12 @@ export class DistrictMasterFormComponent implements OnInit {
 
   public saveDistrict(): void {
     if (this.validateForm()) {
+
+      if (this.isDistrictExists()) {
+        this.toastrService.error('District already exists in same state.', 'Error!');
+        return;
+      }
+
       let districtModel = {} as IDistrictServerModel;
 
       districtModel.DistrictName = this.name.value.toString();
@@ -121,6 +131,17 @@ export class DistrictMasterFormComponent implements OnInit {
       }
 
     }
+  }
+
+  public isDistrictExists(): boolean {
+    let name = this.name.value;
+    let stateId = parseInt(this.stateId.value);
+    let modelIndex = this.dto.models.findIndex(b=>b.districtName.toLowerCase() == name.toLowerCase() &&
+    b.stateId == stateId && b.id != this.dto.id);
+    if (modelIndex > -1) {
+      return true;
+    }
+    return false;
   }
 
   public validateForm(): boolean {

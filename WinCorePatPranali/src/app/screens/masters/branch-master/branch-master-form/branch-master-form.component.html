@@ -46,8 +46,8 @@
                         <div class="col-md-3 position-relative form-group">
                             <label class="">Zipcode</label>
                             <div class="input-group">
-                                <input placeholder="Zipcode" tabindex="5" type="text" maxlength="20" class="form-control"
-                                    required maxlength="150" formControlName="zipCode" autocomplete="off"
+                                <input placeholder="Zipcode" tabindex="5" type="text" maxlength="6" class="form-control"
+                                    required formControlName="zipCode" autocomplete="off"
                                     [class.is-invalid]="zipCode.invalid && (zipCode.dirty || zipCode.touched)">
                                 <div *ngIf="zipCode.invalid && (zipCode.dirty || zipCode.touched)" class="invalid-feedback">
                                     <div *ngIf="zipCode.errors?.['required']">
@@ -63,8 +63,8 @@
                         <div class="col-md-3 position-relative form-group">
                             <label class="">Phone</label>
                             <div class="input-group">
-                                <input placeholder="Branch Phone" tabindex="6" type="text" maxlength="20" class="form-control"
-                                    required maxlength="150" formControlName="phone" autocomplete="off"
+                                <input placeholder="Branch Phone" tabindex="6" type="text" maxlength="15" class="form-control"
+                                    required formControlName="phone" autocomplete="off"
                                     [class.is-invalid]="phone.invalid && (phone.dirty || phone.touched)">
                                 <div *ngIf="phone.invalid && (phone.dirty || phone.touched)" class="invalid-feedback">
                                     <div *ngIf="phone.errors?.['required']">
@@ -76,8 +76,8 @@
                         <div class="col-md-3 position-relative form-group">
                             <label class="">Email</label>
                             <div class="input-group">
-                                <input placeholder="Branch Email" tabindex="7" type="email" maxlength="20" class="form-control"
-                                    required maxlength="50" formControlName="email" autocomplete="off"
+                                <input placeholder="Branch Email" tabindex="7" type="email" maxlength="50" class="form-control"
+                                    required formControlName="email" autocomplete="off"
                                     [class.is-invalid]="email.invalid && (email.dirty || email.touched)">
                                 <div *ngIf="email.invalid && (email.dirty || email.touched)" class="invalid-feedback">
                                     <div *ngIf="email.errors?.['required']">

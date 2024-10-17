@@ -7,6 +7,7 @@ import { BranchDeclarations } from 'src/app/common/branch-declarations';
 import { IGeneralDTO } from 'src/app/common/models/common-ui-models';
 import { BranchMasterService } from 'src/app/services/masters/branch-master/branch-master.service';
 import { SharedService } from 'src/app/services/shared.service';
+import { environment } from 'src/environments/environment';
 
 interface IBranchServerModel {
   BranchCode: string;
@@ -73,8 +74,13 @@ export class BranchMasterFormComponent {
 
   ngOnInit(): void {
 
+    this.uiStates = this._sharedService.uiAllStates;
+    this.uiAllDistricts = this._sharedService.uiAllDistricts;
+    this.uiAllTahshils = this._sharedService.uiAllTalukas;
+    this.uiCurrencies = this._sharedService.uiCurrencies;
+
     this.branchForm = new FormGroup({
-      code: new FormControl("", []),
+      code: new FormControl(0, []),
       name: new FormControl("", [Validators.required]),
       localName: new FormControl("", []),
       address: new FormControl("", [Validators.required]),
@@ -93,7 +99,7 @@ export class BranchMasterFormComponent {
       cashierClerkName: new FormControl("", [Validators.required]),
       micrCode: new FormControl("", [Validators.required]),
       contactPerson: new FormControl("", [Validators.required]),
-      currency: new FormControl(this.uiCurrencies.length ? this.uiCurrencies[0].code : 0, [Validators.required]),
+      currency: new FormControl(this.uiCurrencies.length ? this.uiCurrencies[0].currencyId : 0, [Validators.required]),
       stateId: new FormControl(1, []),
       districtId: new FormControl(1, [Validators.required]),
       tahshilId: new FormControl(1, [Validators.required])
@@ -101,79 +107,88 @@ export class BranchMasterFormComponent {
 
     this._branchMasterService.getDTO().subscribe(obj => this.dto = obj);
 
-    this.uiStates = this._sharedService.uiAllStates;
-    this.uiAllDistricts = this._sharedService.uiAllDistricts;
-    this.uiAllTahshils = this._sharedService.uiAllTalukas;
-    this.uiCurrencies = this._sharedService.uiCurrencies;
+    let defaultStateId = environment.defaultStateId;
 
     if (this.uiStates && this.uiStates.length) {
-      let districts = this.uiAllDistricts.filter((d: any) => d.stateId == this.uiStates[0].id);
+      let districts = this.uiAllDistricts.filter((d: any) => d.stateId == defaultStateId);
       if (districts && districts.length) {
         this.uiDistricts = districts;
+
+        let tahshils = this.uiAllTahshils.filter((d: any) => d.districtId == this.uiDistricts[0].id);
+        if (tahshils && tahshils.length) {
+          this.uiTahshils = tahshils;
+        }
       }
     }
 
-    if (this.dto) {
+
+    if (this.dto.id >=0) {
       this.id = this.dto.id;
       if (this.dto.id == 0) {
         this.isAddMode = true;
-        this.maxId = this.dto.maxId;
-        this.branchForm.patchValue({
-          code: this.maxId + 1,
-        });
+        // this.maxId = this.dto.maxId;
+        // this.branchForm.patchValue({
+        //   code: this.maxId + 1,
+        // });
       }
       else {
-        this.isAddMode = false;
-        this._branchMasterService.getBranch(this.dto.id).subscribe((data: any) => {
-          console.log(data);
-          if (data) {
-            if (data.statusCode == 200 && data.data.data) {
-              var brnch = data.data.data;
-              let stateId = 0;
-              let districts = this.uiAllDistricts.filter((d: any) => d.id == brnch.districtId);
-              if (districts && districts.length) {
-                stateId = districts[0].stateId;
-
-                let allDistricts = this.uiAllDistricts.filter((d: any) => d.stateId == stateId);
-                if (allDistricts && allDistricts.length > 0) {
-                  this.uiDistricts = allDistricts;
+        if (this.dto.id > 0) {
+          this.isAddMode = false;
+          this._branchMasterService.getBranch(this.dto.id).subscribe((data: any) => {
+            console.log(data);
+            if (data) {
+              if (data.statusCode == 200 && data.data.data) {
+                var brnch = data.data.data;
+                let stateId = 0;
+                let districts = this.uiAllDistricts.filter((d: any) => d.id == brnch.districtId);
+                if (districts && districts.length) {
+                  stateId = districts[0].stateId;
+  
+                  let allDistricts = this.uiAllDistricts.filter((d: any) => d.stateId == stateId);
+                  if (allDistricts && allDistricts.length > 0) {
+                    this.uiDistricts = allDistricts;
+                  }
                 }
+  
+                let tahshils = this.uiAllTahshils.filter((d: any) => d.districtId == brnch.districtId);
+                if (tahshils && tahshils.length) {
+                  this.uiTahshils = tahshils;
+                }
+  
+                this.branchForm.patchValue({
+                  code: brnch.branchCode,
+                  name: brnch.branchName,
+                  localName: brnch.localName,
+                  address: brnch.address,
+                  zipCode: brnch.zipCode,
+                  phone: brnch.phone,
+                  email: brnch.email,
+                  openingDate: formatDate(new Date(brnch.start_Date), 'yyyy-MM-dd', 'en'),
+                  ho: brnch.ho == 1? 'Y' : 'N',
+                  clearing: brnch.clg == 1? 'Y' : 'N',
+                  regionalLanguage: brnch.regionalLang,
+                  dailyAuthorisation: brnch.dailyAuthorisation,
+                  softwareType: brnch.software_Type,
+                  clearingMember: brnch.clearingMember,
+                  cashyn: brnch.cashyn,
+                  officerManagerName: brnch.officerManager,
+                  cashierClerkName: brnch.cashierClerk,
+                  micrCode: brnch.micrcode,
+                  contactPerson: brnch.contactPerson,
+                  currency: brnch.currencyId,
+                  stateId: stateId,
+                  districtId: brnch.districtId,
+                  tahshilId: brnch.talukaId,
+                });
               }
-
-              let tahshils = this.uiAllTahshils.filter((d: any) => d.districtId == brnch.districtId);
-              if (tahshils && tahshils.length) {
-                this.uiTahshils = tahshils;
-              }
-
-              this.branchForm.patchValue({
-                code: brnch.branchCode,
-                name: brnch.branchName,
-                localName: brnch.localName,
-                address: brnch.address,
-                zipCode: brnch.zipCode,
-                phone: brnch.phone,
-                email: brnch.email,
-                openingDate: formatDate(new Date(brnch.start_Date), 'yyyy-MM-dd', 'en'),
-                ho: brnch.ho == 1? 'Y' : 'N',
-                clearing: brnch.clg == 1? 'Y' : 'N',
-                regionalLanguage: brnch.regionalLang,
-                dailyAuthorisation: brnch.dailyAuthorisation,
-                softwareType: brnch.software_Type,
-                clearingMember: brnch.clearingMember,
-                cashyn: brnch.cashyn,
-                officerManagerName: brnch.officerManager,
-                cashierClerkName: brnch.cashierClerk,
-                micrCode: brnch.micrcode,
-                contactPerson: brnch.contactPerson,
-                currency: brnch.currencyId,
-                stateId: stateId,
-                districtId: brnch.districtId,
-                tahshilId: brnch.talukaId,
-              });
             }
-          }
-        })
+          })
+        }
       }
+    }
+    else
+    {
+      this.configClick("branches");
     }
   }
 
@@ -203,6 +218,17 @@ export class BranchMasterFormComponent {
 
   public saveBranch(): void {
     if (this.validateForm()) {
+
+      if (this.isBranchExists()) {
+        this._toastrService.error('Branch name already exists.', 'Error!');
+        return;
+      }
+
+      if (this.isBranchMICRExists()) {
+        this._toastrService.error('Branch MICR already exists.', 'Error!');
+        return;
+      }
+
       let branchModel = {} as IBranchServerModel;
 
       branchModel.BranchName = this.name.value.toString();
@@ -257,6 +283,24 @@ export class BranchMasterFormComponent {
     }
   }
 
+  public isBranchExists(): boolean {
+    let branchName = this.name.value;
+    let branchIndex = this.dto.models.findIndex(b=>b.branchName.toLowerCase() == branchName.toLowerCase() && b.branchCode != this.dto.id);
+    if (branchIndex > -1) {
+      return true;
+    }
+    return false;
+  }
+
+  public isBranchMICRExists(): boolean {
+    let micrCode = this.micrCode.value;
+    let branchIndex = this.dto.models.findIndex(b=>b.micrcode.toLowerCase() == micrCode.toLowerCase() && b.branchCode != this.dto.id);
+    if (branchIndex > -1) {
+      return true;
+    }
+    return false;
+  }
+
   public validateForm(): boolean {
 
     if (this.branchForm.invalid) {
@@ -289,7 +333,7 @@ export class BranchMasterFormComponent {
       cashierClerkName: "",
       micrCode: "",
       contactPerson: "",
-      currency: this.uiCurrencies.length ? this.uiCurrencies[0].code : 0,
+      currency: this.uiCurrencies.length ? this.uiCurrencies[0].currencyId : 0,
       stateId: 1,
       districtId: 1,
       tahshilId: 1

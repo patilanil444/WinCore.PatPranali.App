@@ -43,7 +43,7 @@ export class GeneralMasterService {
 
   deleteGeneralMaster(constId: number): any {
     let options = GlobleDeclarations.getHeaderOptions();
-    return this.http.delete(GlobleDeclarations.apiBaseURL + "api/GeneralMaster/delete-master?constId=" + constId, options);
+    return this.http.post(GlobleDeclarations.apiBaseURL + "api/GeneralMaster/delete-master?constId=" + constId, options);
   }
 
   getMasterType(masterId: number)

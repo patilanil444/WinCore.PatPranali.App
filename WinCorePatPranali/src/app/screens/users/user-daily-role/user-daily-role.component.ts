@@ -54,7 +54,7 @@ export class UserDailyRoleComponent implements OnInit {
 
     this.getUserRoles().then(() => {
       this._userService.getDTO().subscribe(obj => this.dto = obj);
-      if (this.dto) {
+      if (this.dto.id >= 0) {
         this.id = this.dto.id;
         this._userService.getUser(this._sharedService.applicationUser.branchId, this.dto.id).subscribe((data: any) => {
           if (data) {
@@ -77,6 +77,10 @@ export class UserDailyRoleComponent implements OnInit {
             }
           }
         })
+      }
+      else
+      {
+        this.configClick('user-search');
       }
     })
   }

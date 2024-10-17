@@ -53,7 +53,7 @@ export class MemberService {
 
   deleteMember(id: number): any {
     let options = GlobleDeclarations.getHeaderOptions();
-    return this.http.delete(GlobleDeclarations.apiBaseURL + "api/member/delete-member?id=" + id, options);
+    return this.http.post(GlobleDeclarations.apiBaseURL + "api/member/delete-member?id=" + id, options);
   }
 
 

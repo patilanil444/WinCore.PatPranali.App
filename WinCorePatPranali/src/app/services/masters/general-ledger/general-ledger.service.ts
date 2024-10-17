@@ -49,7 +49,7 @@ export class GeneralLedgerService {
 
   deleteGeneralLedger(id: number): any {
     let options = GlobleDeclarations.getHeaderOptions();
-    return this.http.delete(GlobleDeclarations.apiBaseURL + "api/GeneralLedger/delete-gl?id=" + id, options);
+    return this.http.post(GlobleDeclarations.apiBaseURL + "api/GeneralLedger/delete-gl?id=" + id, options);
   }
 
   getGeneralLedgerInterestParams(code: number): any {

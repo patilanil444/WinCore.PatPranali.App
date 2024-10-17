@@ -44,6 +44,6 @@ export class PriorityMasterService {
 
   deletePriority(id: number): any {
     let options = GlobleDeclarations.getHeaderOptions();
-    return this.http.delete(GlobleDeclarations.apiBaseURL + "api/priority/delete-priority?id=" + id, options);
+    return this.http.post(GlobleDeclarations.apiBaseURL + "api/priority/delete-priority?id=" + id, options);
   }
 }

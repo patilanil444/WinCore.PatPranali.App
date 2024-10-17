@@ -44,6 +44,6 @@ export class DistrictMasterService {
 
   deleteDistrict(id: number): any {
     let options = GlobleDeclarations.getHeaderOptions();
-    return this.http.delete(GlobleDeclarations.apiBaseURL + "api/master/delete-district?id=" + id, options);
+    return this.http.post(GlobleDeclarations.apiBaseURL + "api/master/delete-district?id=" + id, options);
   }
 }

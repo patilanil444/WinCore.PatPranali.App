@@ -492,7 +492,7 @@
 
                         <li class="app-sidebar__heading">
                             <a (click)="clickMenu('customers')">
-                                <i class="metismenu-icon pe-7s-user icon-gradient bg-love-kiss"></i>
+                                <i class="metismenu-icon icon-gradient custom-menu-icon customers-img"></i>
                                 Customers
                                 <i class="metismenu-state-icon pe-7s-angle-down caret-left"
                                  [ngClass]="isCustomerExpanded ? 'pe-7s-angle-down mm-up-arrow': 'pe-7s-angle-down mm-down-arrow'"></i>
@@ -518,7 +518,7 @@
 
                         <li class="app-sidebar__heading">
                             <a (click)="clickMenu('accounts')">
-                                <i class="metismenu-icon pe-7s-note2 icon-gradient bg-love-kiss"></i>
+                                <i class="metismenu-icon custom-menu-icon accounts-img icon-gradient"></i>
                                 Accounts
                                 <i class="metismenu-state-icon pe-7s-angle-down caret-left"
                                 [ngClass]="isAccountsExpanded ? 'pe-7s-angle-down mm-up-arrow': 'pe-7s-angle-down'"></i>
@@ -554,6 +554,47 @@
                                 </li>
                             </ul>
                         </li>
+
+                        <!-- <a href="#">
+                            <span class="icon"></span>
+                            <span>Main Itmes</span> 
+                            <i class="fa fa-angle-left pull-right">  </i>
+                        </a> -->
+
+
+                        <li class="app-sidebar__heading">
+                            <a (click)="clickMenu('transactions')">
+                                <i class="metismenu-icon icon-gradient custom-menu-icon transactions-img"></i>
+                                Transactions
+                                <i class="metismenu-state-icon pe-7s-angle-down caret-left"
+                                [ngClass]="isTransactionExpanded ? 'pe-7s-angle-down mm-up-arrow': 'pe-7s-angle-down'"></i>
+                            </a>
+                            <ul [ngClass]="isTransactionExpanded ? 'mm-collapse mm-show': 'mm-collapse'">
+                                <li>
+                                    <a [class.mm-active]="isMenuSelected('saving-transactions')"
+                                        (click)="configClick('saving-transactions')">
+                                        <i class="metismenu-icon pe-7s-next-2"></i>
+                                        Saving Transactions
+                                    </a>
+                                </li>
+                               
+                                <li>
+                                    <a [class.mm-active]="isMenuSelected('fd-transactions')"
+                                        (click)="configClick('fd-transactions')">
+                                        <i class="metismenu-icon pe-7s-note2"></i>
+                                        Fix Deposit Transactions 
+                                    </a>
+                                </li>
+                                <li>
+                                    <a [class.mm-active]="isMenuSelected('pigmy-transactions')"
+                                        (click)="configClick('pigmy-transactions')">
+                                        <i class="metismenu-icon pe-7s-note2"></i>
+                                        Pigmy Transactions
+                                    </a>
+                                </li>
+                            </ul>
+                        </li>
+
 
                         <li class="app-sidebar__heading">
                             <a (click)="clickMenu('registers')">
@@ -960,7 +1001,7 @@
 
                         <li class="app-sidebar__heading">
                             <a (click)="clickMenu('masters')">
-                                <i class="metismenu-icon pe-7s-settings icon-gradient bg-sunny-morning"></i>
+                                <i class="metismenu-icon icon-gradient custom-menu-icon masters-img"></i>
                                 Masters
                                 <i class="metismenu-state-icon pe-7s-angle-down caret-left"
                                 [ngClass]="isMastersExpanded ? 'pe-7s-angle-down mm-up-arrow': 'pe-7s-angle-down'"></i>
@@ -978,13 +1019,13 @@
                                         Branch Master
                                     </a>
                                 </li>
-                                <li>
+                                <!-- <li>
                                     <a [class.mm-active]="isMenuSelected('priorities')"
                                         (click)="configClick('priorities')">
                                         <i class="metismenu-icon"></i>
                                         Priority Master
                                     </a>
-                                </li>
+                                </li> -->
                                 <li>
                                     <a [class.mm-active]="isMenuSelected('districts')"
                                         (click)="configClick('districts')">
@@ -1099,7 +1140,7 @@
 
                         <li class="app-sidebar__heading">
                             <a (click)="clickMenu('users')">
-                                <i class="metismenu-icon pe-7s-users icon-gradient bg-malibu-beach"></i>
+                                <i class="metismenu-icon icon-gradient custom-menu-icon users-img"></i>
                                 Users
                                 <i class="metismenu-state-icon pe-7s-angle-down caret-left"
                                 [ngClass]="isUsersExpanded ? 'pe-7s-angle-down mm-up-arrow': 'pe-7s-angle-down'"></i>

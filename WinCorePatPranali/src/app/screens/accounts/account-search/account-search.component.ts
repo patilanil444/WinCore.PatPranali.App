@@ -171,6 +171,7 @@ export class AccountSearchComponent implements OnInit {
       action: "editRecord",
       id: uiAccount.accountsId,
       maxId: 0,
+      models: this.uiAccounts
     }
     if (uiAccount.glGroup == 'D' && uiAccount.glType =='S') {
       // Saving accounts

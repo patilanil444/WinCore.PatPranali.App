@@ -1,0 +1,459 @@
+<div class="row">
+    <div class="col-lg-12">
+
+        <div class="main-card mb-3 card">
+            <div class="card-body">
+
+                <h5 class="card-title">Fix Deposit Transactions</h5>
+
+                <ul class="nav nav-tabs">
+                    <li class="nav-item">
+                        <a role="tab" class="nav-link active" id="tab-0" data-toggle="tab" href="#tab-content-0">
+                            <span>Cash Transactions</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a role="tab" class="nav-link" id="tab-0" data-toggle="tab" href="#tab-content-1">
+                            <span>Transfer</span>
+                        </a>
+                    </li>
+
+                    <li class="nav-item">
+                        <a role="tab" class="nav-link" id="tab-2" data-toggle="tab" href="#tab-content-3">
+                            <span>Account Closure</span>
+                        </a>
+                    </li>
+                </ul>
+
+                <div class="tab-content">
+                    <div class="tab-pane tabs-animation fade show active" id="tab-content-0" role="tabpanel">
+                        <form [formGroup]="cashTransactionForm" #form="ngForm">
+                            <!-- <div class="col-md-12">
+                                <div class="row">
+                                    <div class="col-md-5">
+                                        <h5>Debit</h5>
+                                    </div>
+                                    <div class="col-md-2">
+                                        <label class="switch">
+                                            <input type="checkbox" checked>
+                                            <span class="slider round"></span>
+                                        </label>
+                                    </div>
+                                    <div class="col-md-5">
+                                        <h5>Credit</h5>
+                                    </div>
+                                </div>
+                            </div> -->
+
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="tab-content">
+                                        <div class="row">
+                                            <div class="col-md-3 position-relative form-group">
+                                                <label for="txtCode" class="">Transaction Type</label>
+                                                <select class="mb-2 form-control" tabindex="18" formControlName="cashTransactionType">
+                                                    <option *ngFor="let uiTransactionType of uicashTransactionTypes" [ngValue]="uiTransactionType.code">
+                                                        {{uiTransactionType.name}}
+                                                    </option>
+                                                </select>
+                                            </div>
+                                            <div class="divider"></div>
+
+                                            <div class="col-md-12">
+                                                <div class="row">
+                                                    <div class="col-md-3 position-relative form-group">
+                                                        <label for="txtCode" class="">Branch </label>
+                                                        <select class="form-control" tabindex="27" formControlName="cashBranchId">
+                                                            <option *ngFor="let uiBranch of uiBranches" [ngValue]="uiBranch.branchCode">
+                                                                {{uiBranch.branchName}}
+                                                            </option>
+                                                        </select>
+                                                    </div>
+                                                    <div class="col-md-3 position-relative form-group">
+                                                        <label for="txtCode" class="">General Ledger </label>
+                                                        <div class="input-group">
+                                                            <ngx-select-dropdown [config]="config" tabindex="1"
+                                                             [options]="uiDepositGeneralLedgers" formControlName="casgSavingGL"
+                                                                style="width: 100%;" [multiple]="false">
+                                                            </ngx-select-dropdown>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-3 position-relative form-group">
+                                                        <label for="txtCode" class="">Account Search </label>
+                                                        <input tabindex="28" type="text" class="form-control"
+                                                        placeholder="Account Number" formControlName="cashAccountNumberSearch">
+                                                    </div>
+                                                    <div class="col-md-3 position-relative form-group" style="margin-top: 30px;">
+                                                        <button class="btn btn-info" tabindex="2" (click)="searchSavingAccount()"><i class="fa fa-search"></i> Search</button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                         
+                                            <div class="col-md-12">
+                                                * Please select an account below for transaction.
+                                            </div>
+                                            <div class="col-md-12" style="margin-top: 10px;">
+                                                <div class="customer-panel">
+                                                    <table style="width: 100%;" class="table table-hover table-striped table-bordered dataTable dtr-inline">
+                                                        <thead>
+                                                            <tr  role="row">
+                                                                <th style="width: 20%; padding: .25rem;">Select</th>
+                                                                <th style="width: 30%; padding: .25rem;">Account Number</th>
+                                                                <th style="width: 30%; padding: .25rem;">Customer Number</th>
+                                                                <th style="width: 20%; padding: .25rem;">Status</th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                            <tr role="row" *ngFor="let uiSavingAccount of uiSavingAccounts" class="odd">
+                                                                <td style="padding: .25rem;" class="sorting_1 dtr-control">
+                                                                    <button class="mb-2 mr-2 btn btn-link"
+                                                                        style="--bs-btn-padding-x:none !important; padding:0 !important;"
+                                                                        (click)="selectSavingAccount(uiSavingAccount.accountsId)">Select</button>
+                                                                </td>
+                                                                <td>{{uiSavingAccount.accountNo}}</td>
+                                                                <td>{{uiSavingAccount.customerCodeStr}}</td>
+                                                                <td>
+                                                                    <div class="badge"
+                                                                        [ngClass]="{'badge-danger': (uiSavingAccount.status==='Freeze'|| uiSavingAccount.status==='Closed'), 'badge-success' : uiSavingAccount.status=== 'Open', 'badge-warning' : uiSavingAccount.status=== 'Dormant'}">
+                                                                        {{uiSavingAccount.status}}
+                                                                    </div>
+                                                                </td>
+                                                            </tr>
+                                                            <tr *ngIf="uiSavingAccounts.length==0">
+                                                                <td colspan="4">No records..</td>
+                                                            </tr>
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-12">
+                                                <div class="row">
+                                                    <div class="col-md-3 position-relative form-group">
+                                                        <label for="txtCode" class="">Transaction Amount </label>
+                                                        <input tabindex="28" type="number" class="form-control"
+                                                        placeholder="Transaction Amount" formControlName="cashTransactionAmount">
+                                                    </div>
+                                                    <div class="col-md-3 position-relative form-group">
+                                                        <label for="txtCode" class="">Transaction Description </label>
+                                                        <input tabindex="28" type="text" class="form-control"
+                                                        placeholder="Reason" formControlName="cashTransactionDesc">
+                                                    </div>
+                                                  
+                                                    <div class="col-md-3 position-relative form-group" style="margin-top: 30px;">
+                                                        <button class="btn btn-info" tabindex="2" (click)="makeTransaction()"> Submit</button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="tab-pane tabs-animation fade show" id="tab-content-1" role="tabpanel">
+                        <form [formGroup]="transferTransactionForm" #form="ngForm">
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="tab-content">
+                                        <div class="row">
+                                            <div class="col-md-3 position-relative form-group">
+                                                <label for="txtCode" class="">Transaction Type</label>
+                                                <select class="mb-2 form-control" tabindex="18" formControlName="transferTransactionType">
+                                                    <option *ngFor="let uiTransactionType of uiTransferTransactionTypes" [ngValue]="uiTransactionType.code">
+                                                        {{uiTransactionType.name}}
+                                                    </option>
+                                                </select>
+                                            </div>
+                                            <div class="divider"></div>
+
+                                            <div class="col-md-12">
+                                                <div class="row">
+                                                    <div class="col-md-3 position-relative form-group">
+                                                        <label for="txtCode" class="">Branch </label>
+                                                        <select class="form-control" tabindex="27" formControlName="fromBranchId">
+                                                            <option *ngFor="let uiBranch of uiBranches" [ngValue]="uiBranch.branchCode">
+                                                                {{uiBranch.branchName}}
+                                                            </option>
+                                                        </select>
+                                                    </div>
+                                                    <div class="col-md-3 position-relative form-group">
+                                                        <label for="txtCode" class="">General Ledger </label>
+                                                        <div class="input-group">
+                                                            <ngx-select-dropdown [config]="config" tabindex="1"
+                                                             [options]="uiDepositGeneralLedgers" formControlName="fromSavingGL"
+                                                                style="width: 100%;" [multiple]="false">
+                                                            </ngx-select-dropdown>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-3 position-relative form-group">
+                                                        <label for="txtCode" class="">Account Search </label>
+                                                        <input tabindex="28" type="text" class="form-control"
+                                                        placeholder="Account Number" formControlName="fromAccountNumberSearch">
+                                                    </div>
+                                                    <div class="col-md-3 position-relative form-group" style="margin-top: 30px;">
+                                                        <button class="btn btn-info" tabindex="2" (click)="searchSavingAccount()"><i class="fa fa-search"></i> Search</button>
+                                                    </div>
+                                                </div>                                            
+                                            </div>
+                                            
+                                            <div class="col-md-12">
+                                                * Please select an account below for transaction.
+                                            </div>
+
+                                            <div class="col-md-12" style="margin-top: 10px;">
+                                                <div class="customer-panel">
+                                                    <table style="width: 100%;" class="table table-hover table-striped table-bordered dataTable dtr-inline">
+                                                        <thead>
+                                                            <tr  role="row">
+                                                                <th style="width: 20%; padding: .25rem;">Select</th>
+                                                                <th style="width: 30%; padding: .25rem;">Account Number</th>
+                                                                <th style="width: 30%; padding: .25rem;">Customer Number</th>
+                                                                <th style="width: 20%; padding: .25rem;">Status</th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                            <tr role="row" *ngFor="let uiSavingAccount of uiSavingAccounts" class="odd">
+                                                                <td style="padding: .25rem;" class="sorting_1 dtr-control">
+                                                                    <button class="mb-2 mr-2 btn btn-link"
+                                                                        style="--bs-btn-padding-x:none !important; padding:0 !important;"
+                                                                        (click)="selectSavingAccount(uiSavingAccount.accountsId)">Select</button>
+                                                                </td>
+                                                                <td>{{uiSavingAccount.accountNo}}</td>
+                                                                <td>{{uiSavingAccount.customerCodeStr}}</td>
+                                                                <td>
+                                                                    <div class="badge"
+                                                                        [ngClass]="{'badge-danger': (uiSavingAccount.status==='Freeze'|| uiSavingAccount.status==='Closed'), 'badge-success' : uiSavingAccount.status=== 'Open', 'badge-warning' : uiSavingAccount.status=== 'Dormant'}">
+                                                                        {{uiSavingAccount.status}}
+                                                                    </div>
+                                                                </td>
+                                                            </tr>
+                                                            <tr *ngIf="uiSavingAccounts.length==0">
+                                                                <td colspan="4">No records..</td>
+                                                            </tr>
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                            </div>
+                                          
+                                            <div class="col-md-12">
+                                                <div class="row">
+                                                    <div class="col-md-3 position-relative form-group">
+                                                        <label for="txtCode" class="">Branch </label>
+                                                        <select class="form-control" tabindex="27" formControlName="toBranchId">
+                                                            <option *ngFor="let uiBranch of uiBranches" [ngValue]="uiBranch.branchCode">
+                                                                {{uiBranch.branchName}}
+                                                            </option>
+                                                        </select>
+                                                    </div>
+                                                    <div class="col-md-3 position-relative form-group">
+                                                        <label for="txtCode" class="">General Ledger </label>
+                                                        <div class="input-group">
+                                                            <ngx-select-dropdown [config]="config" tabindex="1"
+                                                             [options]="uiDepositGeneralLedgers" formControlName="toSavingGL"
+                                                                style="width: 100%;" [multiple]="false">
+                                                            </ngx-select-dropdown>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-3 position-relative form-group">
+                                                        <label for="txtCode" class="">Account Search </label>
+                                                        <input tabindex="28" type="text" class="form-control"
+                                                        placeholder="Account Number" formControlName="toAccountNumberSearch">
+                                                    </div>
+                                                    <div class="col-md-3 position-relative form-group" style="margin-top: 30px;">
+                                                        <button class="btn btn-info" tabindex="2" (click)="searchSavingAccount()"><i class="fa fa-search"></i> Search</button>
+                                                    </div>
+                                                </div>                                            
+                                            </div>
+                                            
+                                            <div class="col-md-12">
+                                                * Please select an account below for transaction.
+                                            </div>
+
+                                            <div class="col-md-12" style="margin-top: 10px;">
+                                                <div class="customer-panel">
+                                                    <table style="width: 100%;" class="table table-hover table-striped table-bordered dataTable dtr-inline">
+                                                        <thead>
+                                                            <tr  role="row">
+                                                                <th style="width: 20%; padding: .25rem;">Select</th>
+                                                                <th style="width: 30%; padding: .25rem;">Account Number</th>
+                                                                <th style="width: 30%; padding: .25rem;">Customer Number</th>
+                                                                <th style="width: 20%; padding: .25rem;">Status</th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                            <tr role="row" *ngFor="let uiSavingAccount of uiSavingAccounts" class="odd">
+                                                                <td style="padding: .25rem;" class="sorting_1 dtr-control">
+                                                                    <button class="mb-2 mr-2 btn btn-link"
+                                                                        style="--bs-btn-padding-x:none !important; padding:0 !important;"
+                                                                        (click)="selectSavingAccount(uiSavingAccount.accountsId)">Select</button>
+                                                                </td>
+                                                                <td>{{uiSavingAccount.accountNo}}</td>
+                                                                <td>{{uiSavingAccount.customerCodeStr}}</td>
+                                                                <td>
+                                                                    <div class="badge"
+                                                                        [ngClass]="{'badge-danger': (uiSavingAccount.status==='Freeze'|| uiSavingAccount.status==='Closed'), 'badge-success' : uiSavingAccount.status=== 'Open', 'badge-warning' : uiSavingAccount.status=== 'Dormant'}">
+                                                                        {{uiSavingAccount.status}}
+                                                                    </div>
+                                                                </td>
+                                                            </tr>
+                                                            <tr *ngIf="uiSavingAccounts.length==0">
+                                                                <td colspan="4">No records..</td>
+                                                            </tr>
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                            </div>
+
+                                            <div class="col-md-12">
+                                                <div class="row">
+                                                    <div class="col-md-3 position-relative form-group">
+                                                        <label for="txtCode" class="">Transaction Amount </label>
+                                                        <input tabindex="28" type="number" class="form-control"
+                                                        placeholder="Transaction Amount" formControlName="transferTransactionAmount">
+                                                    </div>
+                                                    <div class="col-md-3 position-relative form-group">
+                                                        <label for="txtCode" class="">Transaction Description </label>
+                                                        <input tabindex="28" type="text" class="form-control"
+                                                        placeholder="Reason" formControlName="transferTransactionDesc">
+                                                    </div>
+                                                  
+                                                    <div class="col-md-3 position-relative form-group" style="margin-top: 30px;">
+                                                        <button class="btn btn-info" tabindex="2" (click)="makeTransaction()"> Submit</button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>    
+                    </div>
+                    <div class="tab-pane tabs-animation fade" id="tab-content-3" role="tabpanel">
+                        <form [formGroup]="accountClosureTransactionForm" #form="ngForm">
+                            <!-- <div class="col-md-12">
+                                <div class="row">
+                                    <div class="col-md-5">
+                                        <h5>Debit</h5>
+                                    </div>
+                                    <div class="col-md-2">
+                                        <label class="switch">
+                                            <input type="checkbox" checked>
+                                            <span class="slider round"></span>
+                                        </label>
+                                    </div>
+                                    <div class="col-md-5">
+                                        <h5>Credit</h5>
+                                    </div>
+                                </div>
+                            </div> -->
+
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="tab-content">
+                                        <div class="row">
+                                            <div class="col-md-3 position-relative form-group">
+                                                <label for="txtCode" class="">Transaction Type</label>
+                                                <select class="mb-2 form-control" tabindex="18" formControlName="closureTransactionType">
+                                                    <option *ngFor="let uiTransactionType of uiAccountClosureTransactionTypes" [ngValue]="uiTransactionType.code">
+                                                        {{uiTransactionType.name}}
+                                                    </option>
+                                                </select>
+                                            </div>
+                                            <div class="divider"></div>
+
+                                            <div class="col-md-12">
+                                                <div class="row">
+                                                    <div class="col-md-3 position-relative form-group">
+                                                        <label for="txtCode" class="">Branch </label>
+                                                        <select class="form-control" tabindex="27" formControlName="closureBranchId">
+                                                            <option *ngFor="let uiBranch of uiBranches" [ngValue]="uiBranch.branchCode">
+                                                                {{uiBranch.branchName}}
+                                                            </option>
+                                                        </select>
+                                                    </div>
+                                                    <div class="col-md-3 position-relative form-group">
+                                                        <label for="txtCode" class="">General Ledger </label>
+                                                        <div class="input-group">
+                                                            <ngx-select-dropdown [config]="config" tabindex="1"
+                                                             [options]="uiDepositGeneralLedgers" formControlName="closureSavingGL"
+                                                                style="width: 100%;" [multiple]="false">
+                                                            </ngx-select-dropdown>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-3 position-relative form-group">
+                                                        <label for="txtCode" class="">Account Search </label>
+                                                        <input tabindex="28" type="text" class="form-control"
+                                                        placeholder="Account Number" formControlName="closureAccountNumberSearch">
+                                                    </div>
+                                                    <div class="col-md-3 position-relative form-group" style="margin-top: 30px;">
+                                                        <button class="btn btn-info" tabindex="2" (click)="searchSavingAccount()"><i class="fa fa-search"></i> Search</button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                         
+                                            <div class="col-md-12">
+                                                * Please select an account below for transaction.
+                                            </div>
+                                            <div class="col-md-12" style="margin-top: 10px;">
+                                                <div class="customer-panel">
+                                                    <table style="width: 100%;" class="table table-hover table-striped table-bordered dataTable dtr-inline">
+                                                        <thead>
+                                                            <tr  role="row">
+                                                                <th style="width: 20%; padding: .25rem;">Select</th>
+                                                                <th style="width: 30%; padding: .25rem;">Account Number</th>
+                                                                <th style="width: 30%; padding: .25rem;">Customer Number</th>
+                                                                <th style="width: 20%; padding: .25rem;">Status</th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                            <tr role="row" *ngFor="let uiSavingAccount of uiSavingAccounts" class="odd">
+                                                                <td style="padding: .25rem;" class="sorting_1 dtr-control">
+                                                                    <button class="mb-2 mr-2 btn btn-link"
+                                                                        style="--bs-btn-padding-x:none !important; padding:0 !important;"
+                                                                        (click)="selectSavingAccount(uiSavingAccount.accountsId)">Select</button>
+                                                                </td>
+                                                                <td>{{uiSavingAccount.accountNo}}</td>
+                                                                <td>{{uiSavingAccount.customerCodeStr}}</td>
+                                                                <td>
+                                                                    <div class="badge"
+                                                                        [ngClass]="{'badge-danger': (uiSavingAccount.status==='Freeze'|| uiSavingAccount.status==='Closed'), 'badge-success' : uiSavingAccount.status=== 'Open', 'badge-warning' : uiSavingAccount.status=== 'Dormant'}">
+                                                                        {{uiSavingAccount.status}}
+                                                                    </div>
+                                                                </td>
+                                                            </tr>
+                                                            <tr *ngIf="uiSavingAccounts.length==0">
+                                                                <td colspan="4">No records..</td>
+                                                            </tr>
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-12">
+                                                <div class="row">
+                                                    <div class="col-md-3 position-relative form-group">
+                                                        <label for="txtCode" class="">Transaction Amount </label>
+                                                        <input tabindex="28" type="number" class="form-control"
+                                                        placeholder="Transaction Amount" formControlName="closureTransactionAmount">
+                                                    </div>
+                                                    <div class="col-md-3 position-relative form-group">
+                                                        <label for="txtCode" class="">Transaction Description </label>
+                                                        <input tabindex="28" type="text" class="form-control"
+                                                        placeholder="Reason" formControlName="closureTransactionDesc">
+                                                    </div>
+                                                  
+                                                    <div class="col-md-3 position-relative form-group" style="margin-top: 30px;">
+                                                        <button class="btn btn-info" tabindex="2" (click)="makeTransaction()"> Submit</button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -5,6 +5,7 @@ import { ToastrService } from 'ngx-toastr';
 import { IGeneralDTO } from 'src/app/common/models/common-ui-models';
 import { TahshilMasterService } from 'src/app/services/masters/tahshil-master/tahshil-master.service';
 import { SharedService } from 'src/app/services/shared.service';
+import { environment } from 'src/environments/environment';
 
 interface ITahsilServerModel
 {
@@ -44,12 +45,14 @@ export class TahshilMasterFormComponent implements OnInit {
 
   ngOnInit(): void {
 
+    let defaultStateId = environment.defaultStateId;
+
     this.uiStates = this._sharedService.uiAllStates;
     this.uiAllDistricts  = this._sharedService.uiAllDistricts;
     this.uiDistricts = [];
     let districtId = 0;
 
-    let districts = this.uiAllDistricts.filter((d: any) => d.stateId == this.uiStates[0].id);
+    let districts = this.uiAllDistricts.filter((d: any) => d.stateId == defaultStateId);
     if (districts && districts.length) {
       this.uiDistricts = districts;
       districtId = this.uiDistricts[0].id;
@@ -58,12 +61,12 @@ export class TahshilMasterFormComponent implements OnInit {
     this.tahsilForm = new FormGroup({
       code: new FormControl("", []),
       name: new FormControl("", [Validators.required]),
-      stateId: new FormControl(this.uiStates[0].id, [Validators.required]),
+      stateId: new FormControl(defaultStateId, [Validators.required]),
       districtId: new FormControl(districtId, [Validators.required])
     });
 
     this._tahsilMasterService.getDTO().subscribe(obj => this.dto = obj);
-    if (this.dto) {
+    if (this.dto.id >= 0) {
       this.id = this.dto.id;
       if (this.dto.id == 0) {
         this.isAddMode = true;
@@ -98,6 +101,10 @@ export class TahshilMasterFormComponent implements OnInit {
         })
       }
     }
+    else
+    {
+      this.configClick('tahsils');
+    }
   }
 
   onStateChange(event: any) {
@@ -130,6 +137,10 @@ export class TahshilMasterFormComponent implements OnInit {
 
   public saveTahsil(): void {
     if (this.validateForm()) {
+      if (this.isTahshilExists()) {
+        this.toastrService.error('Tahshil already exists in same district.', 'Error!');
+        return;
+      }
       let tahsilModel = {} as ITahsilServerModel;
 
       tahsilModel.TalukaName = this.name.value.toString();
@@ -164,6 +175,17 @@ export class TahshilMasterFormComponent implements OnInit {
         })
       }
     }
+  }
+
+  public isTahshilExists(): boolean {
+    let name = this.name.value;
+    let districtId = parseInt(this.districtId.value);
+    let modelIndex = this.dto.models.findIndex(b=>b.talukaName.toLowerCase() == name.toLowerCase() &&
+    b.districtId == districtId && b.id != this.dto.id);
+    if (modelIndex > -1) {
+      return true;
+    }
+    return false;
   }
 
   public validateForm(): boolean {

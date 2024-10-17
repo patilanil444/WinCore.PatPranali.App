@@ -57,6 +57,7 @@ export class BranchMasterListComponent {
       action: "newRecord",
       id: 0,
       maxId: maxId,
+      models: this.uiBranches
     }
 
     this._branchMasterService.setDTO(dtObject);
@@ -69,6 +70,7 @@ export class BranchMasterListComponent {
       action: "editRecord",
       id: uiBranch.branchCode,
       maxId: 0,
+      models: this.uiBranches
     }
     this._branchMasterService.setDTO(dtObject);
 

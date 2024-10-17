@@ -51,6 +51,7 @@ export class DistrictMasterListComponent implements OnInit {
       action: "newRecord",
       id: 0,
       maxId: maxId,
+      models: this.uiDistricts
     }
 
     this._districtMasterService.setDTO(dtObject);
@@ -64,6 +65,7 @@ export class DistrictMasterListComponent implements OnInit {
       action: "editRecord",
       id: uiDistrict.id,
       maxId: 0,
+      models: this.uiDistricts
     }
     this._districtMasterService.setDTO(dtObject);
 

@@ -55,6 +55,7 @@ export class BankMasterListComponent {
       action: "newRecord",
       id: 0,
       maxId: maxId,
+      models: this.uiBanks
     }
 
     this._bankMasterService.setDTO(dtObject);
@@ -70,6 +71,7 @@ export class BankMasterListComponent {
       action: "editRecord",
       id: uiBank.bankId,
       maxId: 0,
+      models: this.uiBanks
     }
     this._bankMasterService.setDTO(dtObject);
 

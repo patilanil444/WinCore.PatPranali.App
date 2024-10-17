@@ -14,6 +14,7 @@ export class AppRouterComponent implements OnInit, AfterViewInit{
   isMastersExpanded = false;
   isUsersExpanded = false;
   isRegistersExpanded = false;
+  isTransactionExpanded = false;
 
   isSidebarEnabled = true;
 
@@ -31,6 +32,7 @@ export class AppRouterComponent implements OnInit, AfterViewInit{
       this._sharedService.uiGLTypesAndGroups = this.activatedRoute.snapshot.data['masterData'].glTypesAndGroups.data.data
     });
 
+   
 
     let configMenu = sessionStorage.getItem("configMenu");
     if (configMenu != null && configMenu.length > 0) {
@@ -54,6 +56,9 @@ export class AppRouterComponent implements OnInit, AfterViewInit{
     else  if (menu == 'accounts') {
       this.isAccountsExpanded = !this.isAccountsExpanded;
     }
+    else  if (menu == 'transactions') {
+      this.isTransactionExpanded = !this.isTransactionExpanded;
+    }
     else  if (menu == 'registers') {
       this.isRegistersExpanded = !this.isRegistersExpanded;
     }
@@ -63,7 +68,6 @@ export class AppRouterComponent implements OnInit, AfterViewInit{
     else  if (menu == 'users') {
       this.isUsersExpanded = !this.isUsersExpanded;
     }
-
   }
 
   sidebarClick()

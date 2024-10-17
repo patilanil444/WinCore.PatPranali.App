@@ -82,7 +82,7 @@ export class UserComponent implements OnInit {
 
     this.getUserRoles().then(() => {
       this._userService.getDTO().subscribe(obj => this.dto = obj);
-      if (this.dto) {
+      if (this.dto.id >= 0) {
         this.id = this.dto.id;
         if (this.dto.id == 0) {
           this.isAddMode = true;
@@ -124,6 +124,10 @@ export class UserComponent implements OnInit {
             }
           })
         }
+      }
+      else
+      {
+        this.configClick('user-search');
       }
     })
   }

@@ -53,7 +53,7 @@ export class BankMasterFormComponent {
     });
 
     this._bankMasterService.getDTO().subscribe(obj => this.dto = obj);
-    if (this.dto) {
+    if (this.dto.id >= 0) {
       this.id = this.dto.id;
       if (this.dto.id == 0) {
         this.isAddMode = true;
@@ -84,6 +84,10 @@ export class BankMasterFormComponent {
         })
       }
     }
+    else
+    {
+      this.configClick('banks');
+    }
   }
 
   get code() {
@@ -113,6 +117,11 @@ export class BankMasterFormComponent {
 
   public saveBank(): void {
     if (this.validateForm()) {
+      if (this.isBankExists()) {
+        this._toastrService.error('Bank name already exists.', 'Error!');
+        return;
+      }
+
       let bankModel = {} as IBankServerModel;
 
       bankModel.BankName = this.bankName.value.toString();
@@ -149,6 +158,15 @@ export class BankMasterFormComponent {
       }
 
     }
+  }
+
+  public isBankExists(): boolean {
+    let bankName = this.bankName.value;
+    let bankIndex = this.dto.models.findIndex(b=>b.bankName.toLowerCase() == bankName.toLowerCase() && b.bankId != this.dto.id);
+    if (bankIndex > -1) {
+      return true;
+    }
+    return false;
   }
 
   public validateForm(): boolean {

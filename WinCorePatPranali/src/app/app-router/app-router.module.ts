@@ -63,6 +63,9 @@ import { AutocompleteLibModule } from 'angular-ng-autocomplete';
 import { LoanDetailsComponent } from '../screens/accounts/loan-accounts/loan-details/loan-details.component';
 import { LoanSecurityComponent } from '../screens/accounts/loan-accounts/loan-types/loan-security/loan-security.component';
 import { CashCreditLoanComponent } from '../screens/accounts/loan-accounts/loan-types/cash-credit-loan/cash-credit-loan.component';
+import { SavingTransactionsComponent } from '../screens/transactions/saving-transactions/saving-transactions.component';
+import { FixDepositTransactionsComponent } from '../screens/transactions/fix-deposit-transactions/fix-deposit-transactions.component';
+import { PigmyTransactionsComponent } from '../screens/transactions/pigmy-transactions/pigmy-transactions.component';
 
 @NgModule({
   declarations: [
@@ -123,6 +126,9 @@ import { CashCreditLoanComponent } from '../screens/accounts/loan-accounts/loan-
     LoanDetailsComponent,
     LoanSecurityComponent,
     CashCreditLoanComponent,
+    SavingTransactionsComponent,
+    FixDepositTransactionsComponent,
+    PigmyTransactionsComponent,
   ],
   imports: [
     CommonModule,

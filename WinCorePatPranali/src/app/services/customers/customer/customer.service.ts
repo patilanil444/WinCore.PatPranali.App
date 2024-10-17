@@ -48,7 +48,7 @@ export class CustomerService {
 
   deleteCustomer(id: number): any {
     let options = GlobleDeclarations.getHeaderOptions();
-    return this.http.delete(GlobleDeclarations.apiBaseURL + "api/customer/delete-customer?id=" + id, options);
+    return this.http.post(GlobleDeclarations.apiBaseURL + "api/customer/delete-customer?id=" + id, options);
   }
 
   isAadharExists(id: number, aadhar: string): any {

@@ -109,6 +109,7 @@ export class CustomerSearchComponent implements OnInit {
       action: "editRecord",
       id: uiCustomer.id,
       maxId: 0,
+      models: this.uiCustomers
     }
     this._customerService.setDTO(dtObject);
 

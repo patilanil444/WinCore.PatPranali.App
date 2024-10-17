@@ -49,6 +49,7 @@ export interface IGeneralLedgerDTO
     action: string,
     id: number,
     maxId: number,
+    models: any[]
 }
 
 export interface IGeneralDTO
@@ -57,6 +58,7 @@ export interface IGeneralDTO
     action: string,
     id: number,
     maxId: number,
+    models: any[]
 }
 
 export enum UiEnumAccountStatus {

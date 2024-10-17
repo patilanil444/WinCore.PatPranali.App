@@ -142,7 +142,7 @@ export class GeneralLedgerMasterFormComponent implements OnInit {
   loadForm() {
     this._generalLedgerService.getDTO().subscribe(obj => this.dto = obj);
 
-    if (this.dto) {
+    if (this.dto.id >= 0) {
       this.id = this.dto.id;
 
       if (this.dto.id == 0) {
@@ -195,6 +195,10 @@ export class GeneralLedgerMasterFormComponent implements OnInit {
         })
       }
     }
+    else
+    {
+      this.configClick('general-ledger-list');
+    }
   }
 
   get name() {
@@ -242,6 +246,11 @@ export class GeneralLedgerMasterFormComponent implements OnInit {
 
   public saveGLMaster(): void {
     if (this.validateForm()) {
+
+      if (this.isGLMasterExists()) {
+        this._toastrService.error('General ledger already exists.', 'Error!');
+        return;
+      }
       let glMasterModel = {} as IGLMasterServerModel;
 
       glMasterModel.Code = this.dto.id;
@@ -271,6 +280,16 @@ export class GeneralLedgerMasterFormComponent implements OnInit {
         }
       })
     }
+  }
+
+  public isGLMasterExists(): boolean {
+    let name = this.name.value;
+    let modelIndex = this.dto.models.findIndex((b: any) => b.glName.toLowerCase() == name.toLowerCase() &&
+      b.id != this.dto.id);
+    if (modelIndex > -1) {
+      return true;
+    }
+    return false;
   }
 
   public validateForm(): boolean {

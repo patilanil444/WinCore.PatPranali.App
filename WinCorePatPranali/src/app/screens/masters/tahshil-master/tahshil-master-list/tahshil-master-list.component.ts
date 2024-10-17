@@ -51,6 +51,7 @@ export class TahshilMasterListComponent implements OnInit {
       action: "newRecord",
       id: 0,
       maxId: maxId,
+      models: this.uiTahshils
     }
 
     this._tahshilMasterService.setDTO(dtObject);
@@ -64,6 +65,7 @@ export class TahshilMasterListComponent implements OnInit {
       action: "editRecord",
       id: uiTahshil.id,
       maxId: 0,
+      models: this.uiTahshils
     }
     this._tahshilMasterService.setDTO(dtObject);
 

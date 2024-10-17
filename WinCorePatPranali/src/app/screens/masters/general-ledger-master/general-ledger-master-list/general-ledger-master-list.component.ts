@@ -55,6 +55,7 @@ export class GeneralLedgerMasterListComponent implements OnInit {
       action: "newRecord",
       id: 0,
       maxId: maxId,
+      models: this.uiGeneralLedgers
     }
 
     this._generalLedgerService.setDTO(dtObject);
@@ -68,6 +69,7 @@ export class GeneralLedgerMasterListComponent implements OnInit {
       action: "editRecord",
       id: uiGeneralLedger.code,
       maxId: 0,
+      models: this.uiGeneralLedgers
     }
     this._generalLedgerService.setDTO(dtObject);
 

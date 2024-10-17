@@ -43,7 +43,7 @@ export class UserService {
 
   deleteUser(branchCode: number, userId: number): any {
     let options = GlobleDeclarations.getHeaderOptions();
-    return this.http.delete(GlobleDeclarations.apiBaseURL + "api/User/delete-user?branchCode=" + branchCode + "&id=" + userId, options);
+    return this.http.post(GlobleDeclarations.apiBaseURL + "api/User/delete-user?branchCode=" + branchCode + "&id=" + userId, options);
   }
 
   isUserNameExists(userName: string): any {

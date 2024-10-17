@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
-import { IGeneralMasterDTO } from 'src/app/common/models/common-ui-models';
+import { IGeneralMasterDTO, UiEnumGeneralMaster } from 'src/app/common/models/common-ui-models';
 import { GeneralMasterService } from 'src/app/services/masters/general-master/general-master.service';
 import { SharedService } from 'src/app/services/shared.service';
 
@@ -67,7 +67,7 @@ export class GeneralMasterListComponent {
       masterId: this.masterId,
       masterType: this.uiMasters.filter(m => m.id == this.masterId)[0].constName,
       fullName: "",
-      shortName: ""
+      shortName: "",
     }
 
     this._sharedService.setDTO(dtObject);
@@ -84,7 +84,7 @@ export class GeneralMasterListComponent {
       masterId: this.masterId,
       masterType: this.uiMasters.filter(m => m.id == this.masterId)[0].constName,
       fullName: uiGeneralMaster.constantname,
-      shortName: uiGeneralMaster.shortName
+      shortName: uiGeneralMaster.shortName,
     }
     
     this._sharedService.setDTO(dtObject);
@@ -105,7 +105,13 @@ export class GeneralMasterListComponent {
         console.log(data);
         if (data) {
           // show message
-          this._toastrService.success('General master deleted.', 'Success!');
+          let masterName = "";
+          let identifiers = this.uiGeneralMasters.filter(m=>m.constId == generalMasterIdToDelete);
+          if (identifiers && identifiers.length) {
+            masterName = UiEnumGeneralMaster[identifiers[0].identifier];
+          }
+
+          this._toastrService.success(masterName + ' general master deleted.', 'Success!');
           this.getBranchGeneralMasters();
         }
       })

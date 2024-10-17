@@ -42,15 +42,15 @@ export class RoleAccessComponent implements OnInit {
     this.uiModules.push(module);
     this.getUserRoles().then(() => {
       this._userService.getDTO().subscribe(obj => this.dto = obj);
-      if (this.dto) {
+      if (this.dto.id >= 0) {
         this.id = this.dto.id;
 
         this._userService.getModules().subscribe((data: any) => {
           if (data) {
             if (data.statusCode == 200 && data.data.data) {
               var modules = data.data.data;
-              if (modules && modules.length>0) {
-                modules.forEach((mod:any)=>{
+              if (modules && modules.length > 0) {
+                modules.forEach((mod: any) => {
                   module = {
                     id: mod.id,
                     name: mod.moduleName,
@@ -60,10 +60,13 @@ export class RoleAccessComponent implements OnInit {
                   this.uiModules.push(module);
                 })
               }
-             
+
             }
           }
         })
+      }
+      else {
+        //this.configClick('tahsils');
       }
     })
   }
@@ -120,4 +123,8 @@ export class RoleAccessComponent implements OnInit {
     return this.roleForm.get('role')!;
   }
 
+configClick(routeValue: string) {
+    sessionStorage.setItem("configMenu", routeValue);
+    this.router.navigate(['/app/' + routeValue]);
+  }
 }
