@@ -285,7 +285,7 @@ export class GeneralLedgerMasterFormComponent implements OnInit {
   public isGLMasterExists(): boolean {
     let name = this.name.value;
     let modelIndex = this.dto.models.findIndex((b: any) => b.glName.toLowerCase() == name.toLowerCase() &&
-      b.id != this.dto.id);
+      b.code != this.dto.id);
     if (modelIndex > -1) {
       return true;
     }

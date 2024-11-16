@@ -571,6 +571,28 @@
                             </a>
                             <ul [ngClass]="isTransactionExpanded ? 'mm-collapse mm-show': 'mm-collapse'">
                                 <li>
+                                    <a [class.mm-active]="isMenuSelected('cashier-transactions')"
+                                        (click)="configClick('cashier-transactions')">
+                                        <i class="metismenu-icon pe-7s-next-2"></i>
+                                        Cashier Transactions
+                                    </a>
+                                </li>
+                               
+                                <li>
+                                    <a [class.mm-active]="isMenuSelected('counter-transactions')"
+                                        (click)="configClick('counter-transactions')">
+                                        <i class="metismenu-icon pe-7s-note2"></i>
+                                        Counter Transactions 
+                                    </a>
+                                </li>
+                                <li>
+                                    <a [class.mm-active]="isMenuSelected('voucher-passing')"
+                                        (click)="configClick('voucher-passing')">
+                                        <i class="metismenu-icon pe-7s-note2"></i>
+                                        Vouchers Passing 
+                                    </a>
+                                </li>
+                                <!-- <li>
                                     <a [class.mm-active]="isMenuSelected('saving-transactions')"
                                         (click)="configClick('saving-transactions')">
                                         <i class="metismenu-icon pe-7s-next-2"></i>
@@ -591,7 +613,7 @@
                                         <i class="metismenu-icon pe-7s-note2"></i>
                                         Pigmy Transactions
                                     </a>
-                                </li>
+                                </li> -->
                             </ul>
                         </li>
 

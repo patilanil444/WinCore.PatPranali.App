@@ -1,0 +1,219 @@
+<form [formGroup]="cashVoucherForm" #form="ngForm">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="tab-content">
+                <div class="row">
+                    <div class="col-md-3 position-relative form-group">
+                        <label for="txtCode" class="">Transaction Type</label>
+                        <select class="mb-2 form-control" tabindex="18">
+                            <option *ngFor="let uiTransactionType of uicashTransactionTypes"
+                                [ngValue]="uiTransactionType.code">
+                                {{uiTransactionType.name}}
+                            </option>
+                        </select>
+                    </div>
+                    <div class="col-md-3 position-relative form-group">
+                        <label for="txtCode" class="">Voucher No </label>
+                        <input tabindex="28" type="text" class="form-control" placeholder="Voucher No">
+                    </div>
+                    <div class="col-md-3 position-relative form-group">
+                        <button class="btn btn-info" tabindex="2" style="margin-top: 30px;">
+                            Fetch Voucher</button>
+                        <button class="btn btn-info" tabindex="2" style="margin-top: 30px;margin-left: 30px;"
+                            data-toggle="modal" data-target="#PassingInfoModel">View Details</button>
+                    </div>
+                    <div class="col-md-12">
+                        <div class="row">
+                            <div class="col-md-3 position-relative form-group">
+                                <label for="txtCode" class="">Voucher Amount </label>
+                                <input tabindex="28" type="text" class="form-control" placeholder="Voucher Amount">
+                            </div>
+                            <div class="col-md-3 position-relative form-group">
+                                <label for="txtCode" class="">Grid Amount </label>
+                                <input tabindex="28" type="text" class="form-control" placeholder="Grid Amount">
+                            </div>
+                            <div class="col-md-3 position-relative form-group">
+                                <button class="btn btn-success" tabindex="2" style="margin-top: 30px;"> Accept</button>
+                                <button class="btn btn-danger" tabindex="2"
+                                    style="margin-top: 30px; margin-left: 30px;"> Reject</button>
+                            </div>
+
+                        </div>
+                    </div>
+                    <div class="col-md-12">
+                        <fieldset>
+                            <legend>Details</legend>
+                            <div class="row">
+                                <div class="col-md-12" style="margin-top: 10px;">
+                                    <div class="customer-panel">
+                                        <table style="width: 100%;"
+                                            class="table table-hover table-striped table-bordered dataTable dtr-inline">
+                                            <thead>
+                                                <tr role="row">
+                                                    <th style="width: 10%; padding: .25rem;">GL</th>
+                                                    <th style="width: 10%; padding: .25rem;">A/C Number</th>
+                                                    <th style="width: 10%; padding: .25rem;">Name</th>
+                                                    <th style="width: 10%; padding: .25rem;">Credit Amount</th>
+                                                    <th style="width: 10%; padding: .25rem;">Debit Amount</th>
+                                                    <th style="width: 10%; padding: .25rem;">Int Flag</th>
+                                                    <th style="width: 10%; padding: .25rem;">Int GL</th>
+                                                    <th style="width: 10%; padding: .25rem;">CT Flag</th>
+                                                    <th style="width: 10%; padding: .25rem;">Narration</th>
+                                                    <th style="width: 10%; padding: .25rem;">Actions</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr role="row" class="odd">
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td>
+                                                        <!-- <div class="badge"
+                                                        [ngClass]="{'badge-danger': (uiSavingAccount.status==='Freeze'|| uiSavingAccount.status==='Closed'), 'badge-success' : uiSavingAccount.status=== 'Open', 'badge-warning' : uiSavingAccount.status=== 'Dormant'}">
+                                                        {{uiSavingAccount.status}}
+                                                    </div> -->
+                                                    </td>
+                                                </tr>
+                                                <!-- <tr *ngIf="uiSavingAccounts.length==0">
+                                                <td colspan="4">No records..</td>
+                                            </tr> -->
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </fieldset>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+
+<div class="modal fade bd-example-modal-lg show" id="PassingInfoModel" tabindex="-1" role="dialog"
+    aria-labelledby="denominationModelTitle" aria-hidden="true" data-backdrop="false">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header" style="padding: 0.5rem 1rem !important;">
+                <h5 class="modal-title" id="denominationModelTitle">Passing Information</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="tab-content">
+                                <div class="row">
+
+                                    <div class="col-md-3 position-relative form-group">
+                                        <label for="txtCode" class="">Branch </label>
+                                        <input tabindex="28" type="text" class="form-control" placeholder="Branch" readonly>
+                                    </div>
+                                    <div class="col-md-3 position-relative form-group">
+                                        <label for="txtCode" class="">General Ledger </label>
+                                        <input tabindex="28" type="text" class="form-control"
+                                        readonly   placeholder="General Ledger">
+                                    </div>
+                                    <div class="col-md-3 position-relative form-group">
+                                        <label for="txtCode" class="">Account Number </label>
+                                        <input tabindex="28" type="text" class="form-control"
+                                        readonly  placeholder="Account Number">
+                                    </div>
+
+                                    <div class="col-md-12" style="margin-top: 10px;">
+                                        <div class="customer-panel">
+                                            <table style="width: 100%;"
+                                                class="table table-hover table-striped table-bordered dataTable dtr-inline">
+                                                <thead>
+                                                    <tr role="row">
+                                                        <th style="width: 10%; padding: .25rem;">Account Type</th>
+                                                        <th style="width: 10%; padding: .25rem;">Balance</th>
+                                                        <th style="width: 10%; padding: .25rem;">Last Trans Date</th>
+                                                        <th style="width: 10%; padding: .25rem;">Opening Date</th>
+                                                        <th style="width: 10%; padding: .25rem;">Mode of Operation</th>
+                                                        <th style="width: 10%; padding: .25rem;">Min Balance</th>
+                                                        <th style="width: 10%; padding: .25rem;">Last Int. Date</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <tr role="row" *ngFor="let uiBankAccount of uiBankAccounts"
+                                                        class="odd">
+                                                        <td>{{uiBankAccount.accountNo}}</td>
+                                                        <td>{{uiBankAccount.accountNo}}</td>
+                                                        <td>{{uiBankAccount.accountNo}}</td>
+                                                        <td>{{uiBankAccount.accountNo}}</td>
+                                                        <td>{{uiBankAccount.accountNo}}</td>
+                                                        <td>{{uiBankAccount.accountNo}}</td>
+                                                        <td>{{uiBankAccount.customerCodeStr}}</td>
+                                                    </tr>
+                                                    <tr *ngIf="uiBankAccounts.length==0">
+                                                        <td colspan="7">No records..</td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-12">
+                                        <fieldset>
+                                            <legend>Transaction Details</legend>
+                                            <div class="row">
+                                                <div class="col-md-12">
+                                                    <div class="row">
+                                                        <div class="col-md-3 position-relative form-group">
+                                                            <label for="txtCode" class="">Transaction Amount </label>
+                                                            <input tabindex="28" type="number" class="form-control"
+                                                                readonly placeholder="Amount"
+                                                                >
+                                                        </div>
+                                                        <div class="col-md-3 position-relative form-group">
+                                                            <label for="txtCode" class="">Transaction Description
+                                                            </label>
+                                                            <input tabindex="28" type="text" class="form-control"
+                                                                readonly placeholder="Reason">
+                                                        </div>
+
+                                                        <div class="col-md-3 position-relative form-group">
+                                                            <label for="txtCode" class="">Account Balance Will be
+                                                            </label>
+                                                            <input tabindex="28" type="number" class="form-control"
+                                                                readonly >
+                                                        </div>
+                                                        <div class="col-md-3 position-relative form-group">
+                                                            <label for="txtCode" class="">Cheque No </label>
+                                                            <input tabindex="28" type="text" class="form-control"
+                                                                readonly placeholder="Cheque No">
+                                                        </div>
+
+                                                    </div>
+                                                    <div class="row">
+                                                        <div class="col-md-3 position-relative form-group">
+                                                            <label for="txtCode" class="">Cheque Date </label>
+                                                            <input tabindex="28" type="date" class="form-control"
+                                                                readonly>
+                                                        </div>
+                                                        <div class="col-md-3 position-relative form-group">
+                                                            <button class="btn btn-info" data-dismiss="modal" aria-label="Close" style="margin-top: 30px;"> Ok</button>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </fieldset>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+               
+            </div>
+        </div>
+    </div>
+</div>

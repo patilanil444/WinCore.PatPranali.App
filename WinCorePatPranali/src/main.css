@@ -536,13 +536,14 @@ textarea {
 
 fieldset {
     min-width: 0;
-    padding: 0;
-    margin: 0;
-    border: 0;
+    margin: 0px;
+    border: 1px solid silver;
+    padding: 8px;    
+    border-radius: 4px;
 }
 
 legend {
-    display: block;
+    /* display: block;
     width: 100%;
     max-width: 100%;
     padding: 0;
@@ -550,7 +551,8 @@ legend {
     font-size: 1.5rem;
     line-height: inherit;
     color: inherit;
-    white-space: normal;
+    white-space: normal; */
+    padding: 2px;    
 }
 
 progress {
@@ -5890,7 +5892,7 @@ a.close.disabled {
 @media (min-width: 576px) {
     .modal-dialog {
         max-width: 500px;
-        margin: 1.75rem auto;
+        margin: 0rem auto;
     }
 
     .modal-dialog-centered {
@@ -15326,6 +15328,10 @@ a.badge-alternate:hover, a.badge-alternate:focus {
 legend {
     font-size: .88rem;
     font-weight: bold;
+    float: none !important;
+    width: auto !important;
+    color: #3f6ad8 !important;
+    margin-bottom: 0px !important;
 }
 
 .form-heading {

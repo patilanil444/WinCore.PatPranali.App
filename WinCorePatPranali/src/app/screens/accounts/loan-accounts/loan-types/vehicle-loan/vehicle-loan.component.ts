@@ -1,5 +1,6 @@
-import { Component, EventEmitter, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { LoanAccountsService } from 'src/app/services/accounts/loan-accounts/loan-accounts.service';
 
 export interface UiVehicle {
   id: number,
@@ -21,7 +22,7 @@ export interface UiVehicle {
 })
 export class VehicleLoanComponent implements OnInit {
 
-  constructor() { }
+  constructor(private _loanAccountsService: LoanAccountsService) { }
 
   vehicleLoanForm!: FormGroup;
   uiVehicles: any[] = [];
@@ -29,7 +30,6 @@ export class VehicleLoanComponent implements OnInit {
   total_Vehicles: number = 0;
   vehicleIndexToDelete = -1;
   @Output() vehicleDetails = new EventEmitter<any>();
-
 
   ngOnInit(): void {
     this.vehicleLoanForm = new FormGroup({
@@ -40,6 +40,12 @@ export class VehicleLoanComponent implements OnInit {
       chasisNumber: new FormControl("", [Validators.required]),
       invoiceAmount: new FormControl("", [Validators.required]),
       dealer: new FormControl("", [Validators.required]),
+    });
+
+    this._loanAccountsService.vehicleData.subscribe((data) => {
+      if (data) {
+        this.uiVehicles = data;
+      }
     });
   }
   

@@ -1,0 +1,72 @@
+<form [formGroup]="bankAccSearchForm">
+    <div class="row">
+        <div class="col-md-3 position-relative form-group">
+            <label for="txtCode" class="">Branch </label>
+            <select class="form-control" tabindex="27" formControlName="branchId">
+                <option *ngFor="let uiBranch of uiBranches" [ngValue]="uiBranch.branchCode">
+                    {{uiBranch.branchName}}
+                </option>
+            </select>
+        </div>
+        <div class="col-md-3 position-relative form-group">
+            <label for="txtCode" class="">General Ledger </label>
+            <div class="input-group">
+                <ngx-select-dropdown [config]="config" tabindex="1"
+                    [options]="generalLedgers" formControlName="generalLedger"
+                    style="width: 100%;" [multiple]="false">
+                </ngx-select-dropdown>
+            </div>
+        </div>
+        <div class="col-md-3 position-relative form-group">
+            <label for="txtCode" class="">Account Search </label>
+            <input tabindex="28" type="text" class="form-control" placeholder="Account Number"
+                formControlName="accountNumberSearch">
+        </div>
+        <div class="col-md-3 position-relative form-group" style="margin-top: 30px;">
+            <button class="btn btn-info" tabindex="2" (click)="searchAccount()"><i
+                    class="fa fa-search"></i> Search</button>
+        </div>
+    
+        <div class="col-md-12" style="margin-top: 10px;">
+            <div class="customer-panel">
+                <table style="width: 100%;"
+                    class="table table-hover table-striped table-bordered dataTable dtr-inline">
+                    <thead>
+                        <tr role="row">
+                            <th style="width: 5%; padding: .25rem;">Select</th>
+                            <th style="width: 10%; padding: .25rem;">Account Number</th>
+                            <th style="width: 10%; padding: .25rem;">Account Type</th>
+                            <th style="width: 10%; padding: .25rem;">Balance</th>
+                            <th style="width: 10%; padding: .25rem;">Last Trans Date</th>
+                            <th style="width: 10%; padding: .25rem;">Opening Date</th>
+                            <th style="width: 10%; padding: .25rem;">Mode of Operation</th>
+                            <th style="width: 10%; padding: .25rem;">Min Balance</th>
+                            <th style="width: 10%; padding: .25rem;">Last Int. Date</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr role="row" *ngFor="let uiBankAccount of uiBankAccounts"
+                            class="odd">
+                            <td style="padding: .25rem;" class="sorting_1 dtr-control">
+                                <button class="mb-2 mr-2 btn btn-link"
+                                    style="--bs-btn-padding-x:none !important; padding:0 !important;"
+                                    (click)="selectAccount(uiBankAccount.accountsId)">Select</button>
+                            </td>
+                            <td>{{uiBankAccount.accountNo}}</td>
+                            <td>{{uiBankAccount.accountNo}}</td>
+                            <td>{{uiBankAccount.accountNo}}</td>
+                            <td>{{uiBankAccount.accountNo}}</td>
+                            <td>{{uiBankAccount.accountNo}}</td>
+                            <td>{{uiBankAccount.accountNo}}</td>
+                            <td>{{uiBankAccount.accountNo}}</td>
+                            <td>{{uiBankAccount.customerCodeStr}}</td>
+                        </tr>
+                        <tr *ngIf="uiBankAccounts.length==0">
+                            <td colspan="9">No records..</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</form>

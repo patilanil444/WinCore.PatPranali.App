@@ -41,9 +41,9 @@ import { BalanceCertificateComponent } from '../screens/accounts/balance-certifi
 import { ChequeBookRequestComponent } from '../screens/registers/cheque-book-request/cheque-book-request.component';
 import { ChequeBookIssueComponent } from '../screens/registers/cheque-book-issue/cheque-book-issue.component';
 import { LoanDetailsComponent } from '../screens/accounts/loan-accounts/loan-details/loan-details.component';
-import { SavingTransactionsComponent } from '../screens/transactions/saving-transactions/saving-transactions.component';
-import { FixDepositTransactionsComponent } from '../screens/transactions/fix-deposit-transactions/fix-deposit-transactions.component';
-import { PigmyTransactionsComponent } from '../screens/transactions/pigmy-transactions/pigmy-transactions.component';
+import { CashierTransactionSummaryComponent } from '../screens/transactions/cashier-transactions/cashier-transaction-summary/cashier-transaction-summary.component';
+import { CounterTransactionSummaryComponent } from '../screens/transactions/counter-transactions/counter-transaction-summary/counter-transaction-summary.component';
+import { VoucherPassingSummaryComponent } from '../screens/transactions/voucher-passing/voucher-passing-summary/voucher-passing-summary.component';
 
 const routes: Routes = [
   {
@@ -93,9 +93,12 @@ const routes: Routes = [
       { path: 'cheque-request', component: ChequeBookRequestComponent },
       { path: 'cheque-book-issue', component: ChequeBookIssueComponent },
       { path: 'loan-details', component: LoanDetailsComponent },
-      { path: 'saving-transactions', component: SavingTransactionsComponent },
-      { path: 'fd-transactions', component: FixDepositTransactionsComponent },
-      { path: 'pigmy-transactions', component: PigmyTransactionsComponent },
+      // { path: 'saving-transactions', component: SavingTransactionsComponent },
+      // { path: 'fd-transactions', component: FixDepositTransactionsComponent },
+      // { path: 'pigmy-transactions', component: PigmyTransactionsComponent },
+      { path: 'cashier-transactions', component: CashierTransactionSummaryComponent },
+      { path: 'counter-transactions', component: CounterTransactionSummaryComponent },
+      { path: 'voucher-passing', component: VoucherPassingSummaryComponent },
       { path: '**', component: NotFoundComponent },
       { path: '', redirectTo: 'projects', pathMatch: 'full' },
     ]

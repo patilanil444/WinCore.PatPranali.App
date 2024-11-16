@@ -16,6 +16,7 @@ export class SharedService {
   public uiGLTypesAndGroups = [];
   public uiTypeOfAccounts = [];
   public uiCurrencies = [];
+  public uiDenominatons = [];
 
   public uiAllMasters: any[] = [];
 

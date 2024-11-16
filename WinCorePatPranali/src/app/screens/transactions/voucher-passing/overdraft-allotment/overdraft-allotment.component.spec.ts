@@ -1,20 +1,20 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { SavingTransactionsComponent } from './saving-transactions.component';
+import { OverdraftAllotmentComponent } from './overdraft-allotment.component';
 
-describe('SavingTransactionsComponent', () => {
-  let component: SavingTransactionsComponent;
-  let fixture: ComponentFixture<SavingTransactionsComponent>;
+describe('OverdraftAllotmentComponent', () => {
+  let component: OverdraftAllotmentComponent;
+  let fixture: ComponentFixture<OverdraftAllotmentComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ SavingTransactionsComponent ]
+      declarations: [ OverdraftAllotmentComponent ]
     })
     .compileComponents();
   });
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(SavingTransactionsComponent);
+    fixture = TestBed.createComponent(OverdraftAllotmentComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

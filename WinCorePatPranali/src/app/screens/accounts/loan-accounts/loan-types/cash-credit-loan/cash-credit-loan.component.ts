@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { ToastrService } from 'ngx-toastr';
 import { AccountsService } from 'src/app/services/accounts/accounts/accounts.service';
@@ -28,6 +28,8 @@ export class CashCreditLoanComponent implements OnInit {
 
   securityForm!: FormGroup;
   securityValueForm!: FormGroup;
+
+  @Output() loanSecurityDetails = new EventEmitter<any>();
 
   p_security: number = 1;
   total_securities: number = 0;
@@ -131,6 +133,9 @@ export class CashCreditLoanComponent implements OnInit {
       }
 
       this.calculateTotalValue();
+
+      this.loanSecurityDetails.emit(this.uiSecurities);
+
       this.clearSecurity();
     }
   }

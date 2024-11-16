@@ -63,9 +63,23 @@ import { AutocompleteLibModule } from 'angular-ng-autocomplete';
 import { LoanDetailsComponent } from '../screens/accounts/loan-accounts/loan-details/loan-details.component';
 import { LoanSecurityComponent } from '../screens/accounts/loan-accounts/loan-types/loan-security/loan-security.component';
 import { CashCreditLoanComponent } from '../screens/accounts/loan-accounts/loan-types/cash-credit-loan/cash-credit-loan.component';
-import { SavingTransactionsComponent } from '../screens/transactions/saving-transactions/saving-transactions.component';
 import { FixDepositTransactionsComponent } from '../screens/transactions/fix-deposit-transactions/fix-deposit-transactions.component';
 import { PigmyTransactionsComponent } from '../screens/transactions/pigmy-transactions/pigmy-transactions.component';
+import { DenominationsComponent } from '../common/directives/denominations/denominations.component';
+import { CashierTransactionSummaryComponent } from '../screens/transactions/cashier-transactions/cashier-transaction-summary/cashier-transaction-summary.component';
+import { CashierCashReceiptComponent } from '../screens/transactions/cashier-transactions/cashier-cash-receipt/cashier-cash-receipt.component';
+import { CashierCashPaymentComponent } from '../screens/transactions/cashier-transactions/cashier-cash-payment/cashier-cash-payment.component';
+import { CashierCashExchangeComponent } from '../screens/transactions/cashier-transactions/cashier-cash-exchange/cashier-cash-exchange.component';
+import { CounterCashPaymentComponent } from '../screens/transactions/counter-transactions/counter-cash-payment/counter-cash-payment.component';
+import { CounterTransactionSummaryComponent } from '../screens/transactions/counter-transactions/counter-transaction-summary/counter-transaction-summary.component';
+import { CounterTransferDebitComponent } from '../screens/transactions/counter-transactions/counter-transfer-debit/counter-transfer-debit.component';
+import { CounterTransferCreditComponent } from '../screens/transactions/counter-transactions/counter-transfer-credit/counter-transfer-credit.component';
+import { CashVoucherPassingComponent } from '../screens/transactions/voucher-passing/cash-voucher-passing/cash-voucher-passing.component';
+import { TransferVoucherPassingComponent } from '../screens/transactions/voucher-passing/transfer-voucher-passing/transfer-voucher-passing.component';
+import { OverdraftAllotmentComponent } from '../screens/transactions/voucher-passing/overdraft-allotment/overdraft-allotment.component';
+import { ChequeBookPassingComponent } from '../screens/transactions/voucher-passing/cheque-book-passing/cheque-book-passing.component';
+import { VoucherPassingSummaryComponent } from '../screens/transactions/voucher-passing/voucher-passing-summary/voucher-passing-summary.component';
+import { BankAccSearchComponent } from '../common/directives/bank-acc-search/bank-acc-search.component';
 
 @NgModule({
   declarations: [
@@ -126,9 +140,24 @@ import { PigmyTransactionsComponent } from '../screens/transactions/pigmy-transa
     LoanDetailsComponent,
     LoanSecurityComponent,
     CashCreditLoanComponent,
-    SavingTransactionsComponent,
     FixDepositTransactionsComponent,
     PigmyTransactionsComponent,
+    DenominationsComponent,
+    CashierTransactionSummaryComponent,
+    CashierCashReceiptComponent,
+    CashierCashPaymentComponent,
+    CashierCashExchangeComponent,
+    CounterCashPaymentComponent,
+    CounterTransactionSummaryComponent,
+    CounterCashPaymentComponent,
+    CounterTransferCreditComponent,
+    CounterTransferDebitComponent,
+    CashVoucherPassingComponent,
+    TransferVoucherPassingComponent,
+    OverdraftAllotmentComponent,
+    ChequeBookPassingComponent,
+    VoucherPassingSummaryComponent,
+    BankAccSearchComponent,
   ],
   imports: [
     CommonModule,

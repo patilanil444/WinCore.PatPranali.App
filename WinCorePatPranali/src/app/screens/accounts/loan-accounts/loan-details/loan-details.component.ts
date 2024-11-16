@@ -94,7 +94,7 @@ export interface ILoanSecuDetail {
   Main: string;
   Description1: string;
   Description2: string;
-  Value: number;
+  SValue: number;
   Percentage: number;
   Active: number;
 }
@@ -164,6 +164,12 @@ export class LoanDetailsComponent implements OnInit {
   p_installments: number = 1;
   total_installments: number = 0;
 
+  isGoldLoan = false;
+  isLeinFD = false;
+  isCashCredit = false;
+  isVehicleLoan = false;
+  isMortgageLoan = false;
+
   constructor(private router: Router, private _sharedService: SharedService,
     private _toastrService: ToastrService, private _generalLedgerService: GeneralLedgerService,
     private _customerService: CustomerService, private _loanAccountsService: LoanAccountsService,
@@ -222,8 +228,6 @@ export class LoanDetailsComponent implements OnInit {
         }).catch(error => {
           this._toastrService.error('Error loading general ledgers', 'Error!');
         });
-
-
       }
     }).catch(error => {
       this._toastrService.error('Error loading general ledgers', 'Error!');
@@ -278,7 +282,6 @@ export class LoanDetailsComponent implements OnInit {
     this.p_installments = event;
   }
 
-
   loadForm() {
     this._loanAccountsService.getDTO().subscribe(obj => this.dto = obj);
     if (this.dto) {
@@ -305,62 +308,178 @@ export class LoanDetailsComponent implements OnInit {
               customerName: this._loanAccountsService.customerName,
             })
 
-            // this.parametersForm.patchValue({
-            //   interestRateParam: savingAccount.int_Rate,
-            //   ledgerNumber: savingAccount.ledgerNumber,
-            //   minimumBalance: savingAccount.minimumBalance,
-            //   additionalBalance: savingAccount.additionalBalance,
-            //   form60: savingAccount.form60,
-            //   form61: savingAccount.form61,
-            //   tds: savingAccount.tdS_YN ? 'Y' : 'N',
-            //   tdsReason: savingAccount.tdS_Reason_Code,
-            // })
+            this.enableTabsAsPerGL(gl && gl.length ? gl[0] : null);
 
-            // // depositAccount.nomineeList
-            // if (savingAccount.nomineeList && savingAccount.nomineeList.length) {
-            //   let relationName = "";
-            //   savingAccount.nomineeList.forEach((nominee: any) => {
-            //     let uiNominee: any = {};
-            //     let uiRelation = this.uiRelations.filter(r => r.constantNo == parseInt(nominee.relation));
-            //     if (uiRelation) {
-            //       relationName = (uiRelation && uiRelation.length > 0) ? uiRelation[0].constantname : "";
-            //     }
+            // Call API to fetch loan account details here
 
-            //     uiNominee.id = nominee.id;
-            //     uiNominee.accountId = nominee.accountsId;
-            //     uiNominee.customerId = savingAccount.customerId;
-            //     uiNominee.nomineeName = nominee.nomineeName;
-            //     uiNominee.nomineeAddress = nominee.nomineeAddress;
-            //     uiNominee.relation = nominee.relation;
-            //     uiNominee.relationName = relationName;
-            //     uiNominee.guardian = nominee.guardian;
-            //     uiNominee.percentage = nominee.percentage;
-            //     uiNominee.createdBy = nominee.createdBy;
-            //     uiNominee.status = '';
-            //     this.uiSecurities.push(uiNominee);
-            //   });
-            // }
+            this._loanAccountsService.getLoanAccountDetails(this.accountsId).subscribe((data: any) => {
+              if (data) {
+                if (data.statusCode == 200 && data.data.data) {
+                  var loanAccountDetails = data.data.data;
+                  if (loanAccountDetails.loanTenure > 0) {
 
-            // //depositAccount.jointList
-            // if (savingAccount.jointList && savingAccount.jointList.length) {
+                    this.parametersForm.patchValue({
+                      sanctionAmount: parseFloat(loanAccountDetails.sanctionAmount),
+                      sanctionAmountFormatted: new Intl.NumberFormat('en-IN', { style: 'decimal' }).format(parseFloat(loanAccountDetails.sanctionAmount)),
+                      sanctionDate: formatDate(new Date(loanAccountDetails.sanctionDate), 'yyyy-MM-dd', 'en'),
+                      sanctionBy: loanAccountDetails.sanctionBy,
+                      loanTenureInMonths: loanAccountDetails.loanTenure,
+                      actualLoanAmount: loanAccountDetails.actualLoanAmount,
+                      actualLoanAmountFormatted: new Intl.NumberFormat('en-IN', { style: 'decimal' }).format(loanAccountDetails.actualLoanAmount),
+                      interestRate: loanAccountDetails.interestRate,
+                      amountAdvances: loanAccountDetails.advanceAmount,
+                      changesInInterestApplicable: loanAccountDetails.rateApplicable,
+                      maturityDate: formatDate(new Date(loanAccountDetails.maturityDate), 'yyyy-MM-dd', 'en', 'dd/MM/yyyy'),
+                      resolutionNo: loanAccountDetails.resolutionNo,
+                      resolutionDate: formatDate(new Date(loanAccountDetails.resolutionDate), 'yyyy-MM-dd', 'en', 'dd/MM/yyyy'),
+                      paidDate: formatDate(new Date(loanAccountDetails.paidOn), 'yyyy-MM-dd', 'en'),
+                    })
 
-            //   savingAccount.jointList.forEach((joint: any) => {
-            //     let uiJointCust = {} as UiJoint;
-            //     uiJointCust.accountId = joint.accountsId;
-            //     uiJointCust.id = joint.id;
-            //     uiJointCust.customerId = joint.customerId;
-            //     uiJointCust.customerName = joint.custName;
-            //     uiJointCust.customerNumber = joint.customerCodeStr;
-            //     uiJointCust.operativeInstruction = joint.operativeInstruction;
-            //     uiJointCust.status = '';
-            //     uiJointCust.createdBy = joint.createdBy;
-            //     this.uiSelectedJointCustomers.push(uiJointCust);
-            //   });
-            // }
+                    if (loanAccountDetails.vehiLoanDetails && loanAccountDetails.vehiLoanDetails.length) {
+                      loanAccountDetails.vehiLoanDetails.forEach((item: any) => {
+                        let uiVehicle = {
+                          id: item.id,
+                          registerNumber: item.registerNo,
+                          manufacturer: item.manufacture,
+                          model: item.model,
+                          engineNumber: item.engine,
+                          chasisNumber: item.chasis,
+                          invoiceAmount: item.invoice,
+                          dealer: item.dealer,
+                          status: 'A'
+                        };
+                        this.uiVehicleData.push(uiVehicle);
+                      });
+
+                      this._loanAccountsService.updateVehicleData(this.uiVehicleData);
+                    }
+
+                    if (loanAccountDetails.loanSecuDetails && loanAccountDetails.loanSecuDetails.length) {
+                      loanAccountDetails.loanSecuDetails.forEach((item: any) => {
+                        let uiSecurity = {
+                          id: item.id,
+                          srNo: item.srNo,
+                          securityType: item.code,
+                          securityTypeText: item.manufacture,
+                          security: item.description1,
+                          securityValue: item.sValue,
+                          securityDescription: item.description2,
+                          percentage: item.percentage,
+                          securityValueWithPercentage:  item.sValue * item.percentage/100,
+                          status: 'A'
+                        };
+                        this.uiLoanSecurityData.push(uiSecurity);
+                      });
+
+                      this._loanAccountsService.updateSecurityData(this.uiLoanSecurityData);
+                    }
+
+                    if (loanAccountDetails.goldLoanDetails && loanAccountDetails.goldLoanDetails.length) {
+                      loanAccountDetails.goldLoanDetails.forEach((item: any) => {
+                        let uiGold = {
+                          receiptNo: item.goldDesc,
+                          goldType: item.code,
+                          goldTypeText: "",
+                          grossWeight: item.gWeight,
+                          netWeight: item.weight,
+                          ratePerGram: item.rate,
+                          amount: (parseFloat(item.rate) * parseFloat(item.weight)).toFixed(2),
+                        };
+                        this.uiGoldLoanData.push(uiGold);
+                      });
+
+                      this._loanAccountsService.updateGoldData(this.uiGoldLoanData);
+                    }
+
+                    if (loanAccountDetails.loanDepoDetails && loanAccountDetails.loanDepoDetails.length) {
+                      loanAccountDetails.loanDepoDetails.forEach((item: any) => {
+                        let uiVehicle = {
+                          id: item.id,
+                          registerNumber: item.registerNo,
+                          manufacturer: item.manufacture,
+                          model: item.model,
+                          engineNumber: item.engine,
+                          chasisNumber: item.chasis,
+                          invoiceAmount: item.invoice,
+                          dealer: item.dealer,
+                          status: 'A'
+                        };
+                        this.uiDepositLoanData.push(uiVehicle);
+                      });
+
+                      this._loanAccountsService.updateDepositData(this.uiDepositLoanData);
+                    }
+
+                    if (loanAccountDetails.loanEMIDetails && loanAccountDetails.loanEMIDetails.length) {
+                      this.uiAllInstallments = [];
+                      let allInstallments: any[] = [];
+                      let sum = 0;
+                      loanAccountDetails.loanEMIDetails.forEach((el:any) => sum += el.emiAmt);
+
+                      this.installmentsForm.patchValue({
+                        instInstallmentType: loanAccountDetails.installmentType,
+                        instNumberOfInstallments: loanAccountDetails.installmentNo,
+                        instFirstInstallmentDate: formatDate(loanAccountDetails.firstInstallmentDate, 'yyyy-MM-dd', 'en'),
+                        instInstallWithInterest: loanAccountDetails.instWithInt,
+                        instAmountToBeReceived: sum,
+                      })
+
+                      loanAccountDetails.loanEMIDetails.forEach((item: any) => {
+                        let installment = {
+                          id: item.id,
+                          actualLoanAmount: loanAccountDetails.actualLoanAmount,
+                          installmentDate: formatDate(new Date(item.payDate), 'yyyy-MM-dd', 'en'),
+                          interestRate: loanAccountDetails.interestRate,
+                          installmentAmount: item.emiAmt,
+                          interestAmount: item.interest_DB,
+                          principleAmount: item.principle_DB,
+                          outstandingAmount: item.curBalance,
+                        };
+                        allInstallments.push(installment);
+                      });
+
+                      this.uiAllInstallments = allInstallments;
+                      //this._loanAccountsService.updateEMIData(this.uiAllInstallments);
+                    }
+                  }
+                }
+              }
+            });
           }
         }
       })
 
+    }
+  }
+
+  enableTabsAsPerGL(gl: any) {
+    this.isGoldLoan = false;
+    this.isLeinFD = false;
+    this.isCashCredit = false;
+    this.isVehicleLoan = false;
+    this.isMortgageLoan = false;
+
+    if (gl != null) {
+      if (gl.glGroup == 'L' && (gl.glType == 'G' || gl.glType == 'H')) {
+        // Enable tab Gold Loan
+        this.isGoldLoan = true;
+      }
+      if (gl.glGroup == 'L' && (gl.glType == '4' || gl.glType == '5')) {
+        // Enable tab Lein FD
+        this.isLeinFD = true;
+      }
+      if (gl.glGroup == 'L' && gl.glType == 'D') {
+        // Enable tab Credit Cash
+        this.isCashCredit = true;
+      }
+      if (gl.glGroup == 'L' && gl.glType == '6') {
+        // Enable tab Vehicle
+        this.isVehicleLoan = true;
+      }
+      if (gl.glGroup == 'L' && gl.glType == '7') {
+        // Enable tab Mortgage
+        this.isMortgageLoan = true;
+      }
     }
   }
 
@@ -517,7 +636,7 @@ export class LoanDetailsComponent implements OnInit {
 
         let installment: any = {};
         installment.actualLoanAmount = actulaOutstandingAmount;
-        installment.installmentDate = formatDate(new Date(this.maturityDate.value), 'dd-MM-yyyy', 'en', 'dd/MM/yyyy');
+        installment.installmentDate = formatDate(new Date(this.maturityDate.value), 'yyyy-MM-dd', 'en');
         installment.interestRate = interestRate;
         installment.installmentAmount = installmentAmount;
         installment.outstandingAmount = 0;
@@ -540,7 +659,7 @@ export class LoanDetailsComponent implements OnInit {
           if (totalOutstanding > 0) {
             let installment: any = {};
             installment.actualLoanAmount = actulaOutstandingAmount;
-            installment.installmentDate = formatDate(firstInstallmentDate.setFullYear(firstInstallmentDate.getFullYear() + 1), 'dd-MM-yyyy', 'en', 'dd/MM/yyyy');
+            installment.installmentDate = formatDate(firstInstallmentDate.setFullYear(firstInstallmentDate.getFullYear() + 1), 'yyyy-MM-dd', 'en');
             installment.interestRate = interestRate;
             installment.installmentAmount = installmentAmount;
 
@@ -552,17 +671,17 @@ export class LoanDetailsComponent implements OnInit {
             installment.principleAmount = Math.round(principleAmount);
             installment.outstandingAmount = Math.round(totalOutstanding);
 
-            
+
             // if (installment.outstandingAmount < installment.installmentAmount) {
             //   //installment.installmentAmount = installment.outstandingAmount;
             //   //installment.outstandingAmount = 0;
             //   totalOutstanding = 0;
             // }
-           
-          //if (installment.installmentAmount > 0) {
+
+            //if (installment.installmentAmount > 0) {
             allInstallments.push(installment);
             //}
-  
+
 
           }
         }
@@ -581,7 +700,13 @@ export class LoanDetailsComponent implements OnInit {
           if (totalOutstanding > 0) {
             let installment: any = {};
             installment.actualLoanAmount = actulaOutstandingAmount;
-            installment.installmentDate = formatDate(firstInstallmentDate.setMonth(firstInstallmentDate.getMonth() + 6), 'dd-MM-yyyy', 'en', 'dd/MM/yyyy');
+            if (index == 0) {
+              installment.installmentDate = formatDate(firstInstallmentDate, 'yyyy-MM-dd', 'en'); //formatDate(firstInstallmentDate, 'dd-MM-yyyy', 'en', 'dd/MM/yyyy');
+            }  
+            else
+            {
+              installment.installmentDate = formatDate(firstInstallmentDate.setMonth(firstInstallmentDate.getMonth() + 6), 'yyyy-MM-dd', 'en');
+            }
             installment.interestRate = interestRate;
             installment.installmentAmount = Math.round(installmentAmount);
 
@@ -617,7 +742,13 @@ export class LoanDetailsComponent implements OnInit {
           if (totalOutstanding > 0) {
             let installment: any = {};
             installment.actualLoanAmount = actulaOutstandingAmount;
-            installment.installmentDate = formatDate(firstInstallmentDate.setMonth(firstInstallmentDate.getMonth() + 3), 'dd-MM-yyyy', 'en', 'dd/MM/yyyy');
+            if (index == 0) {
+              installment.installmentDate = formatDate(firstInstallmentDate, 'yyyy-MM-dd', 'en');
+            }
+            else
+            {
+              installment.installmentDate = formatDate(firstInstallmentDate.setMonth(firstInstallmentDate.getMonth() + 3), 'yyyy-MM-dd', 'en');
+            }
             installment.interestRate = interestRate;
             installment.installmentAmount = Math.round(installmentAmount);
 
@@ -651,7 +782,13 @@ export class LoanDetailsComponent implements OnInit {
           if (totalOutstanding > 0) {
             let installment: any = {};
             installment.actualLoanAmount = actulaOutstandingAmount;
-            installment.installmentDate = formatDate(firstInstallmentDate.setMonth(firstInstallmentDate.getMonth() + 1), 'dd-MM-yyyy', 'en', 'dd/MM/yyyy');
+            if (index==0) {
+              installment.installmentDate = formatDate(firstInstallmentDate, 'yyyy-MM-dd', 'en');
+            }
+            else
+            {
+              installment.installmentDate = formatDate(firstInstallmentDate.setMonth(firstInstallmentDate.getMonth() + 1), 'yyyy-MM-dd', 'en');
+            }
             installment.interestRate = interestRate;
             installment.installmentAmount = Math.round(installmentAmount);
 
@@ -694,13 +831,11 @@ export class LoanDetailsComponent implements OnInit {
     this.uiDepositLoanData = depositLoanData;
   }
 
-  getLoanSecurityDetails(loanSecurityData: any)
-  {
+  getLoanSecurityDetails(loanSecurityData: any) {
     this.uiLoanSecurityData = loanSecurityData;
   }
 
-  getVehicleDetails(vehicleData: any)
-  {
+  getVehicleDetails(vehicleData: any) {
     this.uiVehicleData = vehicleData;
   }
 
@@ -717,68 +852,130 @@ export class LoanDetailsComponent implements OnInit {
     accountModel.SanctionDate = this.sanctionDate.value.toString();
     accountModel.SanctionBy = this.sanctionBy.value;
     accountModel.LoanTenure = parseInt(this.loanTenureInMonths.value);
-    accountModel.ActualLoanAmount = parseFloat(this.sanctionAmount.value);
-    accountModel.InterestRate = parseFloat(this.sanctionAmount.value);
-    accountModel.AdvanceAmount = parseFloat(this.sanctionAmount.value);
+    accountModel.ActualLoanAmount = parseFloat(this.actualLoanAmount.value);
+    accountModel.InterestRate = parseFloat(this.interestRate.value);
+    accountModel.AdvanceAmount = parseFloat(this.amountAdvances.value);
     accountModel.RateApplicable = this.changesInInterestApplicable.value;
-    accountModel.MaturityDate = this.sanctionDate.value.toString();
+    accountModel.MaturityDate = this.maturityDate.value.toString();
     accountModel.ResolutionNo = this.resolutionNo.value.toString();
-    accountModel.ResolutionDate = this.sanctionDate.value.toString();
+    accountModel.ResolutionDate = this.resolutionDate.value.toString();
     accountModel.PaidOn = this.paidDate.value.toString();
     accountModel.InstallmentType = this.instInstallmentType.value;
-    accountModel.InstallmentNo = 0;
+    accountModel.InstallmentNo = this.uiAllInstallments && this.uiAllInstallments.length ? this.uiAllInstallments.length : 0;
     accountModel.FirstInstallmentDate = this.instFirstInstallmentDate.value.toString();
     accountModel.InstWithInt = this.instInstallWithInterest.value;
     accountModel.CreatedBy = this._sharedService.applicationUser.userName;
 
     accountModel.GoldLoanDetails = [];
-    if (this.uiGoldLoanData) {
-      this.uiGoldLoanData.forEach((d:any)=>{
-        let goldLoanItem = {} as IGoldLoanDetail;
-        goldLoanItem.Id = d.id;
-        goldLoanItem.AccountId = this.accountsId;
-        goldLoanItem.SrNo = 0;
-        goldLoanItem.Code = d.goldType;
-        goldLoanItem.GoldDesc = d.receiptNo;
-        goldLoanItem.Weight = d.netWeight;
-        goldLoanItem.GWeight = d.grossWeight;
-        goldLoanItem.Rate = d.ratePerGram;
-        goldLoanItem.Custody = "";
-        goldLoanItem.PaidDate = this.paidDate.value;
-        goldLoanItem.Active = 1;
-        accountModel.GoldLoanDetails.push(goldLoanItem);
-      });
+    if (this.isGoldLoan) {
+      if (this.uiGoldLoanData) {
+        this.uiGoldLoanData.forEach((d: any) => {
+          let goldLoanItem = {} as IGoldLoanDetail;
+          goldLoanItem.Id = d.id;
+          goldLoanItem.AccountId = this.accountsId;
+          goldLoanItem.SrNo = 0;
+          goldLoanItem.Code = d.goldType;
+          goldLoanItem.GoldDesc = d.receiptNo;
+          goldLoanItem.Weight = d.netWeight;
+          goldLoanItem.GWeight = d.grossWeight;
+          goldLoanItem.Rate = d.ratePerGram;
+          goldLoanItem.Custody = "";
+          goldLoanItem.PaidDate = this.paidDate.value;
+          goldLoanItem.Active = 1;
+          accountModel.GoldLoanDetails.push(goldLoanItem);
+        });
+      }
     }
 
     accountModel.LoanDepoDetails = [];
-    if (this.uiDepositLoanData) {
-      this.uiDepositLoanData.forEach((d:any)=>{
-        let depositLoanItem = {} as ILoanDepoDetail;
-        depositLoanItem.Id = d.id;
-        depositLoanItem.AccountId = this.accountsId;
-        depositLoanItem.DepoBranchCode = d.branch;
-        depositLoanItem.DepoCode1 = d.gl;
-        depositLoanItem.DepoCode2 = d.accountNumber;
-        depositLoanItem.FD_Amt = d.fdAmount;
-        depositLoanItem.DepoOpnDate = d.opening;
-        depositLoanItem.DepoExpDate = d.maturity;;
-        depositLoanItem.MarkBy = d.markBy;
-        depositLoanItem.MarkDate = d.markOn;
-        depositLoanItem.ReleaseBy = d.releaseBy;
-        depositLoanItem.ReleaseDate = d.releaseOn;
-        depositLoanItem.Active = 1;
-        accountModel.LoanDepoDetails.push(depositLoanItem);
-      });
+    if (this.isLeinFD) {
+      if (this.uiDepositLoanData) {
+        this.uiDepositLoanData.forEach((d: any) => {
+          let depositLoanItem = {} as ILoanDepoDetail;
+          depositLoanItem.Id = d.id;
+          depositLoanItem.AccountId = this.accountsId;
+          depositLoanItem.DepoBranchCode = d.branch;
+          depositLoanItem.DepoCode1 = d.gl;
+          depositLoanItem.DepoCode2 = d.accountNumber;
+          depositLoanItem.FD_Amt = d.fdAmount;
+          depositLoanItem.DepoOpnDate = d.opening;
+          depositLoanItem.DepoExpDate = d.maturity;;
+          depositLoanItem.MarkBy = d.markBy;
+          depositLoanItem.MarkDate = d.markOn;
+          depositLoanItem.ReleaseBy = d.releaseBy;
+          depositLoanItem.ReleaseDate = d.releaseOn;
+          depositLoanItem.Active = 1;
+          accountModel.LoanDepoDetails.push(depositLoanItem);
+        });
+      }
     }
-    
+
+    if (this.isCashCredit) {
+      if (this.uiLoanSecurityData) {
+        this.uiLoanSecurityData.forEach((d: any) => {
+          let loanSecuDetail = {} as ILoanSecuDetail;
+          loanSecuDetail.Id = 0;
+          loanSecuDetail.AccountId = this.accountsId;
+          loanSecuDetail.Code = d.securityType;
+          loanSecuDetail.Main = d.actualLoanAmount;
+          loanSecuDetail.Description1 = d.security;
+          loanSecuDetail.Description2 = d.securityDescription;
+          loanSecuDetail.SValue = d.securityValue;
+          loanSecuDetail.Percentage = d.percentage;
+          loanSecuDetail.Active = 1;
+          accountModel.LoanSecuDetails.push(loanSecuDetail);
+        });
+      }
+    }
+
+    accountModel.LoanSecuDetails = [];
+    if (this.isMortgageLoan) {
+      if (this.uiLoanSecurityData) {
+        this.uiLoanSecurityData.forEach((d: any) => {
+          let loanSecuDetail = {} as ILoanSecuDetail;
+          loanSecuDetail.Id = d.id;
+          loanSecuDetail.AccountId = this.accountsId;
+          loanSecuDetail.Code = d.securityType;
+          loanSecuDetail.Main = d.actualLoanAmount;
+          loanSecuDetail.Description1 = d.security;
+          loanSecuDetail.Description2 = d.securityDescription;
+          loanSecuDetail.SValue = d.securityValue;
+          loanSecuDetail.Percentage = d.percentage;
+          loanSecuDetail.Active = 1;
+          accountModel.LoanSecuDetails.push(loanSecuDetail);
+        });
+      }
+    }
+
+    accountModel.VehiLoanDetails = [];
+    if (this.isVehicleLoan) {
+      if (this.uiVehicleData) {
+        this.uiVehicleData.forEach((d: any) => {
+          let vehiLoanDetail = {} as IVehiLoanDetail;
+          vehiLoanDetail.Id = 0;
+          vehiLoanDetail.AccountId = this.accountsId;
+          vehiLoanDetail.Code = parseInt(this.generalLedger.value.code);
+          vehiLoanDetail.RegisterNo = d.registerNumber;
+          vehiLoanDetail.Model = d.model;
+          vehiLoanDetail.Engine = d.engineNumber;
+          vehiLoanDetail.Chasis = d.chasisNumber;
+          vehiLoanDetail.Invoice = d.invoiceAmount;
+          vehiLoanDetail.Manufacture = d.manufacturer;
+          vehiLoanDetail.Dealer = d.dealer;
+          vehiLoanDetail.Active = 1;
+          accountModel.VehiLoanDetails.push(vehiLoanDetail);
+        });
+      }
+    }
+
     accountModel.LoanEMIDetails = [];
     if (this.uiAllInstallments) {
-      this.uiAllInstallments.forEach((d:any)=>{
+      this.uiAllInstallments.forEach((d: any) => {
         let loanEMIDetail = {} as ILoanEMIDetail;
-        loanEMIDetail.Id = 0;
+        loanEMIDetail.Id = d.id;
         loanEMIDetail.AccounstId = this.accountsId;
         loanEMIDetail.LoanAmt = d.actualLoanAmount;
-        loanEMIDetail.PayDate = d.installmentDate;
+        loanEMIDetail.PayDate = new Date(formatDate(d.installmentDate, 'yyyy-MM-dd', 'en')); // new Date(d.installmentDate);
         loanEMIDetail.EMIAmt = d.installmentAmount;
         loanEMIDetail.Principle_DB = d.principleAmount;
         loanEMIDetail.Interest_DB = d.interestAmount;
@@ -791,60 +988,28 @@ export class LoanDetailsComponent implements OnInit {
       });
     }
 
-    accountModel.LoanSecuDetails = [];
-    if (this.uiLoanSecurityData) {
-      this.uiLoanSecurityData.forEach((d:any)=>{
-        let loanSecuDetail = {} as ILoanSecuDetail;
-        loanSecuDetail.Id = 0;
-        loanSecuDetail.AccountId = this.accountsId;
-        loanSecuDetail.Code = d.securityType;
-        loanSecuDetail.Main = d.actualLoanAmount;
-        loanSecuDetail.Description1 = d.security;
-        loanSecuDetail.Description2 = d.securityDescription;
-        loanSecuDetail.Value = d.securityValue;
-        loanSecuDetail.Percentage = d.percentage;
-        loanSecuDetail.Active = 1;
-        accountModel.LoanSecuDetails.push(loanSecuDetail);
-      });
-    }
+    // Validate model before save
 
 
-    accountModel.VehiLoanDetails = [];
-    if (this.uiVehicleData) {
-      this.uiVehicleData.forEach((d:any)=>{
-        let vehiLoanDetail = {} as IVehiLoanDetail;
-        vehiLoanDetail.Id = 0;
-        vehiLoanDetail.AccountId = this.accountsId;
-        vehiLoanDetail.Code = 0;
-        vehiLoanDetail.RegisterNo = d.registerNumber;
-        vehiLoanDetail.Model = d.model;
-        vehiLoanDetail.Engine = d.engineNumber;
-        vehiLoanDetail.Chasis = d.chasisNumber;
-        vehiLoanDetail.Invoice = d.invoiceAmount;
-        vehiLoanDetail.Manufacture = d.manufacturer;
-        vehiLoanDetail.Dealer = d.dealer;
-        vehiLoanDetail.Active = 1;
-        accountModel.VehiLoanDetails.push(vehiLoanDetail);
-      });
-    }
-
-    // Call API to save loan account details
-    this._loanAccountsService.saveLoanDetails(accountModel).subscribe((data: any) => {
-      console.log(data);
-      if (data) {
-        if (data.data.data && data.data.data.retId > 0) {
-          if (data.data.data.status == "SUCCESS") {
-            this._toastrService.success(data.data.data.message, 'Success!');
-            this.clear();
+    if (this.uiVehicleData.length > 0 || this.uiLoanSecurityData.length > 0 ||
+      this.uiGoldLoanData.length > 0 || this.uiDepositLoanData.length > 0) {
+      // Call API to save loan account details
+      this._loanAccountsService.saveLoanDetails(accountModel).subscribe((data: any) => {
+        console.log(data);
+        if (data) {
+          if (data.data.data && data.data.data.retId > 0) {
+            if (data.data.data.status == "SUCCESS") {
+              this._toastrService.success(data.data.data.message, 'Success!');
+              this.clear();
+            }
+            else {
+              this._toastrService.success("Error saving account!", 'Error!');
+            }
+            // this.loadForm();
           }
-          else {
-            this._toastrService.success("Error saving account!", 'Error!');
-          }
-
-          // this.loadForm();
         }
-      }
-    })
+      })
+    }
 
   }
 
@@ -863,19 +1028,19 @@ export class LoanDetailsComponent implements OnInit {
 
   /// Summary
   get generalLedger() {
-    return this.parametersForm.get('generalLedger')!;
+    return this.summaryForm.get('generalLedger')!;
   }
 
   get glAccountNumberStr() {
-    return this.parametersForm.get('glAccountNumberStr')!;
+    return this.summaryForm.get('glAccountNumberStr')!;
   }
 
   get customerCode() {
-    return this.parametersForm.get('customerCode')!;
+    return this.summaryForm.get('customerCode')!;
   }
 
   get customerName() {
-    return this.parametersForm.get('customerName')!;
+    return this.summaryForm.get('customerName')!;
   }
 
   //// Parameters

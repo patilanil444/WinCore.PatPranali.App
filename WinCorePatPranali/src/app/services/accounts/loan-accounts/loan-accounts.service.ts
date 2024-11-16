@@ -13,6 +13,41 @@ export class LoanAccountsService {
   guarantorCustomerToDelete = -1;
   customerName = "";
   customerCodeStr = "";
+  
+  private vehicleDataSubject = new BehaviorSubject<any>(null);
+  vehicleData = this.vehicleDataSubject.asObservable();
+
+  private goldLoanDataSubject = new BehaviorSubject<any>(null);
+  goldLoanData = this.goldLoanDataSubject.asObservable();
+
+  private goldSecurityDataSubject = new BehaviorSubject<any>(null);
+  securityData = this.goldSecurityDataSubject.asObservable();
+
+  private goldDepositDataSubject = new BehaviorSubject<any>(null);
+  depositData = this.goldDepositDataSubject.asObservable();
+
+  private goldEMIDataSubject = new BehaviorSubject<any>(null);
+  emiData = this.goldEMIDataSubject.asObservable();
+
+  updateVehicleData(data: any) {
+    this.vehicleDataSubject.next(data);
+  }
+
+  updateGoldData(data: any) {
+    this.goldLoanDataSubject.next(data);
+  }
+
+  updateSecurityData(data: any) {
+    this.goldSecurityDataSubject.next(data);
+  }
+
+  updateDepositData(data: any) {
+    this.goldDepositDataSubject.next(data);
+  }
+
+  updateEMIData(data: any) {
+    this.goldEMIDataSubject.next(data);
+  }
 
   constructor(private http: HttpClient) { }
 
@@ -27,6 +62,11 @@ export class LoanAccountsService {
   getLoanAccount(accountsId: number) {
     let options = GlobleDeclarations.getHeaderOptions();
     return this.http.get(GlobleDeclarations.apiBaseURL + "api/LoanAccount/loan-account?accountsId=" + accountsId, options);
+  }
+
+  getLoanAccountDetails(accountsId: number) {
+    let options = GlobleDeclarations.getHeaderOptions();
+    return this.http.get(GlobleDeclarations.apiBaseURL + "api/LoanAccount/loan-account-details?accountsId=" + accountsId, options);
   }
 
   saveLoanAccount(accountModel: any): any {

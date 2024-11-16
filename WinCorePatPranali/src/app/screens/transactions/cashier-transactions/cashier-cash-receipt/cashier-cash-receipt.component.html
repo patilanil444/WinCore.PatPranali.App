@@ -1,0 +1,75 @@
+<form [formGroup]="cashierReceiptForm" #form="ngForm">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="tab-content">
+                <div class="row">
+                    <div class="col-md-12">
+                        <fieldset>
+                            <legend>Search Account</legend>
+                           <app-bank-acc-search [generalLedgers]="uiAllGeneralLedgers"
+                           [uiBranches]="uiBranches" (selectAccount)="selectAccount($event)"></app-bank-acc-search>
+                        </fieldset>
+                    </div>
+
+                    <div class="col-md-12">
+                        <fieldset>
+                            <legend>Transaction Details</legend>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="row">
+                                        <div class="col-md-6 position-relative form-group">
+                                            <label for="txtCode" class="">Transaction Amount </label>
+                                            <input tabindex="28" type="number" class="form-control" placeholder="Amount"
+                                                formControlName="receiptAmount">
+                                        </div>
+                                        <div class="col-md-6 position-relative form-group">
+                                            <label for="txtCode" class="">Transaction Description </label>
+                                            <input tabindex="28" type="text" class="form-control" placeholder="Reason"
+                                                formControlName="receiptDesc">
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-6 position-relative form-group">
+                                            <label for="txtCode" class="">Account Balance Will be </label>
+                                            <input tabindex="28" type="number" class="form-control" readonly
+                                                formControlName="balanceWillBe">
+                                        </div>
+        
+                                        <div class="col-md-6 position-relative form-group" style="margin-top: 30px;">
+                                            <button class="btn btn-success" tabindex="2" data-toggle="modal" 
+                                            data-target="#cashDenominationModel"> Denomination</button>
+                                            <button class="btn btn-primary btn btn-left-margin10" tabindex="2" (click)="makeTransaction()">
+                                                Finish</button>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <!-- <legend>Denomination</legend> -->
+                                    <label for="txtCode" class="">Denomination</label>
+                                    <!-- Add a denomination table -->
+                                </div>
+                            </div>
+                        </fieldset>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+
+<div class="modal fade bd-example-modal-lg show" id="cashDenominationModel" tabindex="-1" role="dialog" 
+        aria-labelledby="denominationModelTitle" aria-hidden="true" data-backdrop="false">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header" style="padding: 0.5rem 1rem !important;">
+                <h5 class="modal-title" id="denominationModelTitle">Denomination</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </button>
+            </div>
+            <div class="modal-body">
+               <app-denominations></app-denominations>
+            </div>
+        </div>
+    </div>
+</div>

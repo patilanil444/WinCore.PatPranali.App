@@ -1,0 +1,50 @@
+<div class="row">
+    <div class="col-lg-12">
+
+        <div class="main-card mb-3 card">
+            <div class="card-body">
+
+                <h5 class="card-title">Voucher Passing</h5>
+
+                <ul class="nav nav-tabs">
+                    <li class="nav-item">
+                        <a role="tab" class="nav-link active" id="tab-0" data-toggle="tab" href="#tab-content-0">
+                            <span>Cash Voucher</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a role="tab" class="nav-link" id="tab-0" data-toggle="tab" href="#tab-content-1">
+                            <span>Transfer Voucher</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a role="tab" class="nav-link" id="tab-0" data-toggle="tab" href="#tab-content-2">
+                            <span>Overdraft Allotment</span>
+                        </a>
+                    </li>
+
+                    <li class="nav-item">
+                        <a role="tab" class="nav-link" id="tab-2" data-toggle="tab" href="#tab-content-3">
+                            <span>Cheque Book</span>
+                        </a>
+                    </li>  
+                </ul>
+
+                <div class="tab-content">
+                    <div class="tab-pane tabs-animation fade show active" id="tab-content-0" role="tabpanel">
+                        <app-cash-voucher-passing></app-cash-voucher-passing>
+                    </div>
+                    <div class="tab-pane tabs-animation fade" id="tab-content-1" role="tabpanel">
+                        <app-transfer-voucher-passing></app-transfer-voucher-passing>
+                    </div>
+                    <div class="tab-pane tabs-animation fade" id="tab-content-2" role="tabpanel">
+                       <app-overdraft-allotment></app-overdraft-allotment>
+                    </div>
+                    <div class="tab-pane tabs-animation fade" id="tab-content-3" role="tabpanel">
+                        <app-cheque-book-passing></app-cheque-book-passing>
+                     </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

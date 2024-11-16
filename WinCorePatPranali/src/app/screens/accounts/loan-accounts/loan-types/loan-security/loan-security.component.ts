@@ -2,6 +2,7 @@ import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ToastrService } from 'ngx-toastr';
 import { AccountsService } from 'src/app/services/accounts/accounts/accounts.service';
+import { LoanAccountsService } from 'src/app/services/accounts/loan-accounts/loan-accounts.service';
 import { SharedService } from 'src/app/services/shared.service';
 
 export interface UiSecurity {
@@ -41,7 +42,7 @@ export class LoanSecurityComponent implements OnInit {
   uiSecurityTypes : any[] = [];
 
   constructor(private _toastrService: ToastrService,private _sharedService: SharedService,
-    private _accountsService: AccountsService) { }
+    private _accountsService: AccountsService, private _loanAccountsService: LoanAccountsService) { }
 
   ngOnInit(): void {
     this.securityForm = new FormGroup({
@@ -60,6 +61,20 @@ export class LoanSecurityComponent implements OnInit {
       
     }).catch(error => {
       this._toastrService.error('Error loading security types', 'Error!');
+    });
+
+    this._loanAccountsService.securityData.subscribe((data) => {
+      if (data) {
+
+        let securities = data;
+        securities.forEach((item: any) => {
+          let uiSecurity = item;
+          uiSecurity.securityTypeText = this.uiSecurityTypes.filter(s=>s.id == item.securityType)[0].name,
+          this.uiSecurities.push(uiSecurity);
+        }); 
+        
+        this.calculateTotalValue();
+      }
     });
   }
 
@@ -114,7 +129,7 @@ export class LoanSecurityComponent implements OnInit {
         uiSecurity.securityType = this.securityType.value.toString();
         uiSecurity.securityTypeText = securityTypeText;
         uiSecurity.security = this.security.value.toString();
-        uiSecurity.securityValue == this.securityValue.value.toString();
+        uiSecurity.securityValue = this.securityValue.value.toString();
         uiSecurity.securityDescription = this.securityDescription.value.toString();
         uiSecurity.percentage = this.percentage.value.toString();
         uiSecurity.securityValueWithPercentage = parseFloat(uiSecurity.securityValue) * parseFloat(uiSecurity.percentage)/100;

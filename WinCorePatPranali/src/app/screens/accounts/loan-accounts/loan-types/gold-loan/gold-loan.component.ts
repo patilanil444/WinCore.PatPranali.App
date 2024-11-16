@@ -4,6 +4,7 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ToastrService } from 'ngx-toastr';
 import { AccountDeclarations } from 'src/app/common/account-declarations';
 import { AccountsService } from 'src/app/services/accounts/accounts/accounts.service';
+import { LoanAccountsService } from 'src/app/services/accounts/loan-accounts/loan-accounts.service';
 
 @Component({
   selector: 'app-gold-loan',
@@ -12,7 +13,8 @@ import { AccountsService } from 'src/app/services/accounts/accounts/accounts.ser
 })
 export class GoldLoanComponent implements OnInit {
 
-  constructor(private _accountsService: AccountsService, private _toastrService: ToastrService,) { }
+  constructor(private _accountsService: AccountsService, private _toastrService: ToastrService,
+    private _loanAccountsService: LoanAccountsService) { }
 
   goldForm!: FormGroup;
   goldLoanForm!: FormGroup;
@@ -46,7 +48,21 @@ export class GoldLoanComponent implements OnInit {
     });
 
     this.getGoldTypes().then(result => {
+      
+    });
 
+    this._loanAccountsService.goldLoanData.subscribe((data) => {
+      if (data) {
+
+        let golds = data;
+        golds.forEach((item: any) => {
+          let uiGold = item;
+          uiGold.goldTypeText = this.uigoldTypes.filter(s=>s.id == item.goldType)[0].name,
+          this.uiAddedGolds.push(uiGold);
+        }); 
+
+        this.calculateTotalGoldAmount();
+      }
     });
   }
 

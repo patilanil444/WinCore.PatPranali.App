@@ -1,0 +1,58 @@
+<div style="width: 100%;">
+    <table style="width: 100%;" class="table table-hover table-bordered dataTable dtr-inline">
+        <thead>
+            <tr role="row">
+                <th colspan="6"></th>
+                <th>Amount</th>
+                <th></th>
+                <th><input type="number" width="100%" [disabled]="true"></th>
+            </tr>
+            <tr role="row">
+                <th style="width: 5%;">Nos</th>
+                <th style="width: 15%;">Denomination</th>
+                <th style="width: 2%;"></th>
+                <th style="width: 20%;">Number (Receipt)</th>
+                <th style="width: 2%;"></th>
+                <th style="width: 18%; border-right: 2px darkgrey solid;">Receipt Total</th>
+                <!-- <th style="width: 15%;">Total</th> -->
+                <th style="width: 20%;">Number  (Payment)</th>
+                <th style="width: 2%;"></th>
+                <th style="width: 17%;">Payment Total</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr role="row" *ngFor="let denominationNote of denominationNotes; let ind=index">
+                <td>{{ind + 1}}</td>
+                <td>{{denominationNote.denomination_Label}} </td>
+                <td>X</td>
+                <td><input type="number" width="100%" [(ngModel)]="denominationNote.receiptNumber" (change)="changeReceipt(ind)"></td>
+                <td>=</td>
+                <td style="border-right: 2px darkgrey solid;">
+                    <input type="number" width="100%" [disabled]="true" [(ngModel)]="denominationNote.receiptTotal">
+                </td>
+                <td><input type="number" width="100%" [(ngModel)]="denominationNote.paymentNumber" (change)="changePayment(ind)"></td>
+                <td>=</td>
+                <td><input type="number" width="100%" [disabled]="true" [(ngModel)]="denominationNote.paymentTotal"></td>
+            </tr>
+            <tr role="row">
+                <td colspan="3"></td>
+                <td><label for="txtCode">Receipt Amount</label></td>
+                <td></td>
+                <td>
+                    <input type="number" width="100%" [(ngModel)]="totalReceiptAmount" [disabled]="true">
+                </td>
+                <td><label for="txtCode">Payment Amount</label></td>
+                <td></td>
+                <td>
+                    <input type="number" width="100%" [(ngModel)]="totalPaymentAmount" [disabled]="true">
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <div class="row">
+        <div class="col-md-6 position-relative">
+            <button type="button" class="mt-1 btn btn-primary" tabindex="7" (click)="saveDenomination()">Save</button>
+            <button class="mt-1 btn btn-left-margin10 btn-secondary" data-dismiss="modal" aria-label="Close">Cancel</button>
+        </div>
+    </div>
+</div>
