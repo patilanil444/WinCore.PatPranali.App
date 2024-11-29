@@ -20,6 +20,12 @@ export class AccountsService {
     + "&glId="+ glId + "&customerNumber="+ customerNumber+ "&accountNumber="+ accountNumber, options);
   }
 
+  SearchAccountDetailsAsync(branchId: number, glId: number, accountNumber: string) {
+    let options = GlobleDeclarations.getHeaderOptions();
+    return this.http.get(GlobleDeclarations.apiBaseURL + "api/Account/search-account-details?branchCode=" + branchId 
+    + "&glId="+ glId + "&accountNumber="+ accountNumber, options);
+  }
+
   getSecurities() {
     let options = GlobleDeclarations.getHeaderOptions();
     return this.http.get(GlobleDeclarations.apiBaseURL + "api/Account/securities", options);

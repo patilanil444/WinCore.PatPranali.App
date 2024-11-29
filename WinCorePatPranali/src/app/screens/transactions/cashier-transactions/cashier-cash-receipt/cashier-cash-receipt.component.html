@@ -6,70 +6,135 @@
                     <div class="col-md-12">
                         <fieldset>
                             <legend>Search Account</legend>
-                           <app-bank-acc-search [generalLedgers]="uiAllGeneralLedgers"
-                           [uiBranches]="uiBranches" (selectAccount)="selectAccount($event)"></app-bank-acc-search>
+                            <app-bank-acc-search [generalLedgers]="uiFilteredGeneralLedgers" [uiBranches]="uiBranches"
+                                (accounts)="getAccounts($event)"></app-bank-acc-search>
                         </fieldset>
                     </div>
 
-                    <div class="col-md-12">
+                    <div class="col-md-6">
                         <fieldset>
                             <legend>Transaction Details</legend>
                             <div class="row">
-                                <div class="col-md-6">
-                                    <div class="row">
-                                        <div class="col-md-6 position-relative form-group">
-                                            <label for="txtCode" class="">Transaction Amount </label>
-                                            <input tabindex="28" type="number" class="form-control" placeholder="Amount"
-                                                formControlName="receiptAmount">
-                                        </div>
-                                        <div class="col-md-6 position-relative form-group">
-                                            <label for="txtCode" class="">Transaction Description </label>
-                                            <input tabindex="28" type="text" class="form-control" placeholder="Reason"
-                                                formControlName="receiptDesc">
-                                        </div>
-                                    </div>
-                                    <div class="row">
-                                        <div class="col-md-6 position-relative form-group">
-                                            <label for="txtCode" class="">Account Balance Will be </label>
-                                            <input tabindex="28" type="number" class="form-control" readonly
-                                                formControlName="balanceWillBe">
-                                        </div>
-        
-                                        <div class="col-md-6 position-relative form-group" style="margin-top: 30px;">
-                                            <button class="btn btn-success" tabindex="2" data-toggle="modal" 
-                                            data-target="#cashDenominationModel"> Denomination</button>
-                                            <button class="btn btn-primary btn btn-left-margin10" tabindex="2" (click)="makeTransaction()">
-                                                Finish</button>
-                                        </div>
-                                    </div>
+                                <div class="col-md-6 position-relative form-group">
+                                    <label>Transaction Amount </label>
+                                    <input tabindex="28" type="number" class="form-control" placeholder="Amount"
+                                        formControlName="receiptAmount" (change)="updateBalance($event)">
                                 </div>
-                                <div class="col-md-6">
-                                    <!-- <legend>Denomination</legend> -->
-                                    <label for="txtCode" class="">Denomination</label>
-                                    <!-- Add a denomination table -->
+                                <div class="col-md-6 position-relative form-group">
+                                    <label>Transaction Description </label>
+                                    <input tabindex="28" type="text" class="form-control" placeholder="Reason"
+                                        formControlName="receiptDesc">
                                 </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6 position-relative form-group">
+                                    <label>Account Balance Will be </label>
+                                    <input tabindex="28" type="number" class="form-control" readonly
+                                        formControlName="balanceWillBe">
+                                </div>
+
+                                <div class="col-md-6 position-relative form-group" style="margin-top: 30px;">
+                                    <!-- <button class="btn btn-success" tabindex="2" data-toggle="modal" data-target="#cashDenominationModel">
+                                        Denomination</button> -->
+                                    <button class="btn btn-success" tabindex="2" (click)="openDenominations()">
+                                        Add Denomination</button>
+                                </div>
+                            </div>
+                            <label style="font-weight: bold;">Denominations</label>
+                            <div class="col-md-12">
+                                <div class="row">
+                                    <table style="width: 100%;"
+                                        class="table table-hover table-bordered dataTable dtr-inline">
+                                        <thead>
+                                            <tr role="row">
+                                                <th style="width: 5%;">Nos</th>
+                                                <th style="width: 15%;">Denomination</th>
+                                                <th style="width: 20%;">Number (Receipt)</th>
+                                                <th style="width: 20%;">Receipt Total</th>
+                                                <th style="width: 20%;">Number (Payment)</th>
+                                                <th style="width: 17%;">Payment Total</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr role="row"
+                                                *ngFor="let uiTransactionDenomination of uiTransactionDenominations; let ind=index">
+                                                <td>{{ind + 1}}</td>
+                                                <td>{{uiTransactionDenomination.denomination_Label}}</td>
+                                                <td>{{uiTransactionDenomination.receiptNumber}}</td>
+                                                <td>{{uiTransactionDenomination.receiptTotal}}</td>
+                                                <td>{{uiTransactionDenomination.paymentNumber}}</td>
+                                                <td>{{uiTransactionDenomination.paymentTotal}}</td>
+                                            </tr>
+                                            <tr *ngIf="uiTransactionDenominations.length==0">
+                                                <td colspan="9">No denominations found..</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                            <div class="col-md-12" style="margin-top: 20x;">
+                                <button class="btn btn-primary btn" tabindex="2"
+                                    (click)="makeTransaction()">
+                                    Finish Transaction</button>
+
+                                <button class="btn btn-danger btn btn-left-margin10" tabindex="2"
+                                    (click)="clearTransaction()">
+                                    Clear Transaction</button>
                             </div>
                         </fieldset>
                     </div>
+
+                    <div class="col-md-6">
+                        <fieldset>
+                            <legend>Account Details</legend>
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <label>Customer Name </label>
+                                    <label style="float: right;">{{customerName.value}}</label>
+                                </div>
+                                <div class="col-md-12">
+                                    <label>Account Number </label>
+                                    <label style="float: right;">{{accountNumber.value}}</label>
+                                </div>
+                                <div class="col-md-12">
+                                    <label>Account Type </label>
+                                    <label style="float: right;">{{accountType.value}}</label>
+                                </div>
+                                <div class="col-md-12">
+                                    <label>Last Transaction Date </label>
+                                    <label style="float: right;">{{lastTransactionDate.value}}</label>
+                                </div>
+                                <div class="col-md-12">
+                                    <label>Last Interest Date</label>
+                                    <label style="float: right;">{{lastInterestDate.value}}</label>
+                                </div>
+                                <div class="col-md-12">
+                                    <label>Opening Date</label>
+                                    <label style="float: right;">{{openDate.value}}</label>
+                                </div>
+                                <div class="col-md-12">
+                                    <label>Interest Rate </label>
+                                    <label style="float: right;">{{interestRate.value}}</label>
+                                </div>
+                                <div class="col-md-12">
+                                    <label>Balance </label>
+                                    <label style="float: right;">{{balance.value}}</label>
+                                </div>
+                                <div class="col-md-12">
+                                    <label>Min Balance </label>
+                                    <label style="float: right;">{{minBalance.value}}</label>
+                                </div>
+                            </div>
+
+                        </fieldset>
+                    </div>
+
                 </div>
             </div>
         </div>
     </div>
 </form>
 
-<div class="modal fade bd-example-modal-lg show" id="cashDenominationModel" tabindex="-1" role="dialog" 
-        aria-labelledby="denominationModelTitle" aria-hidden="true" data-backdrop="false">
-    <div class="modal-dialog modal-lg">
-        <div class="modal-content">
-            <div class="modal-header" style="padding: 0.5rem 1rem !important;">
-                <h5 class="modal-title" id="denominationModelTitle">Denomination</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">×</span>
-                </button>
-            </div>
-            <div class="modal-body">
-               <app-denominations></app-denominations>
-            </div>
-        </div>
-    </div>
-</div>
+<app-denominations #denominationModal [denominationAmount]="receiptAmount.value" (addedDenominations)="setDenominations($event)"></app-denominations>
+
+<app-message-box #messageBoxModal [messageNotes]="messageNotes" (onConfirm)="onTransactionConfirmed($event)"></app-message-box>

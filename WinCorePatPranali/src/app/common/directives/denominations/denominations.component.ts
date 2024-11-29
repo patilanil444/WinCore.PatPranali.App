@@ -1,4 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, ElementRef, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
+import { FormControl, FormGroup } from '@angular/forms';
+import { ToastrService } from 'ngx-toastr';
 import { SharedService } from 'src/app/services/shared.service';
 import { TransactionMasterService } from 'src/app/services/transactions/transaction-master/transaction-master.service';
 
@@ -21,61 +23,15 @@ export class DenominationsComponent implements OnInit {
   denominationNotes: any[] = [];
   totalReceiptAmount = 0;
   totalPaymentAmount = 0;
-  constructor(private _sharedService: SharedService,
+ 
+  @Input() denominationAmount: number;
+  @Output() addedDenominations = new EventEmitter<any>();
+  @ViewChild('denominationModal', {static: false}) modal: ElementRef;
+
+  constructor(private _sharedService: SharedService, private _toastrService: ToastrService,
      private _transactionMasterService: TransactionMasterService) { }
 
   ngOnInit(): void {
-
-    // let uiDenomination = {} as UiDenomination;
-    // uiDenomination.id = 0;
-    // uiDenomination.denomination= "2000";
-    // uiDenomination.paymentNumber="";
-    // uiDenomination.paymentTotal = "";
-    // uiDenomination.receiptNumber= "";
-    // uiDenomination.receiptTotal = "";
-    // this.denominationNotes.push(uiDenomination);
-
-    // uiDenomination = {} as UiDenomination;
-    // uiDenomination.denomination= "1000";
-    // this.denominationNotes.push(uiDenomination);
-    
-    // uiDenomination = {} as UiDenomination;
-    // uiDenomination.denomination= "500";
-    // this.denominationNotes.push(uiDenomination);
-
-    // uiDenomination = {} as UiDenomination;
-    // uiDenomination.denomination= "200";
-    // this.denominationNotes.push(uiDenomination);
-
-    // uiDenomination = {} as UiDenomination;
-    // uiDenomination.denomination= "100";
-    // this.denominationNotes.push(uiDenomination);
-
-    // uiDenomination = {} as UiDenomination;
-    // uiDenomination.denomination= "50";
-    // this.denominationNotes.push(uiDenomination);
-    
-    // uiDenomination = {} as UiDenomination;
-    // uiDenomination.denomination= "20";
-    // this.denominationNotes.push(uiDenomination);
-
-    // uiDenomination = {} as UiDenomination;
-    // uiDenomination.denomination= "10";
-    // this.denominationNotes.push(uiDenomination);
-
-    // uiDenomination = {} as UiDenomination;
-    // uiDenomination.denomination= "5";
-    // this.denominationNotes.push(uiDenomination);
-
-    // uiDenomination = {} as UiDenomination;
-    // uiDenomination.denomination= "2";
-    // this.denominationNotes.push(uiDenomination);
-
-    // uiDenomination = {} as UiDenomination;
-    // uiDenomination.denomination= "1";
-    // this.denominationNotes.push(uiDenomination);
-
-    //this.getDenominations();
 
     this.retrieveDenominations();
   }
@@ -84,25 +40,49 @@ export class DenominationsComponent implements OnInit {
     this.denominationNotes = this._sharedService.uiDenominatons;
   }
 
-  // getDenominations(){
-  //   this._transactionMasterService.getDenominations().subscribe((data: any) => {
-  //     console.log(data);
-  //     if (data) {
-  //       this.denominationNotes = data.data.data;
-  //       //this.total = this.denominationNotes.length;
-  //     }
-  //   })
-  // }
+  open() {
+    this.modal.nativeElement.style.display = 'block';
+  }
 
-  closeModal()
+  clear()
   {
+    for (let index = 0; index < this.denominationNotes.length; index++) {
+      this.denominationNotes[index].receiptNumber = "";
+      this.denominationNotes[index].paymentNumber = "";
+      this.denominationNotes[index].receiptTotal = "";
+      this.denominationNotes[index].paymentTotal = "";
+    }
+  }
 
+  close() {
+    this.modal.nativeElement.style.display = 'none';
   }
 
   saveDenomination()
   {
+    let totalAmount = 0;
+    let validDenominations: any[] = [];
+    this.denominationNotes.forEach((deno: any)=>{
+      if (parseFloat(deno.receiptNumber) > 0 || parseFloat(deno.paymentNumber) > 0) {
+        validDenominations.push(deno);
+        if (deno.receiptTotal > 0) {
+          totalAmount = totalAmount + deno.receiptTotal;
+        }
+        if (deno.paymentTotal > 0) {
+          totalAmount = totalAmount - deno.paymentTotal
+        }
+      }
+    });
 
     // Emit
+    if (totalAmount == this.denominationAmount) {
+      this.addedDenominations.emit(validDenominations);
+      this.close();
+    }
+    else
+    {
+      this._toastrService.error('Transaction amount is not matching with denominations.', 'Error!');
+    }
   }
 
   changeReceipt(index: number)
@@ -110,7 +90,7 @@ export class DenominationsComponent implements OnInit {
     let denominationNote = this.denominationNotes[index];
     if (denominationNote) {
       let receiptNumber = denominationNote.receiptNumber;
-      denominationNote.receiptTotal = parseInt(denominationNote.denomination)* parseInt(receiptNumber);
+      denominationNote.receiptTotal = parseInt(denominationNote.denomination_Value)* parseInt(receiptNumber);
     }
 
     let totalReceiptAmount = 0;
@@ -121,7 +101,6 @@ export class DenominationsComponent implements OnInit {
     })
 
     this.totalReceiptAmount = totalReceiptAmount;
-    
 
   }
 
@@ -130,7 +109,7 @@ export class DenominationsComponent implements OnInit {
     let denominationNote = this.denominationNotes[index];
     if (denominationNote) {
       let paymentNumber = denominationNote.paymentNumber;
-      denominationNote.paymentTotal = parseInt(denominationNote.denomination)* parseInt(paymentNumber);
+      denominationNote.paymentTotal = parseInt(denominationNote.denomination_Value)* parseInt(paymentNumber);
     }
 
     let totalPaymentAmount = 0;

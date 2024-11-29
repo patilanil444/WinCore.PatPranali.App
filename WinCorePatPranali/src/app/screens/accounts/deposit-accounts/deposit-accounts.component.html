@@ -29,59 +29,16 @@
                             (customers)="getCustomers($event)" [allowMultiSearch]="false">
                             </app-cust-search>
                         </div>
-                        <!-- <div class="col-md-12 position-relative">
-                            <button class="customer-accordion" tabindex="4"
-                                [ngClass]="{'customer-panel-active': toggleSearchCustomers===true}"
-                                (click)="openSearchedCustomers()">Searched Customers
-                            </button>
-                            <div class="customer-panel" *ngIf="toggleSearchCustomers">
-                                <table style="width: 100%;"
-                                    class="table table-hover table-striped table-bordered dataTable dtr-inline">
-                                    <thead>
-                                        <tr role="row">
-                                            <th style="width: 5%;">Select</th>
-                                            <th style="width: 18%;">Customer Number</th>
-                                            <th style="width: 18%;">Customer Name</th>
-                                            <th style="width: 18%">Mobile</th>
-                                            <th style="width: 18%">Date</th>
-                                            <th style="width: 18%">PAN</th>
-                                            <th style="width: 5%">Status</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr role="row" *ngFor="let uiCustomer of uiCustomers" class="odd">
-                                            <td class="sorting_1 dtr-control"><button class="mb-2 mr-2 btn btn-link"
-                                                    style="--bs-btn-padding-x:none !important; padding:0 !important;"
-                                                    (click)="selectCustomer(uiCustomer.id)">Select</button></td>
-                                            <td>{{uiCustomer.id}}</td>
-                                            <td>{{uiCustomer.custName}}</td>
-                                            <td>{{uiCustomer.mobile}}</td>
-                                            <td>{{uiCustomer.joinDate}}</td>
-                                            <td>{{uiCustomer.pan}}</td>
-                                            <td>
-                                                <div class="badge"
-                                                    [ngClass]="{'badge-danger': uiCustomer.status==='Deleted', 'badge-success' : uiCustomer.status=== 'Active', 'badge-warning' : uiCustomer.status=== 'In-Active'}">
-                                                    {{uiCustomer.status}}
-                                                </div>
-                                            </td>
-                                        </tr>
-                                        <tr *ngIf="uiCustomers.length==0">
-                                            <td colspan="7">No records..</td>
-                                        </tr>
-                                    </tbody>
-                                </table>
-                            </div>
-                        </div> -->
                     </div>
                 </form>
                 <ul class="nav nav-tabs">
                     <li class="nav-item">
-                        <a role="tab" class="nav-link active" id="tab-0" data-toggle="tab" href="#tab-content-0">
+                        <a role="tab" class="nav-link active" tabindex="4" id="tab-0" data-toggle="tab" href="#tab-content-0">
                             <span>Customer Details </span>
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a role="tab" class="nav-link" id="tab-0" data-toggle="tab" href="#tab-content-1">
+                        <a role="tab" class="nav-link" id="tab-0" tabindex="5" data-toggle="tab" href="#tab-content-1">
                             <span>Account Details</span>
                         </a>
                     </li>
@@ -91,12 +48,12 @@
                         </a>
                     </li> -->
                     <li class="nav-item">
-                        <a role="tab" class="nav-link" id="tab-2" data-toggle="tab" href="#tab-content-3">
+                        <a role="tab" class="nav-link" id="tab-2" tabindex="14" data-toggle="tab" href="#tab-content-3">
                             <span>Nomini Details</span>
                         </a>
                     </li>
                     <li class="nav-item" [ngClass]="{'disabled': isNotJointAccount}">
-                        <a role="tab" class="nav-link" id="tab-3" data-toggle="tab" href="#tab-content-4">
+                        <a role="tab" class="nav-link" id="tab-3" tabindex="22" data-toggle="tab" href="#tab-content-4">
                             <span>Joint Account</span>
                         </a>
                     </li>
@@ -199,7 +156,7 @@
                                             <div class="col-md-3 position-relative form-group">
                                                 <label for="txtCode" class="">Account Type <span
                                                         class="mandatory">*</span></label>
-                                                <select class="mb-2 form-control" tabindex="18"
+                                                <select class="mb-2 form-control" tabindex="6"
                                                     formControlName="accountType" (change)="selectAccountType($event)">
                                                     <option *ngFor="let uiAccountType of uiAccountTypes"
                                                         [ngValue]="uiAccountType.constantNo">
@@ -210,7 +167,7 @@
                                             <div class="col-md-3 position-relative form-group">
                                                 <label for="txtCode" class="">Mode Of Operation <span
                                                         class="mandatory">*</span></label>
-                                                <select class="mb-2 form-control" tabindex="19"
+                                                <select class="mb-2 form-control" tabindex="7"
                                                     formControlName="modeOfOperation">
                                                     <option *ngFor="let uiModeOfOperation of uiModeOfOperations"
                                                         [ngValue]="uiModeOfOperation.constantNo">
@@ -221,7 +178,7 @@
                                             <div class="col-md-3 position-relative form-group">
                                                 <label for="txtCode" class="">Staff/Director/Other <span
                                                         class="mandatory">*</span></label>
-                                                <select class="mb-2 form-control" tabindex="20"
+                                                <select class="mb-2 form-control" tabindex="8"
                                                     formControlName="staffDirectorOther">
                                                     <option *ngFor="let uiEmployyeType of uiEmployyeTypes"
                                                         [ngValue]="uiEmployyeType.code">
@@ -238,13 +195,13 @@
                                             <div class="col-md-3 position-relative form-group">
                                                 <label for="txtCode" class="">Last Transaction Date <span
                                                         class="mandatory">*</span></label>
-                                                <input tabindex="21" type="date" class="form-control"
+                                                <input tabindex="9" type="date" readonly class="form-control"
                                                     formControlName="lastTransactionDate">
                                             </div>
                                             <div class="col-md-3 position-relative form-group">
                                                 <label for="txtCode" class="">Account Status <span
                                                         class="mandatory">*</span></label>
-                                                <select class="mb-2 form-control" tabindex="22"
+                                                <select class="mb-2 form-control" tabindex="10"
                                                     formControlName="accountStatus">
                                                     <option *ngFor="let uiAccountStatus of uiAccountStatuses"
                                                         [ngValue]="uiAccountStatus.constantNo">
@@ -255,7 +212,7 @@
                                             <div class="col-md-3 position-relative form-group">
                                                 <label for="txtCode" class="">Passbook Date <span
                                                         class="mandatory">*</span></label>
-                                                <input tabindex="22" type="date" class="form-control"
+                                                <input tabindex="11" type="date" readonly class="form-control"
                                                     formControlName="passbookDate">
                                             </div>
                                             <!-- <div class="col-md-3 position-relative form-group">
@@ -267,13 +224,13 @@
                                             <div class="col-md-3 position-relative form-group">
                                                 <label for="txtCode" class="">Last Interest Date <span
                                                         class="mandatory">*</span></label>
-                                                <input tabindex="24" type="date" class="form-control"
+                                                <input tabindex="12" type="date" readonly class="form-control"
                                                     formControlName="lastInterestDate">
                                             </div>
                                             <div class="col-md-3 position-relative form-group">
                                                 <label for="txtCode" class="">Debit Interest Date <span
                                                         class="mandatory">*</span></label>
-                                                <input tabindex="25" type="date" class="form-control"
+                                                <input tabindex="13" type="date" readonly class="form-control"
                                                     formControlName="drInterestDate">
                                             </div>
                                         </div>
@@ -371,13 +328,13 @@
                                             <div class="col-md-3 position-relative form-group">
                                                 <label for="txtCode" class="">Nomini Name <span
                                                         class="mandatory">*</span></label>
-                                                <input tabindex="26" type="text" class="form-control"
+                                                <input tabindex="15" type="text" class="form-control"
                                                     formControlName="nominiName">
                                             </div>
                                             <div class="col-md-3 position-relative form-group">
                                                 <label for="txtCode" class="">Relation <span
                                                         class="mandatory">*</span></label>
-                                                <select class="mb-2 form-control" tabindex="27"
+                                                <select class="mb-2 form-control" tabindex="16"
                                                     formControlName="relation">
                                                     <option *ngFor="let uiRelation of uiRelations"
                                                         [ngValue]="uiRelation.constantNo">
@@ -388,27 +345,27 @@
                                             <div class="col-md-3 position-relative form-group">
                                                 <label for="txtCode" class="">Percentage <span
                                                         class="mandatory">*</span></label>
-                                                <input tabindex="28" type="number" min="0"  class="form-control"
+                                                <input tabindex="17" type="number" min="0" class="form-control"
                                                     formControlName="percentage" onKeyPress="if(this.value >= 100) return false;">
                                             </div>
                                             <div class="col-md-3 position-relative form-group">
                                                 <label for="txtCode" class="">Address <span
                                                         class="mandatory">*</span></label>
-                                                <input tabindex="29" type="text" class="form-control"
+                                                <input tabindex="18" type="text" class="form-control"
                                                     formControlName="nomineeAddress">
                                             </div>
                                             <div class="col-md-3 position-relative form-group">
                                                 <label for="txtCode" class="">Guardian (for minor)</label>
-                                                <input tabindex="30" type="text" class="form-control"
+                                                <input tabindex="19" type="text" class="form-control"
                                                     formControlName="guardian">
                                             </div>
                                         </div>
                                         <div class="row">
                                             <div style="display: flex; margin-bottom: 10px;">
                                                 <button class="mt-1 btn btn-primary" (click)="addNomini()"
-                                                    tabindex="31">Save Nominee</button>
+                                                    tabindex="20">Save Nominee</button>
                                                 <button class="mt-1 btn btn-left-margin10 btn-danger"
-                                                    (click)="clearNomini()" tabindex="24">Clear</button>
+                                                    (click)="clearNomini()" tabindex="21">Clear</button>
                                             </div>
                                         </div>
 
@@ -474,14 +431,14 @@
                                     <div class="tab-content">
                                         <div class="row">
                                             <div class="col-md-6 position-relative form-group">
-                                                <app-cust-search tabindex="32" (customers)="getCustomersForJoint($event)"
+                                                <app-cust-search tabindex="23" (customers)="getCustomersForJoint($event)"
                                                 [allowMultiSearch]="false">
                                                 </app-cust-search>
                                             </div>
 
                                             <div class="col-md-6">
                                                 <label for="txtCode" class="">Operative instruction</label>
-                                                <input tabindex="33" type="text" class="form-control"
+                                                <input tabindex="24" type="text" class="form-control"
                                                     formControlName="operativeInstruction">
                                             </div>
                                         </div>
@@ -628,9 +585,10 @@
                                             <div class="col-md-3 position-relative form-group">
                                                 <label for="txtCode" class="">FD Tenure <span class="mandatory">*</span></label>
                                                 <div class="input-group">
-                                                    <input tabindex="41" type="number" min="0" class="form-control" formControlName="years"
-                                                    (change)="calculateMatureDate()">
-                                                    <div class="input-group-append"><span class="input-group-text">Years</span></div>
+                                                    <input tabindex="39" type="number" min="0" class="form-control"
+                                                    formControlName="days" (change)="calculateMatureDate()">
+                                                <div class="input-group-append"><span
+                                                        class="input-group-text">Days</span></div>
                                                 </div>
                                             </div>
                                             <div class="col-md-3 position-relative form-group">
@@ -645,16 +603,16 @@
                                             <div class="col-md-3 position-relative form-group">
                                                 <label for="txtCode"> &nbsp;</label>
                                                  <div class="input-group">
-                                                    <input tabindex="39" type="number" min="0" class="form-control"
-                                                        formControlName="days" (change)="calculateMatureDate()">
-                                                    <div class="input-group-append"><span
-                                                            class="input-group-text">Days</span></div>
+                                                    <input tabindex="41" type="number" min="0" class="form-control" formControlName="years"
+                                                    (change)="calculateMatureDate()">
+                                                    <div class="input-group-append"><span class="input-group-text">Years</span></div>
+                                                   
                                                 </div>
                                             </div>
                                             <div class="col-md-3 position-relative form-group">
                                                 <label for="txtCode" class="">Mature Date <span
                                                         class="mandatory">*</span></label>
-                                                <input tabindex="38" type="date" class="form-control"
+                                                <input tabindex="38" type="date" style="color: red !important;" class="form-control"
                                                     formControlName="fdMatureDate">
                                             </div>
 
@@ -674,7 +632,7 @@
                                             <div class="col-md-3 position-relative form-group">
                                                 <label for="txtCode" class="">Payable Amount <span
                                                         class="mandatory">*</span></label>
-                                                <input tabindex="44" type="number" min="0" class="form-control"
+                                                <input tabindex="44" type="number" readonly min="0" class="form-control"
                                                     formControlName="fdPayableAmount">
                                             </div>
                                             <div class="col-md-3 position-relative form-group">

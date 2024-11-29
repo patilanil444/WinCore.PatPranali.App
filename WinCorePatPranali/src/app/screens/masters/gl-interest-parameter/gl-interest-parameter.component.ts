@@ -9,6 +9,7 @@ import { SharedService } from 'src/app/services/shared.service';
 
 interface IGLIntParameterServerModel {
   Id: number;
+  GLCode: number;
   InterestPosting: string;
   AddInterestToBalance: string;
   PayableGL: number;
@@ -34,7 +35,6 @@ interface IGLIntParameterServerModel {
   AfterMaturityInterestNumLoan: number;
   InstallmentCalculation: string;
   ExtraInterestForCCAboveLimit: string;
-  BranchId: number;
 }
 
 
@@ -280,10 +280,11 @@ export class GLInterestParameterComponent implements OnInit {
       let glMasterModel = {} as IGLIntParameterServerModel;
 
       glMasterModel.Id = 0;
+      glMasterModel.GLCode = parseInt(this.generalLedger.value.code.toString());
       glMasterModel.InterestPosting = this.interestPosting.value.toString();
       glMasterModel.AddInterestToBalance = this.addIntToBalance.value.toString();
-      glMasterModel.PayableGL = this.receivable.value?.id > 0 ? this.receivable.value?.id : 0;
-      glMasterModel.PaidGL = this.received.value?.id > 0 ? this.received.value?.id : 0;
+      glMasterModel.PayableGL = this.receivable.value?.code > 0 ? this.receivable.value?.code : 0;
+      glMasterModel.PaidGL = this.received.value?.code > 0 ? this.received.value?.code : 0;
       glMasterModel.StaffRateYN = this.rateForStaffYN.value.toString();
       glMasterModel.StaffRate = (this.rateForStaffYN.value == 'E') ? this.rateForStaff.value.toString() : 0;
       glMasterModel.FemaleRateYN = this.rateForFemaleYN.value.toString();
@@ -315,29 +316,27 @@ export class GLInterestParameterComponent implements OnInit {
         glMasterModel.CalculationProvision = this.calculateProvision1.value.toString();
         glMasterModel.CalculationProvisionType = this.calculateProvision2.value.toString();
         glMasterModel.CalculatePayable = this.calculatePayble.value.toString();
-        glMasterModel.CalculatePayableAmount = this.calculatePaybleAmount.value.toString();
+        glMasterModel.CalculatePayableAmount = isNaN(parseFloat(this.calculatePaybleAmount.value.toString()))? 0 : parseFloat(this.calculatePaybleAmount.value.toString());
         glMasterModel.InstallmentPenal = this.installmantPenalDeposit.value.toString();
         glMasterModel.RICumulative = this.riCumulative.value.toString();
       }
       else if (!this.isLoanEnabled) {
         glMasterModel.InstallmentPenal = this.installmantPenalForLoan.value.toString();
-        glMasterModel.InstallmentPenalAfterNum = this.installmantPenalAftertext.value.toString();
+        glMasterModel.InstallmentPenalAfterNum = isNaN(parseInt(this.installmantPenalAftertext.value.toString()))? 0 :parseInt(this.installmantPenalAftertext.value.toString());
         glMasterModel.InstallmentPenalAfter = this.installmantPenalAfter.value.toString();
         glMasterModel.InterestCalculationType = this.interestCalculationTypeForLoan.value.toString();
         glMasterModel.AfterMaturityInterestLoan = this.interestAfterMaturityForLoan.value.toString();
-        glMasterModel.AfterMaturityInterestNumLoan = this.interestAfterMaturityForLoanText.value.toString();
+        glMasterModel.AfterMaturityInterestNumLoan = isNaN(parseInt(this.interestAfterMaturityForLoanText.value.toString()))? 0 :parseInt(this.interestAfterMaturityForLoanText.value.toString());
         glMasterModel.InstallmentCalculation = this.installmentCalculationForLoan.value.toString();
         glMasterModel.ExtraInterestForCCAboveLimit = this.extraInterestForCCForLoan.value.toString();
       }
-
-      glMasterModel.BranchId = this._sharedService.applicationUser.branchId;
 
       console.log(glMasterModel);
 
       this._generalLedgerService.saveGeneralLedgerInterestParams(glMasterModel).subscribe((data: any) => {
         console.log(data);
         if (data) {
-          if (data.statusCode == 200 && data.data.data > 0) {
+          if (data.statusCode == 200 && data.data.data.retId > 0) {
             this._toastrService.success('GL interest parameters updated.', 'Success!');
             //this.configClick("general-ledger-list");
           }

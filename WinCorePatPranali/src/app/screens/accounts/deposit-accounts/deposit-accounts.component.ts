@@ -9,6 +9,7 @@ import { IGeneralDTO, UiEnumGeneralMaster } from 'src/app/common/models/common-u
 import { AccountsService } from 'src/app/services/accounts/accounts/accounts.service';
 import { DepositAccountService } from 'src/app/services/accounts/deposit-accounts/deposit-account.service';
 import { CustomerService } from 'src/app/services/customers/customer/customer.service';
+import { DepositInterestRateService } from 'src/app/services/masters/deposit-interest-rate/deposit-interest-rate.service';
 import { GeneralLedgerService } from 'src/app/services/masters/general-ledger/general-ledger.service';
 import { SharedService } from 'src/app/services/shared.service';
 
@@ -191,10 +192,12 @@ export class DepositAccountsComponent {
   dto: IGeneralDTO = {} as IGeneralDTO;
   accountsId!: number;
   isAddMode = true;
+  glInterestParameters: any;
 
   constructor(private router: Router, private _sharedService: SharedService, private _toastrService: ToastrService,
     private _generalLedgerService: GeneralLedgerService, private _customerService: CustomerService,
-    private _depositAccountService: DepositAccountService, private _accountsService: AccountsService ) { }
+    private _depositAccountService: DepositAccountService, private _accountsService: AccountsService,
+   private _depositInterestRateService: DepositInterestRateService ) { }
 
   ngOnInit(): void {
 
@@ -288,6 +291,8 @@ export class DepositAccountsComponent {
       fdPayableAmount: new FormControl("", [Validators.required]),
       fdPrintedFor: new FormControl("", [Validators.required]),
     });
+
+    this.fdMatureDate.disable();
 
     this.rdDetailsForm = new FormGroup({
       installmentType: new FormControl(this.uiInstallmentTypes[0].code, [Validators.required]),
@@ -504,9 +509,44 @@ export class DepositAccountsComponent {
         this.isRDAccount = true;
       }
       this.getMaxAccountNumber(glValue.code);
+
+      // Set Interest rate
+      if (this.isFDAccount) {
+        this.fdDetailsForm.patchValue({
+          interestRateFD: glValue.int_Rate
+        })
+      }
+      if (this.isRDAccount) {
+        this.rdDetailsForm.patchValue({
+          interestRateRD: glValue.int_Rate
+        })
+      }
     }
   }
 
+  getDepositInterestRates(glCode: number, interestStructureDate: string){
+    this._depositInterestRateService.getDepositRatesByGL(glCode, interestStructureDate).subscribe((data: any) => {
+      console.log(data);
+      if (data) {
+        let response = data.data.data;
+        if (response) {
+          this.glInterestParameters = response;
+
+
+          // if (this.isFDAccount) {
+          //   this.fdDetailsForm.patchValue({
+          //     interestRateFD: glValue.int_Rate
+          //   })
+          // }
+          // if (this.isRDAccount) {
+          //   this.rdDetailsForm.patchValue({
+          //     interestRateRD: glValue.int_Rate
+          //   })
+          // }
+        }
+      }
+    })
+  }
 
   getMaxAccountNumber(glId: number) {
     this._accountsService.getMaxAccountNumber(this._sharedService.applicationUser.branchId, glId).subscribe((data: any) => {
@@ -518,7 +558,16 @@ export class DepositAccountsComponent {
             glAccountNumberStr: maxAccountModel.accountNo,
             glAccountNumber: maxAccountModel.maxAccountNo,
           })
+
+          if (this.isFDAccount) {
+            this.fdDetailsForm.patchValue({
+              slipNo: maxAccountModel.accountNo
+            })
+          }
         }
+
+        let interestStructureDate = formatDate(new Date(), 'yyyy-MM-dd', 'en');
+        this.getDepositInterestRates(glId, interestStructureDate);
       }
     })
   }
@@ -979,8 +1028,10 @@ export class DepositAccountsComponent {
 
   calculateMatureDate()
   {
+    let interestRateFromStructure = 0;
     if (this.years.value || this.months.value || this.days.value) {
       let totalDays = 0;
+
       if (!isNaN(parseInt(this.years.value))) {
         let today = new Date(this.fdOpeningDate.value);
         let targetDate = new Date(this.fdOpeningDate.value);
@@ -988,6 +1039,8 @@ export class DepositAccountsComponent {
         let differenceInTime = Math.abs(targetDate.getTime() - today.getTime());
         let differenceInDays = Math.round(differenceInTime / (1000 * 3600 * 24));
         totalDays = totalDays + differenceInDays;
+
+        interestRateFromStructure = this.getInterestRateFromStructure('M', totalDays);
       }
       if (!isNaN(parseInt(this.months.value))) {
         let today = new Date(this.fdOpeningDate.value);
@@ -996,6 +1049,8 @@ export class DepositAccountsComponent {
         let differenceInTime = Math.abs(targetDate.getTime() - today.getTime());
         let differenceInDays = Math.round(differenceInTime / (1000 * 3600 * 24));
         totalDays = totalDays + differenceInDays;
+
+        interestRateFromStructure = this.getInterestRateFromStructure('M', totalDays);
       }
       if (!isNaN(parseInt(this.days.value))) {
         let today = new Date(this.fdMatureDate.value);
@@ -1004,15 +1059,117 @@ export class DepositAccountsComponent {
         let differenceInTime = Math.abs(targetDate.getTime() - today.getTime());
         let differenceInDays = Math.round(differenceInTime / (1000 * 3600 * 24));
         totalDays = totalDays + differenceInDays;
+
+        interestRateFromStructure = this.getInterestRateFromStructure('D', totalDays);
       }
 
+      let fdAmount = parseFloat(this.fdAmount.value);
+      let interestRate = parseFloat(this.interestRateFD.value);
       let maturityDate = new Date(this.fdOpeningDate.value).setDate(totalDays);
+      let paybleAmount =  this.calculatePaybleInterestAmount(fdAmount, interestRate );
+      paybleAmount = paybleAmount + fdAmount;
 
       this.fdDetailsForm.patchValue({
         fdMatureDate: formatDate(maturityDate, 'yyyy-MM-dd', 'en'),
         renewalOnDate: formatDate(maturityDate, 'yyyy-MM-dd', 'en'),
+        interestRateFD : interestRateFromStructure > 0 ?  interestRateFromStructure: this.interestRateFD.value,
+        fdPayableAmount: isNaN(paybleAmount) ? 0: paybleAmount.toFixed(2)
       })
     }
+  }
+
+  getInterestRateFromStructure(tenureType: string, tenure: number) {
+    let interestRate = 0;
+    
+    let params = [];
+    let parameters = this.glInterestParameters.mstDepositIntRateStruct;
+    if (parameters && parameters.length) {
+      if (tenureType == 'D') {
+        let tenureInMonths = tenure / 30;
+        params = parameters.filter((p: any) => p.periodFlag == 'M' && tenureInMonths >= p.fromPeriod && tenureInMonths <= p.toPeriod);
+        if (params && params.length) {
+          let param = params[0];
+          if (tenureInMonths < param.toPeriod) {
+            interestRate = param.preMatureRate;
+          }
+          else if (tenureInMonths == param.toPeriod) {
+            interestRate = param.regularRate;
+          }
+        }
+      }
+      else if (tenureType == 'M') {
+        let tenureInMonths = tenure / 30;
+        params = parameters.filter((p: any) => p.periodFlag == 'M' && tenureInMonths >= p.fromPeriod && tenureInMonths <= p.toPeriod);
+        if (params && params.length) {
+          let param = params[0];
+          if (tenureInMonths < param.toPeriod) {
+            interestRate = param.preMatureRate;
+          }
+          else if (tenureInMonths == param.toPeriod) {
+            interestRate = param.regularRate;
+          }
+        }
+      }
+      else if(tenureType == 'Y'){
+        params = parameters.filter((p: any) => p.periodFlag == 'D' && tenure >= p.fromPeriod && tenure <= p.toPeriod);
+        if (params && params.length) {
+          let param = params[0];
+          if (tenure < param.toPeriod) {
+            interestRate = param.preMatureRate;
+          }
+          else if (tenure == param.toPeriod) {
+            interestRate = param.regularRate;
+          }
+        }
+      }
+    }
+
+    return interestRate;
+  }
+
+  calculatePaybleInterestAmount(fdAmount: number, rateOfInterest: number)
+  {
+    let paybleAmount = 0;
+    let gl = this.generalLedger.value;
+    let parameters = gl.glParameters;
+      if (parameters) {
+
+        let years = parseInt(this.years.value) > 0 ? parseInt(this.years.value): 0; 
+        let months = parseInt(this.months.value) > 0 ? parseInt(this.months.value): 0; 
+        let days = parseInt(this.days.value) > 0 ? parseInt(this.days.value): 0;
+        var totalYears = years + (months/12) + (days/365);
+
+        if (parameters.riCumulative == 'P') {
+          paybleAmount = (fdAmount * totalYears * rateOfInterest)/ 100;
+
+          // if (tenureType == 'D') {
+          //   paybleAmount = (fdAmount * totalYears * rateOfInterest)/(365 * 100);
+          // }
+          // if (tenureType == 'M') {
+          //   paybleAmount = (fdAmount * totalYears * rateOfInterest)/(12 * 100);
+          // }
+          // if (tenureType == 'Y') {
+          //   let months = totalYears * 12;
+          //   paybleAmount = (fdAmount * months * rateOfInterest)/(12 * 100);
+          // }
+        }
+        else
+        {
+           if (parameters.riCumulative == 'M') {
+            paybleAmount = fdAmount * (1 + (rateOfInterest/100)/12) ^ (12 * totalYears);
+           }
+           else if (parameters.riCumulative == 'Q') {
+            paybleAmount = fdAmount * (1 + (rateOfInterest/100)/4)^(4 * totalYears);
+           }
+           else if (parameters.riCumulative == 'H') {
+            paybleAmount = fdAmount * (1 + (rateOfInterest / (2 * 100)))^(2 * totalYears);
+           }
+           else if (parameters.riCumulative == 'Y') {
+            paybleAmount = fdAmount * (1 + (rateOfInterest / 100))^(years + (months / 12) + (days / (12 * 365)))
+           }
+        }
+      }
+      return paybleAmount;
   }
 
   configClick(routeValue: string) {

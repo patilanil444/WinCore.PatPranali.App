@@ -35,90 +35,95 @@
                         <fieldset>
                             <legend>Summary</legend>
                             <div class="row">
-                                <div class="col-md-12">
-                                    <table style="width: 100%;">
-                                        <tr>
-                                            <td></td>
-                                            <td><label>Receipt </label></td>
-                                            <td><label>Payment</label></td>
-                                        </tr>
-                                        <tr>
-                                            <td> <label>Total</label></td>
-                                            <td><input tabindex="28" type="text" class="form-control"
-                                                    placeholder="0"></td>
-                                            <td> <input tabindex="28" type="text" class="form-control"
-                                                    placeholder="0"></td>
-                                        </tr>
-                                        <tr>
-                                            <td><label>Pending Cash </label></td>
-                                            <td> <input tabindex="28" type="text" class="form-control"
-                                                    placeholder="0"></td>
-                                            <td><input tabindex="28" type="text" class="form-control"
-                                                    placeholder="0"></td>
-                                        </tr>
-                                        <!-- <tr>
+                                <form [formGroup]="cashierSummaryForm" #form="ngForm">
+                                    <div class="col-md-12">
+                                        <table style="width: 100%;">
+                                            <tr>
+                                                <td></td>
+                                                <td><label>Receipt </label></td>
+                                                <td><label>Payment</label></td>
+                                            </tr>
+                                            <tr>
+                                                <td> <label>Total Passed</label></td>
+                                                <td><input tabindex="28" type="text" class="form-control" readonly
+                                                        placeholder="0" formControlName="receiptTotal"></td>
+                                                <td> <input tabindex="28" type="text" class="form-control" readonly
+                                                        placeholder="0" formControlName="paymentTotal"></td>
+                                            </tr>
+                                            <tr>
+                                                <td><label>Passing Pending Cash </label></td>
+                                                <td> <input tabindex="28" type="text" class="form-control" readonly
+                                                        placeholder="0" formControlName="receiptPendingCash"></td>
+                                                <td><input tabindex="28" type="text" class="form-control" readonly
+                                                        placeholder="0" formControlName="paymentPendingCash"></td>
+                                            </tr>
+                                            <!-- <tr>
                                             <td></td>
                                             <td></td>
                                             <td><input tabindex="28" type="text" class="form-control" placeholder="Total Payment Pending Cash"></td>
                                         </tr> -->
-                                    </table>
-                                </div>
-                                <div class="col-md-12">
-                                    <div class="row" style="margin-top: 10px;">
-                                        <div class="col-md-2">
-                                           
-                                        </div>
-                                        <div class="col-md-10">
-                                            <button class="btn btn-focus" tabindex="2" data-toggle="modal"
-                                            data-target="#statusDenominationModel"> Cash Status</button>
+                                        </table>
+                                    </div>
+                                    <div class="col-md-12">
+                                        <div class="row" style="margin-top: 10px;">
+                                            <div class="col-md-2">
+                                                <button class="btn btn-focus" tabindex="2" data-toggle="modal"
+                                                    data-target="#statusDenominationModel"> Cash Status</button>
 
-                                            <button class="btn btn-focus" tabindex="2" data-toggle="modal" style="margin-left: 20px;"
-                                            data-target="#statusDenominationModel"> Approve</button>
+                                                <!-- <button class="btn btn-focus" tabindex="2" data-toggle="modal"
+                                                    style="margin-left: 20px;" data-target="#statusDenominationModel">
+                                                    Approve</button>
 
-                                            <button class="btn btn-focus" tabindex="2" data-toggle="modal" style="margin-left: 20px;"
-                                            data-target="#statusDenominationModel"> Reject</button>
+                                                <button class="btn btn-focus" tabindex="2" data-toggle="modal"
+                                                    style="margin-left: 20px;" data-target="#statusDenominationModel">
+                                                    Reject</button> -->
+                                            </div>
                                         </div>
                                     </div>
-                                </div>
 
-                                <div class="col-md-12">
-                                    <table style="width: 100%; margin-top: 15px;"
-                                        class="table table-hover table-striped table-bordered dataTable dtr-inline">
-                                        <thead>
-                                            <tr role="row">
-                                                <th style="width: 10%; padding: .25rem;">GL</th>
-                                                <th style="width: 10%; padding: .25rem;">A/C Number</th>
-                                                <th style="width: 10%; padding: .25rem;">Name</th>
-                                                <th style="width: 10%; padding: .25rem;">Credit Amount</th>
-                                                <th style="width: 10%; padding: .25rem;">Debit Amount</th>
-                                                <th style="width: 10%; padding: .25rem;">Int Flag</th>
-                                                <th style="width: 10%; padding: .25rem;">Int GL</th>
-                                                <th style="width: 10%; padding: .25rem;">CT Flag</th>
-                                                <th style="width: 10%; padding: .25rem;">Narration</th>
-                                                <th style="width: 10%; padding: .25rem;">Actions</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            <tr role="row" class="odd">
-                                                <td></td>
-                                                <td></td>
-                                                <td></td>
-                                                <td></td>
-                                                <td></td>
-                                                <td></td>
-                                                <td></td>
-                                                <td></td>
-                                                <td></td>
-                                                <td>
-                                                   
+                                    <div class="col-md-12">
+                                        <table style="width: 100%; margin-top: 15px;"
+                                            class="table table-hover table-striped table-bordered dataTable dtr-inline">
+                                            <thead>
+                                                <tr role="row">
+                                                    <th style="width: 7%; padding: .25rem;">Voucher</th>
+                                                    <th style="width: 20%; padding: .25rem;">Customer</th>
+                                                    <th style="width: 20%; padding: .25rem;">GL</th>
+                                                    <th style="width: 15%; padding: .25rem;">A/C Number</th>
+                                                    <th style="width: 10%; padding: .25rem;">Amount</th>
+                                                    <!-- <th style="width: 10%; padding: .25rem;">Int GL</th> -->
+                                                    <th style="width: 8%; padding: .25rem;">CD Flag</th>
+                                                    <th style="width: 15%; padding: .25rem;">Narration</th>
+                                                    <th style="width: 5%; padding: .25rem;">Actions</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr role="row"  *ngFor="let transaction of pendingTransactions; let ind=index">
+                                                    <td>{{transaction.VoucherNo}}</td>
+                                                    <td>{{transaction.CustomerName}}</td>
+                                                    <td>{{transaction.GL}}</td>
+                                                    <td>{{transaction.AccountNumber}}</td>
+                                                    <td>{{transaction.Amount}}</td>
+                                                    <!-- <td>{{transaction.title}}</td> -->
+                                                    <td>{{transaction.CDFlag}}</td>
+                                                    <td>{{transaction.Narration}}</td>
+                                                    <td><div class="widget-content-right">
+                                                        <button type="button" placeholder="View Details"
+                                                            class="btn-shadow btn btn-info btn-actions">
+                                                            <span class="btn-icon-wrapper opacity-10">
+                                                                <i class="fa fa-info fa-w-10"></i>
+                                                            </span>
+                                                        </button>
+                                                    </div>
                                                 </td>
-                                            </tr>
-                                            <!-- <tr *ngIf="uiSavingAccounts.length==0">
-                                                                                <td colspan="4">No records..</td>
-                                                                            </tr> -->
-                                        </tbody>
-                                    </table>
-                                </div>
+                                                </tr>
+                                                <tr *ngIf="pendingTransactions.length==0">
+                                                    <td colspan="8">No transactions found..</td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </form>
                             </div>
                         </fieldset>
                     </div>

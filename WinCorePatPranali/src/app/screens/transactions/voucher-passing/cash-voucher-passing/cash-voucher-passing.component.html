@@ -1,4 +1,4 @@
-<form [formGroup]="cashVoucherForm" #form="ngForm">
+<form [formGroup]="cashVoucherPassingForm" #form="ngForm">
     <div class="row">
         <div class="col-md-12">
             <div class="tab-content">
@@ -7,33 +7,35 @@
                         <label for="txtCode" class="">Transaction Type</label>
                         <select class="mb-2 form-control" tabindex="18">
                             <option *ngFor="let uiTransactionType of uicashTransactionTypes"
-                                [ngValue]="uiTransactionType.code">
+                                [ngValue]="uiTransactionType.code" formControlName="transactionType">
                                 {{uiTransactionType.name}}
                             </option>
                         </select>
                     </div>
                     <div class="col-md-3 position-relative form-group">
                         <label for="txtCode" class="">Voucher No </label>
-                        <input tabindex="28" type="text" class="form-control" placeholder="Voucher No">
+                        <input tabindex="28" type="text" class="form-control" placeholder="Voucher No" formControlName="voucherNumber">
                     </div>
                     <div class="col-md-3 position-relative form-group">
-                        <button class="btn btn-info" tabindex="2" style="margin-top: 30px;">
+                        <button class="btn btn-info" tabindex="2" style="margin-top: 30px;" (click)="fetchVoucher()">
                             Fetch Voucher</button>
-                        <button class="btn btn-info" tabindex="2" style="margin-top: 30px;margin-left: 30px;"
-                            data-toggle="modal" data-target="#PassingInfoModel">View Details</button>
                     </div>
                     <div class="col-md-12">
                         <div class="row">
                             <div class="col-md-3 position-relative form-group">
                                 <label for="txtCode" class="">Voucher Amount </label>
-                                <input tabindex="28" type="text" class="form-control" placeholder="Voucher Amount">
+                                <input tabindex="28" type="text" class="form-control" placeholder="Voucher Amount" 
+                                readonly formControlName="voucherAmount">
                             </div>
                             <div class="col-md-3 position-relative form-group">
                                 <label for="txtCode" class="">Grid Amount </label>
-                                <input tabindex="28" type="text" class="form-control" placeholder="Grid Amount">
+                                <input tabindex="28" type="text" class="form-control" placeholder="Grid Amount" 
+                                readonly formControlName="gridAmount">
                             </div>
-                            <div class="col-md-3 position-relative form-group">
-                                <button class="btn btn-success" tabindex="2" style="margin-top: 30px;"> Accept</button>
+                            <div class="col-md-6 position-relative form-group">
+                                <button class="btn btn-info" tabindex="2" style="margin-top: 30px;"
+                                    data-toggle="modal" data-target="#PassingInfoModel">View Details</button>
+                                <button class="btn btn-success" tabindex="2" style=" margin-left: 30px; margin-top: 30px;"> Accept</button>
                                 <button class="btn btn-danger" tabindex="2"
                                     style="margin-top: 30px; margin-left: 30px;"> Reject</button>
                             </div>
@@ -97,17 +99,16 @@
 </form>
 
 <div class="modal fade bd-example-modal-lg show" id="PassingInfoModel" tabindex="-1" role="dialog"
-    aria-labelledby="denominationModelTitle" aria-hidden="true" data-backdrop="false">
+    aria-labelledby="PassingInfoModelTitle" aria-hidden="true" data-backdrop="false">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <div class="modal-header" style="padding: 0.5rem 1rem !important;">
-                <h5 class="modal-title" id="denominationModelTitle">Passing Information</h5>
+                <h5 class="modal-title" id="PassingInfoModelTitle">Passing Information</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">×</span>
                 </button>
             </div>
             <div class="modal-body">
-                
                     <div class="row">
                         <div class="col-md-12">
                             <div class="tab-content">

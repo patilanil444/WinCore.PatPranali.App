@@ -258,21 +258,8 @@ export class LoanAccountsComponent {
       close_Flag: new FormControl(false, [])
     });
 
-    // this.parametersForm = new FormGroup({
-    //   sactionAmount: new FormControl(0 , [Validators.required]),
-    //   sactionAmountFormatted: new FormControl(new Intl.NumberFormat('en-IN',{ style: 'decimal' }).format(0), [Validators.required]),
-    //   sactionDate: new FormControl(formatDate(new Date(Date.now()), 'yyyy-MM-dd', 'en'), [Validators.required]),
-    //   sanctionBy: new FormControl(0, [Validators.required]),
-    //   loanTenureInMonths: new FormControl("", [Validators.required]),
-    //   interestRate: new FormControl("", [Validators.required]),
-    //   amountAdvances: new FormControl("", [Validators.required]),
-    //   changesInInterestApplicable: new FormControl(this.uiChangesInInterestRateYN[0].code, [Validators.required]),
-    //   maturityDate: new FormControl(formatDate(new Date(Date.now()), 'yyyy-MM-dd', 'en'), [Validators.required]),
-    //   resolutionNo: new FormControl("", [Validators.required]),
-    //   resolutionDate: new FormControl(formatDate(new Date(Date.now()), 'yyyy-MM-dd', 'en'), [Validators.required]),
-    //   firstInstallmentDate: new FormControl(formatDate(new Date().setDate(new Date().getDate() + 30), 'yyyy-MM-dd', 'en'), [Validators.required]),
-    //   installmentType: new FormControl("", [Validators.required]),
-    // });
+    this.lastInterestDate.disable();
+    this.lastTransactionDate.disable();
 
     this.jointForm = new FormGroup({
       jointCustomers: new FormControl("", []),

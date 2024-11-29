@@ -231,6 +231,8 @@ export class SavingAccountsComponent {
     });
 
     this.accountStatus.disable();
+    this.lastTransactionDate.disable();
+    this.lastInterestDate.disable();
 
     this.parametersForm = new FormGroup({
       interestRateParam: new FormControl("", [Validators.required]),
@@ -426,6 +428,10 @@ export class SavingAccountsComponent {
       if (glValue.glGroup == 'D' && glValue.glType == 'R') {
         this.isRDAccount = true;
       }
+
+      this.parametersForm.patchValue({
+        interestRateParam: glValue.int_Rate,
+      })
       this.getMaxAccountNumber(glValue.code);
     }
   }

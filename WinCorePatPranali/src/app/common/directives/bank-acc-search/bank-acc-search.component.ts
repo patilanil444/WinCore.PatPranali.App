@@ -1,9 +1,11 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { NgxDropdownConfig } from 'ngx-select-dropdown';
 import { ToastrService } from 'ngx-toastr';
 import { AccountsService } from 'src/app/services/accounts/accounts/accounts.service';
 import { SharedService } from 'src/app/services/shared.service';
+import { UiEnumGeneralMaster } from '../../models/common-ui-models';
+import { formatDate } from '@angular/common';
 
 @Component({
   selector: 'app-bank-acc-search',
@@ -28,7 +30,8 @@ export class BankAccSearchComponent implements OnInit {
   };
   
   bankAccSearchForm!: FormGroup;
-
+  @Output() accounts = new EventEmitter<any>();
+  
   @Input() generalLedgers(value: any[]) {
     this._uiGeneralLedger = value;
   }
@@ -50,6 +53,9 @@ export class BankAccSearchComponent implements OnInit {
     return this._uiGeneralLedger;
   }
 
+  uiAccountTypes : any[] = [];
+  uiModeOfOperations : any[] = [];
+
   private _uiBranches: any[] = [];
   private _uiGeneralLedger: any[] = [];
   uiBankAccounts: any[] = [];
@@ -64,22 +70,41 @@ export class BankAccSearchComponent implements OnInit {
       accountNumberSearch: new FormControl("", [Validators.required]),
     });
 
+    this.uiAccountTypes = this.retrieveMasters(UiEnumGeneralMaster.ACTYPE);
+    this.uiModeOfOperations = this.retrieveMasters(UiEnumGeneralMaster.OPRMODE);
     
+  }
+
+  retrieveMasters(uiEnumGeneralMaster: UiEnumGeneralMaster) {
+    let mastersData = this._sharedService.uiAllMasters.filter((m: any) => m.identifier == uiEnumGeneralMaster);
+    if (mastersData && mastersData.length) {
+      let masters = mastersData.filter((m: any) => m.identifier == uiEnumGeneralMaster);
+      return masters[0].codeTables;
+    }
+    return [];
   }
 
   searchAccount() {
     if (this.branchId.value > 0) {
       if (this.generalLedger && this.generalLedger.value && this.generalLedger.value.code > 0) {
         if (this.accountNumberSearch && this.accountNumberSearch.value) {
-          this._accountsService.SearchAccountsAsync(this.branchId.value, this.generalLedger.value.code, "",
+          this._accountsService.SearchAccountDetailsAsync(this.branchId.value, this.generalLedger.value.code, 
             this.accountNumberSearch.value).subscribe((data: any) => {
               let accounts = data.data.data;
               if (accounts) {
                 this.uiBankAccounts = accounts.map((acc: any) => (
                   {
                     ...acc,
-                    //status: this.getStatus(acc.accountStatus)
+                    accountType: this.uiAccountTypes.filter(at=>at.constantNo == acc.accountType)[0]?.constantname,
+                    modeOfOperation: this.uiModeOfOperations.filter(at=>at.constantNo == acc.modeOfOperation)[0]?.constantname,
+                    openDate: formatDate(new Date(acc.openDate), 'yyyy-MM-dd', 'en'),
+                    lastTransactionDate: formatDate(new Date(acc.lastTransactionDate), 'yyyy-MM-dd', 'en'),
+                    lastInterestDate: formatDate(new Date(acc.lastInterestDate), 'yyyy-MM-dd', 'en'),
+                    balance: parseFloat(acc.balance).toFixed(2),
+                    minBalance: parseFloat(acc.minBalance).toFixed(2),
                   }))
+
+                  this.accounts.emit(this.uiBankAccounts);
               }
               else {
                 this._toastrService.error('No accounts found', 'Warning!');

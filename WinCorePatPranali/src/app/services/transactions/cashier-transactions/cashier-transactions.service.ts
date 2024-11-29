@@ -7,7 +7,8 @@ import { IGeneralDTO } from 'src/app/common/models/common-ui-models';
 @Injectable({
   providedIn: 'root'
 })
-export class TransactionMasterService {
+export class CashierTransactionsService {
+
   serviceBaseURL = "";
   //districtIdToDelete = -1;
 
@@ -21,14 +22,13 @@ export class TransactionMasterService {
     return this.dto.asObservable();
   }
 
-  getDenominations() {
+  saveTransaction(transactionModel: any): any {
     let options = GlobleDeclarations.getHeaderOptions();
-    return this.http.get(GlobleDeclarations.apiBaseURL + "api/TransactionMaster/denominations", options);
+    return this.http.post(GlobleDeclarations.apiBaseURL + "api/TransactionMaster/save-transaction", transactionModel, options);
   }
 
-  getMaxVoucherNumber(branchCode: number) {
+  getCashierDailyTransactionSummary(branchCode: number, username: string): any {
     let options = GlobleDeclarations.getHeaderOptions();
-    return this.http.get(GlobleDeclarations.apiBaseURL + "api/TransactionMaster/max-voucher?branchCode="
-      + branchCode , options);
+    return this.http.get(GlobleDeclarations.apiBaseURL + "api/TransactionMaster/user-daily-transactions?branchCode="+ branchCode +"&userName="+ username , options);
   }
 }

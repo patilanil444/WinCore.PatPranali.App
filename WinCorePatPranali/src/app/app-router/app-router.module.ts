@@ -80,6 +80,8 @@ import { OverdraftAllotmentComponent } from '../screens/transactions/voucher-pas
 import { ChequeBookPassingComponent } from '../screens/transactions/voucher-passing/cheque-book-passing/cheque-book-passing.component';
 import { VoucherPassingSummaryComponent } from '../screens/transactions/voucher-passing/voucher-passing-summary/voucher-passing-summary.component';
 import { BankAccSearchComponent } from '../common/directives/bank-acc-search/bank-acc-search.component';
+import { BrowserModule } from '@angular/platform-browser';
+import { MessageBoxComponent } from '../common/directives/message-box/message-box.component';
 
 @NgModule({
   declarations: [
@@ -158,6 +160,7 @@ import { BankAccSearchComponent } from '../common/directives/bank-acc-search/ban
     ChequeBookPassingComponent,
     VoucherPassingSummaryComponent,
     BankAccSearchComponent,
+    MessageBoxComponent,
   ],
   imports: [
     CommonModule,

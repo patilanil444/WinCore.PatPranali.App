@@ -1,0 +1,22 @@
+<div class="modal fade bd-example-modal-lg show" #messageBoxModal tabindex="-1">
+    <div class="modal-dialog modal-lx">
+        <div class="modal-content">
+            <div class="modal-header" style="padding: 0.5rem 1rem !important;">
+                <h5 class="modal-title" id="messageBoxModalTitle">Message Box</h5>
+            </div>
+            <div class="modal-body">
+                <table style="width: 100%;" class="table table-hover table-bordered dataTable dtr-inline">
+                        <tr role="row" *ngFor="let messageNote of messageNotes; let ind=index">
+                            <td>{{messageNote.title}}</td>
+                            <td>{{messageNote.value}}</td>
+                        </tr>
+                </table>
+                <div class="row">
+                    <div class="col-md-12 position-relative">
+                        <button class="mt-1 btn btn-primary" style="float: right;" (click)="close()">Ok</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
