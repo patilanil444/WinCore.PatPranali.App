@@ -22,10 +22,7 @@ export class CashierTransactionsService {
     return this.dto.asObservable();
   }
 
-  saveTransaction(transactionModel: any): any {
-    let options = GlobleDeclarations.getHeaderOptions();
-    return this.http.post(GlobleDeclarations.apiBaseURL + "api/TransactionMaster/save-transaction", transactionModel, options);
-  }
+ 
 
   getCashierDailyTransactionSummary(branchCode: number, username: string): any {
     let options = GlobleDeclarations.getHeaderOptions();

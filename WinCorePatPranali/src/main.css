@@ -24136,6 +24136,7 @@ a.fc-more {
     transform: translate(500px);
     transition: all .2s;
     box-shadow: -0.46875rem 0 2.1875rem rgba(4,9,20,0.03),-0.9375rem 0 1.40625rem rgba(4,9,20,0.03),-0.25rem 0 0.53125rem rgba(4,9,20,0.05),-0.125rem 0 0.1875rem rgba(4,9,20,0.03);
+    display: none;
 }
 
     .ui-theme-settings .btn-open-options {
@@ -24366,3 +24367,18 @@ select.form-control {
 {
     padding: 5px 5px !important;
 }
+
+.blink{
+    animation: blink 1s infinite;
+    font-weight: bold;
+}
+
+@keyframes blink {
+
+    0% { opacity: 1; }
+  
+    50% { opacity: 0; }
+  
+    100% { opacity: 1; }
+  
+  } 

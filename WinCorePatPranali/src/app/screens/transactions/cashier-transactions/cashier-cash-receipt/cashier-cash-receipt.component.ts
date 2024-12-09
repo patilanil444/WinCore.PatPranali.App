@@ -75,7 +75,7 @@ export class CashierCashReceiptComponent implements OnInit {
 
   constructor(private router: Router, private _branchMasterService: BranchMasterService, private _toastrService: ToastrService,
     private _generalLedgerService: GeneralLedgerService, private _sharedService: SharedService,
-    private _transactionMasterService: TransactionMasterService, private _cashierTransactionsService: CashierTransactionsService) { }
+    private _transactionMasterService: TransactionMasterService) { }
 
   ngOnInit(): void {
 
@@ -93,6 +93,8 @@ export class CashierCashReceiptComponent implements OnInit {
       modeOfOperation: new FormControl("", []),
       balance: new FormControl("", []),
       minBalance: new FormControl("", []),
+      unclearedReceipt: new FormControl("", []),
+      unclearedPayment: new FormControl("", []),
       lastTransactionDate: new FormControl("", []),
       lastInterestDate: new FormControl("", []),
       openDate: new FormControl("", []),
@@ -151,6 +153,8 @@ export class CashierCashReceiptComponent implements OnInit {
         modeOfOperation:  this.uiBankAccount.modeOfOperation,
         balance:  this.uiBankAccount.balance,
         minBalance:  this.uiBankAccount.minBalance,
+        unclearedReceipt: isNaN(parseFloat(this.uiBankAccount.unClearedReceiptAmt)) ? "0.00": parseFloat(this.uiBankAccount.unClearedReceiptAmt).toFixed(2),
+        unclearedPayment: isNaN(parseFloat(this.uiBankAccount.unClearedPaymentAmt)) ? "0.00": parseFloat(this.uiBankAccount.unClearedPaymentAmt).toFixed(2),
         lastTransactionDate:  this.uiBankAccount.lastTransactionDate,
         lastInterestDate:  this.uiBankAccount.lastInterestDate,
         openDate:  this.uiBankAccount.openDate,
@@ -169,6 +173,8 @@ export class CashierCashReceiptComponent implements OnInit {
         modeOfOperation:  "",
         balance:  "",
         minBalance: "",
+        unclearedReceipt: "",
+        unclearedPayment: "",
         lastTransactionDate:  "",
         lastInterestDate:  "",
         openDate:  "",
@@ -284,7 +290,7 @@ export class CashierCashReceiptComponent implements OnInit {
       // get voucher number before saving transaction 
 
       this.messageNotes = [];
-      this._transactionMasterService.getMaxVoucherNumber(this._sharedService.applicationUser.branchId).subscribe((data: any) => {
+      this._transactionMasterService.getMaxVoucherNumber(this._sharedService.applicationUser.branchId, 1).subscribe((data: any) => {
         console.log(data);
         if (data) {
           if (data.data.data && data.data.data > 0) {
@@ -308,7 +314,7 @@ export class CashierCashReceiptComponent implements OnInit {
 
   executeTransaction(transactionSummary: ITransactionSummaryModel)
   {
-    this._cashierTransactionsService.saveTransaction(transactionSummary).subscribe((data: any) => {
+    this._transactionMasterService.saveTransaction(transactionSummary).subscribe((data: any) => {
       console.log(data);
       if (data) {
         if (data.data.data && data.data.data.retId > 0) {
@@ -405,6 +411,13 @@ export class CashierCashReceiptComponent implements OnInit {
   }
   get minBalance() {
     return this.cashierReceiptForm.get('minBalance')!;
+  }
+
+  get unclearedReceipt() {
+    return this.cashierReceiptForm.get('unclearedReceipt')!;
+  }
+  get unclearedPayment() {
+    return this.cashierReceiptForm.get('unclearedPayment')!;
   }
   get lastTransactionDate() {
     return this.cashierReceiptForm.get('lastTransactionDate')!;

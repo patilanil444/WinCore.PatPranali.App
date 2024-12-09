@@ -82,6 +82,7 @@ import { VoucherPassingSummaryComponent } from '../screens/transactions/voucher-
 import { BankAccSearchComponent } from '../common/directives/bank-acc-search/bank-acc-search.component';
 import { BrowserModule } from '@angular/platform-browser';
 import { MessageBoxComponent } from '../common/directives/message-box/message-box.component';
+import { PassingInfoComponent } from '../screens/transactions/voucher-passing/passing-info/passing-info.component';
 
 @NgModule({
   declarations: [
@@ -161,6 +162,7 @@ import { MessageBoxComponent } from '../common/directives/message-box/message-bo
     VoucherPassingSummaryComponent,
     BankAccSearchComponent,
     MessageBoxComponent,
+    PassingInfoComponent,
   ],
   imports: [
     CommonModule,

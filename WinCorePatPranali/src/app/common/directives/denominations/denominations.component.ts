@@ -25,6 +25,7 @@ export class DenominationsComponent implements OnInit {
   totalPaymentAmount = 0;
  
   @Input() denominationAmount: number;
+  @Input() isReceiptTransaction: boolean;
   @Output() addedDenominations = new EventEmitter<any>();
   @ViewChild('denominationModal', {static: false}) modal: ElementRef;
 
@@ -75,7 +76,8 @@ export class DenominationsComponent implements OnInit {
     });
 
     // Emit
-    if (totalAmount == this.denominationAmount) {
+    if ((this.isReceiptTransaction && totalAmount == this.denominationAmount) || 
+      (!this.isReceiptTransaction && Math.abs(totalAmount) == this.denominationAmount) ) {
       this.addedDenominations.emit(validDenominations);
       this.close();
     }

@@ -1,12 +1,55 @@
 import { formatDate } from '@angular/common';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
+import { DenominationsComponent } from 'src/app/common/directives/denominations/denominations.component';
+import { MessageBoxComponent } from 'src/app/common/directives/message-box/message-box.component';
 import { AccountsService } from 'src/app/services/accounts/accounts/accounts.service';
 import { SavingAccountService } from 'src/app/services/accounts/saving-accounts/saving-account.service';
 import { BranchMasterService } from 'src/app/services/masters/branch-master/branch-master.service';
 import { GeneralLedgerService } from 'src/app/services/masters/general-ledger/general-ledger.service';
 import { SharedService } from 'src/app/services/shared.service';
+import { TransactionMasterService } from 'src/app/services/transactions/transaction-master/transaction-master.service';
+
+export interface ITransactionSummaryModel {
+  Id: number;
+  BranchCode: number;
+  VoucherDate: Date;
+  VoucherType: number;
+  VoucherNo: number;
+  VoucherAmount: number;
+  TransactionNarration: string;
+  YearEnd: boolean;
+  UTR_ChequeNo: string;
+  UTR_ChequeDate: Date;
+  TransactionPassing: boolean;
+  CreatedBy: string;
+  VerifiedBy: string;
+  VerifiedDateTime: Date;
+  TransactionDetails: ITransactionDetailsModel[];
+  Denominations: IDenomination[];
+}
+
+export interface ITransactionDetailsModel {
+  VoucherHeadId: number;
+  Code1: number;
+  AccountId: number;
+  IntFlag: number;
+  IntCode1: number;
+  CDFlag: number;
+  CTFlag: number;
+  Transaction_Amount: number;
+  Transaction_Narration: string;
+}
+
+export interface IDenomination {
+  BranchCode: number;
+  Scroll_Id: number;
+  Denomination_id: number;
+  Denomination_Quantity: number;
+  denomination_type: number;
+}
 
 @Component({
   selector: 'app-counter-cash-payment',
@@ -15,37 +58,89 @@ import { SharedService } from 'src/app/services/shared.service';
 })
 export class CounterCashPaymentComponent implements OnInit {
 
+  @ViewChild('messageBoxModal', {static: false}) messageBoxModal: MessageBoxComponent
+  
   counterPaymentForm!: FormGroup;
   uiBranches: any = [];
   uiAllGeneralLedgers: any = [];
+  uiFilteredGeneralLedgers : any = [];
+  uiTransactionDenominations: any = [];
+  // uiBankAccounts: any = [];
+  messageNotes : any = [];
 
-  uiBankAccounts: any = [];
+  uiBankAccount: any = [];
 
- constructor(private _branchMasterService: BranchMasterService, private _toastrService: ToastrService,
+  @ViewChild('denominationModal', {static: false}) denominationsModal: DenominationsComponent
+
+ constructor(private router: Router, private _branchMasterService: BranchMasterService, private _toastrService: ToastrService,
     private _generalLedgerService: GeneralLedgerService, private _sharedService: SharedService,
-    private _accountsService: AccountsService, private _savingAccountService: SavingAccountService) { }
+    private _accountsService: AccountsService, private _savingAccountService: SavingAccountService,
+    private _transactionMasterService: TransactionMasterService) { }
 
   ngOnInit(): void {
+
     this.counterPaymentForm = new FormGroup({
       tokenId: new FormControl("", [Validators.required]),
-      branch: new FormControl("", []),
-      generalLedger: new FormControl("", []),
-      accountNumber: new FormControl("", []),
-      transactionAmount: new FormControl("", []),
-      transactionDesc: new FormControl("", []),
+      transactionAmount: new FormControl("", [Validators.required]),
+      transactionDesc: new FormControl("To Cash", [Validators.required]),
       chequeNo: new FormControl("", []),
       chequeDate: new FormControl(formatDate(new Date(Date.now()), 'yyyy-MM-dd', 'en'), []),
       balanceAmountWillBe: new FormControl("", []),
+      customerName: new FormControl("", []),
+      accountNumber: new FormControl("", []),
+      accountId: new FormControl("", []),
+      glCode: new FormControl("", []),
+      accountType: new FormControl("", []),
+      modeOfOperation: new FormControl("", []),
+      balance: new FormControl("", []),
+      minBalance: new FormControl("", []),
+      unclearedReceipt: new FormControl("", []),
+      unclearedPayment: new FormControl("", []),
+      lastTransactionDate: new FormControl("", []),
+      lastInterestDate: new FormControl("", []),
+      openDate: new FormControl("", []),
+      interestRate : new FormControl("", [])
     });
+
+    this.getVoucherNumber();
+
 
     this.getBranches();
     this.getGeneralLedgers();
   }
 
+  getVoucherNumber()
+  {
+    this._transactionMasterService.getMaxVoucherNumber(this._sharedService.applicationUser.branchId, 2).subscribe((data: any) => {
+      console.log(data);
+      if (data) {
+        if (data.data.data && data.data.data > 0) {
+
+          this.counterPaymentForm.patchValue({
+            tokenId: data.data.data,
+          });
+
+          // Show Pop up modal here and confirm transaction 
+
+          // let messages = [];
+          // messages.push({ title: "Customer Name :", value: this.customerName.value });
+          // messages.push({ title: "Voucher Number :", value: data.data.data });
+
+          // this.messageNotes = messages;
+          // this.messageBoxModal.open();
+
+          //transactionSummary.VoucherNo = data.data.data;
+          //this.executeTransaction(transactionSummary);
+          //this.clearTransaction();
+        }
+      }
+    })
+
+  }
+
   getGeneralLedgers() {
     return new Promise((resolve, reject) => {
       this._generalLedgerService.getGeneralLedgers(this._sharedService.applicationUser.branchId).subscribe((data: any) => {
-        console.log(data);
         if (data) {
           this.uiAllGeneralLedgers = data.data.data;
           if (this.uiAllGeneralLedgers) {
@@ -53,6 +148,9 @@ export class CounterCashPaymentComponent implements OnInit {
             this.uiAllGeneralLedgers.map((gl: any, i: any) => {
               gl.glName = gl.code + "-" + gl.glName;
             });
+
+            this.uiFilteredGeneralLedgers = this.uiAllGeneralLedgers.filter((gl: any) => gl.glGroup == 'D');
+
             resolve(true);
           }
         }
@@ -66,26 +164,232 @@ export class CounterCashPaymentComponent implements OnInit {
   getBranches() {
     this._branchMasterService.getBranches().subscribe((data: any) => {
       this.uiBranches = data.data.data;
-      if (this.uiBranches && this.uiBranches.length) {
-        this.counterPaymentForm.patchValue({
-          branchId: this.uiBranches[0].branchCode,
-        })
+    })
+  }
+
+  getAccounts(accountsData: any) {
+    let bankAccounts = accountsData;
+    if (bankAccounts && bankAccounts.length) {
+      this.uiBankAccount = bankAccounts[0];
+
+      this.counterPaymentForm.patchValue({
+        customerName: this.uiBankAccount.custName,
+        accountNumber:  this.uiBankAccount.accountNo,
+        accountId:  this.uiBankAccount.accountsId,
+        glCode: this.uiBankAccount.code1,
+        accountType:  this.uiBankAccount.accountType,
+        modeOfOperation:  this.uiBankAccount.modeOfOperation,
+        balance:  this.uiBankAccount.balance,
+        minBalance:  this.uiBankAccount.minBalance,
+        unclearedReceipt: isNaN(parseFloat(this.uiBankAccount.unClearedReceiptAmt)) ? "0.00": parseFloat(this.uiBankAccount.unClearedReceiptAmt).toFixed(2),
+        unclearedPayment: isNaN(parseFloat(this.uiBankAccount.unClearedPaymentAmt)) ? "0.00": parseFloat(this.uiBankAccount.unClearedPaymentAmt).toFixed(2),
+        lastTransactionDate:  this.uiBankAccount.lastTransactionDate,
+        lastInterestDate:  this.uiBankAccount.lastInterestDate,
+        openDate:  this.uiBankAccount.openDate,
+        interestRate :  this.uiBankAccount.interestRate,
+        balanceAmountWillBe: this.uiBankAccount.balance
+      })
+    }
+    else
+    {
+      this.counterPaymentForm.patchValue({
+        customerName: "",
+        accountNumber:  "",
+        accountId: "",
+        glCode: "",
+        accountType:  "",
+        modeOfOperation:  "",
+        balance:  "",
+        minBalance: "",
+        unclearedReceipt: "",
+        unclearedPayment: "",
+        lastTransactionDate:  "",
+        lastInterestDate:  "",
+        openDate:  "",
+        interestRate :  "",
+        balanceAmountWillBe: "",
+      })
+    }
+
+
+    // transactionAmount: new FormControl("", [Validators.required]),
+    //   transactionDesc: new FormControl("To Cash", [Validators.required]),
+    //   chequeNo: new FormControl("", []),
+    //   chequeDate: new FormControl(formatDate(new Date(Date.now()), 'yyyy-MM-dd', 'en'), []),
+    //   balanceAmountWillBe: new FormControl("", []),
+  }
+
+  updateBalance(event: any)
+  {
+    if (event) {
+      let balance = isNaN(parseFloat(this.balance.value)) ? 0 : parseFloat(this.balance.value);
+      this.counterPaymentForm.patchValue({
+        balanceAmountWillBe: (balance + parseFloat(event.target.value)).toFixed(2)
+      })
+    }
+  }
+
+  openDenominations()
+  {
+    if (this.transactionAmount.value && parseFloat(this.transactionAmount.value) > 0) {
+      this.denominationsModal.clear();
+      this.denominationsModal.open();
+    }
+    else
+    {
+      this._toastrService.warning('Please enter transaction amount.', 'Warning!');
+    }
+  }
+
+  setDenominations(denominationData:any)
+  {
+    if (denominationData && denominationData.length) {
+      this.uiTransactionDenominations = denominationData;
+    }
+  }
+
+  isValidateTransaction() {
+    if (parseInt(this.accountId.value) > 0) {
+      if (parseInt(this.transactionAmount.value) > 0) {
+        if (this.uiTransactionDenominations && this.uiTransactionDenominations.length) {
+          return true;
+        }
+        else {
+          this._toastrService.warning('Please add denominations.', 'Warning!');
+        }
+      }
+      else {
+        this._toastrService.warning('Please enter valid transaction amount.', 'Warning!');
+      }
+    }
+    else {
+      this._toastrService.warning('Please search account for transaction.', 'Warning!');
+    }
+    return false;
+  }
+
+  makeTransaction() {
+    // Save transcher and get a voucher ID for transaction. Show voucher Id to user in pop up
+    //1. Validate Transaction details
+    if (this.isValidateTransaction()) {
+      //2. Save Transaction 
+      let transactionSummary = {} as ITransactionSummaryModel;
+      transactionSummary.Id = 0;
+      transactionSummary.BranchCode = this._sharedService.applicationUser.branchId;
+      transactionSummary.VoucherDate = new Date();
+      transactionSummary.VoucherType = 2; // 1 = Receipt 2 = Payment
+      transactionSummary.VoucherNo = parseInt(this.tokenId.value);
+      transactionSummary.VoucherAmount = parseFloat(this.transactionAmount.value);
+      transactionSummary.TransactionNarration = this.transactionDesc.value;
+      transactionSummary.YearEnd = false;
+      transactionSummary.UTR_ChequeNo = this.chequeNo.value.length? this.chequeNo.value : "";
+      transactionSummary.UTR_ChequeDate = this.chequeNo.value.length? this.chequeDate.value : formatDate(new Date(Date.now()), 'yyyy-MM-dd', 'en'), [];
+      transactionSummary.TransactionPassing = false;
+      transactionSummary.CreatedBy = this._sharedService.applicationUser.userName;
+      transactionSummary.VerifiedBy = "";
+      transactionSummary.VerifiedDateTime = new Date();
+
+      let transactionDetails = {} as ITransactionDetailsModel;
+      transactionDetails.VoucherHeadId = 0;
+      transactionDetails.Code1 = parseInt(this.glCode.value);
+      transactionDetails.AccountId = parseFloat(this.accountId.value);
+      transactionDetails.IntFlag = 0;
+
+      //payableGL
+      let payableGL = this.uiAllGeneralLedgers.filter((gl:any) =>gl.code == transactionDetails.Code1);
+      if (payableGL && payableGL.length) {
+        transactionDetails.IntCode1 = payableGL[0].glParameters.payableGL;
+      }
+      
+      transactionDetails.CDFlag = 2;  // 1 = CREDIT 2 = Debit
+      transactionDetails.CTFlag = 1;  // 1 = Cash 2 = Transfer
+      transactionDetails.Transaction_Amount = parseFloat(this.transactionAmount.value);
+      transactionDetails.Transaction_Narration = this.transactionDesc.value;
+      transactionSummary.TransactionDetails = [];
+      transactionSummary.TransactionDetails.push(transactionDetails);
+
+      transactionSummary.Denominations = [];
+      if (this.uiTransactionDenominations.length) {
+        this.uiTransactionDenominations.forEach((d: any) => {
+          let denomination = {} as IDenomination;
+          denomination.BranchCode = this._sharedService.applicationUser.branchId;
+          denomination.Denomination_id = d.denomination_id;
+          denomination.Scroll_Id = 0;
+          denomination.Denomination_Quantity = d.receiptNumber > 0 ? d.receiptNumber : d.paymentNumber;
+          denomination.denomination_type = d.receiptTotal > 0 ? 1 : 2;
+          transactionSummary.Denominations.push(denomination);
+        });
+      }
+
+      // get voucher number before saving transaction 
+      this.executeTransaction(transactionSummary);
+    }
+  }
+
+  executeTransaction(transactionSummary: ITransactionSummaryModel)
+  {
+    this._transactionMasterService.saveTransaction(transactionSummary).subscribe((data: any) => {
+      console.log(data);
+      if (data) {
+        if (data.data.data && data.data.data.retId > 0) {
+          if (data.data.data.status == "SUCCESS") {
+
+            let messages = [];
+            messages.push({ title: "Customer Name :", value: this.customerName.value });
+            messages.push({ title: "Token Number :", value: transactionSummary.VoucherNo });
+
+            this.messageNotes = messages;
+            this.messageBoxModal.open();
+
+            this.clearTransaction();
+
+            this._toastrService.success("Transaction done for Token : " + transactionSummary.VoucherNo, 'Success!');
+            this.configClick("counter-transactions");
+          }
+          else {
+            this._toastrService.success("Error saving account!", 'Error!');
+          }
+        }
       }
     })
   }
 
-  searchToken()
+  onTransactionConfirmed(isConfirmed: any)
   {
-    this.uiBankAccounts = [];
+    if (isConfirmed) {
+      window.location.reload();
+    }
   }
 
-  selectAccount(event:any)
-  {
-    
+
+  clearTransaction() {
+    this.counterPaymentForm.patchValue({
+      tokenId: "",
+      transactionAmount: "",
+      transactionDesc: "",
+      chequeNo: "",
+      chequeDate: "",
+      balanceAmountWillBe: "",
+      customerName: "",
+      accountNumber: "",
+      accountId: "",
+      glCode: "",
+      accountType: "",
+      modeOfOperation: "",
+      balance: "",
+      minBalance: "",
+      lastTransactionDate: "",
+      lastInterestDate: "",
+      openDate: "",
+      interestRate: "",
+      unclearedReceipt: "",
+      unclearedPayment: ""
+    });
   }
 
-  makeTransaction() {
-
+  configClick(routeValue: string) {
+    sessionStorage.setItem("configMenu", routeValue);
+    this.router.navigate(['/app/' + routeValue]);
   }
 
   get tokenId() {
@@ -122,6 +426,50 @@ export class CounterCashPaymentComponent implements OnInit {
 
   get chequeDate() {
     return this.counterPaymentForm.get('chequeDate')!;
+  }
+
+  get customerName() {
+    return this.counterPaymentForm.get('customerName')!;
+  }
+
+  get accountId() {
+    return this.counterPaymentForm.get('accountId')!;
+  }
+
+  get glCode() {
+    return this.counterPaymentForm.get('glCode')!;
+  }
+  
+  get accountType() {
+    return this.counterPaymentForm.get('accountType')!;
+  }
+  get modeOfOperation() {
+    return this.counterPaymentForm.get('modeOfOperation')!;
+  }
+  get balance() {
+    return this.counterPaymentForm.get('balance')!;
+  }
+  get minBalance() {
+    return this.counterPaymentForm.get('minBalance')!;
+  }
+
+  get unclearedReceipt() {
+    return this.counterPaymentForm.get('unclearedReceipt')!;
+  }
+  get unclearedPayment() {
+    return this.counterPaymentForm.get('unclearedPayment')!;
+  }
+  get lastTransactionDate() {
+    return this.counterPaymentForm.get('lastTransactionDate')!;
+  }
+  get lastInterestDate() {
+    return this.counterPaymentForm.get('lastInterestDate')!;
+  }
+  get openDate() {
+    return this.counterPaymentForm.get('openDate')!;
+  }
+  get interestRate() {
+    return this.counterPaymentForm.get('interestRate')!;
   }
 
 }

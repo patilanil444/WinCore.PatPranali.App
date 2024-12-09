@@ -107,7 +107,7 @@ export class BankAccSearchComponent implements OnInit {
                   this.accounts.emit(this.uiBankAccounts);
               }
               else {
-                this._toastrService.error('No accounts found', 'Warning!');
+                this._toastrService.error('No accounts found', 'Error!');
               }
             })
         }
