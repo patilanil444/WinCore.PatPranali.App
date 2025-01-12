@@ -10,9 +10,6 @@ import { BrowserAnimationsModule, provideAnimations } from '@angular/platform-br
 import { ToastrModule } from 'ngx-toastr';
 import { SpinnerComponent } from './common/spinner/spinner.component';
 import { LoaderInterceptor } from './common/interceptors/loader.interceptor';
-import { BankAccSearchComponent } from './common/directives/bank-acc-search/bank-acc-search.component';
-import { MessageBoxComponent } from './common/directives/message-box/message-box.component';
-import { PassingInfoComponent } from './screens/transactions/voucher-passing/passing-info/passing-info.component';
 
 @NgModule({
   declarations: [

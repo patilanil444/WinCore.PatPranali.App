@@ -36,4 +36,20 @@ export class TransactionMasterService {
     let options = GlobleDeclarations.getHeaderOptions();
     return this.http.post(GlobleDeclarations.apiBaseURL + "api/TransactionMaster/save-transaction", transactionModel, options);
   }
+
+  saveTransferTransactions(transactionModel: any): any {
+    let options = GlobleDeclarations.getHeaderOptions();
+    return this.http.post(GlobleDeclarations.apiBaseURL + "api/TransactionMaster/save-transfer-transaction", transactionModel, options);
+  }
+
+  updatePaymentTransaction(transactionModel: any): any {
+    let options = GlobleDeclarations.getHeaderOptions();
+    return this.http.post(GlobleDeclarations.apiBaseURL + "api/TransactionMaster/update-payment-transaction", transactionModel, options);
+  }
+
+  saveCashTransaction(transactionModel: any): any {
+    let options = GlobleDeclarations.getHeaderOptions();
+    return this.http.post(GlobleDeclarations.apiBaseURL + "api/TransactionMaster/save-cash-exchange", transactionModel, options);
+  }
+  
 }

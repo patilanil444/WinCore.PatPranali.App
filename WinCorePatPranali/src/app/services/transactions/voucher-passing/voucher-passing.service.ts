@@ -33,8 +33,18 @@ export class VoucherPassingService {
     return this.http.post(GlobleDeclarations.apiBaseURL + "api/TransactionMaster/voucher", voucherRequestModel , options);
   }
 
+  getTransferVoucher(voucherRequestModel: any): any {
+    let options = GlobleDeclarations.getHeaderOptions();
+    return this.http.post(GlobleDeclarations.apiBaseURL + "api/TransactionMaster/transfer-voucher", voucherRequestModel , options);
+  }
+
   passVoucher(voucherRequestModel: any): any {
     let options = GlobleDeclarations.getHeaderOptions();
     return this.http.post(GlobleDeclarations.apiBaseURL + "api/TransactionMaster/pass-voucher", voucherRequestModel , options);
+  }
+
+  passTransferVoucher(voucherRequestModel: any): any {
+    let options = GlobleDeclarations.getHeaderOptions();
+    return this.http.post(GlobleDeclarations.apiBaseURL + "api/TransactionMaster/pass-transfer-voucher", voucherRequestModel , options);
   }
 }

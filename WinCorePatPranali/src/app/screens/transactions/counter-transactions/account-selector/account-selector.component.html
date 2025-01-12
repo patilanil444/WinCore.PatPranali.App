@@ -1,0 +1,83 @@
+<div class="modal fade bd-example-modal-lg show" #accountSelectorModal tabindex="-1">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header" style="padding: 0.5rem 1rem !important;">
+                <h5 class="modal-title" id="accountSelectorModalTitle">Account Selector</h5>
+            </div>
+            <div class="modal-body">
+                <div class="col-md-12">
+                    <app-bank-acc-search [generalLedgers]="uiAllGeneralLedgers" [uiBranches]="uiBranches"
+                        [isReset]="isResetAccountSearch" (accounts)="getAccounts($event)"></app-bank-acc-search>
+
+                    <fieldset>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <label>Customer Name </label>
+                                <label style="float: right;">{{selectedAccount.customerName}}</label>
+                            </div>
+                            <div class="col-md-6">
+                                <label>Account Number </label>
+                                <label style="float: right;">{{selectedAccount.accountNumber}}</label>
+                            </div>
+                            <div class="col-md-6">
+                                <label>Account Type </label>
+                                <label style="float: right;">{{selectedAccount.accountType}}</label>
+                            </div>
+                            <div class="col-md-6">
+                                <label>Last Transaction Date </label>
+                                <label style="float: right;">{{selectedAccount.lastTransactionDate}}</label>
+                            </div>
+                            <div class="col-md-6">
+                                <label>Last Interest Date</label>
+                                <label style="float: right;">{{selectedAccount.lastInterestDate}}</label>
+                            </div>
+                            <div class="col-md-6">
+                                <label>Opening Date</label>
+                                <label style="float: right;">{{selectedAccount.openDate}}</label>
+                            </div>
+                            <div class="col-md-6">
+                                <label>Interest Rate </label>
+                                <label style="float: right;">{{selectedAccount.interestRate}}</label>
+                            </div>
+                            <div class="col-md-6">
+                                <label>Balance </label>
+                                <label style="float: right;">{{selectedAccount.balance}}</label>
+                            </div>
+                            <div class="col-md-6" [ngClass]="{'blink': (selectedAccount.unclearedReceipt > 0)}">
+                                <label>Uncleared Receipt Amount </label>
+                                <label style="float: right;">{{selectedAccount.unclearedReceipt}}</label>
+                            </div>
+                            <div class="col-md-6">
+                                <label>Min Balance </label>
+                                <label style="float: right;">{{selectedAccount.minBalance}}</label>
+                            </div>
+                            <div class="col-md-6" [ngClass]="{'blink': (selectedAccount.unclearedPayment > 0)}">
+                                <label>Uncleared Payment Amount </label>
+                                <label style="float: right;">{{selectedAccount.unclearedPayment}}</label>
+                            </div>
+                        </div>
+                    </fieldset>
+                    <div style="margin-top: 10px;">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <fieldset>
+                                    <div class="position-relative form-group">
+                                        <label class="">Amount</label>
+                                        <input tabindex="28" type="number" class="form-control" [(ngModel)]="selectedAccount.amount">
+                                    </div>
+                                </fieldset>
+                            </div>
+                            <div class="col-md-6">
+                                <button class="btn btn-primary" style="float: left;" tabindex="2" (click)="addAccount()">
+                                    Add Account</button>
+                    
+                                <button class="btn btn-danger btn-left-margin10" tabindex="2" (click)="close()">
+                                    Close</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

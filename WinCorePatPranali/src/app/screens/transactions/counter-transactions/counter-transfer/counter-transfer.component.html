@@ -1,0 +1,174 @@
+<form [formGroup]="transferCreditForm" #form="ngForm">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="tab-content">
+                <div class="row">
+                    <div class="col-md-12">
+                        <fieldset>
+                            <legend>Debit Accounts</legend>
+                            <div class="row">
+                                <div class="col-md-1">
+                                    <button class="btn btn-primary" style="float: left; margin-top: 10px;" tabindex="2" (click)="selectDebitAccount()">Add
+                                        Account</button>
+                                </div>
+                                <div class="col-md-11 customer-panel">
+                                    <table style="width: 100%;"
+                                        class="table table-hover table-striped table-bordered dataTable dtr-inline">
+                                        <thead>
+                                            <tr role="row">
+                                                <th style="width: 3%; padding: .25rem;">No</th>
+                                                <th style="width: 15%; padding: .25rem;">Customer</th>
+                                                <th style="width: 15%; padding: .25rem;">GL</th>
+                                                <th style="width: 10%; padding: .25rem;">A/C Number</th>
+                                                <th style="width: 10%; padding: .25rem;">Dr Amount</th>
+                                                <th style="width: 6%; padding: .25rem;">Int Flag</th>
+                                                <th style="width: 15%; padding: .25rem;">Int GL</th>
+                                                <th style="width: 6%; padding: .25rem;">CT Flag</th>
+                                                <th style="width: 15%; padding: .25rem;">Narration</th>
+                                                <th style="width: 5%; padding: .25rem;">Actions</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr role="row"
+                                                *ngFor="let uiDebitAccount of uiDebitAccounts; let ind=index">
+                                                <td>{{ind + 1}}</td>
+                                                <td>{{uiDebitAccount.customerName}}</td>
+                                                <td>{{uiDebitAccount.glName}}</td>
+                                                <td>{{uiDebitAccount.accountNumber}}</td>
+                                                <td>{{uiDebitAccount.amount}}</td>
+                                                <td>0</td>
+                                                <td>{{uiDebitAccount.payableGLName}}</td>
+                                                <td>{{uiDebitAccount.ctFlagText}}</td>
+                                                <td>{{uiDebitAccount.narration}}</td>
+                                                <td>
+                                                    <div class="widget-content-right">
+                                                        <button type="button" placeholder="Delete" (click)="deleteDebitAccount(ind)"
+                                                            class="btn-shadow btn btn-danger btn-actions">
+                                                            <span class="btn-icon-wrapper opacity-10">
+                                                                <i class="fa fa-trash fa-w-10"></i>
+                                                            </span>
+                                                        </button>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                            <tr *ngIf="uiDebitAccounts.length==0">
+                                                <td colspan="12">No accounts found..</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </fieldset>
+
+                        <fieldset>
+                            <legend>Transaction Balance</legend>
+                            <div class="row">
+                                <div class="col-md-2 position-relative form-group">
+                                    <label for="txtCode" class="">Debit Amount </label>
+                                    <input tabindex="28" type="number" class="form-control" readonly placeholder="Debit Amount"
+                                        formControlName="debitAmount">
+                                </div>
+                                <div class="col-md-2 position-relative form-group">
+                                    <label for="txtCode" class="">Cheque No </label>
+                                    <input tabindex="28" type="text" class="form-control" formControlName="chequeNo">
+                                </div>
+                                <div class="col-md-2 position-relative form-group">
+                                    <label for="txtCode" class="">Cheque Date </label>
+                                    <input tabindex="28" type="date" class="form-control" formControlName="chequeDate">
+                                </div>
+                                <div class="col-md-2 position-relative form-group">
+                                    <button class="btn btn-info" style="margin-top: 30px;">Customer Identity</button>
+                                </div>
+                                <div class="col-md-2 position-relative form-group">
+                                    <label for="txtCode" class="">Total Credit Amount</label>
+                                    <input tabindex="28" type="text" class="form-control" readonly
+                                        formControlName="creditAmount">
+                                </div>
+                                <div class="col-md-2 position-relative form-group">
+                                    <label for="txtCode" class="">Difference</label>
+                                    <input tabindex="28" type="text" class="form-control" readonly
+                                        formControlName="differenceAmount">
+                                </div>
+                            </div>
+                        </fieldset>
+
+                        <fieldset>
+                            <legend>Credit Accounts</legend>
+                            <div class="row">
+                                <div class="col-md-1">
+                                    <button class="btn btn-primary" style="float: left; margin-top: 10px;" tabindex="2" (click)="selectCreditAccount()">Add
+                                        Account</button>
+                                </div>
+                                <div class="col-md-11 customer-panel">
+                                    <table style="width: 100%;"
+                                        class="table table-hover table-striped table-bordered dataTable dtr-inline">
+                                        <thead>
+                                            <tr role="row">
+                                                <th style="width: 3%; padding: .25rem;">No</th>
+                                                <th style="width: 15%; padding: .25rem;">Customer</th>
+                                                <th style="width: 15%; padding: .25rem;">GL</th>
+                                                <th style="width: 10%; padding: .25rem;">A/C Number</th>
+                                                <th style="width: 10%; padding: .25rem;">Cr Amount</th>
+                                                <th style="width: 6%; padding: .25rem;">Int Flag</th>
+                                                <th style="width: 15%; padding: .25rem;">Int GL</th>
+                                                <th style="width: 6%; padding: .25rem;">CT Flag</th>
+                                                <th style="width: 15%; padding: .25rem;">Narration</th>
+                                                <th style="width: 5%; padding: .25rem;">Actions</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr role="row"
+                                                *ngFor="let uiCreditAccount of uiCreditAccounts; let ind=index">
+                                                <td>{{ind + 1}}</td>
+                                                <td>{{uiCreditAccount.customerName}}</td>
+                                                <td>{{uiCreditAccount.glName}}</td>
+                                                <td>{{uiCreditAccount.accountNumber}}</td>
+                                                <td>{{uiCreditAccount.amount}}</td>
+                                                <td>0</td>
+                                                <td>{{uiCreditAccount.payableGLName}}</td>
+                                                <td>{{uiCreditAccount.ctFlagText}}</td>
+                                                <td>{{uiCreditAccount.narration}}</td>
+                                                <td>
+                                                    <div class="widget-content-right">
+                                                        <button type="button" placeholder="Delete" (click)="deleteCreditAccount(ind)"
+                                                            class="btn-shadow btn btn-danger btn-actions">
+                                                            <span class="btn-icon-wrapper opacity-10">
+                                                                <i class="fa fa-trash fa-w-10"></i>
+                                                            </span>
+                                                        </button>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                            <tr *ngIf="uiCreditAccounts.length==0">
+                                                <td colspan="12">No accounts found..</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </fieldset>
+
+                        <div style="margin-top: 10px;">
+                            <button class="btn btn-primary" style="float: left;" tabindex="2"
+                                (click)="makeTransaction()">
+                                Finish Transaction</button>
+
+                            <button class="btn btn-danger btn-left-margin10" style="float: left;" tabindex="2"
+                                (click)="clearTransaction()">
+                                Clear</button>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+
+<app-account-selector #accountSelectorModal (account)="addAccount($event)"></app-account-selector>
+
+<app-confirm-box #confirmModal [messageNote]="messageNote" (onConfirm)="onConfirmed($event)">
+</app-confirm-box>
+
+<app-message-box #messageBoxModal [messageNotes]="messageNotes"
+    (onConfirm)="onTransactionConfirmed($event)"></app-message-box>

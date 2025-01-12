@@ -8,7 +8,7 @@
 
                 <ul class="nav nav-tabs">
                     <li class="nav-item">
-                        <a role="tab" class="nav-link active" id="tab-0" data-toggle="tab" href="#tab-content-0">
+                        <a role="tab" class="nav-link active" id="tab-0" data-toggle="tab" href="#tab-content-0" (click)="loadSummary()">
                             <span>Transactions Summary</span>
                         </a>
                     </li>
@@ -19,13 +19,7 @@
                     </li>
                     <li class="nav-item">
                         <a role="tab" class="nav-link" id="tab-0" data-toggle="tab" href="#tab-content-2">
-                            <span>Transfer - Credit</span>
-                        </a>
-                    </li>
-
-                    <li class="nav-item">
-                        <a role="tab" class="nav-link" id="tab-2" data-toggle="tab" href="#tab-content-3">
-                            <span>Transfer - Debit</span>
+                            <span>Transfer Payment</span>
                         </a>
                     </li>
                 </ul>
@@ -34,71 +28,76 @@
                     <div class="tab-pane tabs-animation fade show active" id="tab-content-0" role="tabpanel">
                         <fieldset>
                             <legend>Summary</legend>
-                            <div class="row">
-                                <div class="col-md-3 position-relative form-group">
-                                    <label for="txtCode" class="">Todays Voucher Amount </label>
-                                    <input tabindex="28" type="text" class="form-control" placeholder="Total Receipt Cash">
-                                </div>
-                                <div class="col-md-3 position-relative form-group">
-                                    <label for="txtCode" class="">Todays Pending Amount </label>
-                                    <input tabindex="28" type="text" class="form-control" placeholder="Total Payment Cash">
-                                </div>
-                                <!-- <div class="col-md-3 position-relative form-group">
-                                    <button class="btn btn-focus" style="margin-top:30px;" tabindex="2" data-toggle="modal"
-                                        data-target="#statusDenominationModel"> Approve</button>
-                                </div> -->
-                                <div class="customer-panel">
-                                    <table style="width: 100%;"
+                            <form [formGroup]="counterSummaryForm" #form="ngForm">
+                                <div class="row">
+                                    <div class="col-md-3 position-relative form-group">
+                                        <label for="txtCode" class="">Todays Voucher Amount </label>
+                                        <input tabindex="28" type="text" class="form-control" placeholder="Total Receipt Cash"
+                                        formControlName="totalPayment">
+                                    </div>
+                                    <div class="col-md-3 position-relative form-group">
+                                        <label for="txtCode" class="">Todays Pending Amount </label>
+                                        <input tabindex="28" type="text" class="form-control" placeholder="Total Payment Cash"
+                                        formControlName="pendingPayment">
+                                    </div>
+                                    <!-- <div class="col-md-3 position-relative form-group">
+                                        <button class="btn btn-focus" style="margin-top:30px;" tabindex="2" data-toggle="modal"
+                                            data-target="#statusDenominationModel"> Approve</button>
+                                    </div> -->
+                                    <div class="customer-panel">
+                                        <table style="width: 100%; margin-top: 15px;"
                                         class="table table-hover table-striped table-bordered dataTable dtr-inline">
                                         <thead>
                                             <tr role="row">
-                                                <th style="width: 10%; padding: .25rem;">GL</th>
+                                                <th style="width: 5%; padding: .25rem;">S. No</th>
+                                                <th style="width: 8%; padding: .25rem;">Voucher No</th>
+                                                <th style="width: 20%; padding: .25rem;">Customer</th>
+                                                <th style="width: 20%; padding: .25rem;">GL</th>
                                                 <th style="width: 10%; padding: .25rem;">A/C Number</th>
-                                                <th style="width: 10%; padding: .25rem;">Name</th>
-                                                <th style="width: 10%; padding: .25rem;">Credit Amount</th>
-                                                <th style="width: 10%; padding: .25rem;">Debit Amount</th>
-                                                <th style="width: 10%; padding: .25rem;">Int Flag</th>
-                                                <th style="width: 10%; padding: .25rem;">Int GL</th>
-                                                <th style="width: 10%; padding: .25rem;">CT Flag</th>
-                                                <th style="width: 10%; padding: .25rem;">Narration</th>
-                                                <th style="width: 10%; padding: .25rem;">Actions</th>
+                                                <th style="width: 9%; padding: .25rem;">Amount</th>
+                                                <!-- <th style="width: 10%; padding: .25rem;">Int GL</th> -->
+                                                <th style="width: 8%; padding: .25rem;">CD Flag</th>
+                                                <th style="width: 15%; padding: .25rem;">Narration</th>
+                                                <th style="width: 5%; padding: .25rem;">Actions</th>
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            <tr role="row" class="odd">
-                                                <td></td>
-                                                <td></td>
-                                                <td></td>
-                                                <td></td>
-                                                <td></td>
-                                                <td></td>
-                                                <td></td>
-                                                <td></td>
-                                                <td></td>
-                                                <td>
-                                                    <!-- <div class="badge"
-                                                        [ngClass]="{'badge-danger': (uiSavingAccount.status==='Freeze'|| uiSavingAccount.status==='Closed'), 'badge-success' : uiSavingAccount.status=== 'Open', 'badge-warning' : uiSavingAccount.status=== 'Dormant'}">
-                                                        {{uiSavingAccount.status}}
-                                                    </div> -->
-                                                </td>
+                                            <tr role="row"  *ngFor="let transaction of pendingTransactions; let ind=index">
+                                                <td>{{ind + 1}}</td>
+                                                <td>{{transaction.VoucherNo}}</td>
+                                                <td>{{transaction.CustomerName}}</td>
+                                                <td>{{transaction.GL}}</td>
+                                                <td>{{transaction.AccountNumber}}</td>
+                                                <td>{{transaction.Amount}}</td>
+                                                <!-- <td>{{transaction.title}}</td> -->
+                                                <td>{{transaction.CDFlag}}</td>
+                                                <td>{{transaction.Narration}}</td>
+                                                <td><div class="widget-content-right">
+                                                    <button type="button" placeholder="View Details"
+                                                        class="btn-shadow btn btn-info btn-actions">
+                                                        <span class="btn-icon-wrapper opacity-10">
+                                                            <i class="fa fa-info fa-w-10"></i>
+                                                        </span>
+                                                    </button>
+                                                </div>
+                                            </td>
                                             </tr>
-                                            <!-- <tr *ngIf="uiSavingAccounts.length==0">
-                                                <td colspan="4">No records..</td>
-                                            </tr> -->
+                                            <tr *ngIf="pendingTransactions.length==0">
+                                                <td colspan="9">No transactions found..</td>
+                                            </tr>
                                         </tbody>
                                     </table>
+                                    </div>
                                 </div>
-                            </div>
+                            </form>
+                            
                         </fieldset>
                     </div>
                     <div class="tab-pane tabs-animation fade show" id="tab-content-1" role="tabpanel">
                         <app-counter-cash-payment></app-counter-cash-payment>
                     </div>
                     <div class="tab-pane tabs-animation fade show" id="tab-content-2" role="tabpanel">
-                        <app-counter-transfer-credit></app-counter-transfer-credit>
-                    </div>
-                    <div class="tab-pane tabs-animation fade" id="tab-content-3" role="tabpanel">
-                       <app-counter-transfer-debit></app-counter-transfer-debit>
+                        <app-counter-transfer></app-counter-transfer>
                     </div>
                 </div>
             </div>

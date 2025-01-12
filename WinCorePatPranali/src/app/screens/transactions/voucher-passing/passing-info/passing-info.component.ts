@@ -10,6 +10,7 @@ export class PassingInfoComponent implements OnInit {
   uiBankAccount: any = {};
   uiVoucherTransactionSummary: any={};
   uiVoucherTransactionDetails: any={};
+  branchName: string = "";
   @ViewChild('passingInfoModel', {static: false}) modal: ElementRef;
   
   constructor() { }
@@ -19,18 +20,27 @@ export class PassingInfoComponent implements OnInit {
   }
 
 
-  setAccountDetails(accountsData: any, voucherTransactionSummary: any) {
+  setAccountDetails(branchName: string, accountsData: any, voucherTransactionSummary: any) {
+    this.branchName = branchName;
     let bankAccounts = accountsData;
     if (bankAccounts && bankAccounts.length) {
       this.uiBankAccount = bankAccounts[0];
-      
     }
     if (voucherTransactionSummary) {
+
+      
+
       this.uiVoucherTransactionSummary = voucherTransactionSummary;
       this.uiVoucherTransactionDetails = voucherTransactionSummary.transactionDetails[0];
     }
     if (this.uiBankAccount && this.uiVoucherTransactionDetails) {
-      this.uiBankAccount.nextBalance = parseFloat(this.uiBankAccount.balance) + parseFloat(this.uiVoucherTransactionDetails.transaction_Amount)
+      if (voucherTransactionSummary.voucherType == 1) {
+        this.uiBankAccount.nextBalance = parseFloat(this.uiBankAccount.balance) + parseFloat(this.uiVoucherTransactionDetails.transaction_Amount)
+      }
+      else
+      {
+        this.uiBankAccount.nextBalance = parseFloat(this.uiBankAccount.balance) - parseFloat(this.uiVoucherTransactionDetails.transaction_Amount)
+      }
     }
   }
 

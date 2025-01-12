@@ -24,20 +24,20 @@
                         <div class="row">
                             <div class="col-md-3 position-relative form-group">
                                 <label for="txtCode" class="">Voucher Amount </label>
-                                <input tabindex="28" type="text" class="form-control" placeholder="Voucher Amount" 
+                                <input tabindex="28" type="text" class="form-control" placeholder="0" 
                                 readonly formControlName="voucherAmount">
                             </div>
                             <div class="col-md-3 position-relative form-group">
                                 <label for="txtCode" class="">Grid Amount </label>
-                                <input tabindex="28" type="text" class="form-control" placeholder="Grid Amount" 
+                                <input tabindex="28" type="text" class="form-control" placeholder="0" 
                                 readonly formControlName="gridAmount">
                             </div>
                             <div class="col-md-6 position-relative form-group">
                                 <button class="btn btn-info" tabindex="2" style="margin-top: 30px;"
                                     (click)="viewVoucherDetails()">View Details</button>
-                                <button class="btn btn-success" tabindex="2"  (click)="passVoucher(true)"
+                                <button class="btn btn-success" tabindex="2"  (click)="passVoucher(false)"
                                 style=" margin-left: 30px; margin-top: 30px;"> Accept</button>
-                                <button class="btn btn-danger" tabindex="2" (click)="passVoucher(false)"
+                                <button class="btn btn-danger" tabindex="2" (click)="passVoucher(true)"
                                     style="margin-top: 30px; margin-left: 30px;"> Reject</button>
                             </div>
 

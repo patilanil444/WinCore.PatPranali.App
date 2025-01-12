@@ -7,7 +7,7 @@
                         <fieldset>
                             <legend>Search Account</legend>
                             <app-bank-acc-search [generalLedgers]="uiFilteredGeneralLedgers" [uiBranches]="uiBranches"
-                                (accounts)="getAccounts($event)"></app-bank-acc-search>
+                            [isReset]="isResetAccountSearch"  (accounts)="getAccounts($event)"></app-bank-acc-search>
                                 
                         </fieldset>
                     </div>
@@ -41,6 +41,7 @@
                             </div>
                             
                             <label style="font-weight: bold;">Denominations</label>
+
                             <div class="col-md-12">
                                 <div class="row">
                                     <table style="width: 100%;"
@@ -72,23 +73,21 @@
                                     </table>
                                 </div>
                             </div>
-                            <div class="col-md-12">
-                                <div class="row">
-                                    <div class="col-md-6">
-                                        <button class="btn btn-info">
-                                            Customer Identity</button>
-                                    </div>
 
-                                    <div class="col-md-6">
-                                        <button class="btn btn-danger btn btn-left-margin10" style="float: right;" tabindex="2"
-                                            (click)="clearTransaction()">
-                                            Clear</button>
-                                        <button class="btn btn-primary btn" tabindex="2" (click)="makeTransaction()" style="float: right;">
-                                            Finish Transaction</button>
-                                    </div>
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <button class="btn btn-info">
+                                        Customer Identity</button>
                                 </div>
                             </div>
                         </fieldset>
+                        <div style="margin-top: 10px;">
+                            <button class="btn btn-primary btn" tabindex="2" (click)="makeTransaction()" style="float: left;">
+                                Finish Transaction</button>
+                        
+                            <button class="btn btn-danger btn btn-left-margin10" style="float: left;" tabindex="2" (click)="clearTransaction()">
+                                Clear</button>
+                        </div>
                     </div>
 
                     <div class="col-md-4">
@@ -143,14 +142,13 @@
 
                         </fieldset>
                     </div>
-
                 </div>
             </div>
         </div>
     </div>
 </form>
 
-<app-denominations #denominationModal [denominationAmount]="receiptAmount.value" [isReceiptTransaction]="true"
+<app-denominations #denominationModal [denominationAmount]="receiptAmount.value" [transactionType]="transactionType"
     (addedDenominations)="setDenominations($event)"></app-denominations>
 
 <app-message-box #messageBoxModal [messageNotes]="messageNotes"

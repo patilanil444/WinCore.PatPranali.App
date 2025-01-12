@@ -45,6 +45,19 @@ export class BankAccSearchComponent implements OnInit {
     }
   }
 
+  @Input() set isReset(value: boolean) {
+    this._isReset = value;
+    if (this._isReset) {
+      this.bankAccSearchForm.patchValue({
+        branchId: this._uiBranches[0].branchCode,
+        generalLedger: "",
+        accountNumberSearch: ""
+      })
+    }
+  }
+
+ 
+
   get uiBranches() {
     return this._uiBranches;
   }
@@ -58,6 +71,7 @@ export class BankAccSearchComponent implements OnInit {
 
   private _uiBranches: any[] = [];
   private _uiGeneralLedger: any[] = [];
+  private _isReset: boolean = false;
   uiBankAccounts: any[] = [];
 
   constructor(private _toastrService: ToastrService, private _sharedService: SharedService,
@@ -102,6 +116,7 @@ export class BankAccSearchComponent implements OnInit {
                     lastInterestDate: formatDate(new Date(acc.lastInterestDate), 'yyyy-MM-dd', 'en'),
                     balance: parseFloat(acc.balance).toFixed(2),
                     minBalance: parseFloat(acc.minBalance).toFixed(2),
+                    code1: this.generalLedger.value.code
                   }))
 
                   this.accounts.emit(this.uiBankAccounts);

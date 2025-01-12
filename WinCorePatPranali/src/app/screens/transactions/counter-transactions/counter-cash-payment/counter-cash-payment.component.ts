@@ -69,6 +69,7 @@ export class CounterCashPaymentComponent implements OnInit {
   messageNotes : any = [];
 
   uiBankAccount: any = [];
+  isResetAccountSearch: boolean = false;
 
   @ViewChild('denominationModal', {static: false}) denominationsModal: DenominationsComponent
 
@@ -103,8 +104,6 @@ export class CounterCashPaymentComponent implements OnInit {
     });
 
     this.getVoucherNumber();
-
-
     this.getBranches();
     this.getGeneralLedgers();
   }
@@ -119,19 +118,7 @@ export class CounterCashPaymentComponent implements OnInit {
           this.counterPaymentForm.patchValue({
             tokenId: data.data.data,
           });
-
-          // Show Pop up modal here and confirm transaction 
-
-          // let messages = [];
-          // messages.push({ title: "Customer Name :", value: this.customerName.value });
-          // messages.push({ title: "Voucher Number :", value: data.data.data });
-
-          // this.messageNotes = messages;
-          // this.messageBoxModal.open();
-
-          //transactionSummary.VoucherNo = data.data.data;
-          //this.executeTransaction(transactionSummary);
-          //this.clearTransaction();
+         
         }
       }
     })
@@ -223,9 +210,19 @@ export class CounterCashPaymentComponent implements OnInit {
   {
     if (event) {
       let balance = isNaN(parseFloat(this.balance.value)) ? 0 : parseFloat(this.balance.value);
+      let balanceWillBe = parseFloat((balance - parseFloat(event.target.value)).toFixed(2));
       this.counterPaymentForm.patchValue({
-        balanceAmountWillBe: (balance + parseFloat(event.target.value)).toFixed(2)
+        balanceAmountWillBe: balanceWillBe
       })
+
+      if (balanceWillBe < 0) {
+        this._toastrService.error("Transaction cannot be done with negative balance.", 'Error!');
+      }
+
+      let minBalance = isNaN(parseFloat(this.minBalance.value)) ? 0 : parseFloat(this.minBalance.value);
+      if (balanceWillBe < minBalance) {
+        this._toastrService.error("Transaction cannot be made below minimum balance.", 'Error!');
+      }
     }
   }
 
@@ -251,21 +248,30 @@ export class CounterCashPaymentComponent implements OnInit {
   isValidateTransaction() {
     if (parseInt(this.accountId.value) > 0) {
       if (parseInt(this.transactionAmount.value) > 0) {
-        if (this.uiTransactionDenominations && this.uiTransactionDenominations.length) {
-          return true;
+        let balance = isNaN(parseFloat(this.balance.value)) ? 0 : parseFloat(this.balance.value);
+        let balanceWillBe = parseFloat((balance - parseFloat(this.transactionAmount.value)).toFixed(2));
+        if (balanceWillBe < 0) {
+          this._toastrService.error("Transaction cannot be done with negative balance.", 'Error!');
+          return false;
         }
-        else {
-          this._toastrService.warning('Please add denominations.', 'Warning!');
+  
+        let minBalance = isNaN(parseFloat(this.minBalance.value)) ? 0 : parseFloat(this.minBalance.value);
+        if (balanceWillBe < minBalance) {
+          this._toastrService.error("Transaction cannot be made below minimum balance.", 'Error!');
+          return false;
         }
+
+        return true;
       }
       else {
         this._toastrService.warning('Please enter valid transaction amount.', 'Warning!');
+        return false;
       }
     }
     else {
       this._toastrService.warning('Please search account for transaction.', 'Warning!');
+      return false;
     }
-    return false;
   }
 
   makeTransaction() {
@@ -344,10 +350,10 @@ export class CounterCashPaymentComponent implements OnInit {
             this.clearTransaction();
 
             this._toastrService.success("Transaction done for Token : " + transactionSummary.VoucherNo, 'Success!');
-            this.configClick("counter-transactions");
+            //this.configClick("counter-transactions");
           }
           else {
-            this._toastrService.success("Error saving account!", 'Error!');
+            this._toastrService.error("Error saving transaction!", 'Error!');
           }
         }
       }
@@ -356,17 +362,19 @@ export class CounterCashPaymentComponent implements OnInit {
 
   onTransactionConfirmed(isConfirmed: any)
   {
-    if (isConfirmed) {
-      window.location.reload();
-    }
+    // if (isConfirmed) {
+    //   window.location.reload();
+    // }
   }
 
 
   clearTransaction() {
+    this.isResetAccountSearch = true;
+    this.uiTransactionDenominations = [];
     this.counterPaymentForm.patchValue({
       tokenId: "",
       transactionAmount: "",
-      transactionDesc: "",
+      transactionDesc: "To Cash",
       chequeNo: "",
       chequeDate: "",
       balanceAmountWillBe: "",

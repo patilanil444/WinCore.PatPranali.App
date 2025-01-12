@@ -592,6 +592,20 @@
                                         Vouchers Passing 
                                     </a>
                                 </li>
+                                <li>
+                                    <a [class.mm-active]="isMenuSelected('pending-vouchers')"
+                                        (click)="configClick('pending-vouchers')">
+                                        <i class="metismenu-icon pe-7s-note2"></i>
+                                        Pending Vouchers  
+                                    </a>
+                                </li>
+                                <li>
+                                    <a [class.mm-active]="isMenuSelected('work-starting')"
+                                        (click)="configClick('work-starting')">
+                                        <i class="metismenu-icon pe-7s-note2"></i>
+                                        Starting of Work  
+                                    </a>
+                                </li>
                                 <!-- <li>
                                     <a [class.mm-active]="isMenuSelected('saving-transactions')"
                                         (click)="configClick('saving-transactions')">

@@ -72,17 +72,17 @@ import { CashierCashPaymentComponent } from '../screens/transactions/cashier-tra
 import { CashierCashExchangeComponent } from '../screens/transactions/cashier-transactions/cashier-cash-exchange/cashier-cash-exchange.component';
 import { CounterCashPaymentComponent } from '../screens/transactions/counter-transactions/counter-cash-payment/counter-cash-payment.component';
 import { CounterTransactionSummaryComponent } from '../screens/transactions/counter-transactions/counter-transaction-summary/counter-transaction-summary.component';
-import { CounterTransferDebitComponent } from '../screens/transactions/counter-transactions/counter-transfer-debit/counter-transfer-debit.component';
-import { CounterTransferCreditComponent } from '../screens/transactions/counter-transactions/counter-transfer-credit/counter-transfer-credit.component';
 import { CashVoucherPassingComponent } from '../screens/transactions/voucher-passing/cash-voucher-passing/cash-voucher-passing.component';
 import { TransferVoucherPassingComponent } from '../screens/transactions/voucher-passing/transfer-voucher-passing/transfer-voucher-passing.component';
 import { OverdraftAllotmentComponent } from '../screens/transactions/voucher-passing/overdraft-allotment/overdraft-allotment.component';
 import { ChequeBookPassingComponent } from '../screens/transactions/voucher-passing/cheque-book-passing/cheque-book-passing.component';
 import { VoucherPassingSummaryComponent } from '../screens/transactions/voucher-passing/voucher-passing-summary/voucher-passing-summary.component';
 import { BankAccSearchComponent } from '../common/directives/bank-acc-search/bank-acc-search.component';
-import { BrowserModule } from '@angular/platform-browser';
 import { MessageBoxComponent } from '../common/directives/message-box/message-box.component';
 import { PassingInfoComponent } from '../screens/transactions/voucher-passing/passing-info/passing-info.component';
+import { CounterTransferComponent } from '../screens/transactions/counter-transactions/counter-transfer/counter-transfer.component';
+import { AccountSelectorComponent } from '../screens/transactions/counter-transactions/account-selector/account-selector.component';
+import { ConfirmBoxComponent } from '../common/directives/confirm-box/confirm-box.component';
 
 @NgModule({
   declarations: [
@@ -153,8 +153,7 @@ import { PassingInfoComponent } from '../screens/transactions/voucher-passing/pa
     CounterCashPaymentComponent,
     CounterTransactionSummaryComponent,
     CounterCashPaymentComponent,
-    CounterTransferCreditComponent,
-    CounterTransferDebitComponent,
+    CounterTransferComponent,
     CashVoucherPassingComponent,
     TransferVoucherPassingComponent,
     OverdraftAllotmentComponent,
@@ -163,6 +162,8 @@ import { PassingInfoComponent } from '../screens/transactions/voucher-passing/pa
     BankAccSearchComponent,
     MessageBoxComponent,
     PassingInfoComponent,
+    AccountSelectorComponent,
+    ConfirmBoxComponent,
   ],
   imports: [
     CommonModule,

@@ -41,6 +41,11 @@ export class CashierTransactionSummaryComponent implements OnInit {
 
   }
 
+  loadSummary()
+  {
+    this.getDailyCashierSummary();
+  }
+
   getDailyCashierSummary() {
     this._cashierTransactionsService.getCashierDailyTransactionSummary(this._sharedService.applicationUser.branchId,
       this._sharedService.applicationUser.userName).subscribe((data: any) => {
@@ -54,7 +59,7 @@ export class CashierTransactionSummaryComponent implements OnInit {
             transaction.Narration = t.transactionNarration;
             if (t.transactionDetails && t.transactionDetails.length) {
               transaction.AccountNumber = t.transactionDetails[0].accountNumber;
-              transaction.CDFlag = t.transactionDetails[0].cdFlag;
+              transaction.CDFlag = t.voucherType == 1 ? "Credit": "Debit";
               transaction.CustomerName = t.transactionDetails[0].customerName;
               transaction.GL = t.transactionDetails[0].glName;
             }

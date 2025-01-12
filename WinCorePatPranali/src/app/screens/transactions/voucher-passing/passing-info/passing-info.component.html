@@ -14,17 +14,17 @@
                         <div class="tab-content">
                             <div class="row">
 
-                                <div class="col-md-3 position-relative form-group">
+                                <div class="col-md-4 position-relative form-group">
                                     <label for="txtCode" class="">Branch </label>
                                     <input tabindex="28" type="text" class="form-control" placeholder="Branch" readonly
-                                    [value]="uiVoucherTransactionSummary.branchCode">
+                                    [(ngModel)]="branchName">
                                 </div>
-                                <div class="col-md-3 position-relative form-group">
+                                <div class="col-md-4 position-relative form-group">
                                     <label for="txtCode" class="">General Ledger </label>
                                     <input tabindex="28" type="text" class="form-control" readonly
                                         placeholder="General Ledger" [(ngModel)]="uiVoucherTransactionDetails.glName">
                                 </div>
-                                <div class="col-md-3 position-relative form-group">
+                                <div class="col-md-4 position-relative form-group">
                                     <label for="txtCode" class="">Account Number </label>
                                     <input tabindex="28" type="text" class="form-control" readonly
                                         placeholder="Account Number" [(ngModel)]="uiVoucherTransactionDetails.accountNumber">

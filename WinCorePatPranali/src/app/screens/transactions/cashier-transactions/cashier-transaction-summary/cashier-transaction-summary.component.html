@@ -8,7 +8,7 @@
 
                 <ul class="nav nav-tabs">
                     <li class="nav-item">
-                        <a role="tab" class="nav-link active" id="tab-0" data-toggle="tab" href="#tab-content-0">
+                        <a role="tab" class="nav-link active" id="tab-0" data-toggle="tab" href="#tab-content-0" (click)="loadSummary()">
                             <span>Transactions Summary</span>
                         </a>
                     </li>
@@ -86,11 +86,12 @@
                                             class="table table-hover table-striped table-bordered dataTable dtr-inline">
                                             <thead>
                                                 <tr role="row">
-                                                    <th style="width: 7%; padding: .25rem;">Voucher</th>
+                                                    <th style="width: 5%; padding: .25rem;">S. No</th>
+                                                    <th style="width: 8%; padding: .25rem;">Voucher No</th>
                                                     <th style="width: 20%; padding: .25rem;">Customer</th>
                                                     <th style="width: 20%; padding: .25rem;">GL</th>
-                                                    <th style="width: 15%; padding: .25rem;">A/C Number</th>
-                                                    <th style="width: 10%; padding: .25rem;">Amount</th>
+                                                    <th style="width: 10%; padding: .25rem;">A/C Number</th>
+                                                    <th style="width: 9%; padding: .25rem;">Amount</th>
                                                     <!-- <th style="width: 10%; padding: .25rem;">Int GL</th> -->
                                                     <th style="width: 8%; padding: .25rem;">CD Flag</th>
                                                     <th style="width: 15%; padding: .25rem;">Narration</th>
@@ -99,6 +100,7 @@
                                             </thead>
                                             <tbody>
                                                 <tr role="row"  *ngFor="let transaction of pendingTransactions; let ind=index">
+                                                    <td>{{ind + 1}}</td>
                                                     <td>{{transaction.VoucherNo}}</td>
                                                     <td>{{transaction.CustomerName}}</td>
                                                     <td>{{transaction.GL}}</td>
@@ -118,7 +120,7 @@
                                                 </td>
                                                 </tr>
                                                 <tr *ngIf="pendingTransactions.length==0">
-                                                    <td colspan="8">No transactions found..</td>
+                                                    <td colspan="9">No transactions found..</td>
                                                 </tr>
                                             </tbody>
                                         </table>

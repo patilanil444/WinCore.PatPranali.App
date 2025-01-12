@@ -9,6 +9,7 @@ import { AccountsService } from 'src/app/services/accounts/accounts/accounts.ser
 import { SharedService } from 'src/app/services/shared.service';
 import { VoucherPassingService } from 'src/app/services/transactions/voucher-passing/voucher-passing.service';
 import { PassingInfoComponent } from '../passing-info/passing-info.component';
+import { BranchMasterService } from 'src/app/services/masters/branch-master/branch-master.service';
 
 @Component({
   selector: 'app-cash-voucher-passing',
@@ -28,11 +29,13 @@ export class CashVoucherPassingComponent implements OnInit {
   uiModeOfOperations : any[] = [];
 
   uiVoucherDetails : any[] = [];
+  uiBranches: any = [];
 
   @ViewChild('passingInfoModel', {static: false}) passingInfoModel: PassingInfoComponent
 
   constructor(private router: Router, private _toastrService: ToastrService, private _sharedService: SharedService,
-    private _voucherPassingService: VoucherPassingService, private _accountsService: AccountsService
+    private _voucherPassingService: VoucherPassingService, private _accountsService: AccountsService, 
+    private _branchMasterService: BranchMasterService,
   ) { }
 
   ngOnInit(): void {
@@ -60,10 +63,19 @@ export class CashVoucherPassingComponent implements OnInit {
       // lastInterestDate: new FormControl("", []),
       // openDate: new FormControl("", []),
       // interestRate : new FormControl("", [])
+
+     
     });
 
     this.uiAccountTypes = this.retrieveMasters(UiEnumGeneralMaster.ACTYPE);
     this.uiModeOfOperations = this.retrieveMasters(UiEnumGeneralMaster.OPRMODE);
+    this.getBranches();
+  }
+
+  getBranches() {
+    this._branchMasterService.getBranches().subscribe((data: any) => {
+      this.uiBranches = data.data.data;
+    })
   }
 
   retrieveMasters(uiEnumGeneralMaster: UiEnumGeneralMaster) {
@@ -82,7 +94,8 @@ export class CashVoucherPassingComponent implements OnInit {
       let voucherRequestModel = {
         VoucherNo: parseInt(this.voucherNumber.value),
         CDFlag: this.transactionType.value === "R"? 1: 2,
-        UserName: this._sharedService.applicationUser.userName
+        UserName: this._sharedService.applicationUser.userName,
+        IsPassing: true
       };
 
       this._voucherPassingService.getVoucher(voucherRequestModel).subscribe((data: any) => {
@@ -113,6 +126,7 @@ export class CashVoucherPassingComponent implements OnInit {
                 this.uiVoucherDetails.push(details);
               });
 
+             
           }
           else if(voucherModel.statusCode == 1)
           {
@@ -153,7 +167,13 @@ export class CashVoucherPassingComponent implements OnInit {
                   minBalance: parseFloat(acc.minBalance).toFixed(2),
                 }))
     
-                this.passingInfoModel.setAccountDetails(this.uiBankAccounts, this.voucherTransactionSummary);
+                let branchName = "";
+                let branch = this.uiBranches.filter((b: any) => b.branchCode == this.voucherTransactionSummary.branchCode);
+                if (branch && branch.length) {
+                  branchName = branch[0].branchName
+                }
+
+                this.passingInfoModel.setAccountDetails(branchName, this.uiBankAccounts, this.voucherTransactionSummary);
                 this.passingInfoModel.open();
             }
             else {
@@ -176,7 +196,8 @@ export class CashVoucherPassingComponent implements OnInit {
       if (this.transactionHeadId.value && this.transactionHeadId.value) {
         let passVoucherRequestModel = {
           TransactionHeadId: parseInt(this.transactionHeadId.value),
-          IsRejected: isRejected
+          IsRejected: isRejected,
+          PassedByUser: this._sharedService.applicationUser.userName
         };
 
         this._voucherPassingService.passVoucher(passVoucherRequestModel).subscribe((data: any) => {

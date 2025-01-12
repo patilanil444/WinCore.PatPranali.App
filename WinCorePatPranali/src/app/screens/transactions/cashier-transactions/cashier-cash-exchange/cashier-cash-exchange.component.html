@@ -1,36 +1,51 @@
-
-<div class="col-md-12">
-    <div class="row">
-        <div class="col-md-3 position-relative form-group">
-            <label for="txtCode" class="">Exchange Amount</label>
-            <input tabindex="28" type="number" class="form-control"
-                formControlName="balanceWillBe">
-        </div>
-        <div class="col-md-3 position-relative form-group" style="margin-top: 30px;">
-            <button class="btn btn-success" tabindex="2" data-toggle="modal" 
-            data-target="#exchangeDenominationModel"> Denomination</button>
-            <button class="btn btn-primary btn btn-left-margin10" tabindex="2" (click)="makeTransaction()">
-                Finish</button>
-        </div>
-        <div class="col-md-6 position-relative form-group">
-            <label for="txtCode" class="">Denomination</label>
+<form [formGroup]="cashExchangeForm" #form="ngForm">
+    <div class="col-md-12">
+        <div class="row">
+            <div class="col-md-3 position-relative form-group">
+                <label for="txtCode" class="">Exchange Amount</label>
+                <input tabindex="28" type="number" class="form-control" formControlName="receiptAmount">
+            </div>
+            <div class="col-md-3 position-relative form-group" style="margin-top: 30px;">
+                <button class="btn btn-success" tabindex="2" data-toggle="modal"
+                (click)="openDenominations()"> Denomination</button>
+                <button class="btn btn-primary btn btn-left-margin10" tabindex="2" (click)="makeTransaction()">
+                    Finish</button>
+            </div>
+            <div class="col-md-6 position-relative form-group">
+                <label style="font-weight: bold;">Denominations</label>
+                <div class="col-md-12">
+                    <div class="row">
+                        <table style="width: 100%;" class="table table-hover table-bordered dataTable dtr-inline">
+                            <thead>
+                                <tr role="row">
+                                    <th style="width: 5%;">Nos</th>
+                                    <th style="width: 15%;">Denomination</th>
+                                    <th style="width: 20%;">Number (Receipt)</th>
+                                    <th style="width: 20%;">Receipt Total</th>
+                                    <th style="width: 20%;">Number (Payment)</th>
+                                    <th style="width: 17%;">Payment Total</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr role="row"
+                                    *ngFor="let uiTransactionDenomination of uiTransactionDenominations; let ind=index">
+                                    <td>{{ind + 1}}</td>
+                                    <td>{{uiTransactionDenomination.denomination_Label}}</td>
+                                    <td>{{uiTransactionDenomination.receiptNumber}}</td>
+                                    <td>{{uiTransactionDenomination.receiptTotal}}</td>
+                                    <td>{{uiTransactionDenomination.paymentNumber}}</td>
+                                    <td>{{uiTransactionDenomination.paymentTotal}}</td>
+                                </tr>
+                                <tr *ngIf="uiTransactionDenominations.length==0">
+                                    <td colspan="9">No denominations found..</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
-</div>
-
-<div class="modal fade bd-example-modal-lg show" id="exchangeDenominationModel" tabindex="-1" role="dialog" 
-        aria-labelledby="denominationModelTitle" aria-hidden="true" data-backdrop="false">
-    <div class="modal-dialog modal-lg">
-        <div class="modal-content">
-            <div class="modal-header" style="padding: 0.5rem 1rem !important;">
-                <h5 class="modal-title" id="denominationModelTitle">Denomination</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">×</span>
-                </button>
-            </div>
-            <div class="modal-body">
-               <app-denominations></app-denominations>
-            </div>
-        </div>
-    </div>
-</div>
+</form>
+<app-denominations #denominationModal [denominationAmount]="receiptAmount.value" [transactionType]="transactionType"
+    (addedDenominations)="setDenominations($event)"></app-denominations>

@@ -71,7 +71,10 @@ export class CashierCashReceiptComponent implements OnInit {
   uiBankAccount: any = [];
   uiTransactionDenominations : any = [];
 
+  transactionType = "receipt";
+
   messageNotes : any = [];
+  isResetAccountSearch: boolean = false;
 
   constructor(private router: Router, private _branchMasterService: BranchMasterService, private _toastrService: ToastrService,
     private _generalLedgerService: GeneralLedgerService, private _sharedService: SharedService,
@@ -217,20 +220,36 @@ export class CashierCashReceiptComponent implements OnInit {
     if (parseInt(this.accountId.value) > 0) {
       if (parseInt(this.receiptAmount.value) > 0) {
         if (this.uiTransactionDenominations && this.uiTransactionDenominations.length) {
-          return true;
+
+          let totalReceiptAmount = 0;
+          this.uiTransactionDenominations.forEach((d: any) => {
+            if (d.receiptTotal) {
+              totalReceiptAmount = totalReceiptAmount + parseFloat(d.receiptTotal);
+            }
+          })
+          if (totalReceiptAmount == parseInt(this.receiptAmount.value)) {
+            return true;
+          }
+          else
+          {
+            this._toastrService.error('Transaction amount and denomination sum is not matching.', 'Error!');
+            return false;
+          }
         }
         else {
-          this._toastrService.warning('Please add denominations.', 'Warning!');
+          this._toastrService.error('Please add denominations.', 'Error!');
+          return false;
         }
       }
       else {
-        this._toastrService.warning('Please enter valid transaction amount.', 'Warning!');
+        this._toastrService.error('Please enter valid transaction amount.', 'Error!');
+        return false;
       }
     }
     else {
-      this._toastrService.warning('Please search account for transaction.', 'Warning!');
+      this._toastrService.error('Please search account for transaction.', 'Error!');
+      return false;
     }
-    return false;
   }
 
   makeTransaction() {
@@ -320,10 +339,9 @@ export class CashierCashReceiptComponent implements OnInit {
         if (data.data.data && data.data.data.retId > 0) {
           if (data.data.data.status == "SUCCESS") {
             this._toastrService.success("Transaction done for voucher : " + transactionSummary.VoucherNo, 'Success!');
-            this.configClick("cashier-transactions");
           }
           else {
-            this._toastrService.success("Error saving account!", 'Error!');
+            this._toastrService.success("Error saving transaction!", 'Error!');
           }
 
           // this.loadForm();
@@ -334,15 +352,17 @@ export class CashierCashReceiptComponent implements OnInit {
 
   onTransactionConfirmed(isConfirmed: any)
   {
-    if (isConfirmed) {
-      window.location.reload();
-    }
+    // if (isConfirmed) {
+    //   window.location.reload();
+    // }
   }
 
   clearTransaction() {
+    this.isResetAccountSearch = true;
+    this.uiTransactionDenominations = [];
     this.cashierReceiptForm.patchValue({
       receiptAmount: "",
-      receiptDesc: "",
+      receiptDesc: "By Cash",
       chequeNo: "",
       chequeDate: "",
       balanceWillBe: "",
