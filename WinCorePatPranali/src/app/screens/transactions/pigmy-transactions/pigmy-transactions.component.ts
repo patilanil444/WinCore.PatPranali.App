@@ -94,7 +94,7 @@ export class PigmyTransactionsComponent implements OnInit {
   getGeneralLedgers() {
     return new Promise((resolve, reject) => {
       this._generalLedgerService.getGeneralLedgers(this._sharedService.applicationUser.branchId).subscribe((data: any) => {
-        console.log(data);
+       
         if (data) {
           this.uiAllGeneralLedgers = data.data.data;
           if (this.uiAllGeneralLedgers) {
@@ -184,7 +184,7 @@ export class PigmyTransactionsComponent implements OnInit {
   selectSavingAccount(accountsId: number){
     if (accountsId) {
       this._savingAccountService.getSavingAccount(accountsId).subscribe((data: any) => {
-        console.log(data);
+       
         if (data) {
           if (data.statusCode == 200 && data.data.data) {
             let fdDetails = data.data.data;

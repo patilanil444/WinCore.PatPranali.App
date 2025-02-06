@@ -94,7 +94,7 @@ export class CashVoucherPassingComponent implements OnInit {
       let voucherRequestModel = {
         VoucherNo: parseInt(this.voucherNumber.value),
         CDFlag: this.transactionType.value === "R"? 1: 2,
-        UserName: this._sharedService.applicationUser.userName,
+        UserId: this._sharedService.applicationUser.id,
         IsPassing: true
       };
 
@@ -197,7 +197,7 @@ export class CashVoucherPassingComponent implements OnInit {
         let passVoucherRequestModel = {
           TransactionHeadId: parseInt(this.transactionHeadId.value),
           IsRejected: isRejected,
-          PassedByUser: this._sharedService.applicationUser.userName
+          PassedByUserId: this._sharedService.applicationUser.id
         };
 
         this._voucherPassingService.passVoucher(passVoucherRequestModel).subscribe((data: any) => {

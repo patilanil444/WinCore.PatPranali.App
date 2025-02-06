@@ -8,7 +8,7 @@
                 <form [formGroup]="memberForm" #form="ngForm">
                     <div class="row">
                         <div class="col-md-3 position-relative">
-                            <label for="txtCode" class="">Member number</label>
+                            <label class="">Member number</label>
                             <div class="input-group">
                                 <input tabindex="1" type="text" class="form-control" readonly
                                     formControlName="memberCode">
@@ -48,7 +48,7 @@
                                     <div class="tab-content">
                                         <div class="row">
                                             <div class="col-md-2 position-relative">
-                                                <label for="txtCode" class="">Title</label>
+                                                <label class="">Title</label>
                                                 <select class="mb-2 form-control" 
                                                     tabindex="2" formControlName="personalTitle">
                                                     <option *ngFor="let uiTitle of uiTitles"
@@ -58,30 +58,30 @@
                                                 </select>
                                             </div>
                                             <div class="col-md-2 position-relative">
-                                                <label for="txtCode" class="">First name</label>
+                                                <label class="">First name</label>
                                                 <input tabindex="3" type="text" class="form-control"
                                                     formControlName="personalFirstName">
                                             </div>
                                             <div class="col-md-2 position-relative">
-                                                <label for="txtCode" class="">Middle name</label>
+                                                <label class="">Middle name</label>
                                                 <input tabindex="4" type="text" class="form-control"
                                                     formControlName="personalMiddleName">
                                             </div>
                                             <div class="col-md-2 position-relative">
-                                                <label for="txtCode" class="">Last name</label>
+                                                <label class="">Last name</label>
                                                 <input tabindex="5" type="text" class="form-control"
                                                     formControlName="personalLastName">
                                             </div>
                                             
                                             <div class="col-md-2 position-relative form-group">
-                                                <label for="txtCode" class="">Date of birth</label>
+                                                <label class="">Date of birth</label>
                                                 <input tabindex="6" type="date" class="form-control"
                                                 (change)="onPersonalDOBChange($event)" 
                                                 formControlName="personalDateOfBirth"
                                                 [max]="maxDate | date:'yyyy-MM-dd'">
                                             </div>
                                             <div class="col-md-2 position-relative form-group">
-                                                <label for="txtCode" class="">Age</label>
+                                                <label class="">Age</label>
                                                 <input tabindex="7" type="text" class="form-control"
                                                     formControlName="personalAge">
                                             </div>
@@ -90,12 +90,12 @@
                                             
                                            
                                             <div class="col-md-6 position-relative">
-                                                <label for="txtCode" class="">Address</label>
+                                                <label class="">Address</label>
                                                 <input tabindex="8" type="text" class="form-control"
                                                     formControlName="personalAddress">
                                             </div>
                                             <div class="col-md-2 position-relative form-group">
-                                                <label for="txtCode" class="">State</label>
+                                                <label class="">State</label>
                                                 <select class="mb-2 form-control" (change)="onAddressStateChange($event)" 
                                                     tabindex="9" formControlName="personalState">
                                                     <option *ngFor="let uiAddressState of uiAddressStates"
@@ -105,7 +105,7 @@
                                                 </select>
                                             </div>
                                             <div class="col-md-2 position-relative form-group">
-                                                <label for="txtCode" class="">District</label>
+                                                <label class="">District</label>
                                                 <select class="mb-2 form-control" (change)="onAddressDistrictChange($event)"
                                                     tabindex="10" formControlName="personalDistrict">
                                                     <option *ngFor="let uiAddressDistrict of uiAddressDistricts"
@@ -116,7 +116,7 @@
                                             </div>
 
                                             <div class="col-md-2 position-relative form-group">
-                                                <label for="txtCode" class="">Tahsil</label>
+                                                <label class="">Tahsil</label>
                                                 <select class="mb-2 form-control" 
                                                     tabindex="11" formControlName="personalTahsil">
                                                     <option *ngFor="let uiAddressTahshil of uiAddressTahshils"
@@ -130,17 +130,17 @@
                                         <div class="row">
 
                                             <div class="col-md-2 position-relative form-group">
-                                                <label for="txtCode" class="">Pincode</label>
+                                                <label class="">Pincode</label>
                                                 <input tabindex="12" type="text" class="form-control"
                                                     formControlName="personalPincode">
                                             </div>
                                             <div class="col-md-2 position-relative">
-                                                <label for="txtCode" class="">Phone</label>
+                                                <label class="">Phone</label>
                                                 <input tabindex="13" type="text" class="form-control"
                                                     formControlName="personalPhone">
                                             </div>
                                             <div class="col-md-2 position-relative form-group">
-                                                <label for="txtCode" class="">Gender</label>
+                                                <label class="">Gender</label>
                                                 <select class="mb-2 form-control" 
                                                     tabindex="14" formControlName="personalGender">
                                                     <option *ngFor="let uiGender of uiGenders" [ngValue]="uiGender.code">
@@ -149,7 +149,7 @@
                                                 </select>
                                             </div>
                                             <div class="col-md-2 position-relative form-group">
-                                                <label for="txtCode" class="">Occupation</label>
+                                                <label class="">Occupation</label>
                                                 <select class="mb-2 form-control" 
                                                     tabindex="15" formControlName="personalOccupation">
                                                     <option *ngFor="let uiOccupation of uiOccupations"
@@ -159,7 +159,7 @@
                                                 </select>
                                             </div>
                                             <div class="col-md-2 position-relative form-group">
-                                                <label for="txtCode" class="">Cast</label>
+                                                <label class="">Cast</label>
                                                 <select class="mb-2 form-control" 
                                                     tabindex="16" formControlName="personalCast">
                                                     <option *ngFor="let uiCast of uiCasts"
@@ -169,7 +169,7 @@
                                                 </select>
                                             </div>
                                             <div class="col-md-2 position-relative form-group">
-                                                <label for="txtCode" class="">Director</label>
+                                                <label class="">Director</label>
                                                 <select class="mb-2 form-control" 
                                                     tabindex="17" formControlName="personalDirector">
                                                     <option *ngFor="let uiDirector of uiDirectors"
@@ -182,24 +182,24 @@
                                         </div>
                                         <div class="row">
                                             <div class="col-md-2 position-relative form-group">
-                                                <label for="txtCode" class="">Account Number</label>
+                                                <label class="">Account Number</label>
                                                 <input tabindex="18" type="text" class="form-control"
                                                     formControlName="personalAccountNumber">
                                             </div>
 
                                             <div class="col-md-2 position-relative form-group">
-                                                <label for="txtCode" class="">A/c open date</label>
+                                                <label class="">A/c open date</label>
                                                 <input tabindex="19" type="date" class="form-control"
                                                 formControlName="personalAccountopenDate" 
                                                 [max]="maxDate | date:'yyyy-MM-dd'">
                                             </div>
                                             <div class="col-md-2 position-relative form-group">
-                                                <label for="txtCode" class="">Authorised by</label>
+                                                <label class="">Authorised by</label>
                                                 <input tabindex="20" type="text" class="form-control"
                                                     formControlName="personalAuthorisedBy">
                                             </div>
                                             <div class="col-md-2 position-relative form-group">
-                                                <label for="txtCode" class="">Email</label>
+                                                <label class="">Email</label>
                                                 <input tabindex="20" type="text" class="form-control"
                                                     formControlName="personalEmail">
                                             </div>
@@ -217,7 +217,7 @@
                                         <div class="row">
 
                                             <div class="col-md-2 position-relative">
-                                                <label for="txtCode" class="">Title</label>
+                                                <label class="">Title</label>
                                                 <select class="mb-2 form-control" 
                                                     tabindex="21" formControlName="nominiTitle">
                                                     <option *ngFor="let uiTitle of uiTitles"
@@ -227,22 +227,22 @@
                                                 </select>
                                             </div>
                                             <div class="col-md-2 position-relative">
-                                                <label for="txtCode" class="">First name</label>
+                                                <label class="">First name</label>
                                                 <input tabindex="22" type="text" class="form-control"
                                                     formControlName="nominiFirstName">
                                             </div>
                                             <div class="col-md-2 position-relative">
-                                                <label for="txtCode" class="">Middle name</label>
+                                                <label class="">Middle name</label>
                                                 <input tabindex="23" type="text" class="form-control"
                                                     formControlName="nominiMiddleName">
                                             </div>
                                             <div class="col-md-2 position-relative">
-                                                <label for="txtCode" class="">Last name</label>
+                                                <label class="">Last name</label>
                                                 <input tabindex="24" type="text" class="form-control"
                                                     formControlName="nominiLastName">
                                             </div>
                                             <div class="col-md-2 position-relative form-group">
-                                                <label for="txtCode" class="">Gender</label>
+                                                <label class="">Gender</label>
                                                 <select class="mb-2 form-control" 
                                                     tabindex="25" formControlName="nominiGender">
                                                     <option *ngFor="let uiGender of uiGenders" [ngValue]="uiGender.code">
@@ -252,7 +252,7 @@
                                             </div>
 
                                             <div class="col-md-2 position-relative form-group">
-                                                <label for="txtCode" class="">Relation</label>
+                                                <label class="">Relation</label>
                                                 <select class="mb-2 form-control" 
                                                     tabindex="26" formControlName="nominiRelation">
                                                     <option *ngFor="let uiRelation of uiRelations" [ngValue]="uiRelation.id">
@@ -263,17 +263,17 @@
                                         </div>
                                         <div class="row">
                                             <div class="col-md-2 position-relative form-group">
-                                                <label for="txtCode" class="">Flat/Building/Street</label>
+                                                <label class="">Flat/Building/Street</label>
                                                 <input tabindex="27" type="text" class="form-control"
                                                     formControlName="nominiAddress">
                                             </div>
                                             <div class="col-md-2 position-relative form-group">
-                                                <label for="txtCode" class="">City/Town</label>
+                                                <label class="">City/Town</label>
                                                 <input tabindex="28" type="text" class="form-control"
                                                     formControlName="nominiCity">
                                             </div>
                                             <div class="col-md-2 position-relative form-group">
-                                                <label for="txtCode" class="">State</label>
+                                                <label class="">State</label>
                                                 <select class="mb-2 form-control" (change)="onNominiStateChange($event)" 
                                                     tabindex="29" formControlName="nominiState">
                                                     <option *ngFor="let uiNominiState of uiNominiStates"
@@ -283,7 +283,7 @@
                                                 </select>
                                             </div>
                                             <div class="col-md-2 position-relative form-group">
-                                                <label for="txtCode" class="">District</label>
+                                                <label class="">District</label>
                                                 <select class="mb-2 form-control" (change)="onAddressDistrictChange($event)"
                                                     tabindex="30" formControlName="nominiDistrict">
                                                     <option *ngFor="let uiNominiDistrict of uiNominiDistricts"
@@ -294,7 +294,7 @@
                                             </div>
 
                                             <div class="col-md-2 position-relative form-group">
-                                                <label for="txtCode" class="">Tahsil</label>
+                                                <label class="">Tahsil</label>
                                                 <select class="mb-2 form-control" 
                                                     tabindex="31" formControlName="nominiTahsil">
                                                     <option *ngFor="let uiNominiTahshil of uiNominiTahshils"
@@ -304,20 +304,20 @@
                                                 </select>
                                             </div>
                                             <div class="col-md-2 position-relative form-group">
-                                                <label for="txtCode" class="">Pincode</label>
+                                                <label class="">Pincode</label>
                                                 <input tabindex="32" type="text" class="form-control"
                                                     formControlName="nominiPincode">
                                             </div>
                                         </div>
                                         <div class="row">
                                             <div class="col-md-2 position-relative form-group">
-                                                <label for="txtCode" class="">Nomini given date</label>
+                                                <label class="">Nomini given date</label>
                                                 <input tabindex="33" type="date" class="form-control"
                                                     formControlName="nominiGivenDate"
                                                     [max]="maxDate | date:'yyyy-MM-dd'">
                                             </div>
                                             <div class="col-md-2 position-relative form-group">
-                                                <label for="txtCode" class="">Nomini share percentage</label>
+                                                <label class="">Nomini share percentage</label>
                                                 <input tabindex="34" type="number" class="form-control"
                                                     formControlName="nominiSharePercentage">
                                             </div>
@@ -394,27 +394,27 @@
                                     <div class="tab-content">
                                         <div class="row">
                                             <div class="col-md-2 position-relative form-group">
-                                                <label for="txtCode" class="">Number of shares</label>
+                                                <label class="">Number of shares</label>
                                                 <input tabindex="37" type="number" class="form-control"
                                                     formControlName="dividentNoOfShares" (change)="calculateTotalShareValue()">
                                             </div>
                                             <div class="col-md-2 position-relative form-group">
-                                                <label for="txtCode" class="">Share value</label>
+                                                <label class="">Share value</label>
                                                 <input tabindex="38" type="number" class="form-control"
                                                     formControlName="dividentShareValue" (change)="calculateTotalShareValue()">
                                             </div>
                                             <div class="col-md-2 position-relative form-group">
-                                                <label for="txtCode" class="">Total share value</label>
+                                                <label class="">Total share value</label>
                                                 <input tabindex="39" type="number" class="form-control" readonly
                                                     formControlName="dividentTotalShareValue">
                                             </div>
                                             <div class="col-md-2 position-relative form-group">
-                                                <label for="txtCode" class="">Divident amount</label>
+                                                <label class="">Divident amount</label>
                                                 <input tabindex="40" type="number" class="form-control"
                                                 formControlName="dividentAmount">
                                             </div>
                                             <div class="col-md-2 position-relative form-group">
-                                                <label for="txtCode" class="">Loan limit amount</label>
+                                                <label class="">Loan limit amount</label>
                                                 <input tabindex="41" type="number" class="form-control"
                                                     formControlName="dividentLoanLimit">
                                             </div>
@@ -422,12 +422,12 @@
                                         </div>
                                         <div class="row">
                                             <div class="col-md-2 position-relative form-group">
-                                                <label for="txtCode" class="">Admission fee date</label>
+                                                <label class="">Admission fee date</label>
                                                 <input tabindex="42" type="date" class="form-control"
                                                 formControlName="dividentAdmissionFeeDate">
                                             </div>
                                             <div class="col-md-2 position-relative form-group">
-                                                <label for="txtCode" class="">Income</label>
+                                                <label class="">Income</label>
                                                 <input tabindex="43" type="number" class="form-control"
                                                     formControlName="dividentIncome">
                                             </div>
@@ -444,7 +444,7 @@
                                     <div class="tab-content">
                                         <div class="row">
                                             <div class="col-md-2 position-relative form-group">
-                                                <label for="txtCode" class="">Select document to add</label>
+                                                <label class="">Select document to add</label>
                                                 <select class="mb-2 form-control"
                                                     tabindex="44" formControlName="documentSelect">
                                                     <option *ngFor="let uiDocumentType of uiDocumentTypes"

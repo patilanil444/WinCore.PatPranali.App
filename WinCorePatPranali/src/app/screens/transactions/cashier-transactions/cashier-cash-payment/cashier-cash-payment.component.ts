@@ -25,7 +25,7 @@ export interface ITransactionSummaryModel {
   UTR_ChequeNo: string;
   UTR_ChequeDate: Date;
   TransactionPassing: boolean;
-  CreatedBy: string;
+  CreatedBy: number;
   VerifiedBy: string;
   VerifiedDateTime: Date;
   TransactionDetails: ITransactionDetailsModel[];
@@ -125,7 +125,7 @@ export class CashierCashPaymentComponent implements OnInit {
   getGeneralLedgers() {
     return new Promise((resolve, reject) => {
       this._generalLedgerService.getGeneralLedgers(this._sharedService.applicationUser.branchId).subscribe((data: any) => {
-        console.log(data);
+       
         if (data) {
           this.uiAllGeneralLedgers = data.data.data;
           if (this.uiAllGeneralLedgers) {
@@ -165,7 +165,7 @@ export class CashierCashPaymentComponent implements OnInit {
       let voucherRequestModel = {
         VoucherNo: parseInt(this.tokenId.value),
         CDFlag: 2,
-        UserName: this._sharedService.applicationUser.userName,
+        UserId: this._sharedService.applicationUser.id,
         IsPassing: false
       };
 
@@ -348,7 +348,7 @@ export class CashierCashPaymentComponent implements OnInit {
       let transactionSummary = {} as ITransactionSummaryModel;
       transactionSummary.Id = parseInt(this.transactionHeadId.value);
       transactionSummary.VoucherNo = parseInt(this.tokenId.value);
-      transactionSummary.CreatedBy = this._sharedService.applicationUser.userName;
+      transactionSummary.CreatedBy = this._sharedService.applicationUser.id;
 
       transactionSummary.Denominations = [];
       if (this.uiTransactionDenominations.length) {
@@ -372,7 +372,7 @@ export class CashierCashPaymentComponent implements OnInit {
   executeTransaction(transactionSummary: ITransactionSummaryModel)
   {
     this._transactionMasterService.updatePaymentTransaction(transactionSummary).subscribe((data: any) => {
-      console.log(data);
+     
       if (data) {
         if (data.data.data && data.data.data.retId > 0) {
           if (data.data.data.status == "SUCCESS") {
@@ -380,7 +380,7 @@ export class CashierCashPaymentComponent implements OnInit {
             this.onTransactionConfirmed(true);
           }
           else {
-            this._toastrService.success("Error saving transaction!", 'Error!');
+            this._toastrService.error("Error saving transaction!", 'Error!');
           }
         }
       }

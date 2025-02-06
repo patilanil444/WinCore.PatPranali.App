@@ -11,6 +11,10 @@ export class UserService {
   serviceBaseURL = "";
 
   userIdToDelete = -1;
+
+  jwtToken: string= "";
+  refreshToken: string = "";
+
   constructor(private http: HttpClient) { }
 
   private dto = new BehaviorSubject<IGeneralDTO>({} as IGeneralDTO);
@@ -51,11 +55,6 @@ export class UserService {
     return this.http.get(GlobleDeclarations.apiBaseURL + "api/User/check-username?username=" + userName, options);
   }
 
-  authenticateUser(userModel: any): any {
-    let options = GlobleDeclarations.getHeaderOptions();
-    return this.http.post(GlobleDeclarations.apiBaseURL + "api/User/authenticate-user" + userModel, options);
-  }
-
   getUserRoles(): any {
     let options = GlobleDeclarations.getHeaderOptions();
     return this.http.get(GlobleDeclarations.apiBaseURL + "api/User/user-roles", options);
@@ -64,6 +63,16 @@ export class UserService {
   getModules(): any {
     let options = GlobleDeclarations.getHeaderOptions();
     return this.http.get(GlobleDeclarations.apiBaseURL + "api/User/access-modules", options);
+  }
+
+  authenticateUser(userModel: any): any {
+    let options = GlobleDeclarations.getHeaderOptions();
+    return this.http.post(GlobleDeclarations.apiBaseURL + "api/User/authenticate-user", userModel, options);
+  }
+
+  refreshUserToken(tokenModel: any): any {
+    let options = GlobleDeclarations.getHeaderOptions();
+    return this.http.post(GlobleDeclarations.apiBaseURL + "api/User/refresh-token", tokenModel, options);
   }
   
 }

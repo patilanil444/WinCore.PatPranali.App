@@ -36,7 +36,7 @@ interface IUserModel {
   AllowDelete: boolean;
   AllowList: boolean;
   IsActive: boolean;
-  CreatedBy: string;
+  CreatedBy: number;
 }
 
 @Component({
@@ -217,12 +217,12 @@ export class UserComponent implements OnInit {
       userModel.AllowDelete = this.allow_delete.value;
       userModel.AllowList = this.allow_list.value;
       userModel.PasswordExpiryDate = this.passwordExpiryDate.value.toString();
-      userModel.CreatedBy = this._sharedService.applicationUser.userName;
+      userModel.CreatedBy = this._sharedService.applicationUser.id;
 
       console.log(userModel);
 
       this._userService.saveUser(userModel).subscribe((data: any) => {
-        console.log(data);
+       
         if (data) {
           if (data.statusCode == 200 && data.data.data && data.data.data.retId > 0) {
             if (data.data.data.status == "SUCCESS") {

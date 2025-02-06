@@ -10,8 +10,8 @@ interface IDistrictServerModel
 {
   DistrictName: string;
   StateId: string;
-  CreatedBy: string;
-  UpdatedBy: string;
+  CreatedBy: number;
+  UpdatedBy: number;
 }
 
 @Component({
@@ -61,7 +61,7 @@ export class DistrictMasterFormComponent implements OnInit {
       {
         this.isAddMode = false;
         this._districtMasterService.getDistrict(this.dto.id).subscribe((data: any) => {
-          console.log(data);
+         
           if (data) {
             if (data.statusCode == 200 && data.data.data) {
               var district = data.data.data;
@@ -101,14 +101,14 @@ export class DistrictMasterFormComponent implements OnInit {
 
       districtModel.DistrictName = this.name.value.toString();
       districtModel.StateId = this.stateId.value.toString();
-      districtModel.CreatedBy = "";
-      districtModel.UpdatedBy = "";
+      districtModel.CreatedBy = this._sharedService.applicationUser.id;
+      districtModel.UpdatedBy = this._sharedService.applicationUser.id;
       
       console.log(districtModel);
 
       if (this.isAddMode) {
         this._districtMasterService.createDistrict(districtModel).subscribe((data: any) => {
-          console.log(data);
+         
           if (data) {
             if (data.statusCode == 200 && data.data.data > 1) {
               this.toastrService.success('District added.', 'Success!');
@@ -120,7 +120,7 @@ export class DistrictMasterFormComponent implements OnInit {
       else  
       {
         this._districtMasterService.updateDistrict(this.dto.id, districtModel).subscribe((data: any) => {
-          console.log(data);
+         
           if (data) {
             if (data.statusCode == 200 && data.data.data > 1) {
               this.toastrService.success('District updated.', 'Success!');

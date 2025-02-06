@@ -24,7 +24,7 @@ export class PriorityListComponent {
 
   getPriorities(){
     this._priorityMasterService.getPriorities(this._sharedService.applicationUser.branchId).subscribe((data: any) => {
-      console.log(data);
+     
       if (data) {
         this.uiPriorities = data.data.data;
         this.total = this.uiPriorities.length;
@@ -82,7 +82,7 @@ export class PriorityListComponent {
     let priorityIdToDelete = this._priorityMasterService.priorityIdToDelete;
     if (priorityIdToDelete > 0) {
       this._priorityMasterService.deletePriority(priorityIdToDelete).subscribe((data: any) => {
-        console.log(data);
+       
         if (data) {
           this._toastrService.success('Priority deleted.', 'Success!');
           // show message

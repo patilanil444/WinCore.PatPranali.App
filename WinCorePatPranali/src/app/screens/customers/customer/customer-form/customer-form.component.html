@@ -38,12 +38,12 @@
 
                                             <div class="col-md-3 position-relative" style="display: flex !important;">
                                                 <div class="col-md-6 position-relative" style="padding-left: unset;">
-                                                    <label for="txtCode" class="">Customer No.</label>
+                                                    <label class="">Customer No.</label>
                                                     <input type="text" class="form-control"
                                                         placeholder="" readonly formControlName="customerNumber">
                                                 </div>
                                                 <div class="col-md-6 position-relative" style="padding-right: unset;">
-                                                    <label for="txtCode" class="">Title <span class="mandatory">*</span></label>
+                                                    <label class="">Title <span class="mandatory">*</span></label>
                                                     <select class="mb-2 form-control" tabindex="1"
                                                         formControlName="personalTitle">
                                                         <option *ngFor="let uiTitle of uiTitles" [ngValue]="uiTitle.constantNo">
@@ -54,7 +54,7 @@
                                             </div>
 
                                             <div class="col-md-3 position-relative">
-                                                <label for="txtCode" class="">First Name <span class="mandatory">*</span> </label>
+                                                <label class="">First Name <span class="mandatory">*</span> </label>
                                                 <input tabindex="2" type="text" class="form-control" placeholder="First Name" autocomplete="off"
                                                     formControlName="personalFirstName" maxlength="50"
                                                     [class.is-invalid]="personalFirstName.invalid && (personalFirstName.dirty || personalFirstName.touched)">
@@ -65,12 +65,12 @@
                                                 </div>
                                             </div>
                                             <div class="col-md-3 position-relative">
-                                                <label for="txtCode" class="">Middle Name</label>
+                                                <label class="">Middle Name</label>
                                                 <input tabindex="3" type="text" class="form-control" placeholder="Middle Name" maxlength="50"
                                                 autocomplete="off"  formControlName="personalMiddleName">
                                             </div>
                                             <div class="col-md-3 position-relative">
-                                                <label for="txtCode" class="">Last Name <span class="mandatory">*</span></label>
+                                                <label class="">Last Name <span class="mandatory">*</span></label>
                                                 <input tabindex="4" type="text" class="form-control" placeholder="Last Name"
                                                 autocomplete="off"  formControlName="personalLastName" maxlength="50"
                                                 [class.is-invalid]="personalLastName.invalid && (personalLastName.dirty || personalLastName.touched)">
@@ -82,12 +82,12 @@
                                             </div>
                                             
                                             <div class="col-md-3 position-relative form-group">
-                                                <label for="txtCode" class="">Phone</label>
+                                                <label class="">Phone</label>
                                                 <input tabindex="5" type="text" class="form-control" placeholder="Phone" maxlength="10" 
                                                 autocomplete="off"  formControlName="personalPhone">
                                             </div>
                                             <div class="col-md-3 position-relative form-group">
-                                                <label for="txtCode" class="">Mobile <span class="mandatory">*</span></label>
+                                                <label class="">Mobile <span class="mandatory">*</span></label>
                                                 <input tabindex="6" type="text" class="form-control" placeholder="Mobile" maxlength="10"
                                                 autocomplete="off"  formControlName="personalMobile"
                                                 [class.is-invalid]="personalMobile.invalid && (personalMobile.dirty || personalMobile.touched)">
@@ -98,7 +98,7 @@
                                                 </div>
                                             </div>
                                             <div class="col-md-3 position-relative form-group">
-                                                <label for="txtCode" class="">Date Of Birth <span class="mandatory">*</span></label>
+                                                <label class="">Date Of Birth <span class="mandatory">*</span></label>
                                                 <input tabindex="7" type="date" class="form-control"
                                                     (change)="onPersonalDOBChange($event)"
                                                     formControlName="personalDateOfBirth"
@@ -111,12 +111,12 @@
                                                 </div>
                                             </div>
                                             <div class="col-md-3 position-relative form-group">
-                                                <label for="txtCode" class="">Age (Yrs)</label>
+                                                <label class="">Age (Yrs)</label>
                                                 <input tabindex="8" type="text" class="form-control" placeholder="Age"
                                                 autocomplete="off"   formControlName="personalAge">
                                             </div>
                                             <div class="col-md-3 position-relative form-group">
-                                                <label for="txtCode" class="">Joining Date <span class="mandatory">*</span></label>
+                                                <label class="">Joining Date <span class="mandatory">*</span></label>
                                                 <input tabindex="9" type="date" class="form-control"
                                                   formControlName="personalOpenDate"
                                                   [class.is-invalid]="personalOpenDate.invalid && (personalOpenDate.dirty || personalOpenDate.touched)">
@@ -127,7 +127,7 @@
                                                   </div>
                                             </div>
                                             <div class="col-md-3 position-relative form-group">
-                                                <label for="txtCode" class="">Email</label>
+                                                <label class="">Email</label>
                                                 <input tabindex="10" type="email" class="form-control" placeholder="Email" 
                                                 autocomplete="off"  formControlName="personalEmail" maxlength="50"
                                                 [class.is-invalid]="personalEmail.invalid && (personalEmail.dirty || personalEmail.touched)">
@@ -136,7 +136,7 @@
                                                   </div>
                                             </div>
                                             <div class="col-md-3 position-relative form-group">
-                                                <label for="txtCode" class="">PAN <span class="mandatory">*</span></label>
+                                                <label class="">PAN <span class="mandatory">*</span></label>
                                                 <input tabindex="11" type="text" class="form-control" placeholder="PAN" maxlength="50"
                                                 autocomplete="off"  formControlName="personalPAN" style="text-transform:uppercase"
                                                 [class.is-invalid]="personalPAN.invalid && (personalPAN.dirty || personalPAN.touched)">
@@ -147,7 +147,7 @@
                                                   </div>
                                             </div>
                                             <div class="col-md-3 position-relative form-group">
-                                                <label for="txtCode" class="">Aadhar Number <span class="mandatory">*</span></label>
+                                                <label class="">Aadhar Number <span class="mandatory">*</span></label>
                                                 <input tabindex="12" type="text" class="form-control" placeholder="Aadhar" maxlength="50"
                                                 autocomplete="off"   formControlName="personalAadhar" style="text-transform:uppercase"
                                                 [class.is-invalid]="personalAadhar.invalid && (personalAadhar.dirty || personalAadhar.touched)">
@@ -159,7 +159,7 @@
                                             </div>
 
                                             <div class="col-md-3 position-relative form-group">
-                                                <label for="txtCode" class="">Gender <span class="mandatory">*</span></label>
+                                                <label class="">Gender <span class="mandatory">*</span></label>
                                                 <select class="mb-2 form-control" tabindex="13"
                                                     formControlName="personalGender">
                                                     <option *ngFor="let uiGender of uiGenders"
@@ -170,7 +170,7 @@
                                             </div>
 
                                             <div class="col-md-3 position-relative">
-                                                <label for="txtCode" class="">Customer Group <span class="mandatory">*</span></label>
+                                                <label class="">Customer Group <span class="mandatory">*</span></label>
                                                 <select class="mb-2 form-control" tabindex="14"
                                                     formControlName="personalCustGroup">
                                                     <option *ngFor="let uiCustomerGroup of uiCustomerGroups"
@@ -181,7 +181,7 @@
                                             </div>
 
                                             <div class="col-md-3 position-relative">
-                                                <label for="txtCode" class="">Customer Zone <span class="mandatory">*</span></label>
+                                                <label class="">Customer Zone <span class="mandatory">*</span></label>
                                                 <select class="mb-2 form-control" tabindex="15"
                                                     formControlName="personalCustZone">
                                                     <option *ngFor="let uiCustomerZone of uiCustomerZones"
@@ -192,7 +192,7 @@
                                             </div>
 
                                             <div class="col-md-3 position-relative">
-                                                <label for="txtCode" class="">Caste</label>
+                                                <label class="">Caste</label>
                                                 <select class="mb-2 form-control" tabindex="16"
                                                     formControlName="personalCustCaste">
                                                     <option *ngFor="let uiCaste of uiCastes"
@@ -202,7 +202,7 @@
                                                 </select>
                                             </div>
                                             <div class="col-md-3 position-relative">
-                                                <label for="txtCode" class="">Religion</label>
+                                                <label class="">Religion</label>
                                                 <select class="mb-2 form-control" tabindex="17"
                                                     formControlName="personalCustReligion">
                                                     <option *ngFor="let uiReligion of uiReligions"
@@ -213,7 +213,7 @@
                                             </div>
 
                                             <div class="col-md-3 position-relative form-group">
-                                                <label for="txtCode" class="">Occupation</label>
+                                                <label class="">Occupation</label>
                                                 <select class="mb-2 form-control" tabindex="18"
                                                     formControlName="personalOccupation">
                                                     <option *ngFor="let uiOccupation of uiOccupations"
@@ -223,7 +223,7 @@
                                                 </select>
                                             </div>
                                             <div class="col-md-3 position-relative form-group">
-                                                <label for="txtCode" class="">Marital Status</label>
+                                                <label class="">Marital Status</label>
                                                 <select class="mb-2 form-control" tabindex="19"
                                                     formControlName="personalMaritalStatus">
                                                     <option *ngFor="let uiMaritalStatus of uiMaritalStatuses"
@@ -234,7 +234,7 @@
                                             </div>
 
                                             <div class="col-md-3 position-relative form-group">
-                                                <label for="txtCode" class="">Nationality</label>
+                                                <label class="">Nationality</label>
                                                 <select class="mb-2 form-control" tabindex="20"
                                                     formControlName="personalNationality">
                                                     <option *ngFor="let uiNationality of uiNationalities"
@@ -244,7 +244,7 @@
                                                 </select>
                                             </div>
                                             <div class="col-md-3 position-relative form-group">
-                                                <label for="txtCode" class="">Education</label>
+                                                <label class="">Education</label>
                                                 <select class="mb-2 form-control" tabindex="21"
                                                     formControlName="personalEducation">
                                                     <option *ngFor="let uiEducation of uiEducations"
@@ -254,7 +254,7 @@
                                                 </select>
                                             </div>
                                             <div class="col-md-3 position-relative form-group">
-                                                <label for="txtCode" class="">Customer Category</label>
+                                                <label class="">Customer Category</label>
                                                 <select class="mb-2 form-control" tabindex="22"
                                                     formControlName="personalCustCategory">
                                                     <option *ngFor="let uiCustomerCategory of uiCustomerCategories"
@@ -269,7 +269,7 @@
                                         <!-- <div class="row">
                                              
                                             <div class="col-md-2 position-relative form-group">
-                                                <label for="txtCode" class="">TDS applicable</label>
+                                                <label class="">TDS applicable</label>
                                                 <select class="mb-2 form-control" 
                                                     tabindex="17" formControlName="personalTDSApplicable">
                                                     <option *ngFor="let uiTdsApplicable of uiTdsApplicables"
@@ -279,7 +279,7 @@
                                                 </select>
                                             </div>
                                             <div class="col-md-2 position-relative form-group">
-                                                <label for="txtCode" class="">TDS printing</label>
+                                                <label class="">TDS printing</label>
                                                 <select class="mb-2 form-control"
                                                     tabindex="18" formControlName="personalTDSPrinting">
                                                     <option *ngFor="let uiTdsPrinting of uiTdsPrintings"
@@ -289,12 +289,12 @@
                                                 </select>
                                             </div>
                                             <div class="col-md-2 position-relative form-group">
-                                                <label for="txtCode" class="">Rate</label>
+                                                <label class="">Rate</label>
                                                 <input tabindex="19" type="text" class="form-control" placeholder="TDS Rate"
                                                     formControlName="personalTDSRate">
                                             </div>
                                             <div class="col-md-2 position-relative form-group">
-                                                <label for="txtCode" class="">Form 60</label>
+                                                <label class="">Form 60</label>
                                                 <select class="mb-2 form-control" 
                                                     tabindex="20" formControlName="personalForm60">
                                                     <option *ngFor="let uiForm60 of uiForm60YN"
@@ -304,7 +304,7 @@
                                                 </select>
                                             </div>
                                             <div class="col-md-2 position-relative form-group">
-                                                <label for="txtCode" class="">Form 61</label>
+                                                <label class="">Form 61</label>
                                                 <select class="mb-2 form-control" 
                                                     tabindex="21" formControlName="personalForm61">
                                                     <option *ngFor="let uiForm61 of uiForm61YN"
@@ -314,7 +314,7 @@
                                                 </select>
                                             </div>
                                             <div class="col-md-4 position-relative form-group">
-                                                <label for="txtCode" class="">Member</label>
+                                                <label class="">Member</label>
                                                 <ngx-select-dropdown [config]="config" tabindex="10" (change)="selectMember($event)"
                                                     [options]="uiMembers" style="width: 100%;" [multiple]="false"
                                                     formControlName="personalMember"></ngx-select-dropdown>
@@ -332,7 +332,7 @@
                                     <div class="tab-content">
                                         <div class="row">
                                             <div class="col-md-3 position-relative form-group">
-                                                <label for="txtCode" class="">Address Type <span class="mandatory">*</span></label>
+                                                <label class="">Address Type <span class="mandatory">*</span></label>
                                                 <select class="mb-2 form-control" tabindex="23"
                                                     formControlName="addressType">
                                                     <option *ngFor="let uiAddressType of uiAddressTypes"
@@ -342,7 +342,7 @@
                                                 </select>
                                             </div>
                                             <div class="col-md-3 position-relative form-group">
-                                                <label for="txtCode" class="">Address <span class="mandatory">*</span></label>
+                                                <label class="">Address <span class="mandatory">*</span></label>
                                                 <input tabindex="24" type="text" class="form-control" placeholder="Address"
                                                     formControlName="addressText" maxlength="450"
                                                     [class.is-invalid]="addressText.invalid && (addressText.dirty || addressText.touched)">
@@ -353,7 +353,7 @@
                                                 </div>
                                             </div>
                                             <div class="col-md-3 position-relative form-group">
-                                                <label for="txtCode" class="">City/Town <span class="mandatory">*</span></label>
+                                                <label class="">City/Town <span class="mandatory">*</span></label>
                                                 <input tabindex="25" type="text" class="form-control" placeholder="City/Town"
                                                     formControlName="addressCity" maxlength="49"
                                                     [class.is-invalid]="addressCity.invalid && (addressCity.dirty || addressCity.touched)">
@@ -364,7 +364,7 @@
                                                     </div>
                                             </div>
                                             <div class="col-md-3 position-relative form-group">
-                                                <label for="txtCode" class="">State <span class="mandatory">*</span></label>
+                                                <label class="">State <span class="mandatory">*</span></label>
                                                 <select class="mb-2 form-control"
                                                     (change)="onAddressStateChange($event)" tabindex="26"
                                                     formControlName="addressState">
@@ -378,7 +378,7 @@
                                         <div class="row">
 
                                             <div class="col-md-3 position-relative form-group">
-                                                <label for="txtCode" class="">District <span class="mandatory">*</span></label>
+                                                <label class="">District <span class="mandatory">*</span></label>
                                                 <select class="mb-2 form-control"
                                                     (change)="onAddressDistrictChange($event)" tabindex="27"
                                                     formControlName="addressDistrict">
@@ -390,7 +390,7 @@
                                             </div>
 
                                             <div class="col-md-3 position-relative form-group">
-                                                <label for="txtCode" class="">Taluka <span class="mandatory">*</span></label>
+                                                <label class="">Taluka <span class="mandatory">*</span></label>
                                                 <select class="mb-2 form-control" tabindex="28"
                                                     formControlName="addressTaluka">
                                                     <option *ngFor="let uiAddressTahshil of uiAddressTahshils"
@@ -401,7 +401,7 @@
                                             </div>
 
                                             <div class="col-md-3 position-relative form-group">
-                                                <label for="txtCode" class="">Pincode <span class="mandatory">*</span></label>
+                                                <label class="">Pincode <span class="mandatory">*</span></label>
                                                 <input tabindex="29" type="text" class="form-control" placeholder="Pincode"
                                                  autocomplete="off" formControlName="addressPincode" maxlength="6"
                                                  [class.is-invalid]="addressPincode.invalid && (addressPincode.dirty || addressPincode.touched)">
@@ -488,7 +488,7 @@
                                     <div class="tab-content">
                                         <div class="row">
                                             <div class="col-md-3 position-relative form-group">
-                                                <label for="txtCode" class="">Nominee Name <span class="mandatory">*</span></label>
+                                                <label class="">Nominee Name <span class="mandatory">*</span></label>
                                                 <input tabindex="31" type="text" class="form-control" placeholder="Nominee Name"
                                                   formControlName="nominiName" maxlength="149"
                                                   [class.is-invalid]="nominiName.invalid && (nominiName.dirty || nominiName.touched)">
@@ -499,7 +499,7 @@
                                                   </div>
                                             </div>
                                             <div class="col-md-3 position-relative form-group">
-                                                <label for="txtCode" class="">Address <span class="mandatory">*</span></label>
+                                                <label class="">Address <span class="mandatory">*</span></label>
                                                 <input tabindex="32" type="text" class="form-control"
                                                     placeholder="Address" formControlName="nominiAddress" maxlength="500"
                                                     [class.is-invalid]="nominiAddress.invalid && (nominiAddress.dirty || nominiAddress.touched)">
@@ -510,7 +510,7 @@
                                                     </div>
                                             </div>
                                             <div class="col-md-3 position-relative form-group">
-                                                <label for="txtCode" class="">Date Of Birth <span class="mandatory">*</span></label>
+                                                <label class="">Date Of Birth <span class="mandatory">*</span></label>
                                                 <input tabindex="33" type="date" class="form-control"
                                                     (change)="onNominDOBChange($event)"
                                                     [max]="maxDate | date:'yyyy-MM-dd'"
@@ -523,12 +523,12 @@
                                                     </div>
                                             </div>
                                             <div class="col-md-3 position-relative form-group">
-                                                <label for="txtCode" class="">Age</label>
+                                                <label class="">Age</label>
                                                 <input tabindex="34" type="text" class="form-control" placeholder="Age"
                                                     formControlName="nominiAge">
                                             </div>
                                             <div class="col-md-3 position-relative form-group">
-                                                <label for="txtCode" class="">Relation <span class="mandatory">*</span></label>
+                                                <label class="">Relation <span class="mandatory">*</span></label>
                                                 <select class="mb-2 form-control" tabindex="35"
                                                     formControlName="nominiRelation">
                                                     <option *ngFor="let uiRelation of uiRelations"
@@ -538,12 +538,12 @@
                                                 </select>
                                             </div>
                                             <div class="col-md-3 position-relative form-group">
-                                                <label for="txtCode" class="">Guardian (for minor)</label>
+                                                <label class="">Guardian (for minor)</label>
                                                 <input tabindex="36" type="text" class="form-control" placeholder="Guardian" 
                                                 maxlength="49"   formControlName="nominiGuardian">
                                             </div>
                                             <div class="col-md-3 position-relative form-group">
-                                                <label for="txtCode" class="">Nominee share percentage <span class="mandatory">*</span></label>
+                                                <label class="">Nominee share percentage <span class="mandatory">*</span></label>
                                                 <div class="input-group">
                                                     <input tabindex="37" type="text" class="form-control"
                                                         placeholder="Percentage" formControlName="nominiPercentage"  maxlength="3"
@@ -559,7 +559,7 @@
 
                                             </div>
                                             <div class="col-md-3 position-relative form-group">
-                                                <label for="txtCode" class="">Mobile/Phone <span class="mandatory">*</span></label>
+                                                <label class="">Mobile/Phone <span class="mandatory">*</span></label>
                                                 <input tabindex="38" type="text" class="form-control" placeholder="Mobile/Phone"
                                                     formControlName="nominiPhone"  maxlength="10" 
                                                     [class.is-invalid]="nominiPhone.invalid && (nominiPhone.dirty || nominiPhone.touched)">
@@ -638,7 +638,7 @@
                                     <div class="tab-content">
                                         <div class="row">
                                             <div class="col-md-3 position-relative form-group">
-                                                <label for="txtCode" class="">Select document to add</label>
+                                                <label class="">Select document to add</label>
                                                 <select class="mb-2 form-control" tabindex="41"
                                                     formControlName="documentSelect">
                                                     <option *ngFor="let uiDocumentType of uiDocumentTypes"

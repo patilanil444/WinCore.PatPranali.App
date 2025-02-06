@@ -69,7 +69,7 @@ export class GoldLoanComponent implements OnInit {
   getGoldTypes() {
     return new Promise((resolve, reject) => {
       this._accountsService.getGoldTypes().subscribe((data: any) => {
-        console.log(data);
+       
         if (data) {
           this.uigoldTypes = data.data.data;
           this.goldForm.patchValue({

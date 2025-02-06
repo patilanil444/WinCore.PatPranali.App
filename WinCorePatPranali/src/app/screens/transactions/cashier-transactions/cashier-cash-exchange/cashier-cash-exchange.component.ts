@@ -17,8 +17,8 @@ export interface ITransactionSummaryModel {
   UTR_ChequeNo: string;
   UTR_ChequeDate: Date;
   TransactionPassing: boolean;
-  CreatedBy: string;
-  VerifiedBy: string;
+  CreatedBy: number;
+  VerifiedBy: number;
   VerifiedDateTime: Date;
   Denominations: IDenomination[];
 }
@@ -101,8 +101,8 @@ export class CashierCashExchangeComponent implements OnInit {
       transactionSummary.UTR_ChequeNo = "";
       transactionSummary.UTR_ChequeDate = new Date();
       transactionSummary.TransactionPassing = false;
-      transactionSummary.CreatedBy = this._sharedService.applicationUser.userName;
-      transactionSummary.VerifiedBy = "";
+      transactionSummary.CreatedBy = this._sharedService.applicationUser.id;
+      transactionSummary.VerifiedBy = 0;
       transactionSummary.VerifiedDateTime = new Date();
 
       transactionSummary.Denominations = [];
@@ -126,14 +126,14 @@ export class CashierCashExchangeComponent implements OnInit {
   executeTransaction(transactionSummary: ITransactionSummaryModel)
   {
     this._transactionMasterService.saveCashTransaction(transactionSummary).subscribe((data: any) => {
-      console.log(data);
+     
       if (data) {
         if (data.data.data && data.data.data.retId > 0) {
           if (data.data.data.status == "SUCCESS") {
             this._toastrService.success("Exchange transaction completed", 'Success!');
           }
           else {
-            this._toastrService.success("Error saving transaction!", 'Error!');
+            this._toastrService.error("Error saving transaction!", 'Error!');
           }
         }
       }

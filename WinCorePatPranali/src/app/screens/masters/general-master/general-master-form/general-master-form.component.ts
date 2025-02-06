@@ -115,7 +115,7 @@ export class GeneralMasterFormComponent {
       console.log(generalMasterModel);
 
       this._generalMasterService.saveGeneralMaster(generalMasterModel).subscribe((data: any) => {
-        console.log(data);
+       
         if (data) {
           if (data.statusCode == 200 && data.data.data.retId > 0) {
 

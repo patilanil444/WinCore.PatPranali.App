@@ -26,8 +26,8 @@ export interface ITransactionSummaryModel {
   UTR_ChequeNo: string;
   UTR_ChequeDate: Date;
   TransactionPassing: boolean;
-  CreatedBy: string;
-  VerifiedBy: string;
+  CreatedBy: number;
+  VerifiedBy: number;
   VerifiedDateTime: Date;
   TransactionDetails: ITransactionDetailsModel[];
   Denominations: IDenomination[];
@@ -269,8 +269,8 @@ export class CashierCashReceiptComponent implements OnInit {
       transactionSummary.UTR_ChequeNo = "";
       transactionSummary.UTR_ChequeDate = new Date();
       transactionSummary.TransactionPassing = false;
-      transactionSummary.CreatedBy = this._sharedService.applicationUser.userName;
-      transactionSummary.VerifiedBy = "";
+      transactionSummary.CreatedBy = this._sharedService.applicationUser.id;
+      transactionSummary.VerifiedBy = 0;
       transactionSummary.VerifiedDateTime = new Date();
 
       let transactionDetails = {} as ITransactionDetailsModel;
@@ -310,7 +310,7 @@ export class CashierCashReceiptComponent implements OnInit {
 
       this.messageNotes = [];
       this._transactionMasterService.getMaxVoucherNumber(this._sharedService.applicationUser.branchId, 1).subscribe((data: any) => {
-        console.log(data);
+       
         if (data) {
           if (data.data.data && data.data.data > 0) {
             // Show Pop up modal here and confirm transaction 
@@ -334,14 +334,14 @@ export class CashierCashReceiptComponent implements OnInit {
   executeTransaction(transactionSummary: ITransactionSummaryModel)
   {
     this._transactionMasterService.saveTransaction(transactionSummary).subscribe((data: any) => {
-      console.log(data);
+     
       if (data) {
         if (data.data.data && data.data.data.retId > 0) {
           if (data.data.data.status == "SUCCESS") {
             this._toastrService.success("Transaction done for voucher : " + transactionSummary.VoucherNo, 'Success!');
           }
           else {
-            this._toastrService.success("Error saving transaction!", 'Error!');
+            this._toastrService.error("Error saving transaction!", 'Error!');
           }
 
           // this.loadForm();

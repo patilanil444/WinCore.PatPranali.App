@@ -83,6 +83,9 @@ import { PassingInfoComponent } from '../screens/transactions/voucher-passing/pa
 import { CounterTransferComponent } from '../screens/transactions/counter-transactions/counter-transfer/counter-transfer.component';
 import { AccountSelectorComponent } from '../screens/transactions/counter-transactions/account-selector/account-selector.component';
 import { ConfirmBoxComponent } from '../common/directives/confirm-box/confirm-box.component';
+import { StartOfWorkSummaryComponent } from '../screens/transactions/start-of-work/start-of-work-summary/start-of-work-summary.component';
+import { BeginDayComponent } from '../screens/transactions/start-of-work/begin-day/begin-day.component';
+import { CalenderViewComponent } from '../common/directives/calender-view/calender-view.component';
 
 @NgModule({
   declarations: [
@@ -164,6 +167,9 @@ import { ConfirmBoxComponent } from '../common/directives/confirm-box/confirm-bo
     PassingInfoComponent,
     AccountSelectorComponent,
     ConfirmBoxComponent,
+    StartOfWorkSummaryComponent,
+    BeginDayComponent,
+    CalenderViewComponent
   ],
   imports: [
     CommonModule,

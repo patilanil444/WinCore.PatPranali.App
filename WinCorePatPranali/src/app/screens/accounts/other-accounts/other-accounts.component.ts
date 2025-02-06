@@ -32,7 +32,7 @@ export interface IOtherAccountModel {
   Close_Date: Date;
   Auth_by: string;
   Active: number;
-  CreatedBy: string;
+  CreatedBy: number;
   CreatedDate: Date;
 }
 
@@ -85,6 +85,7 @@ export class OtherAccountsComponent {
   dto: IGeneralDTO = {} as IGeneralDTO;
   accountsId!: number;
   isAddMode = true;
+  isAccountAuthorized = true;
 
   constructor(private router: Router, private _sharedService: SharedService, private _toastrService: ToastrService,
     private _generalLedgerService: GeneralLedgerService, private _customerService: CustomerService,
@@ -160,7 +161,7 @@ export class OtherAccountsComponent {
   getGeneralLedgers() {
     return new Promise((resolve, reject) => {
       this._generalLedgerService.getGeneralLedgers(this._sharedService.applicationUser.branchId).subscribe((data: any) => {
-        console.log(data);
+       
         if (data) {
           this.uiAllGeneralLedgers = data.data.data;
           if (this.uiAllGeneralLedgers) {
@@ -191,21 +192,21 @@ export class OtherAccountsComponent {
       else {
         this.isAddMode = false;
         this._otherAccountsService.getOtherAccount(this.accountsId).subscribe((data: any) => {
-          console.log(data);
+         
           if (data) {
             if (data.statusCode == 200 && data.data.data) {
-              var savingAccount = data.data.data;
+              var otherAccount = data.data.data;
 
-              this.selectCustomer(savingAccount.customerId);
+              this.selectCustomer(otherAccount.customerId);
 
               // bind general ledger
-              let gl = this.uiAllGeneralLedgers.filter(g => g.code == savingAccount.code1);
+              let gl = this.uiAllGeneralLedgers.filter(g => g.code == otherAccount.code1);
 
               this.summaryForm.patchValue({
                 generalLedger: gl && gl.length ? gl[0] : null,
-                glAccountNumberStr: savingAccount.accountNo,
-                glAccountNumber: savingAccount.code2,
-                customerId: savingAccount.customerId,
+                glAccountNumberStr: otherAccount.accountNo,
+                glAccountNumber: otherAccount.code2,
+                customerId: otherAccount.customerId,
               })
 
               this.customerDetailsForm.patchValue({
@@ -225,16 +226,17 @@ export class OtherAccountsComponent {
               })
 
               this.accountForm.patchValue({
-                accountOpeningDate: formatDate(new Date(savingAccount.opn_Date), 'yyyy-MM-dd', 'en'),
-                accountStatus: savingAccount.accountStatus,
-                interestRate: savingAccount.int_Rate,
-                lastInterestDate: formatDate(new Date(savingAccount.last_Int_Date), 'yyyy-MM-dd', 'en'),
-                lastTransactionDate: formatDate(new Date(savingAccount.last_Trn_Date), 'yyyy-MM-dd', 'en'),
-                matureDate: (savingAccount.mature_Date == null) ? "" :  formatDate(new Date(savingAccount.mature_Date), 'yyyy-MM-dd', 'en'),
-                accountCloseDate: (savingAccount.close_Date == null) ? "" : formatDate(new Date(savingAccount.close_Date), 'yyyy-MM-dd', 'en'),
-                close_Flag: (savingAccount.close_Flag == 1) ? 'Y' : 'N',
+                accountOpeningDate: formatDate(new Date(otherAccount.opn_Date), 'yyyy-MM-dd', 'en'),
+                accountStatus: otherAccount.accountStatus,
+                interestRate: otherAccount.int_Rate,
+                lastInterestDate: formatDate(new Date(otherAccount.last_Int_Date), 'yyyy-MM-dd', 'en'),
+                lastTransactionDate: formatDate(new Date(otherAccount.last_Trn_Date), 'yyyy-MM-dd', 'en'),
+                matureDate: (otherAccount.mature_Date == null) ? "" :  formatDate(new Date(otherAccount.mature_Date), 'yyyy-MM-dd', 'en'),
+                accountCloseDate: (otherAccount.close_Date == null) ? "" : formatDate(new Date(otherAccount.close_Date), 'yyyy-MM-dd', 'en'),
+                close_Flag: (otherAccount.close_Flag == 1) ? 'Y' : 'N',
               })
 
+              this.isAccountAuthorized = otherAccount.authBy > 0;
               this.accountStatus.enable();
              
             }
@@ -254,7 +256,7 @@ export class OtherAccountsComponent {
 
   getMaxAccountNumber(glId: number) {
     this._accountsService.getMaxAccountNumber(this._sharedService.applicationUser.branchId, glId).subscribe((data: any) => {
-      console.log(data);
+     
       if (data) {
         let maxAccountModel = data.data.data;
         if (maxAccountModel) {
@@ -284,7 +286,7 @@ export class OtherAccountsComponent {
 
   getCustomer(customerId: number) {
     this._customerService.getCustomer(this._sharedService.applicationUser.branchId, customerId).subscribe((data: any) => {
-      console.log(data);
+     
       if (data) {
         var customer = data.data.data;
         let zones = this.uiZones.filter(z => z.constantNo == customer.custZone);
@@ -432,12 +434,12 @@ export class OtherAccountsComponent {
     if (accountModel.Close_Flag == 1) {
       accountModel.Close_Date = this.accountCloseDate.value.toString();
     }
-    accountModel.CreatedBy = this._sharedService.applicationUser.userName;
+    accountModel.CreatedBy = this._sharedService.applicationUser.id;
     
     //Call API to save account
 
     this._otherAccountsService.saveOtherAccount(accountModel).subscribe((data: any) => {
-      console.log(data);
+     
       if (data) {
         if (data.data.data && data.data.data.retId > 0) {
           if (data.data.data.status == "SUCCESS") {
@@ -456,9 +458,28 @@ export class OtherAccountsComponent {
   }
 
   authoriseAccount() {
+    if (this._sharedService.applicationUser.id > 0 &&
+      this.dto.id > 0 && this._sharedService.applicationUser.branchId > 0) {
+      let authAccountRequest = {
+        AccountsId: this.dto.id,
+        BranchCode: this._sharedService.applicationUser.branchId,
+        AuthByUserId: this._sharedService.applicationUser.id
+      };
 
+      this._accountsService.authoriseAccount(authAccountRequest).subscribe((data: any) => {
 
+        if (data) {
+          if (data.data.data && data.data.data.retId > 0) {
+            this._toastrService.success("Account authorised successfully!", 'Success!');
+          }
+          else {
+            this._toastrService.success("Error while authorising account!", 'Error!');
+          }
+        }
+      })
+    }
   }
+
 
   configClick(routeValue: string) {
     sessionStorage.setItem("configMenu", routeValue);

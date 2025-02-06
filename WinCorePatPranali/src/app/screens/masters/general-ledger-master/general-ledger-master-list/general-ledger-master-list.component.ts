@@ -24,7 +24,7 @@ export class GeneralLedgerMasterListComponent implements OnInit {
 
   getGeneralLedgers(){
     this._generalLedgerService.getGeneralLedgers(this._sharedService.applicationUser.branchId).subscribe((data: any) => {
-      console.log(data);
+     
       if (data) {
         this.uiGeneralLedgers = data.data.data;
         this.total = this.uiGeneralLedgers.length;
@@ -87,7 +87,7 @@ export class GeneralLedgerMasterListComponent implements OnInit {
     let generalLedgerIdToDelete = this._generalLedgerService.generalLedgerIdToDelete;
     if (generalLedgerIdToDelete > 0) {
       this._generalLedgerService.deleteGeneralLedger(generalLedgerIdToDelete).subscribe((data: any) => {
-        console.log(data);
+       
         if (data) {
           // show message
           this._toastrService.success('General ledger deleted.', 'Success!');

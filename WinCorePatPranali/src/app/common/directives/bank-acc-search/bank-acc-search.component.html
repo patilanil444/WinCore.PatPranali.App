@@ -1,7 +1,7 @@
 <form [formGroup]="bankAccSearchForm">
     <div class="row">
         <div class="col-md-3 position-relative form-group">
-            <label for="txtCode" class="">Branch </label>
+            <label class="">Branch </label>
             <select class="form-control" tabindex="1" formControlName="branchId">
                 <option *ngFor="let uiBranch of uiBranches" [ngValue]="uiBranch.branchCode">
                     {{uiBranch.branchName}}
@@ -9,7 +9,7 @@
             </select>
         </div>
         <div class="col-md-4 position-relative form-group">
-            <label for="txtCode" class="">General Ledger </label>
+            <label class="">General Ledger </label>
             <div class="input-group">
                 <ngx-select-dropdown [config]="config" tabindex="2" autofocus 
                     [options]="generalLedgers" formControlName="generalLedger"
@@ -18,7 +18,7 @@
             </div>
         </div>
         <div class="col-md-3 position-relative form-group">
-            <label for="txtCode" class="">Account Search <span style="font-size:11px;">(Last 5 Digits)</span></label>
+            <label class="">Account Search <span style="font-size:11px;">(Last 5 Digits)</span></label>
             <input tabindex="3" type="text" class="form-control" placeholder="Account Number"
                 formControlName="accountNumberSearch">
         </div>

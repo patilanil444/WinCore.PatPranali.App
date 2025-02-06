@@ -100,7 +100,7 @@ export class UserSearchComponent implements OnInit {
     let userIdToDelete = this._userService.userIdToDelete;
     if (userIdToDelete > 0) {
       this._userService.deleteUser(this._sharedService.applicationUser.branchId, userIdToDelete).subscribe((data: any) => {
-        console.log(data);
+       
         if (data) {
           // show message
           this._toastrService.success('User deleted.', 'Success!');

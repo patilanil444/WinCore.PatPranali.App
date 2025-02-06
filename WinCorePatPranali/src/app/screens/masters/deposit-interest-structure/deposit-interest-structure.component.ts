@@ -29,7 +29,7 @@ interface IDepositInterestRate{
   Type: string,
   BranchCode: number,
   Active: number,
-  CreatedBy : string,
+  CreatedBy : number,
   mstDepositIntRateStruct: IDepositInterestRateScheduleModel[]
 }
 
@@ -46,7 +46,7 @@ interface IDepositInterestRateScheduleModel
   RegularRate: number,
   AfterExpiryRate: number,
   IntRateStructureId: number,
-  CreatedBy: string
+  CreatedBy: number
 }
 
 @Component({
@@ -90,7 +90,7 @@ export class DepositInterestStructureComponent implements OnInit {
 
   getGeneralLedgers(){
     this._generalLedgerService.getGeneralLedgers(this._sharedService.applicationUser.branchId).subscribe((data: any) => {
-      console.log(data);
+     
       if (data) {
         this.uiGeneralLedgers = data.data.data;
         if (this.uiGeneralLedgers) {
@@ -133,7 +133,7 @@ export class DepositInterestStructureComponent implements OnInit {
 
   getDepositInterestRates(){
     this._depositInterestRateService.getDepositRatesByGL(this.generalLedger.code, this.interestStructureDate).subscribe((data: any) => {
-      console.log(data);
+     
       if (data) {
         let response = data.data.data;
         if (response) {
@@ -188,7 +188,7 @@ export class DepositInterestStructureComponent implements OnInit {
       depositInterestRateModel.GLId = this.generalLedger.code;
       depositInterestRateModel.IntSetDate = new Date(this.interestStructureDate);
       depositInterestRateModel.Type = 'D';
-      depositInterestRateModel.CreatedBy = this._sharedService.applicationUser.userName;
+      depositInterestRateModel.CreatedBy = this._sharedService.applicationUser.id;
       depositInterestRateModel.mstDepositIntRateStruct = [];
       depositInterestRateModel.Id = (this.uiDepositInterestRate && this.uiDepositInterestRate.id) ? this.uiDepositInterestRate.id : 0;
       console.log(depositInterestRateModel);
@@ -210,7 +210,7 @@ export class DepositInterestStructureComponent implements OnInit {
       }
 
       this._depositInterestRateService.saveDepositRateStructure(depositInterestRateModel).subscribe((data: any) => {
-        console.log(data);
+       
         if (data) {
           if (data.statusCode == 200 && data.data.data.retId > 0) {
             this._toastrService.success('Deposit interest structure saved.', 'Success!');
@@ -218,32 +218,6 @@ export class DepositInterestStructureComponent implements OnInit {
           }
         }
       })
-
-
-      // if (this.isAddMode) {
-      //   this._depositInterestRateService.createDepositRateStructure(depositInterestRateModel).subscribe((data: any) => {
-      //     console.log(data);
-      //     if (data) {
-      //       if (data.statusCode == 200 && data.data.data > 0) {
-      //         this._toastrService.success('Deposit interest structure added.', 'Success!');
-      //         this.getDepositInterestRates();
-      //       }
-      //     }
-      //   })
-      // }
-      // else  
-      // {
-      //   this._depositInterestRateService.updateDepositRateStructure(parseInt(this.uiDepositInterestRate.id), depositInterestRateModel).subscribe((data: any) => {
-      //     console.log(data);
-      //     if (data) {
-      //       if (data.statusCode == 200 && data.data.data > 0) {
-      //         this._toastrService.success('Deposit interest structure updated.', 'Success!');
-      //       }
-      //     }
-      //   })
-      // }
-
     }
   }
-
 }

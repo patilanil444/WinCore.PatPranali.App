@@ -11,8 +11,8 @@ interface IBankServerModel {
   BankName: string;
   LocalName: string;
   Address: string;
-  Createdby: string;
-  UpdatedBy: string;
+  Createdby: number;
+  UpdatedBy: number;
   // Description: string;
   // HasBranches: boolean;
   // GLId: number;
@@ -127,8 +127,8 @@ export class BankMasterFormComponent {
       bankModel.BankName = this.bankName.value.toString();
       bankModel.LocalName = this.localName.value.toString();
       bankModel.Address = this.address.value.toString();
-      bankModel.Createdby = "";
-      bankModel.UpdatedBy = "";
+      bankModel.Createdby = this._sharedService.applicationUser.id;
+      bankModel.UpdatedBy = this._sharedService.applicationUser.id;
 
       // bankModel.HasBranches = parseInt(this.hasBranch.value.toString()) == 1 ? true : false;
       // bankModel.GLId = parseInt(this.generalLeadger.value.toString());
@@ -136,7 +136,7 @@ export class BankMasterFormComponent {
 
       if (this.isAddMode) {
         this._bankMasterService.createBank(bankModel).subscribe((data: any) => {
-          console.log(data);
+         
           if (data) {
             if (data.statusCode == 200 && data.data.data > 0) {
               this._toastrService.success('Bank added.', 'Success!');
@@ -147,7 +147,7 @@ export class BankMasterFormComponent {
       }
       else {
         this._bankMasterService.updateBank(this.dto.id, bankModel).subscribe((data: any) => {
-          console.log(data);
+         
           if (data) {
             if (data.statusCode == 200 && data.data.data > 0) {
               this._toastrService.success('Bank updated.', 'Success!');

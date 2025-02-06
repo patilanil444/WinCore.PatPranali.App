@@ -31,7 +31,7 @@ export interface ILoanAccountModel {
   InstallmentNo: number;
   FirstInstallmentDate: Date;
   InstWithInt: string;
-  CreatedBy: string;
+  CreatedBy: number;
   LoanDepoDetails: ILoanDepoDetail[];
   GoldLoanDetails: IGoldLoanDetail[];
   LoanEMIDetails: ILoanEMIDetail[];
@@ -172,8 +172,7 @@ export class LoanDetailsComponent implements OnInit {
 
   constructor(private router: Router, private _sharedService: SharedService,
     private _toastrService: ToastrService, private _generalLedgerService: GeneralLedgerService,
-    private _customerService: CustomerService, private _loanAccountsService: LoanAccountsService,
-    private _accountsService: AccountsService) { }
+    private _loanAccountsService: LoanAccountsService, private _accountsService: AccountsService) { }
 
   ngOnInit(): void {
 
@@ -237,7 +236,7 @@ export class LoanDetailsComponent implements OnInit {
   getGeneralLedgers() {
     return new Promise((resolve, reject) => {
       this._generalLedgerService.getGeneralLedgers(this._sharedService.applicationUser.branchId).subscribe((data: any) => {
-        console.log(data);
+       
         if (data) {
           this.uiAllGeneralLedgers = data.data.data;
           if (this.uiAllGeneralLedgers) {
@@ -261,7 +260,7 @@ export class LoanDetailsComponent implements OnInit {
   getDirectors() {
     return new Promise((resolve, reject) => {
       this._accountsService.getDirectors().subscribe((data: any) => {
-        console.log(data);
+       
         if (data) {
           this.uiDirectors = data.data.data;
           if (this.uiDirectors && this.uiDirectors.length) {
@@ -293,7 +292,7 @@ export class LoanDetailsComponent implements OnInit {
       }
 
       this._loanAccountsService.getLoanAccount(this.accountsId).subscribe((data: any) => {
-        console.log(data);
+       
         if (data) {
           if (data.statusCode == 200 && data.data.data) {
             var loanAccount = data.data.data;
@@ -864,7 +863,7 @@ export class LoanDetailsComponent implements OnInit {
     accountModel.InstallmentNo = this.uiAllInstallments && this.uiAllInstallments.length ? this.uiAllInstallments.length : 0;
     accountModel.FirstInstallmentDate = this.instFirstInstallmentDate.value.toString();
     accountModel.InstWithInt = this.instInstallWithInterest.value;
-    accountModel.CreatedBy = this._sharedService.applicationUser.userName;
+    accountModel.CreatedBy = this._sharedService.applicationUser.id;
 
     accountModel.GoldLoanDetails = [];
     if (this.isGoldLoan) {
@@ -995,7 +994,7 @@ export class LoanDetailsComponent implements OnInit {
       this.uiGoldLoanData.length > 0 || this.uiDepositLoanData.length > 0) {
       // Call API to save loan account details
       this._loanAccountsService.saveLoanDetails(accountModel).subscribe((data: any) => {
-        console.log(data);
+       
         if (data) {
           if (data.data.data && data.data.data.retId > 0) {
             if (data.data.data.status == "SUCCESS") {

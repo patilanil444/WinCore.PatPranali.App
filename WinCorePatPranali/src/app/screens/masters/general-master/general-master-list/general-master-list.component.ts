@@ -27,7 +27,7 @@ export class GeneralMasterListComponent {
 
   getMasters(){
     this._generalMasterService.getMastersList().subscribe((data: any) => {
-      console.log(data);
+     
       if (data) {
         this.uiMasters = data.data.data;
         if (this.uiMasters) {
@@ -102,7 +102,7 @@ export class GeneralMasterListComponent {
     let generalMasterIdToDelete = this._generalMasterService.generalMasterIdToDelete;
     if (generalMasterIdToDelete > 0) {
       this._generalMasterService.deleteGeneralMaster(generalMasterIdToDelete).subscribe((data: any) => {
-        console.log(data);
+       
         if (data) {
           // show message
           let masterName = "";

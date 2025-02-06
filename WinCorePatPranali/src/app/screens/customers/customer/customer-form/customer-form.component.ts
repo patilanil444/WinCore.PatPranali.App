@@ -35,8 +35,8 @@ interface ICustomerModel {
   Education: number;
   CustCategory: number;
   Religion: number;
-  Createdby: string;
-  ModifiedBy: string;
+  Createdby: number;
+  ModifiedBy: number;
   CustomerAddresses: ICustomerAddress[];
   CustomerNominees: ICustomerNominee[];
   Documents: any[];
@@ -53,8 +53,8 @@ interface ICustomerAddress {
   Stateid: number;
   PinCode: string;
   is_Default: number;
-  Createdby: string;
-  ModifiedBy: string;
+  Createdby: number;
+  ModifiedBy: number;
   Status: string;
 }
 
@@ -69,7 +69,7 @@ interface ICustomerNominee {
   Guardian: string;
   Percentage: number;
   Phone: string;
-  Createdby: string;
+  Createdby: number;
   Status: string;
 }
 
@@ -89,8 +89,8 @@ export interface UiAddress {
   addressTypeName: string,
   status: string,
   isDefault: boolean,
-  createdby: string,
-  modifiedBy: string,
+  createdby: number,
+  modifiedBy: number,
   mstCustomer: {}
 }
 
@@ -107,8 +107,8 @@ export interface UiNomini {
   active: number,
   percentage: string,
   phone: string,
-  createdBy: string,
-  modifiedBy: string,
+  createdBy: number,
+  modifiedBy: number,
   status : string,
   mstCustomer: {}
 }
@@ -380,7 +380,7 @@ export class CustomerFormComponent implements OnInit {
         // Edit Mode
         this.isAddMode = false;
         this._customerService.getCustomer(this._sharedService.applicationUser.branchId, this.dto.id).subscribe((data: any) => {
-          console.log(data);
+         
           if (data) {
             if (data.statusCode == 200 && data.data.data) {
               var customer = data.data.data;
@@ -700,8 +700,8 @@ export class CustomerFormComponent implements OnInit {
     customerModel.Education = this.personalEducation.value.toString();
     customerModel.CustCategory = this.personalCustCategory.value.toString();
     customerModel.Religion = this.personalCustReligion.value.toString();
-    customerModel.Createdby = this._sharedService.applicationUser.userName;
-    customerModel.ModifiedBy = this._sharedService.applicationUser.userName;
+    customerModel.Createdby = this._sharedService.applicationUser.id;
+    customerModel.ModifiedBy = this._sharedService.applicationUser.id;
 
     let customerAddress = {} as ICustomerAddress;
     customerModel.CustomerAddresses = [];
@@ -746,7 +746,7 @@ export class CustomerFormComponent implements OnInit {
     console.log(customerModel);
 
     this._customerService.saveCustomer(customerModel).subscribe((data: any) => {
-      console.log(data);
+     
       if (data) {
         if (data.data.data && data.data.data.retId > 0) {
           this._toastrService.success('Customer saved.', 'Success!');
@@ -762,7 +762,7 @@ export class CustomerFormComponent implements OnInit {
     }
     else {
       // this._customerService.updateCustomer(customerModel.Id, customerModel).subscribe((data: any) => {
-      //   console.log(data);
+      //  
       //   if (data) {
       //     if (data.statusCode == 200 && data.data.data > 0) {
       //       this._toastrService.success('Customer updated.', 'Success!');
@@ -852,8 +852,8 @@ export class CustomerFormComponent implements OnInit {
         uiAddress.addressTypeName = addressTypeName;
         uiAddress.isDefault = true;
         uiAddress.status = 'M';
-        uiAddress.createdby = this._sharedService.applicationUser.userName;
-        uiAddress.modifiedBy = this._sharedService.applicationUser.userName;
+        uiAddress.createdby = this._sharedService.applicationUser.id;
+        uiAddress.modifiedBy = this._sharedService.applicationUser.id;
 
       }
       else {
@@ -873,8 +873,8 @@ export class CustomerFormComponent implements OnInit {
         uiAddress.addressTypeName = addressTypeName;
         uiAddress.isDefault = true;
         uiAddress.status = 'A';
-        uiAddress.createdby = this._sharedService.applicationUser.userName;
-        uiAddress.modifiedBy = this._sharedService.applicationUser.userName;
+        uiAddress.createdby = this._sharedService.applicationUser.id;
+        uiAddress.modifiedBy = this._sharedService.applicationUser.id;
 
         this.uiAddresses.push(uiAddress);
       }
@@ -964,8 +964,8 @@ export class CustomerFormComponent implements OnInit {
         uiNomini.guardian = this.nominiGuardian.value.toString();
         uiNomini.percentage = this.nominiPercentage.value.toString();
         uiNomini.phone = this.nominiPhone.value.toString();
-        uiNomini.createdBy = this._sharedService.applicationUser.userName;
-        uiNomini.modifiedBy = this._sharedService.applicationUser.userName;
+        uiNomini.createdBy = this._sharedService.applicationUser.id;
+        uiNomini.modifiedBy = this._sharedService.applicationUser.id;
         uiNomini.status = 'M';
       }
       else {
@@ -979,8 +979,8 @@ export class CustomerFormComponent implements OnInit {
         uiNomini.guardian = this.nominiGuardian.value.toString();
         uiNomini.percentage = this.nominiPercentage.value.toString();
         uiNomini.phone = this.nominiPhone.value.toString();
-        uiNomini.createdBy = this._sharedService.applicationUser.userName;
-        uiNomini.modifiedBy = this._sharedService.applicationUser.userName;
+        uiNomini.createdBy = this._sharedService.applicationUser.id;
+        uiNomini.modifiedBy = this._sharedService.applicationUser.id;
         uiNomini.status = 'A';
         this.uiNominis.push(uiNomini);
       }

@@ -75,7 +75,7 @@ export class TransferVoucherPassingComponent implements OnInit {
       let voucherRequestModel = {
         VoucherNo: parseInt(this.voucherNumber.value),
         CTFlag: 2,
-        UserName: this._sharedService.applicationUser.userName,
+        UserId: this._sharedService.applicationUser.id,
         IsPassing: true
       };
 
@@ -173,7 +173,7 @@ export class TransferVoucherPassingComponent implements OnInit {
       let passVoucherRequestModel = {
         VoucherNo: parseInt(this.voucherNumber.value.trim()),
         IsRejected: isRejected,
-        PassedByUser: this._sharedService.applicationUser.userName
+        PassedByUserId: this._sharedService.applicationUser.id
       };
 
       this._voucherPassingService.passTransferVoucher(passVoucherRequestModel).subscribe((data: any) => {

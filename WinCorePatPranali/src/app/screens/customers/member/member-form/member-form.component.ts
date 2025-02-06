@@ -265,7 +265,7 @@ export class MemberFormComponent implements OnInit {
         // Edit Mode
         this.isAddMode = false;
         this._memberService.getMember(this.dto.id).subscribe((data: any) => {
-          console.log(data);
+         
           if (data) {
             if (data.statusCode == 200 && data.data.data) {
               var member = data.data.data;
@@ -759,7 +759,7 @@ export class MemberFormComponent implements OnInit {
 
     if (this.isAddMode) {
       this._memberService.createMember(memberModel).subscribe((data: any) => {
-        console.log(data);
+       
         if (data) {
           if (data.statusCode == 200 && data.data.data > 0) {
             this._toastrService.success('Member created.', 'Success!');
@@ -771,7 +771,7 @@ export class MemberFormComponent implements OnInit {
     }
     else {
       this._memberService.updateMember(memberModel.Id, memberModel).subscribe((data: any) => {
-        console.log(data);
+       
         if (data) {
           if (data.statusCode == 200 && data.data.data > 0) {
             this._toastrService.success('Member updated.', 'Success!');

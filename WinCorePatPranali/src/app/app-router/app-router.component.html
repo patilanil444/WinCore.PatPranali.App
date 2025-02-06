@@ -34,7 +34,6 @@
             </span>
         </div>
         <div class="app-header__content">
-
             <div class="app-header-right">
                 <div class="header-btn-lg pr-0">
                     <div class="widget-content p-0">
@@ -43,7 +42,7 @@
                                 <div class="btn-group">
                                     <a data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
                                         class="p-0 btn">
-                                        <img width="42" class="rounded-circle" src="assets/images/avatars/1.jpg" alt="">
+                                        <img width="42" class="rounded-circle" src="assets/images/avatars/user.jpg" alt="">
                                         <i class="fa fa-angle-down ml-2 opacity-8"></i>
                                     </a>
                                     <div tabindex="-1" role="menu" aria-hidden="true"
@@ -60,15 +59,17 @@
                             </div>
                             <div class="widget-content-left  ml-3 header-user-info">
                                 <div class="widget-heading">
-                                    Alina Mclourd
+                                    <!-- Alina Mclourd -->
+                                    {{userName}}
                                 </div>
                                 <div class="widget-subheading">
-                                    VP People Manager
+                                    <!-- VP People Manager -->
+                                    {{userRole}}
                                 </div>
                             </div>
                             <div class="widget-content-right header-user-info ml-3">
-                                <button type="button" class="btn-shadow p-1 btn btn-primary btn-sm show-toastr-example">
-                                    <i class="fa text-white fa-calendar pr-1 pl-1"></i>
+                                <button type="button" class="btn-shadow p-1 btn btn-primary btn-sm show-toastr-example" title="Log out" (click)="logout()">
+                                    <i class="fa text-white fa-sign-out-alt pr-1 pl-1"></i>
                                 </button>
                             </div>
                         </div>
@@ -593,19 +594,20 @@
                                     </a>
                                 </li>
                                 <li>
+                                    <a [class.mm-active]="isMenuSelected('work-starting')"
+                                        (click)="configClick('day-start')">
+                                        <i class="metismenu-icon pe-7s-note2"></i>
+                                        Starting of Work  
+                                    </a>
+                                </li>
+                                <!-- <li>
                                     <a [class.mm-active]="isMenuSelected('pending-vouchers')"
                                         (click)="configClick('pending-vouchers')">
                                         <i class="metismenu-icon pe-7s-note2"></i>
                                         Pending Vouchers  
                                     </a>
-                                </li>
-                                <li>
-                                    <a [class.mm-active]="isMenuSelected('work-starting')"
-                                        (click)="configClick('work-starting')">
-                                        <i class="metismenu-icon pe-7s-note2"></i>
-                                        Starting of Work  
-                                    </a>
-                                </li>
+                                </li> -->
+                               
                                 <!-- <li>
                                     <a [class.mm-active]="isMenuSelected('saving-transactions')"
                                         (click)="configClick('saving-transactions')">

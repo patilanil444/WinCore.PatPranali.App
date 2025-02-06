@@ -24,7 +24,7 @@ export class DistrictMasterListComponent implements OnInit {
 
   getDistricts(){
     this._districtMasterService.getDistricts().subscribe((data: any) => {
-      console.log(data);
+     
       if (data) {
         this.uiDistricts = data.data.data;
         this.total = this.uiDistricts.length;
@@ -83,7 +83,7 @@ export class DistrictMasterListComponent implements OnInit {
     let priorityIdToDelete = this._districtMasterService.districtIdToDelete;
     if (priorityIdToDelete > 0) {
       this._districtMasterService.deleteDistrict(priorityIdToDelete).subscribe((data: any) => {
-        console.log(data);
+       
         if (data) {
           this._toastrService.success('District deleted.', 'Success!');
           // show message

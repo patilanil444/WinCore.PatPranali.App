@@ -13,8 +13,8 @@ export interface UiSecurity {
   security: string,
   securityValue: Date,
   securityDescription: number,
-  createdBy: string,
-  modifiedBy: string,
+  createdBy: number,
+  modifiedBy: number,
   status: string,
   mstCustomer: {}
 }
@@ -61,7 +61,7 @@ export class CashCreditLoanComponent implements OnInit {
   getSecurities() {
     return new Promise((resolve, reject) => {
       this._accountsService.getSecurities().subscribe((data: any) => {
-        console.log(data);
+       
         if (data) {
           this.uiSecurityTypes = data.data.data;
           if (this.uiSecurityTypes && this.uiSecurityTypes.length) {
@@ -112,8 +112,8 @@ export class CashCreditLoanComponent implements OnInit {
         uiSecurity.securityValue == this.securityValue.value.toString();
         uiSecurity.securityDescription = this.securityDescription.value.toString();
         // uiSecurity.percentage = this.percentage.value.toString();
-        uiSecurity.createdBy = this._sharedService.applicationUser.userName;
-        uiSecurity.modifiedBy = this._sharedService.applicationUser.userName;
+        uiSecurity.createdBy = this._sharedService.applicationUser.id;
+        uiSecurity.modifiedBy = this._sharedService.applicationUser.id;
         uiSecurity.status = 'M';
       }
       else {
@@ -126,8 +126,8 @@ export class CashCreditLoanComponent implements OnInit {
         uiSecurity.securityValue = this.securityValue.value.toString();
         uiSecurity.securityDescription = this.securityDescription.value.toString();
         // uiSecurity.percentage = this.percentage.value.toString();
-        uiSecurity.createdBy = this._sharedService.applicationUser.userName;
-        uiSecurity.modifiedBy = this._sharedService.applicationUser.userName;
+        uiSecurity.createdBy = this._sharedService.applicationUser.id;
+        uiSecurity.modifiedBy = this._sharedService.applicationUser.id;
         uiSecurity.status = 'A';
         this.uiSecurities.push(uiSecurity);
       }

@@ -128,7 +128,7 @@ export class GLInterestParameterComponent implements OnInit {
 
   getGeneralLedgers() {
     this._generalLedgerService.getGeneralLedgers(this._sharedService.applicationUser.branchId).subscribe((data: any) => {
-      console.log(data);
+     
       if (data) {
         this.uiGeneralLedgers = data.data.data;
         if ( this.uiGeneralLedgers) {
@@ -170,7 +170,7 @@ export class GLInterestParameterComponent implements OnInit {
         }
 
         this._generalLedgerService.getGeneralLedgerInterestParams(selectedGL[0].code).subscribe((data: any) => {
-          console.log(data);
+         
           if (data) {
 
             let glwithParams = data.data.data;
@@ -334,7 +334,7 @@ export class GLInterestParameterComponent implements OnInit {
       console.log(glMasterModel);
 
       this._generalLedgerService.saveGeneralLedgerInterestParams(glMasterModel).subscribe((data: any) => {
-        console.log(data);
+       
         if (data) {
           if (data.statusCode == 200 && data.data.data.retId > 0) {
             this._toastrService.success('GL interest parameters updated.', 'Success!');

@@ -10,17 +10,21 @@ import { BrowserAnimationsModule, provideAnimations } from '@angular/platform-br
 import { ToastrModule } from 'ngx-toastr';
 import { SpinnerComponent } from './common/spinner/spinner.component';
 import { LoaderInterceptor } from './common/interceptors/loader.interceptor';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { CalenderViewComponent } from './common/directives/calender-view/calender-view.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     LoginComponent,
     NotFoundComponent,
-    SpinnerComponent,
+    SpinnerComponent 
   ],
   imports: [
     CommonModule,
     BrowserModule,
+    ReactiveFormsModule,
+    FormsModule,
     AppRoutingModule,
     HttpClientModule,
     BrowserAnimationsModule,

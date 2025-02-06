@@ -7,7 +7,7 @@ import { IGeneralMasterDTO, UiUser } from 'src/app/common/models/common-ui-model
 })
 export class SharedService {
 
-  public applicationUser: UiUser = new UiUser(1, 1, "TempUser");
+  public applicationUser: UiUser;
 
   public uiAllStates = [];
   public uiAllDistricts = [];
@@ -23,6 +23,7 @@ export class SharedService {
   private apiCount = 0;
   private isLoadingSubject = new BehaviorSubject<boolean>(false);
   isLoading$ = this.isLoadingSubject.asObservable();
+  
 
   constructor() { }
 

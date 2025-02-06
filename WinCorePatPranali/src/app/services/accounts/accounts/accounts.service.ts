@@ -45,4 +45,10 @@ export class AccountsService {
     let options = GlobleDeclarations.getHeaderOptions();
     return this.http.get(GlobleDeclarations.apiBaseURL + "api/Account/valid-guarantor?customerId="+ customerId, options);
   }
+
+  authoriseAccount(authAccountRequest: any)
+  {
+    let options = GlobleDeclarations.getHeaderOptions();
+    return this.http.post(GlobleDeclarations.apiBaseURL + "api/Account/authorise-account", authAccountRequest, options);
+  }
 }

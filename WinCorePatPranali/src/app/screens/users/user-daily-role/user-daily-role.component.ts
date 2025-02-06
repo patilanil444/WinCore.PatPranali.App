@@ -17,7 +17,7 @@ interface IUserModel {
   Today_Cash_Payt: number;
   Today_Pass_Rect: number;
   Today_Pass_Payt: number;
-  CreatedBy: string;
+  CreatedBy: number;
 }
 
 @Component({
@@ -144,12 +144,12 @@ export class UserDailyRoleComponent implements OnInit {
       userModel.Today_Cash_Payt =  parseFloat(this.todaysCashPaymentLimit.value.toString());
       userModel.Today_Pass_Rect =  parseFloat(this.todaysPassingReceiptLimit.value.toString());
       userModel.Today_Pass_Payt =  parseFloat(this.todaysPassingPaymentLimit.value.toString());
-      userModel.CreatedBy = this._sharedService.applicationUser.userName;
+      userModel.CreatedBy = this._sharedService.applicationUser.id;
 
       console.log(userModel);
 
       this._userService.saveUsersTodaysRole(userModel).subscribe((data: any) => {
-        console.log(data);
+       
         if (data) {
           if (data.statusCode == 200 && data.data.data && data.data.data.retId > 0) {
             if (data.data.data.status == "SUCCESS") {

@@ -32,8 +32,8 @@ interface IBranchServerModel {
   DistrictId: number;
   TalukaId: number;
   CurrencyId: number;
-  CreateBy:string;
-  UpdateBy: string;
+  CreateBy: number;
+  UpdateBy: number;
 }
 
 @Component({
@@ -135,7 +135,7 @@ export class BranchMasterFormComponent {
         if (this.dto.id > 0) {
           this.isAddMode = false;
           this._branchMasterService.getBranch(this.dto.id).subscribe((data: any) => {
-            console.log(data);
+           
             if (data) {
               if (data.statusCode == 200 && data.data.data) {
                 var brnch = data.data.data;
@@ -252,13 +252,13 @@ export class BranchMasterFormComponent {
       branchModel.DistrictId = this.districtId.value.toString();
       branchModel.TalukaId = this.tahshilId.value.toString();
       branchModel.CurrencyId = this.currency.value.toString();
-      branchModel.CreateBy = this._sharedService.applicationUser.userName;
-      branchModel.UpdateBy = this._sharedService.applicationUser.userName;
+      branchModel.CreateBy = this._sharedService.applicationUser.id;
+      branchModel.UpdateBy = this._sharedService.applicationUser.id;
       console.log(branchModel);
 
       if (this.isAddMode) {
         this._branchMasterService.createBranch(branchModel).subscribe((data: any) => {
-          console.log(data);
+         
           if (data) {
             if (data.statusCode == 200 && data.data.data > 0) {
               this._toastrService.success('Branch added.', 'Success!');
@@ -270,7 +270,7 @@ export class BranchMasterFormComponent {
       else  
       {
         this._branchMasterService.updateBranch(this.dto.id, branchModel).subscribe((data: any) => {
-          console.log(data);
+         
           if (data) {
             if (data.statusCode == 200 && data.data.data > 0) {
               this._toastrService.success('Branch updated.', 'Success!');

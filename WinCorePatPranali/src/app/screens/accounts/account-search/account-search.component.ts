@@ -61,7 +61,7 @@ export class AccountSearchComponent implements OnInit {
 
   getGeneralLedgers() {
     this._generalLedgerService.getGeneralLedgers(this._sharedService.applicationUser.branchId).subscribe((data: any) => {
-      console.log(data);
+     
       if (data) {
         this.uiAllGeneralLedgers = data.data.data;
         if (this.uiAllGeneralLedgers) {
@@ -101,7 +101,7 @@ export class AccountSearchComponent implements OnInit {
     if (ledgerId > 0 || custNumber.length || accNumber.length) {
       this._accountsService.SearchAccountsAsync(this._sharedService.applicationUser.branchId, 
         ledgerId, custNumber, accNumber).subscribe((data: any) => {
-        console.log(data);
+       
         if (data) {
           let accounts = data.data.data;
           if (this.uiAccounts) {

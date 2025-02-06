@@ -24,7 +24,7 @@ export class BankMasterListComponent {
 
   getBanks(){
     this._bankMasterService.getBanks().subscribe((data: any) => {
-      console.log(data);
+     
       if (data) {
         this.uiBanks = data.data.data;
         this.total = this.uiBanks.length;
@@ -89,7 +89,7 @@ export class BankMasterListComponent {
     let bankIdToDelete = this._bankMasterService.bankIdToDelete;
     if (bankIdToDelete > 0) {
       this._bankMasterService.deleteBank(bankIdToDelete).subscribe((data: any) => {
-        console.log(data);
+       
         if (data) {
           // show message
           this._toastrService.success('Bank deleted.', 'Success!');

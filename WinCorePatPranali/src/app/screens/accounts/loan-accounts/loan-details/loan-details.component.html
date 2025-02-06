@@ -6,7 +6,7 @@
                 <form [formGroup]="summaryForm" #form="ngForm">
                     <div class="row">
                         <div class="col-md-3 position-relative">
-                            <label for="txtCode" class="">General Ledger</label>
+                            <label class="">General Ledger</label>
                             <div class="input-group">
                                 <ngx-select-dropdown [config]="config" tabindex="1" [options]="uiLoanGeneralLedgers"
                                     style="width: 100%;" formControlName="generalLedger"
@@ -15,19 +15,19 @@
                         </div>
 
                         <div class="col-md-3 position-relative form-group">
-                            <label for="txtCode" class="">Account Number</label>
+                            <label class="">Account Number</label>
                             <div class="input-group">
                                 <input tabindex="2" type="text" readonly class="form-control" formControlName="glAccountNumberStr">
                             </div>
                         </div>
                         <div class="col-md-3 position-relative form-group">
-                            <label for="txtCode" class="">Customer Number</label>
+                            <label class="">Customer Number</label>
                             <div class="input-group">
                                 <input tabindex="3" type="text" readonly class="form-control" formControlName="customerCode">
                             </div>
                         </div>
                         <div class="col-md-3 position-relative form-group">
-                            <label for="txtCode" class="">Customer Name</label>
+                            <label class="">Customer Name</label>
                             <div class="input-group">
                                 <input tabindex="4" type="text" readonly class="form-control" formControlName="customerName">
                             </div>
@@ -68,17 +68,17 @@
                         <form [formGroup]="parametersForm" #form="ngForm">
                             <div class="row">
                                 <div class="col-md-3 position-relative form-group">
-                                    <label for="txtCode" class="">Saction Amount <span class="mandatory">*</span></label>
+                                    <label class="">Saction Amount <span class="mandatory">*</span></label>
                                     <input tabindex="1" type="number" class="form-control" formControlName="sanctionAmount"
                                         (change)="setIntallmentSactionAmount()">
                                 </div>
                                 <div class="col-md-3 position-relative form-group">
-                                    <label for="txtCode" class="">Saction Date <span class="mandatory">*</span></label>
+                                    <label class="">Saction Date <span class="mandatory">*</span></label>
                                     <input tabindex="1" type="date" class="form-control" formControlName="sanctionDate"
                                         (change)="calculateFirstInstallmentDate()">
                                 </div>
                                 <div class="col-md-3 position-relative form-group">
-                                    <label for="txtCode" class="">Saction By <span class="mandatory">*</span></label>
+                                    <label class="">Saction By <span class="mandatory">*</span></label>
                                     <select class="mb-2 form-control" tabindex="1" formControlName="sanctionBy">
                                         <option *ngFor="let uiDirector of uiDirectors" [ngValue]="uiDirector.id">
                                             {{uiDirector.directorName}}
@@ -87,28 +87,28 @@
                                 </div>
                     
                                 <div class="col-md-3 position-relative form-group">
-                                    <label for="txtCode" class=""> Loan Tenure in Months <span class="mandatory">*</span></label>
+                                    <label class=""> Loan Tenure in Months <span class="mandatory">*</span></label>
                                     <input tabindex="1" type="number" class="mb-2 form-control" formControlName="loanTenureInMonths" min="0"
                                         (change)="calculateMatureDate()" onKeyPress="if(this.value.length >=4) return false;">
                                 </div>
                                 <div class="col-md-3 position-relative form-group">
-                                    <label for="txtCode" class="">Actual Loan Amount <span class="mandatory">*</span></label>
+                                    <label class="">Actual Loan Amount <span class="mandatory">*</span></label>
                                     <input tabindex="1" type="number" class="form-control" formControlName="actualLoanAmount"
                                         (change)="setIntallmentActualAmount()">
                                 </div>
                                 <div class="col-md-3 position-relative form-group">
-                                    <label for="txtCode" class="">Interest Rate <span class="mandatory">*</span></label>
+                                    <label class="">Interest Rate <span class="mandatory">*</span></label>
                                     <input tabindex="1" type="number" class="mb-2 form-control" formControlName="interestRate" min="0"
                                         onKeyPress="if(this.value.length >=3) return false;">
                                 </div>
                     
                                 <div class="col-md-3 position-relative form-group">
-                                    <label for="txtCode" class="">Amount Advances <span class="mandatory">*</span></label>
+                                    <label class="">Amount Advances <span class="mandatory">*</span></label>
                                     <input tabindex="1" type="number" min="0" class="form-control" formControlName="amountAdvances">
                                 </div>
                     
                                 <div class="col-md-3 position-relative form-group">
-                                    <label for="txtCode" class="">Changes In Interest Rate Applicable</label>
+                                    <label class="">Changes In Interest Rate Applicable</label>
                                     <select class="mb-2 form-control" tabindex="1" formControlName="changesInInterestApplicable">
                                         <option *ngFor="let uiChangesInInterestRate of uiChangesInInterestRateYN"
                                             [ngValue]="uiChangesInInterestRate.code">
@@ -118,22 +118,22 @@
                                 </div>
                     
                                 <div class="col-md-3 position-relative form-group">
-                                    <label for="txtCode" class="">Maturity Date <span class="mandatory">*</span></label>
+                                    <label class="">Maturity Date <span class="mandatory">*</span></label>
                                     <input tabindex="1" type="date" class="mb-2 form-control" formControlName="maturityDate">
                                 </div>
                     
                                 <div class="col-md-3 position-relative form-group">
-                                    <label for="txtCode" class="">Resolution No</label>
+                                    <label class="">Resolution No</label>
                                     <input tabindex="1" type="text" class="form-control" formControlName="resolutionNo">
                                 </div>
                     
                                 <div class="col-md-3 position-relative form-group">
-                                    <label for="txtCode" class="">Resolution Date</label>
+                                    <label class="">Resolution Date</label>
                                     <input tabindex="1" type="date" class="form-control" formControlName="resolutionDate">
                                 </div>
 
                                 <div class="col-md-3 position-relative form-group">
-                                    <label for="txtCode" class="">Paid On <span class="mandatory">*</span></label>
+                                    <label class="">Paid On <span class="mandatory">*</span></label>
                                     <input tabindex="7" type="date" class="form-control" formControlName="paidDate"
                                         (change)="modifyMaturityDate()">
                                 </div>
@@ -216,7 +216,7 @@
                             
                             <div class="row">
                                 <div class="col-md-2 position-relative form-group">
-                                    <label for="txtCode" class="">Installment Type <span class="mandatory">*</span></label>
+                                    <label class="">Installment Type <span class="mandatory">*</span></label>
                                     <select class="form-control" tabindex="1" formControlName="instInstallmentType" (change)="changeInstallmentType()">
                                         <option *ngFor="let uiInstallmentType of uiInstallmentTypes" [ngValue]="uiInstallmentType.code">
                                             {{uiInstallmentType.name}}
@@ -225,18 +225,18 @@
                                 </div>
                     
                                 <div class="col-md-2 position-relative form-group">
-                                    <label for="txtCode" class="">Number of Installments <span class="mandatory">*</span></label>
+                                    <label class="">Number of Installments <span class="mandatory">*</span></label>
                                     <input tabindex="1" type="number" class="form-control" formControlName="instNumberOfInstallments">
                                 </div>
                     
                                 <div class="col-md-2 position-relative form-group">
-                                    <label for="txtCode" class="">First Installment Date <span class="mandatory">*</span></label>
+                                    <label class="">First Installment Date <span class="mandatory">*</span></label>
                                     <input tabindex="1" type="date" class="form-control" formControlName="instFirstInstallmentDate"
                                         (change)="validateFirstInstallmentDate()">
                                 </div>
                     
                                 <div class="col-md-2 position-relative form-group">
-                                    <label for="txtCode" class="">Installment With Interest <span class="mandatory">*</span></label>
+                                    <label class="">Installment With Interest <span class="mandatory">*</span></label>
                                     <select class="form-control" tabindex="1" formControlName="instInstallWithInterest">
                                         <option *ngFor="let uiInstallmentWithInterest of uiInstallmentWithInterestYN"
                                             [ngValue]="uiInstallmentWithInterest.code">
@@ -251,7 +251,7 @@
                                 </div>
 
                                 <div class="col-md-2 position-relative form-group">
-                                    <label for="txtCode" class="">Amount To Be Received</label>
+                                    <label class="">Amount To Be Received</label>
                                     <input tabindex="1" type="text" class="form-control" formControlName="instAmountToBeReceived" readonly>
                                 </div>
                     

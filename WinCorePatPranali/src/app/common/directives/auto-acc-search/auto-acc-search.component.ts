@@ -84,7 +84,7 @@ export class AutoAccSearchComponent implements OnInit {
       if (ledgerId > 0 || custNumber.length || accNumber.length) {
         this._accountsService.SearchAccountsAsync(this._sharedService.applicationUser.branchId,
           ledgerId, custNumber, accNumber).subscribe((data: any) => {
-            console.log(data);
+           
             if (data) {
               let accounts = data.data.data;
               if (this.uiAccounts) {

@@ -25,7 +25,7 @@ export class BranchMasterListComponent {
 
   getBranches(){
     this._branchMasterService.getBranches().subscribe((data: any) => {
-      console.log(data);
+     
       if (data) {
         this.uiBranches = data.data.data;
         this.total = this.uiBranches.length;
@@ -88,7 +88,7 @@ export class BranchMasterListComponent {
     let branchIdToDelete = this._branchMasterService.branchIdToDelete;
     if (branchIdToDelete > 0) {
       this._branchMasterService.deleteBranch(branchIdToDelete).subscribe((data: any) => {
-        console.log(data);
+       
         if (data) {
           // show message
           this._toastrService.success('Branch deleted.', 'Success!');

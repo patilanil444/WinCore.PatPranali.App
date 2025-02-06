@@ -10,7 +10,7 @@
 
                     <div class="row">
                         <div class="col-md-3 position-relative">
-                            <label for="txtCode" class="">General Ledger</label>
+                            <label class="">General Ledger</label>
                             <div class="input-group">
                                 <ngx-select-dropdown [config]="config" tabindex="1" [options]="uiGeneralLedgers"
                                     style="width: 100%;" [multiple]="false"
@@ -23,7 +23,7 @@
                                 (click)="showGLInfo()">Show
                             </button>
                             <!-- <div style="margin-left: 25px;">
-                                <label for="txtCode" class="">Code</label>
+                                <label class="">Code</label>
                                 <div class="input-group">
                                     <input tabindex="3" readonly type="text" class="form-control"
                                         formControlName="code">
@@ -31,13 +31,13 @@
                             </div> -->
                         </div>
                         <div class="col-md-3 position-relative">
-                            <label for="txtCode" class="">GL Group</label>
+                            <label class="">GL Group</label>
                             <div class="input-group">
                                 <input tabindex="4" readonly type="text" class="form-control" formControlName="group">
                             </div>
                         </div>
                         <div class="col-md-3 position-relative">
-                            <label for="txtCode" class="">GL Type</label>
+                            <label class="">GL Type</label>
                             <div class="input-group">
                                 <input tabindex="5" readonly type="text" class="form-control"
                                     formControlName="glType">
@@ -49,7 +49,7 @@
 
                     <div class="row">
                         <div class="col-md-3 position-relative">
-                            <label for="txtCode" class="">Interest Posting</label>
+                            <label class="">Interest Posting</label>
                             <select class="form-control" name="masterList" tabindex="6"
                                 formControlName="interestPosting">
                                 <option *ngFor="let interestPosting of interestPostings"
@@ -59,7 +59,7 @@
                             </select>
                         </div>
                         <div class="col-md-3 position-relative">
-                            <label for="txtCode" class="">Add Interest to Balance</label>
+                            <label class="">Add Interest to Balance</label>
                             <select class="form-control" name="masterList" tabindex="7"
                                 formControlName="addIntToBalance">
                                 <option *ngFor="let addInterest of addInterestToBal" [ngValue]="addInterest.code">
@@ -68,7 +68,7 @@
                             </select>
                         </div>
                         <div class="col-md-3 position-relative">
-                            <label for="txtCode" class="">Receivable/ Payable GL</label>
+                            <label class="">Receivable/ Payable GL</label>
                             <div class="input-group">
 
                                 <!-- <input tabindex="3" type="text" class="form-control"
@@ -85,7 +85,7 @@
                             </select> -->
                         </div>
                         <div class="col-md-3 position-relative">
-                            <label for="txtCode" class="">Received/ Paid GL</label>
+                            <label class="">Received/ Paid GL</label>
                             <div class="input-group">
                                 <!-- <input tabindex="3" type="text" class="form-control"
                                     placeholder="Search by code or name.." formControlName="received"> -->
@@ -104,7 +104,7 @@
                     <div class="divider"></div>
                     <div class="row">
                         <div class="col-md-3 position-relative">
-                            <label for="txtCode" class="">Rate for Staff</label>
+                            <label class="">Rate for Staff</label>
                             <select class="form-control" name="masterList" tabindex="10"
                                 (change)="onStaffRateChange($event)" formControlName="rateForStaffYN">
                                 <option *ngFor="let rateForSpecial of rateForSpecials" [ngValue]="rateForSpecial.code">
@@ -113,7 +113,7 @@
                             </select>
                         </div>
                         <div class="col-md-3 position-relative">
-                            <label for="txtCode" class="">Rate for Female</label>
+                            <label class="">Rate for Female</label>
                             <select class="form-control" name="masterList" tabindex="12"
                                 (change)="onFemaleRateChange($event)" formControlName="rateForFemaleYN">
                                 <option *ngFor="let rateForSpecial of rateForSpecials" [ngValue]="rateForSpecial.code">
@@ -122,7 +122,7 @@
                             </select>
                         </div>
                         <div class="col-md-3 position-relative">
-                            <label for="txtCode" class="">Rate for Senior citizen</label>
+                            <label class="">Rate for Senior citizen</label>
                             <select class="form-control" name="masterList" tabindex="14"
                                 (change)="onSeniorRateChange($event)" formControlName="rateForSeniorYN">
                                 <option *ngFor="let rateForSpecial of rateForSpecials" [ngValue]="rateForSpecial.code">
@@ -156,7 +156,7 @@
 
                             <div class="row">
                                 <div class="col-md-3 position-relative">
-                                    <label for="txtCode" class="">Calculate interest after</label>
+                                    <label class="">Calculate interest after</label>
                                     <select class="form-control" name="masterList" tabindex="16"
                                         formControlName="calculateIntAfterMaturity1">
                                         <option *ngFor="let calculateInterest of calculateInterestAfter"
@@ -166,7 +166,7 @@
                                     </select>
                                 </div>
                                 <div class="col-md-3 position-relative">
-                                    <label for="txtCode" class="">Maturity at the time of</label>
+                                    <label class="">Maturity at the time of</label>
                                     <select class="form-control" name="masterList" tabindex="17"
                                         formControlName="calculateIntAfterMaturity2">
                                         <option *ngFor="let maturity of maturityAtTheTimeOf" [ngValue]="maturity.code">
@@ -175,7 +175,7 @@
                                     </select>
                                 </div>
                                 <div class="col-md-6 position-relative">
-                                    <label for="txtCode" class="">Calculate Provision</label>
+                                    <label class="">Calculate Provision</label>
                                     <div style="display: flex;">
                                         <select class="form-control" name="masterList" tabindex="18"
                                             formControlName="calculateProvision1">
@@ -197,7 +197,7 @@
 
                             <div class="row" style="margin-top: 10px">
                                 <div class="col-md-3 position-relative form-group">
-                                    <label for="txtCode" class="">Calculate Payable</label>
+                                    <label class="">Calculate Payable</label>
                                     <div class="input-group">
                                         <select class="form-control" name="masterList" tabindex="20"
                                             formControlName="calculatePayble">
@@ -210,7 +210,7 @@
 
                                 </div>
                                 <div class="col-md-3 position-relative form-group">
-                                    <label for="txtCode" class="">Payable Amount</label>
+                                    <label class="">Payable Amount</label>
                                     <div class="input-group" >
                                         <div class="input-group-prepend"><span class="input-group-text">₹</span></div>
                                         <input tabindex="15" type="text" class="form-control" formControlName="calculatePaybleAmount">
@@ -223,7 +223,7 @@
                                     </div>
                                 </div>
                                 <div class="col-md-3 position-relative form-group">
-                                    <label for="txtCode" class="">Installment Penal</label>
+                                    <label class="">Installment Penal</label>
                                     <div class="input-group">
                                         <select class="form-control" name="masterList" tabindex="21"
                                             formControlName="installmantPenalDeposit">
@@ -236,7 +236,7 @@
 
                                 </div>
                                 <div class="col-md-3 position-relative form-group">
-                                    <label for="txtCode" class="">RI Cumulative</label>
+                                    <label class="">RI Cumulative</label>
                                     <div class="input-group">
                                         <select class="form-control" name="masterList" tabindex="22"
                                             formControlName="riCumulative">
@@ -253,7 +253,7 @@
                         <div id="loanSection" [hidden]="isLoanEnabled">
                             <div class="row">
                                 <div class="col-md-3 position-relative">
-                                    <label for="txtCode" class="">Installment Penal</label>
+                                    <label class="">Installment Penal</label>
                                     <select class="form-control" name="masterList" tabindex="16"
                                         formControlName="installmantPenalForLoan">
                                         <option *ngFor="let installmentP of installmentPenal"
@@ -263,7 +263,7 @@
                                     </select>
                                 </div>
                                 <div class="col-md-3 position-relative">
-                                    <label for="txtCode" class="">After</label>
+                                    <label class="">After</label>
                                     <input tabindex="15" type="text" class="form-control"
                                         formControlName="installmantPenalAftertext">
 
@@ -278,7 +278,7 @@
                                     </select>
                                 </div>
                                 <div class="col-md-3 position-relative">
-                                    <label for="txtCode" class="">Interest calculation type</label>
+                                    <label class="">Interest calculation type</label>
                                     <select class="form-control" name="masterList" tabindex="17"
                                         formControlName="interestCalculationTypeForLoan">
                                         <option *ngFor="let interestCalculationT of interestCalculationType"
@@ -290,7 +290,7 @@
                             </div>
                             <div class="row" style="margin-top: 10px;">
                                 <div class="col-md-3 position-relative">
-                                    <label for="txtCode" class="">Interest after maturity</label>
+                                    <label class="">Interest after maturity</label>
                                     <div style="display: flex;">
                                         <select class="form-control" name="masterList" tabindex="18"
                                             formControlName="interestAfterMaturityForLoan">
@@ -307,7 +307,7 @@
                                         formControlName="interestAfterMaturityForLoanText">
                                 </div>
                                 <div class="col-md-3 position-relative form-group">
-                                    <label for="txtCode" class="">Installment Calculation</label>
+                                    <label class="">Installment Calculation</label>
                                     <div class="input-group">
                                         <select class="form-control" name="masterList" tabindex="20"
                                             formControlName="installmentCalculationForLoan">
@@ -319,7 +319,7 @@
                                     </div>
                                 </div>
                                 <div class="col-md-3 position-relative form-group">
-                                    <label for="txtCode" class="">Calculate extra interest for CC above limit</label>
+                                    <label class="">Calculate extra interest for CC above limit</label>
                                     <div class="input-group">
                                         <select class="form-control" name="masterList" tabindex="21"
                                             formControlName="extraInterestForCCForLoan">

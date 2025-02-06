@@ -48,7 +48,7 @@ export class CashierTransactionSummaryComponent implements OnInit {
 
   getDailyCashierSummary() {
     this._cashierTransactionsService.getCashierDailyTransactionSummary(this._sharedService.applicationUser.branchId,
-      this._sharedService.applicationUser.userName).subscribe((data: any) => {
+      this._sharedService.applicationUser.id).subscribe((data: any) => {
 
         if (data.data.data.pendingTransactions && data.data.data.pendingTransactions.length) {
           //this.pendingTransactions = data.data.data.pendingTransactions;

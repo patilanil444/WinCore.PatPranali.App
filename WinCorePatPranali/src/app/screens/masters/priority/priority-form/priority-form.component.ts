@@ -57,7 +57,7 @@ export class PriorityFormComponent {
       {
         this.isAddMode = false;
         this._priorityMasterService.getPriority(this.dto.id).subscribe((data: any) => {
-          console.log(data);
+         
           if (data) {
             if (data.statusCode == 200 && data.data.data) {
               var priority = data.data.data;
@@ -102,7 +102,7 @@ export class PriorityFormComponent {
 
       if (this.isAddMode) {
         this._priorityMasterService.createPriority(priorityModel).subscribe((data: any) => {
-          console.log(data);
+         
           if (data) {
             if (data.statusCode == 200 && data.data.data == 1) {
               this.toastrService.success('Priority added.', 'Success!');
@@ -114,7 +114,7 @@ export class PriorityFormComponent {
       else  
       {
         this._priorityMasterService.updatePriority(this.dto.id, priorityModel).subscribe((data: any) => {
-          console.log(data);
+         
           if (data) {
             if (data.statusCode == 200 && data.data.data == 1) {
               this.toastrService.success('Priority updated.', 'Success!');

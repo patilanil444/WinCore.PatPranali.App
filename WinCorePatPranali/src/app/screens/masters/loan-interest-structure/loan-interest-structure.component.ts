@@ -28,7 +28,7 @@ interface ILoanInterestRate{
   Type: string,
   BranchCode: number,
   Active: number,
-  CreatedBy : string,
+  CreatedBy : number,
   mstLoanIntRateStruct: ILoanInterestRateScheduleModel[]
 }
 
@@ -41,7 +41,7 @@ interface ILoanInterestRateScheduleModel
   RowIndex: number,
   InterestRate: number,
   Active: number,
-  CreatedBy: string,
+  CreatedBy: number,
 }
 
 @Component({
@@ -88,7 +88,7 @@ export class LoanInterestStructureComponent implements OnInit {
 
   getGeneralLedgers(){
     this._generalLedgerService.getGeneralLedgers(this._sharedService.applicationUser.branchId).subscribe((data: any) => {
-      console.log(data);
+     
       if (data) {
         this.uiGeneralLedgers = data.data.data;
         if (this.uiGeneralLedgers) {
@@ -144,7 +144,7 @@ export class LoanInterestStructureComponent implements OnInit {
     if (this.generalLedger.code) {
 
       this._loanInterestRateService.getLoanRatesByGL(this.generalLedger.code, this.interestStructureDate).subscribe((data: any) => {
-        console.log(data);
+       
         if (data) {
           let response = data.data.data;
           if (response) {
@@ -196,7 +196,7 @@ export class LoanInterestStructureComponent implements OnInit {
       loanInterestRateModel.BranchCode = this._sharedService.applicationUser.branchId;
       loanInterestRateModel.GLId = this.generalLedger.code;
       loanInterestRateModel.Type = "L";
-      loanInterestRateModel.CreatedBy = this._sharedService.applicationUser.userName;
+      loanInterestRateModel.CreatedBy = this._sharedService.applicationUser.id;
       // loanInterestRateModel.FromPurposeId = this.purposeFromId;
       // loanInterestRateModel.ToPurposeId = this.purposeToId;
       loanInterestRateModel.IntSetDate = new Date(this.interestStructureDate);
@@ -211,13 +211,13 @@ export class LoanInterestStructureComponent implements OnInit {
         model.FromAmount = this.structureArray[index].fromAmount.toString();
         model.ToAmount = this.structureArray[index].toAmount.toString();
         model.InterestRate = this.structureArray[index].interestRate;
-        model.CreatedBy = this._sharedService.applicationUser.userName;
+        model.CreatedBy = this._sharedService.applicationUser.id;
         loanInterestRateModel.mstLoanIntRateStruct.push(model);
       }
       console.log(loanInterestRateModel);
 
       this._loanInterestRateService.saveLoanRateStructure(loanInterestRateModel).subscribe((data: any) => {
-        console.log(data);
+       
         if (data) {
           if (data.statusCode == 200 && data.data.data.retId > 0) {
             this._toastrService.success('Loan interest structure saved.', 'Success!');
@@ -226,32 +226,6 @@ export class LoanInterestStructureComponent implements OnInit {
           }
         }
       })
-
-      // if (this.isAddMode) {
-      //   this._loanInterestRateService.saveLoanRateStructure(loanInterestRateModel).subscribe((data: any) => {
-      //     console.log(data);
-      //     if (data) {
-      //       if (data.statusCode == 200 && data.data.data > 0) {
-      //         this._toastrService.success('Loan interest structure saved.', 'Success!');
-      //         //this.configClick("banks");
-      //         this.getLoanInterestRates();
-      //       }
-      //     }
-      //   })
-      // }
-      // else  
-      // {
-      //   this._loanInterestRateService.updateLoanRateStructure(parseInt(this.uiLoanInterestRate.id), loanInterestRateModel).subscribe((data: any) => {
-      //     console.log(data);
-      //     if (data) {
-      //       if (data.statusCode == 200 && data.data.data > 0) {
-      //         this._toastrService.success('Loan interest structure updated.', 'Success!');
-      //         //this.configClick("banks");
-      //       }
-      //     }
-      //   })
-      // }
-
     }
   }
 

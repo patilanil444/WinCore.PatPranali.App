@@ -24,10 +24,30 @@ export enum NodeType{
 }
 
 
-export class UiUser
-{
-    constructor(public id: number, public branchId: number, public userName: string )
-        {   }
+export interface UiUser {
+    id: number,
+    branchId: number,
+    userName: string,
+    name: string,
+    emailId: string,
+    authority: string,
+    access: string,
+    transferLimit: number,
+    cashRect: number,
+    cashPayt: number,
+    passRect: number,
+    passPayt: number,
+    todayAccess: number,
+    todayCashRect: number,
+    todayCashPayt: number,
+    todayPassRect: number,
+    todayPassPayt: number,
+    allowAdd: boolean,
+    allowChange: boolean,
+    allowDelete: boolean,
+    allowList: boolean,
+    userLocked: boolean,
+    isSuperUser: boolean
 }
 
 export interface IGeneralMasterDTO
@@ -96,26 +116,20 @@ export enum UiEnumGeneralMaster {
     TDSREASON = 25,
     ACSTATUS = 26,
     LOANTYPE = 27
-    // GENDER = 1,
-    // TITLE = 2,
-    // ACTYPE = 3,
-    // CASTE = 4,
-    // CATEGORY = 5,
-    // ZONE = 6,
-    // CUSTOMERGROUP = 7,
-    // INSURANCE = 8,
-    // HEALTH = 9,
-    // PURPOSE = 10,
-    // RELATION = 11,
-    // RELIGION = 12,
-    // RESON = 13,
-    // OCCUPTION = 14,
-    // VEHICLE = 15,
-    // GLTYPE = 16,
-    // YN = 17,
-    // MARITIALSTATUS = 18,
-    // EDUCATION = 19,
-    // NATIONALITY = 20,
-    // ADDRESSTYPE = 21,
-    // OPRMODE = 22
+}
+
+
+export enum UiUserRole {
+    MANAGER = 1,
+    CLERK = 2,
+    OPERATOR = 3,
+    MAIN_CASHIER = 4,
+    SUB_CASHIER = 5,
+    PASSING_OFFICER = 6,
+    LOAN_OFFICER = 7,
+    DEPOSIT_OFFICER = 8,
+    PIGMY_AGENT = 9,
+    GENERAL_MANAGER = 10,
+    ASSISTENT_MANAGER = 11,
+    RECOVERY_OFFICER = 12
 }

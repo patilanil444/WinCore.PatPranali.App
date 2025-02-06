@@ -4,7 +4,7 @@
             <div class="tab-content">
                 <div class="row">
                     <div class="col-md-3 position-relative form-group">
-                        <label for="txtCode" class="">Transaction Type</label>
+                        <label class="">Transaction Type</label>
                         <select class="mb-2 form-control" tabindex="18" formControlName="transactionType">
                             <option *ngFor="let uiTransactionType of uicashTransactionTypes"
                                 [ngValue]="uiTransactionType.code" >
@@ -13,7 +13,7 @@
                         </select>
                     </div>
                     <div class="col-md-3 position-relative form-group">
-                        <label for="txtCode" class="">Voucher No </label>
+                        <label class="">Voucher No </label>
                         <input tabindex="28" type="text" class="form-control" placeholder="Voucher No" formControlName="voucherNumber">
                     </div>
                     <div class="col-md-3 position-relative form-group">
@@ -23,12 +23,12 @@
                     <div class="col-md-12">
                         <div class="row">
                             <div class="col-md-3 position-relative form-group">
-                                <label for="txtCode" class="">Voucher Amount </label>
+                                <label class="">Voucher Amount </label>
                                 <input tabindex="28" type="text" class="form-control" placeholder="0" 
                                 readonly formControlName="voucherAmount">
                             </div>
                             <div class="col-md-3 position-relative form-group">
-                                <label for="txtCode" class="">Grid Amount </label>
+                                <label class="">Grid Amount </label>
                                 <input tabindex="28" type="text" class="form-control" placeholder="0" 
                                 readonly formControlName="gridAmount">
                             </div>

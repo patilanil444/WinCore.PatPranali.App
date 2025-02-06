@@ -50,7 +50,7 @@
                                     <div class="tab-content">
                                         <div class="row">
                                             <div class="col-md-3 position-relative form-group">
-                                                <label for="txtCode" class="">Transaction Type</label>
+                                                <label class="">Transaction Type</label>
                                                 <select class="mb-2 form-control" tabindex="18"
                                                     formControlName="cashTransactionType">
                                                     <option *ngFor="let uiTransactionType of uicashTransactionTypes"
@@ -65,7 +65,7 @@
 
                                                     <div class="row">
                                                         <div class="col-md-3 position-relative form-group">
-                                                            <label for="txtCode" class="">Branch </label>
+                                                            <label class="">Branch </label>
                                                             <select class="form-control" tabindex="27"
                                                                 formControlName="cashBranchId">
                                                                 <option *ngFor="let uiBranch of uiBranches"
@@ -75,7 +75,7 @@
                                                             </select>
                                                         </div>
                                                         <div class="col-md-3 position-relative form-group">
-                                                            <label for="txtCode" class="">General Ledger </label>
+                                                            <label class="">General Ledger </label>
                                                             <div class="input-group">
                                                                 <ngx-select-dropdown [config]="config" tabindex="1"
                                                                     [options]="uiDepositGeneralLedgers"
@@ -85,7 +85,7 @@
                                                             </div>
                                                         </div>
                                                         <div class="col-md-3 position-relative form-group">
-                                                            <label for="txtCode" class="">Account Search </label>
+                                                            <label class="">Account Search </label>
                                                             <input tabindex="28" type="text" class="form-control"
                                                                 placeholder="Account Number"
                                                                 formControlName="cashAccountNumberSearch">
@@ -151,14 +151,14 @@
 
                                                     <div class="row">
                                                         <div class="col-md-3 position-relative form-group">
-                                                            <label for="txtCode" class="">Transaction Amount
+                                                            <label class="">Transaction Amount
                                                             </label>
                                                             <input tabindex="28" type="number" class="form-control"
                                                                 placeholder="Transaction Amount"
                                                                 formControlName="cashTransactionAmount">
                                                         </div>
                                                         <div class="col-md-3 position-relative form-group">
-                                                            <label for="txtCode" class="">Transaction Description
+                                                            <label class="">Transaction Description
                                                             </label>
                                                             <input tabindex="28" type="text" class="form-control"
                                                                 placeholder="Reason"
@@ -189,7 +189,7 @@
                                     <div class="tab-content">
                                         <div class="row">
                                             <div class="col-md-3 position-relative form-group">
-                                                <label for="txtCode" class="">Transaction Type</label>
+                                                <label class="">Transaction Type</label>
                                                 <select class="mb-2 form-control" tabindex="18"
                                                     formControlName="transferTransactionType">
                                                     <option *ngFor="let uiTransactionType of uiTransferTransactionTypes"
@@ -204,7 +204,7 @@
 
                                                     <div class="row">
                                                         <div class="col-md-3 position-relative form-group">
-                                                            <label for="txtCode" class="">Branch </label>
+                                                            <label class="">Branch </label>
                                                             <select class="form-control" tabindex="27"
                                                                 formControlName="fromBranchId">
                                                                 <option *ngFor="let uiBranch of uiBranches"
@@ -214,7 +214,7 @@
                                                             </select>
                                                         </div>
                                                         <div class="col-md-3 position-relative form-group">
-                                                            <label for="txtCode" class="">General Ledger </label>
+                                                            <label class="">General Ledger </label>
                                                             <div class="input-group">
                                                                 <ngx-select-dropdown [config]="config" tabindex="1"
                                                                     [options]="uiDepositGeneralLedgers"
@@ -224,7 +224,7 @@
                                                             </div>
                                                         </div>
                                                         <div class="col-md-3 position-relative form-group">
-                                                            <label for="txtCode" class="">Account Search </label>
+                                                            <label class="">Account Search </label>
                                                             <input tabindex="28" type="text" class="form-control"
                                                                 placeholder="Account Number"
                                                                 formControlName="fromAccountNumberSearch">
@@ -293,7 +293,7 @@
 
                                                     <div class="row">
                                                         <div class="col-md-3 position-relative form-group">
-                                                            <label for="txtCode" class="">Branch </label>
+                                                            <label class="">Branch </label>
                                                             <select class="form-control" tabindex="27"
                                                                 formControlName="toBranchId">
                                                                 <option *ngFor="let uiBranch of uiBranches"
@@ -303,7 +303,7 @@
                                                             </select>
                                                         </div>
                                                         <div class="col-md-3 position-relative form-group">
-                                                            <label for="txtCode" class="">General Ledger </label>
+                                                            <label class="">General Ledger </label>
                                                             <div class="input-group">
                                                                 <ngx-select-dropdown [config]="config" tabindex="1"
                                                                     [options]="uiDepositGeneralLedgers"
@@ -313,7 +313,7 @@
                                                             </div>
                                                         </div>
                                                         <div class="col-md-3 position-relative form-group">
-                                                            <label for="txtCode" class="">Account Search </label>
+                                                            <label class="">Account Search </label>
                                                             <input tabindex="28" type="text" class="form-control"
                                                                 placeholder="Account Number"
                                                                 formControlName="toAccountNumberSearch">
@@ -381,14 +381,14 @@
                                                     <div class="col-md-12">
                                                         <div class="row">
                                                             <div class="col-md-3 position-relative form-group">
-                                                                <label for="txtCode" class="">Transaction Amount
+                                                                <label class="">Transaction Amount
                                                                 </label>
                                                                 <input tabindex="28" type="number" class="form-control"
                                                                     placeholder="Transaction Amount"
                                                                     formControlName="transferTransactionAmount">
                                                             </div>
                                                             <div class="col-md-3 position-relative form-group">
-                                                                <label for="txtCode" class="">Transaction Description
+                                                                <label class="">Transaction Description
                                                                 </label>
                                                                 <input tabindex="28" type="text" class="form-control"
                                                                     placeholder="Reason"
@@ -417,7 +417,7 @@
                                     <div class="tab-content">
                                         <div class="row">
                                             <div class="col-md-3 position-relative form-group">
-                                                <label for="txtCode" class="">Transaction Type</label>
+                                                <label class="">Transaction Type</label>
                                                 <select class="mb-2 form-control" tabindex="18"
                                                     formControlName="closureTransactionType">
                                                     <option
@@ -432,7 +432,7 @@
                                             <div class="col-md-12">
                                                 <div class="row">
                                                     <div class="col-md-3 position-relative form-group">
-                                                        <label for="txtCode" class="">Branch </label>
+                                                        <label class="">Branch </label>
                                                         <select class="form-control" tabindex="27"
                                                             formControlName="closureBranchId">
                                                             <option *ngFor="let uiBranch of uiBranches"
@@ -442,7 +442,7 @@
                                                         </select>
                                                     </div>
                                                     <div class="col-md-3 position-relative form-group">
-                                                        <label for="txtCode" class="">General Ledger </label>
+                                                        <label class="">General Ledger </label>
                                                         <div class="input-group">
                                                             <ngx-select-dropdown [config]="config" tabindex="1"
                                                                 [options]="uiDepositGeneralLedgers"
@@ -452,7 +452,7 @@
                                                         </div>
                                                     </div>
                                                     <div class="col-md-3 position-relative form-group">
-                                                        <label for="txtCode" class="">Account Search </label>
+                                                        <label class="">Account Search </label>
                                                         <input tabindex="28" type="text" class="form-control"
                                                             placeholder="Account Number"
                                                             formControlName="closureAccountNumberSearch">
@@ -512,13 +512,13 @@
                                             <div class="col-md-12">
                                                 <div class="row">
                                                     <div class="col-md-3 position-relative form-group">
-                                                        <label for="txtCode" class="">Transaction Amount </label>
+                                                        <label class="">Transaction Amount </label>
                                                         <input tabindex="28" type="number" class="form-control"
                                                             placeholder="Transaction Amount"
                                                             formControlName="closureTransactionAmount">
                                                     </div>
                                                     <div class="col-md-3 position-relative form-group">
-                                                        <label for="txtCode" class="">Transaction Description </label>
+                                                        <label class="">Transaction Description </label>
                                                         <input tabindex="28" type="text" class="form-control"
                                                             placeholder="Reason"
                                                             formControlName="closureTransactionDesc">

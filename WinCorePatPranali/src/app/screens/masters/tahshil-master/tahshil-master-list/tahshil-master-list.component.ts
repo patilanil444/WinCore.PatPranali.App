@@ -24,7 +24,7 @@ export class TahshilMasterListComponent implements OnInit {
 
   getTahsils(){
     this._tahshilMasterService.getTahsils().subscribe((data: any) => {
-      console.log(data);
+     
       if (data) {
         this.uiTahshils = data.data.data;
         this.total = this.uiTahshils.length;
@@ -83,7 +83,7 @@ export class TahshilMasterListComponent implements OnInit {
     let priorityIdToDelete = this._tahshilMasterService.tahshilIdToDelete;
     if (priorityIdToDelete > 0) {
       this._tahshilMasterService.deleteTahsil(priorityIdToDelete).subscribe((data: any) => {
-        console.log(data);
+       
         if (data) {
           this._toastrService.success('Tahsil deleted.', 'Success!');
           // show message

@@ -68,7 +68,7 @@ export class ChequeBookIssueComponent implements OnInit {
   getGeneralLedgers() {
     return new Promise((resolve, reject) => {
       this._generalLedgerService.getGeneralLedgers(this._sharedService.applicationUser.branchId).subscribe((data: any) => {
-        console.log(data);
+       
         if (data) {
           this.uiAllGeneralLedgers = data.data.data;
           if (this.uiAllGeneralLedgers) {
@@ -153,7 +153,7 @@ export class ChequeBookIssueComponent implements OnInit {
 
     //   if (this.isAddMode) {
     //     this._districtMasterService.createDistrict(districtModel).subscribe((data: any) => {
-    //       console.log(data);
+    //      
     //       if (data) {
     //         if (data.statusCode == 200 && data.data.data > 1) {
     //           this.toastrService.success('District added.', 'Success!');
@@ -165,7 +165,7 @@ export class ChequeBookIssueComponent implements OnInit {
     //   else  
     //   {
     //     this._districtMasterService.updateDistrict(this.dto.id, districtModel).subscribe((data: any) => {
-    //       console.log(data);
+    //      
     //       if (data) {
     //         if (data.statusCode == 200 && data.data.data > 1) {
     //           this.toastrService.success('District updated.', 'Success!');

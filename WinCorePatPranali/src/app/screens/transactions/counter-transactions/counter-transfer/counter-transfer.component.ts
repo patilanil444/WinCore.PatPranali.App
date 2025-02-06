@@ -24,8 +24,8 @@ export interface ITransactionSummaryModel {
   UTR_ChequeNo: string;
   UTR_ChequeDate: Date;
   TransactionPassing: boolean;
-  CreatedBy: string;
-  VerifiedBy: string;
+  CreatedBy: number;
+  VerifiedBy: number;
   VerifiedDateTime: Date;
   TransactionDetails: ITransactionDetailsModel[];
 }
@@ -102,7 +102,7 @@ export class CounterTransferComponent implements OnInit {
   getVoucherNumber()
   {
     this._transactionMasterService.getMaxVoucherNumber(this._sharedService.applicationUser.branchId, 2).subscribe((data: any) => {
-      console.log(data);
+     
       if (data) {
         if (data.data.data && data.data.data > 0) {
 
@@ -345,8 +345,8 @@ export class CounterTransferComponent implements OnInit {
       transactionDebitSummary.UTR_ChequeNo = this.chequeNo.value.length? this.chequeNo.value : "";
       transactionDebitSummary.UTR_ChequeDate = this.chequeNo.value.length? this.chequeDate.value : formatDate(new Date(Date.now()), 'yyyy-MM-dd', 'en'), [];
       transactionDebitSummary.TransactionPassing = false;
-      transactionDebitSummary.CreatedBy = this._sharedService.applicationUser.userName;
-      transactionDebitSummary.VerifiedBy = "";
+      transactionDebitSummary.CreatedBy = this._sharedService.applicationUser.id;
+      transactionDebitSummary.VerifiedBy = 0;
       transactionDebitSummary.VerifiedDateTime = new Date();
 
       let transactionDebitDetails = {} as ITransactionDetailsModel;
@@ -376,8 +376,8 @@ export class CounterTransferComponent implements OnInit {
       transactionCreditSummary.UTR_ChequeNo = this.chequeNo.value.length? this.chequeNo.value : "";
       transactionCreditSummary.UTR_ChequeDate = this.chequeNo.value.length? this.chequeDate.value : formatDate(new Date(Date.now()), 'yyyy-MM-dd', 'en'), [];
       transactionCreditSummary.TransactionPassing = false;
-      transactionCreditSummary.CreatedBy = this._sharedService.applicationUser.userName;
-      transactionCreditSummary.VerifiedBy = "";
+      transactionCreditSummary.CreatedBy = this._sharedService.applicationUser.id;
+      transactionCreditSummary.VerifiedBy = 0;
       transactionCreditSummary.VerifiedDateTime = new Date();
 
       transactionCreditSummary.TransactionDetails = [];
@@ -401,38 +401,13 @@ export class CounterTransferComponent implements OnInit {
       transactionSummaries.push(transactionCreditSummary);
       this.executeTransaction(transactionSummaries);
 
-      // this.messageNotes = [];
-      // this._transactionMasterService.getMaxVoucherNumber(this._sharedService.applicationUser.branchId, 3).subscribe((data: any) => {
-      //   console.log(data);
-      //   if (data) {
-      //     if (data.data.data && data.data.data > 0) {
-      //       // Show Pop up modal here and confirm transaction 
-
-      //       let messages = [];
-      //       // messages.push({ title: "Customer Name :", value: this.customerName.value });
-      //       messages.push({ title: "Voucher Number :", value: data.data.data });
-
-      //       this.messageNotes = messages;
-      //       this.messageBoxModal.open();
-
-      //       transactionDebitSummary.VoucherNo = data.data.data;
-      //       transactionCreditSummary.VoucherNo = data.data.data;
-
-      //       transactionSummaries.push(transactionDebitSummary);
-      //       transactionSummaries.push(transactionCreditSummary);
-
-      //       this.executeTransaction(transactionSummaries);
-      //       this.clearTransaction();
-      //     }
-      //   }
-      // })
     }
   }
 
   executeTransaction(transactionSummaries: ITransactionSummaryModel[])
   {
     this._transactionMasterService.saveTransferTransactions(transactionSummaries).subscribe((data: any) => {
-      console.log(data);
+     
       if (data) {
         if (data.data.data && data.data.data.retId > 0) {
           if (data.data.data.status == "SUCCESS") {

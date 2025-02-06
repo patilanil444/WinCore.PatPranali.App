@@ -327,7 +327,7 @@ export class BankProfileMasterComponent implements OnInit {
 
   getGeneralLedgers() {
     this._generalLedgerService.getGeneralLedgers(this._sharedService.applicationUser.branchId).subscribe((data: any) => {
-      console.log(data);
+     
       if (data) {
         this.uiGeneralLedgers = data.data.data;
         if (this.uiGeneralLedgers) {
@@ -349,7 +349,7 @@ export class BankProfileMasterComponent implements OnInit {
   getSystemProfile()
   {
     this._systemProfileService.getSystemProfile(this._sharedService.applicationUser.branchId).subscribe((data: any) => {
-      console.log(data);
+     
       if (data) {
         this.uiSystemProfile = data.data.data;
         if (this.uiSystemProfile && this.uiSystemProfile.systemGeneral) {
@@ -619,7 +619,7 @@ export class BankProfileMasterComponent implements OnInit {
 
       if (this.isAddMode) {
         this._systemProfileService.createSystemProfile(systemProfileModel).subscribe((data: any) => {
-          console.log(data);
+         
           if (data) {
             if (data.statusCode == 200 && data.data.data > 0) {
               this._toastrService.success('System profile saved.', 'Success!');
@@ -631,7 +631,7 @@ export class BankProfileMasterComponent implements OnInit {
       else  
       {
         this._systemProfileService.updateSystemProfile(this._sharedService.applicationUser.branchId, systemProfileModel).subscribe((data: any) => {
-          console.log(data);
+         
           if (data) {
             if (data.statusCode == 200 && data.data.data > 0) {
               this._toastrService.success('System profile saved.', 'Success!');

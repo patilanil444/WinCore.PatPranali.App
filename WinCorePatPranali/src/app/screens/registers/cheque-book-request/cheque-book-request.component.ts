@@ -54,7 +54,7 @@ export class ChequeBookRequestComponent implements OnInit {
     //   {
     //     this.isAddMode = false;
     //     this._districtMasterService.getDistrict(this.dto.id).subscribe((data: any) => {
-    //       console.log(data);
+    //      
     //       if (data) {
     //         if (data.statusCode == 200 && data.data.data) {
     //           var district = data.data.data;
@@ -108,7 +108,7 @@ export class ChequeBookRequestComponent implements OnInit {
 
     //   if (this.isAddMode) {
     //     this._districtMasterService.createDistrict(districtModel).subscribe((data: any) => {
-    //       console.log(data);
+    //      
     //       if (data) {
     //         if (data.statusCode == 200 && data.data.data > 1) {
     //           this.toastrService.success('District added.', 'Success!');
@@ -120,7 +120,7 @@ export class ChequeBookRequestComponent implements OnInit {
     //   else  
     //   {
     //     this._districtMasterService.updateDistrict(this.dto.id, districtModel).subscribe((data: any) => {
-    //       console.log(data);
+    //      
     //       if (data) {
     //         if (data.statusCode == 200 && data.data.data > 1) {
     //           this.toastrService.success('District updated.', 'Success!');

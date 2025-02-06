@@ -23,7 +23,7 @@ interface IGLMasterServerModel {
   Schedule: number;
   AssetSche : number;
   LiabSche : number;
-  Createdby : string;
+  Createdby : number;
 }
 
 
@@ -266,12 +266,12 @@ export class GeneralLedgerMasterFormComponent implements OnInit {
       glMasterModel.Schedule = this.regularSchedule.value.toString();
       glMasterModel.AssetSche = this.assetSchedule.value.toString();
       glMasterModel.LiabSche = this.liabilitySchedule.value.toString();
-      glMasterModel.Createdby = this._sharedService.applicationUser.userName;
+      glMasterModel.Createdby = this._sharedService.applicationUser.id;
       
       console.log(glMasterModel);
 
       this._generalLedgerService.saveGeneralLedger(glMasterModel).subscribe((data: any) => {
-        console.log(data);
+       
         if (data) {
           if (data.statusCode == 200 && data.data.data.retId > 0) {
             this._toastrService.success('General ledger saved.', 'Success!');

@@ -12,8 +12,8 @@ interface ITahsilServerModel
   TalukaName: string;
   StateId: number;
   DistrictId: number;
-  CreatedBy: string;
-  UpdatedBy: string;
+  CreatedBy: number;
+  UpdatedBy: number;
 }
 
 @Component({
@@ -79,7 +79,7 @@ export class TahshilMasterFormComponent implements OnInit {
       {
         this.isAddMode = false;
         this._tahsilMasterService.getTahsil(this.dto.id).subscribe((data: any) => {
-          console.log(data);
+         
           if (data) {
             if (data.statusCode == 200 && data.data.data) {
               var tahsil = data.data.data;
@@ -146,14 +146,14 @@ export class TahshilMasterFormComponent implements OnInit {
       tahsilModel.TalukaName = this.name.value.toString();
       tahsilModel.StateId = this.stateId.value.toString();
       tahsilModel.DistrictId = this.districtId.value.toString();
-      tahsilModel.CreatedBy = "";
-      tahsilModel.UpdatedBy = "";
+      tahsilModel.CreatedBy = this._sharedService.applicationUser.id;
+      tahsilModel.UpdatedBy = this._sharedService.applicationUser.id;
 
       console.log(tahsilModel);
 
       if (this.isAddMode) {
         this._tahsilMasterService.createTahsil(tahsilModel).subscribe((data: any) => {
-          console.log(data);
+         
           if (data) {
             if (data.statusCode == 200 && data.data.data > 1) {
               this.toastrService.success('Tahsil added.', 'Success!');
@@ -165,7 +165,7 @@ export class TahshilMasterFormComponent implements OnInit {
       else  
       {
         this._tahsilMasterService.updateTahsil(this.dto.id, tahsilModel).subscribe((data: any) => {
-          console.log(data);
+         
           if (data) {
             if (data.statusCode == 200 && data.data.data > 1) {
               this.toastrService.success('Tahsil updated.', 'Success!');

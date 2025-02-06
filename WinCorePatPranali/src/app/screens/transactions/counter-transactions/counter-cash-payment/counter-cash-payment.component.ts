@@ -24,7 +24,7 @@ export interface ITransactionSummaryModel {
   UTR_ChequeNo: string;
   UTR_ChequeDate: Date;
   TransactionPassing: boolean;
-  CreatedBy: string;
+  CreatedBy: number;
   VerifiedBy: string;
   VerifiedDateTime: Date;
   TransactionDetails: ITransactionDetailsModel[];
@@ -111,7 +111,7 @@ export class CounterCashPaymentComponent implements OnInit {
   getVoucherNumber()
   {
     this._transactionMasterService.getMaxVoucherNumber(this._sharedService.applicationUser.branchId, 2).subscribe((data: any) => {
-      console.log(data);
+     
       if (data) {
         if (data.data.data && data.data.data > 0) {
 
@@ -291,7 +291,7 @@ export class CounterCashPaymentComponent implements OnInit {
       transactionSummary.UTR_ChequeNo = this.chequeNo.value.length? this.chequeNo.value : "";
       transactionSummary.UTR_ChequeDate = this.chequeNo.value.length? this.chequeDate.value : formatDate(new Date(Date.now()), 'yyyy-MM-dd', 'en'), [];
       transactionSummary.TransactionPassing = false;
-      transactionSummary.CreatedBy = this._sharedService.applicationUser.userName;
+      transactionSummary.CreatedBy = this._sharedService.applicationUser.id;
       transactionSummary.VerifiedBy = "";
       transactionSummary.VerifiedDateTime = new Date();
 
@@ -335,7 +335,7 @@ export class CounterCashPaymentComponent implements OnInit {
   executeTransaction(transactionSummary: ITransactionSummaryModel)
   {
     this._transactionMasterService.saveTransaction(transactionSummary).subscribe((data: any) => {
-      console.log(data);
+     
       if (data) {
         if (data.data.data && data.data.data.retId > 0) {
           if (data.data.data.status == "SUCCESS") {

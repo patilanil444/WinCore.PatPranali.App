@@ -142,7 +142,7 @@ export class BankAccSearchComponent implements OnInit {
   selectAccount(accountsId: number) {
     if (accountsId) {
       // this._savingAccountService.getSavingAccount(accountsId).subscribe((data: any) => {
-      //   console.log(data);
+      //  
       //   if (data) {
       //     if (data.statusCode == 200 && data.data.data) {
       //       let fdDetails = data.data.data;

@@ -16,8 +16,8 @@ export interface UiSecurity {
   securityValueWithPercentage: number,
   securityDescription: number,
   percentage: number,
-  createdBy: string,
-  modifiedBy: string,
+  createdBy: number,
+  modifiedBy: number,
   status: string,
   mstCustomer: {}
 }
@@ -81,7 +81,7 @@ export class LoanSecurityComponent implements OnInit {
   getSecurities() {
     return new Promise((resolve, reject) => {
       this._accountsService.getSecurities().subscribe((data: any) => {
-        console.log(data);
+       
         if (data) {
           this.uiSecurityTypes = data.data.data;
           if (this.uiSecurityTypes && this.uiSecurityTypes.length) {
@@ -133,8 +133,8 @@ export class LoanSecurityComponent implements OnInit {
         uiSecurity.securityDescription = this.securityDescription.value.toString();
         uiSecurity.percentage = this.percentage.value.toString();
         uiSecurity.securityValueWithPercentage = parseFloat(uiSecurity.securityValue) * parseFloat(uiSecurity.percentage)/100;
-        uiSecurity.createdBy = this._sharedService.applicationUser.userName;
-        uiSecurity.modifiedBy = this._sharedService.applicationUser.userName;
+        uiSecurity.createdBy = this._sharedService.applicationUser.id;
+        uiSecurity.modifiedBy = this._sharedService.applicationUser.id;
         uiSecurity.status = 'M';
       }
       else {
@@ -148,8 +148,8 @@ export class LoanSecurityComponent implements OnInit {
         uiSecurity.securityDescription = this.securityDescription.value.toString();
         uiSecurity.percentage = this.percentage.value.toString();
         uiSecurity.securityValueWithPercentage = uiSecurity.securityValue * uiSecurity.percentage/100;
-        uiSecurity.createdBy = this._sharedService.applicationUser.userName;
-        uiSecurity.modifiedBy = this._sharedService.applicationUser.userName;
+        uiSecurity.createdBy = this._sharedService.applicationUser.id;
+        uiSecurity.modifiedBy = this._sharedService.applicationUser.id;
         uiSecurity.status = 'A';
         this.uiSecurities.push(uiSecurity);
       }

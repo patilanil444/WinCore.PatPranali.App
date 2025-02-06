@@ -128,7 +128,7 @@ export class CustomerSearchComponent implements OnInit {
     let customerIdToDelete = this._customerService.customerIdToDelete;
     if (customerIdToDelete > 0) {
       this._customerService.deleteCustomer(customerIdToDelete).subscribe((data: any) => {
-        console.log(data);
+       
         if (data) {
           this._toastrService.success('customer deleted.', 'Success!');
           //this.getCustomers();

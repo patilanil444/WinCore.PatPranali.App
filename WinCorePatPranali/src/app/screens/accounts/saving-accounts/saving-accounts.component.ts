@@ -25,8 +25,8 @@ export interface UiNomini {
   active: number,
   percentage: string,
   phone: string,
-  createdBy: string,
-  modifiedBy: string,
+  createdBy: number,
+  modifiedBy: number,
   status: string,
   mstCustomer: {}
 }
@@ -40,7 +40,7 @@ export interface UiJoint {
   customerName: string,
   operativeInstruction: string,
   active: number,
-  createdBy: string,
+  createdBy: number,
   status: string
 }
 
@@ -72,7 +72,7 @@ export interface ISavingAccountModel {
   LedgerFolioNo: string;
   StaffCode: string;
   Active: number;
-  CreatedBy: string;
+  CreatedBy: number;
   CreatedDate: Date;
   NomineeList: INominiModel[];
   JointList: IJointModel[];
@@ -170,6 +170,7 @@ export class SavingAccountsComponent {
   dto: IGeneralDTO = {} as IGeneralDTO;
   accountsId!: number;
   isAddMode = true;
+  isAccountAuthorized = true;
 
   constructor(private router: Router, private _sharedService: SharedService, private _toastrService: ToastrService,
     private _generalLedgerService: GeneralLedgerService, private _customerService: CustomerService,
@@ -276,7 +277,7 @@ export class SavingAccountsComponent {
   getGeneralLedgers() {
     return new Promise((resolve, reject) => {
       this._generalLedgerService.getGeneralLedgers(this._sharedService.applicationUser.branchId).subscribe((data: any) => {
-        console.log(data);
+       
         if (data) {
           this.uiAllGeneralLedgers = data.data.data;
           if (this.uiAllGeneralLedgers) {
@@ -307,7 +308,7 @@ export class SavingAccountsComponent {
       else {
         this.isAddMode = false;
         this._savingAccountService.getSavingAccount(this.accountsId).subscribe((data: any) => {
-          console.log(data);
+         
           if (data) {
             if (data.statusCode == 200 && data.data.data) {
               var savingAccount = data.data.data;
@@ -409,6 +410,7 @@ export class SavingAccountsComponent {
                 });
               }
 
+              this.isAccountAuthorized = savingAccount.authBy > 0;
               this.isNotJointAccount = !(savingAccount.accountType == 2); // TODO: Need to make it configurable
             }
           }
@@ -439,7 +441,7 @@ export class SavingAccountsComponent {
 
   getMaxAccountNumber(glId: number) {
     this._accountsService.getMaxAccountNumber(this._sharedService.applicationUser.branchId, glId).subscribe((data: any) => {
-      console.log(data);
+     
       if (data) {
         let maxAccountModel = data.data.data;
         if (maxAccountModel) {
@@ -478,7 +480,7 @@ export class SavingAccountsComponent {
 
   getCustomer(customerId: number) {
     this._customerService.getCustomer(this._sharedService.applicationUser.branchId, customerId).subscribe((data: any) => {
-      console.log(data);
+     
       if (data) {
         var customer = data.data.data;
         let zones = this.uiZones.filter(z => z.constantNo == customer.custZone);
@@ -547,7 +549,7 @@ export class SavingAccountsComponent {
         uiJointCust.customerName = customer.custName;
         uiJointCust.operativeInstruction = this.operativeInstruction.value.toString();
         uiJointCust.status = 'A';
-        uiJointCust.createdBy = this._sharedService.applicationUser.userName;
+        uiJointCust.createdBy = this._sharedService.applicationUser.id;
         uiJointCust.srNo = this.uiSelectedJointCustomers.length;
         this.uiSelectedJointCustomers.push(uiJointCust);
 
@@ -672,8 +674,8 @@ export class SavingAccountsComponent {
         uiNomini.relationName = relationName;
         uiNomini.guardian = this.guardian.value.toString();
         uiNomini.percentage = this.percentage.value.toString();
-        uiNomini.createdBy = this._sharedService.applicationUser.userName;
-        uiNomini.modifiedBy = this._sharedService.applicationUser.userName;
+        uiNomini.createdBy = this._sharedService.applicationUser.id;
+        uiNomini.modifiedBy = this._sharedService.applicationUser.id;
         uiNomini.status = 'M';
       }
       else {
@@ -686,8 +688,8 @@ export class SavingAccountsComponent {
         uiNomini.relationName = relationName;
         uiNomini.guardian = this.guardian.value.toString();
         uiNomini.percentage = this.percentage.value.toString();
-        uiNomini.createdBy = this._sharedService.applicationUser.userName;
-        uiNomini.modifiedBy = this._sharedService.applicationUser.userName;
+        uiNomini.createdBy = this._sharedService.applicationUser.id;
+        uiNomini.modifiedBy = this._sharedService.applicationUser.id;
         uiNomini.status = 'A';
         this.uiNominis.push(uiNomini);
       }
@@ -819,7 +821,7 @@ export class SavingAccountsComponent {
     }
     accountModel.Currency = this.currency.value.toString();
     accountModel.Other_Branch_Trf = this.otherBranchTransfer.value.toString() == 'Y' ? 1 : 0;
-    accountModel.CreatedBy = this._sharedService.applicationUser.userName;
+    accountModel.CreatedBy = this._sharedService.applicationUser.id;
     accountModel.NomineeList = [];
 
     let nominiModel = {} as INominiModel;
@@ -854,7 +856,7 @@ export class SavingAccountsComponent {
     // Call API to save account
 
     this._savingAccountService.saveSavingAccount(accountModel).subscribe((data: any) => {
-      console.log(data);
+     
       if (data) {
         if (data.data.data && data.data.data.retId > 0) {
           if (data.data.data.status == "SUCCESS") {
@@ -873,8 +875,26 @@ export class SavingAccountsComponent {
   }
 
   authoriseAccount() {
+    if (this._sharedService.applicationUser.id > 0 &&
+      this.dto.id > 0 && this._sharedService.applicationUser.branchId > 0) {
+      let authAccountRequest = {
+        AccountsId: this.dto.id,
+        BranchCode: this._sharedService.applicationUser.branchId,
+        AuthByUserId: this._sharedService.applicationUser.id
+      };
 
+      this._accountsService.authoriseAccount(authAccountRequest).subscribe((data: any) => {
 
+        if (data) {
+          if (data.data.data && data.data.data.retId > 0) {
+            this._toastrService.success("Account authorised successfully!", 'Success!');
+          }
+          else {
+            this._toastrService.success("Error while authorising account!", 'Error!');
+          }
+        }
+      })
+    }
   }
 
   configClick(routeValue: string) {

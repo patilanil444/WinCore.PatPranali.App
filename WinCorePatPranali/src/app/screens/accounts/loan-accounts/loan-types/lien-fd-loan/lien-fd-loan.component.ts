@@ -79,7 +79,7 @@ export class LienFdLoanComponent implements OnInit {
   getGeneralLedgers() {
     return new Promise((resolve, reject) => {
       this._generalLedgerService.getGeneralLedgers(this._sharedService.applicationUser.branchId).subscribe((data: any) => {
-        console.log(data);
+       
         if (data) {
           this.uiAllGeneralLedgers = data.data.data;
           if (this.uiAllGeneralLedgers) {
@@ -114,7 +114,7 @@ export class LienFdLoanComponent implements OnInit {
   selectLienFDAccount(accountsId: number){
     if (accountsId) {
       this._depositAccountService.getDepositAccount(accountsId).subscribe((data: any) => {
-        console.log(data);
+       
         if (data) {
           if (data.statusCode == 200 && data.data.data) {
             let fdDetails = data.data.data;

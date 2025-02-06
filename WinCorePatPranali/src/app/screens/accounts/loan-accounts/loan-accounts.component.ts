@@ -22,7 +22,7 @@ export interface UiJoint {
   customerName: string,
   operativeInstruction: string,
   active: number,
-  createdBy: string,
+  createdBy: number,
   status: string
 }
 
@@ -34,7 +34,7 @@ export interface UiGuarantor {
   customerNumber: string,
   customerName: string,
   active: number,
-  createdBy: string,
+  createdBy: number,
   status: string
 }
 
@@ -81,7 +81,7 @@ export interface ILoanAccountModel {
   RateApplicable: string;
   IntroBy: string;
   Active: number;
-  CreatedBy: string;
+  CreatedBy: number;
   CreatedDate: Date;
   GuarantorList: IGuatantorModel[];
   JointList: IJointModel[];
@@ -186,6 +186,7 @@ export class LoanAccountsComponent {
   dto: IGeneralDTO = {} as IGeneralDTO;
   accountsId!: number;
   isAddMode = true;
+  isAccountAuthorized = true;
 
   // formatter = new Intl.NumberFormat('en-IN', {
   //   style: 'currency',
@@ -306,7 +307,7 @@ export class LoanAccountsComponent {
   getGeneralLedgers() {
     return new Promise((resolve, reject) => {
       this._generalLedgerService.getGeneralLedgers(this._sharedService.applicationUser.branchId).subscribe((data: any) => {
-        console.log(data);
+       
         if (data) {
           this.uiAllGeneralLedgers = data.data.data;
           if (this.uiAllGeneralLedgers) {
@@ -330,7 +331,7 @@ export class LoanAccountsComponent {
   // getSecurities() {
   //   return new Promise((resolve, reject) => {
   //     this._accountsService.getSecurities().subscribe((data: any) => {
-  //       console.log(data);
+  //      
   //       if (data) {
   //         this.uiSecurityTypes = data.data.data;
   //         // if (this.uiSecurityTypes && this.uiSecurityTypes.length) {
@@ -350,7 +351,7 @@ export class LoanAccountsComponent {
   // getDirectors() {
   //   return new Promise((resolve, reject) => {
   //     this._accountsService.getDirectors().subscribe((data: any) => {
-  //       console.log(data);
+  //      
   //       if (data) {
   //         this.uiDirectors = data.data.data;
   //         // if (this.uiDirectors && this.uiDirectors.length) {
@@ -378,7 +379,7 @@ export class LoanAccountsComponent {
       else {
         this.isAddMode = false;
         this._loanAccountsService.getLoanAccount(this.accountsId).subscribe((data: any) => {
-          console.log(data);
+         
           if (data) {
             if (data.statusCode == 200 && data.data.data) {
               var loanAccount = data.data.data;
@@ -429,33 +430,6 @@ export class LoanAccountsComponent {
               })
 
 
-              // accountType: new FormControl(this.uiAccountTypes[0].constantNo, [Validators.required]),
-              // modeOfOperation: new FormControl(this.uiModeOfOperations[0].constantNo, [Validators.required]),
-              // modeOfSignature: new FormControl(this.uiModeOfOperations[0].constantNo, [Validators.required]),
-              // staffDirectorOther: new FormControl(this.uiEmployyeTypes[0].code, [Validators.required]),
-              // accountStatus: new FormControl(this.uiAccountStatuses[0].constantNo, [Validators.required]),
-              // accountOpeningDate: new FormControl(formatDate(new Date(Date.now()), 'yyyy-MM-dd', 'en'), [Validators.required]),
-              // //loanType: new FormControl(this.uiLoanTypes[0].constantNo, [Validators.required]),
-              // insuranceDate: new FormControl(formatDate(new Date(Date.now()), 'yyyy-MM-dd', 'en'), [Validators.required]),
-              // contactPerson: new FormControl("", [Validators.required]),
-              // lastInterestDate: new FormControl(formatDate(new Date(Date.now()), 'yyyy-MM-dd', 'en'), [Validators.required]),
-              // lastTransactionDate: new FormControl(formatDate(new Date(Date.now()), 'yyyy-MM-dd', 'en'), [Validators.required]),
-              // lastPenalDate: new FormControl(formatDate(new Date(Date.now()), 'yyyy-MM-dd', 'en'), [Validators.required]),
-              // accountCloseDate: new FormControl("", []),
-              // close_Flag: new FormControl(false, [])
-
-              
-
-              // this.parametersForm.patchValue({
-              //   interestRateParam: loanAccount.int_Rate,
-              //   ledgerNumber: loanAccount.ledgerNumber,
-              //   minimumBalance: loanAccount.minimumBalance,
-              //   additionalBalance: loanAccount.additionalBalance,
-              //   form60: loanAccount.form60,
-              //   form61: loanAccount.form61,
-              //   tds: loanAccount.tdS_YN ? 'Y' : 'N',
-              //   tdsReason: loanAccount.tdS_Reason_Code,
-              // })
 
               if (loanAccount.guarantorList && loanAccount.guarantorList.length) {
                 loanAccount.guarantorList.forEach((guarantor: any) => {
@@ -490,6 +464,7 @@ export class LoanAccountsComponent {
               }
 
               this.isJointAccount = (loanAccount.accountType == 2); // TODO: Need to make it configurable
+              this.isAccountAuthorized = loanAccount.authBy > 0;
             }
           }
         })
@@ -510,7 +485,7 @@ export class LoanAccountsComponent {
 
   getMaxAccountNumber(glId: number) {
     this._accountsService.getMaxAccountNumber(this._sharedService.applicationUser.branchId, glId).subscribe((data: any) => {
-      console.log(data);
+     
       if (data) {
         let maxAccountModel = data.data.data;
         if (maxAccountModel) {
@@ -554,7 +529,7 @@ export class LoanAccountsComponent {
 
   getCustomer(customerId: number) {
     this._customerService.getCustomer(this._sharedService.applicationUser.branchId, customerId).subscribe((data: any) => {
-      console.log(data);
+     
       if (data) {
         var customer = data.data.data;
         let zones = this.uiZones.filter(z => z.constantNo == customer.custZone);
@@ -626,7 +601,7 @@ export class LoanAccountsComponent {
         uiJointCust.customerName = customer.custName;
         uiJointCust.operativeInstruction = this.operativeInstruction.value.toString();
         uiJointCust.status = "A";
-        uiJointCust.createdBy = this._sharedService.applicationUser.userName;
+        uiJointCust.createdBy = this._sharedService.applicationUser.id;
         uiJointCust.srNo = this.uiSelectedJointCustomers.length;
         this.uiSelectedJointCustomers.push(uiJointCust);
 
@@ -652,7 +627,7 @@ export class LoanAccountsComponent {
       if (index == -1) {
 
         this._accountsService.isCustomerValidGuarantor(customer.id).subscribe((data: any) => {
-          console.log(data);
+         
           if (data) {
             let model = data.data.data;
             if (model) {
@@ -664,7 +639,7 @@ export class LoanAccountsComponent {
               uiGuarantorCust.customerNumber = customer.customerCodeStr;
               uiGuarantorCust.customerName = customer.custName;
               uiGuarantorCust.status = "A";
-              uiGuarantorCust.createdBy = this._sharedService.applicationUser.userName;
+              uiGuarantorCust.createdBy = this._sharedService.applicationUser.id;
               uiGuarantorCust.srNo = this.uiSelectedGuarantorCustomers.length;
               this.uiSelectedGuarantorCustomers.push(uiGuarantorCust);
 
@@ -820,8 +795,8 @@ export class LoanAccountsComponent {
     //     uiSecurity.securityValue == this.securityValue.value.toString();
     //     uiSecurity.securityDescription = this.securityDescription.value.toString();
     //     uiSecurity.percentage = this.percentage.value.toString();
-    //     uiSecurity.createdBy = this._sharedService.applicationUser.userName;
-    //     uiSecurity.modifiedBy = this._sharedService.applicationUser.userName;
+    //     uiSecurity.createdBy = this._sharedService.applicationUser.id;
+    //     uiSecurity.modifiedBy = this._sharedService.applicationUser.id;
     //     uiSecurity.status = 'M';
     //   }
     //   else {
@@ -834,8 +809,8 @@ export class LoanAccountsComponent {
     //     uiSecurity.securityDescription = this.securityDescription.value.toString();
     //     uiSecurity.percentage = this.percentage.value.toString();
     //     uiSecurity.percentage = this.percentage.value.toString();
-    //     uiSecurity.createdBy = this._sharedService.applicationUser.userName;
-    //     uiSecurity.modifiedBy = this._sharedService.applicationUser.userName;
+    //     uiSecurity.createdBy = this._sharedService.applicationUser.id;
+    //     uiSecurity.modifiedBy = this._sharedService.applicationUser.id;
     //     uiSecurity.status = 'A';
     //     this.uiSecurities.push(uiSecurity);
     //   }
@@ -961,31 +936,8 @@ export class LoanAccountsComponent {
       accountModel.CloseDate = this.accountCloseDate.value.toString();
     }  
     
-    //accountModel.CasteId: number;
-    // accountModel.PurposeId: number;
-    // accountModel.PriorityId: number;
-    // accountModel.Ref_Dir: string;
-    // accountModel.HealthId: number;
-    // accountModel.CategoryId: number;
     accountModel.InsuranceDate = this.insuranceDate.value.toString();
-    // accountModel.SanctionAmount: number;
-    // accountModel.SanctionDate: Date;
-    // accountModel.FirstInstallmentDate: Date;
-    // accountModel.InstallmentType: string;
-    // accountModel.LoanTenure: number;
-    // accountModel.PeriodExt: number;
-    // accountModel.PeriodDays: number;
-    // accountModel.DocNo: string;
-    // accountModel.DocDate: Date;
-    // accountModel.AdvanceAmount: number;
-    // accountModel.ExtInst: number;
-    // accountModel.Other: string;
-    // accountModel.SanctionBy: string;
-    // accountModel.InstWithInt: string;
-    // accountModel.RateApplicable: string;
-    // accountModel.IntroBy: string;
-    // accountModel.Active: number;
-    accountModel.CreatedBy = this._sharedService.applicationUser.userName;
+    accountModel.CreatedBy = this._sharedService.applicationUser.id;
     accountModel.GuarantorList = [];
     accountModel.JointList = [];
 
@@ -1018,7 +970,7 @@ export class LoanAccountsComponent {
 
     // Call API to save account
     this._loanAccountsService.saveLoanAccount(accountModel).subscribe((data: any) => {
-      console.log(data);
+     
       if (data) {
         if (data.data.data && data.data.data.retId > 0) {
           if (data.data.data.status == "SUCCESS") {
@@ -1036,8 +988,26 @@ export class LoanAccountsComponent {
   }
 
   authoriseAccount() {
+    if (this._sharedService.applicationUser.id > 0 &&
+      this.dto.id > 0 && this._sharedService.applicationUser.branchId > 0) {
+      let authAccountRequest = {
+        AccountsId: this.dto.id,
+        BranchCode: this._sharedService.applicationUser.branchId,
+        AuthByUserId: this._sharedService.applicationUser.id
+      };
 
+      this._accountsService.authoriseAccount(authAccountRequest).subscribe((data: any) => {
 
+        if (data) {
+          if (data.data.data && data.data.data.retId > 0) {
+            this._toastrService.success("Account authorised successfully!", 'Success!');
+          }
+          else {
+            this._toastrService.success("Error while authorising account!", 'Error!');
+          }
+        }
+      })
+    }
   }
 
   clear() {

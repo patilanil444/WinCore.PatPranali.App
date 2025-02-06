@@ -11,11 +11,11 @@
                         <div class="row" style="margin-bottom: 10px;">
 
                             <div class="col-md-3 position-relative form-group">
-                                <label for="txtCode" class="">Receipt No <span class="mandatory">*</span></label>
+                                <label class="">Receipt No <span class="mandatory">*</span></label>
                                 <input tabindex="5" type="text" class="form-control" formControlName="receiptNo">
                             </div>
                             <div class="col-md-3 position-relative form-group">
-                                <label for="txtCode" class="">Gold Type <span class="mandatory">*</span></label>
+                                <label class="">Gold Type <span class="mandatory">*</span></label>
                                 <select class="form-control" tabindex="6" formControlName="goldType">
                                     <option *ngFor="let uigoldType of uigoldTypes" [ngValue]="uigoldType.id">
                                         {{uigoldType.name}}
@@ -23,7 +23,7 @@
                                 </select>
                             </div>
                             <div class="col-md-3 position-relative form-group">
-                                <label for="txtCode" class="">Gross Weight <span class="mandatory">*</span></label>
+                                <label class="">Gross Weight <span class="mandatory">*</span></label>
                                 <div class="input-group">
                                     <input tabindex="7" type="number" class="form-control"
                                         formControlName="grossWeight">
@@ -31,7 +31,7 @@
                                 </div>
                             </div>
                             <div class="col-md-3 position-relative form-group">
-                                <label for="txtCode" class="">Net Weight <span class="mandatory">*</span></label>
+                                <label class="">Net Weight <span class="mandatory">*</span></label>
                                 <div class="input-group">
                                     <input tabindex="8" type="number" class="form-control" formControlName="netWeight"
                                         (change)="calculateTotalAmount()">
@@ -39,12 +39,12 @@
                                 </div>
                             </div>
                             <div class="col-md-3 position-relative form-group">
-                                <label for="txtCode" class="">Rate Per Gram <span class="mandatory">*</span></label>
+                                <label class="">Rate Per Gram <span class="mandatory">*</span></label>
                                 <input tabindex="9" type="number" class="form-control" formControlName="ratePerGram"
                                     (change)="calculateTotalAmount()">
                             </div>
                             <div class="col-md-3 position-relative form-group">
-                                <label for="txtCode" class="">Amount</label>
+                                <label class="">Amount</label>
                                 <input tabindex="10" type="text" class="form-control" readonly formControlName="amount">
                             </div>
                             <div class="col-md-3 position-relative form-group">
@@ -112,7 +112,7 @@
                     <div class="tab-content">
                         <div class="row" >
                             <div class="col-md-3 position-relative form-group">
-                                <label for="txtCode" class="">Total Gold Amount</label>
+                                <label class="">Total Gold Amount</label>
                                 <input tabindex="13" type="number" class="form-control" readonly formControlName="totalAmount">
                             </div>
                         </div>

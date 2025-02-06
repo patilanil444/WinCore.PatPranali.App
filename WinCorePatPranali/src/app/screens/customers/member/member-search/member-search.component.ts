@@ -55,7 +55,7 @@ export class MemberSearchComponent implements OnInit {
     let memberIdToDelete = this._memberService.memberIdToDelete;
     if (memberIdToDelete > 0) {
       this._memberService.deleteMember(memberIdToDelete).subscribe((data: any) => {
-        console.log(data);
+       
         if (data) {
           this._toastrService.success('Member deleted.', 'Success!');
           this.searchMember();

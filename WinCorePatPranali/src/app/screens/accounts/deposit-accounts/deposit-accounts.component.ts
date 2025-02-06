@@ -26,8 +26,8 @@ export interface UiNomini {
   active: number,
   percentage: string,
   phone: string,
-  createdBy: string,
-  modifiedBy: string,
+  createdBy: number,
+  modifiedBy: number,
   status: string,
   mstCustomer: {}
 }
@@ -41,7 +41,7 @@ export interface UiJoint {
   customerName: string,
   operativeInstruction: string,
   active: number,
-  createdBy: string,
+  createdBy: number,
   status: string
 }
 
@@ -92,7 +92,7 @@ export interface IDepositAccountModel {
   Service_Charges: boolean;
   PrintCount: number;
   Active: number;
-  CreatedBy: string;
+  CreatedBy: number;
   CreatedDate: Date;
   BankAccountType: string;
   NomineeList: INominiModel[];
@@ -122,7 +122,7 @@ export interface IJointModel {
   OperativeInstruction: string;
   Active: number;
   Status: number;
-  CreatedBy: string;
+  CreatedBy: number;
   CreatedDate: Date;
 }
 
@@ -178,6 +178,8 @@ export class DepositAccountsComponent {
   isNotJointAccount = true;
   isFDAccount = false;
   isRDAccount = false;
+
+  isAccountAuthorized = true;
 
   selectedCustomerId = 0;
 
@@ -325,7 +327,7 @@ export class DepositAccountsComponent {
   getGeneralLedgers() {
     return new Promise((resolve, reject) => {
       this._generalLedgerService.getGeneralLedgers(this._sharedService.applicationUser.branchId).subscribe((data: any) => {
-        console.log(data);
+       
         if (data) {
           this.uiAllGeneralLedgers = data.data.data;
           if (this.uiAllGeneralLedgers) {
@@ -356,7 +358,7 @@ export class DepositAccountsComponent {
       else {
         this.isAddMode = false;
         this._depositAccountService.getDepositAccount(this.accountsId).subscribe((data: any) => {
-          console.log(data);
+         
           if (data) {
             if (data.statusCode == 200 && data.data.data) {
               var depositAccount = data.data.data;
@@ -401,6 +403,8 @@ export class DepositAccountsComponent {
                 lastInterestDate: formatDate(new Date(depositAccount.last_Int_Date), 'yyyy-MM-dd', 'en'),
                 drInterestDate: formatDate(new Date(depositAccount.debitInterestDate), 'yyyy-MM-dd', 'en')
               })
+
+              this.isAccountAuthorized = depositAccount.authBy > 0;
 
               // this.parametersForm.patchValue({
               //   interestRateParam: depositAccount.int_Rate,
@@ -487,9 +491,6 @@ export class DepositAccountsComponent {
                   rdPaybleAmount: depositAccount.payb_Amt,
                 })
               }
-
-
-
             }
           }
         })
@@ -526,7 +527,7 @@ export class DepositAccountsComponent {
 
   getDepositInterestRates(glCode: number, interestStructureDate: string){
     this._depositInterestRateService.getDepositRatesByGL(glCode, interestStructureDate).subscribe((data: any) => {
-      console.log(data);
+     
       if (data) {
         let response = data.data.data;
         if (response) {
@@ -550,7 +551,7 @@ export class DepositAccountsComponent {
 
   getMaxAccountNumber(glId: number) {
     this._accountsService.getMaxAccountNumber(this._sharedService.applicationUser.branchId, glId).subscribe((data: any) => {
-      console.log(data);
+     
       if (data) {
         let maxAccountModel = data.data.data;
         if (maxAccountModel) {
@@ -597,7 +598,7 @@ export class DepositAccountsComponent {
 
   getCustomer(customerId: number) {
     this._customerService.getCustomer(this._sharedService.applicationUser.branchId, customerId).subscribe((data: any) => {
-      console.log(data);
+     
       if (data) {
         var customer = data.data.data;
         let zones = this.uiZones.filter(z => z.constantNo == customer.custZone);
@@ -666,7 +667,7 @@ export class DepositAccountsComponent {
         uiJointCust.customerName = customer.custName;
         uiJointCust.operativeInstruction = this.operativeInstruction.value.toString();
         uiJointCust.status = 'A';
-        uiJointCust.createdBy = this._sharedService.applicationUser.userName;
+        uiJointCust.createdBy = this._sharedService.applicationUser.id;
         uiJointCust.srNo = this.uiSelectedJointCustomers.length;
         this.uiSelectedJointCustomers.push(uiJointCust);
 
@@ -769,8 +770,8 @@ export class DepositAccountsComponent {
         uiNomini.relationName = relationName;
         uiNomini.guardian = this.guardian.value.toString();
         uiNomini.percentage = this.percentage.value.toString();
-        uiNomini.createdBy = this._sharedService.applicationUser.userName;
-        uiNomini.modifiedBy = this._sharedService.applicationUser.userName;
+        uiNomini.createdBy = this._sharedService.applicationUser.id;
+        uiNomini.modifiedBy = this._sharedService.applicationUser.id;
         uiNomini.status = 'M';
       }
       else {
@@ -783,8 +784,8 @@ export class DepositAccountsComponent {
         uiNomini.relationName = relationName;
         uiNomini.guardian = this.guardian.value.toString();
         uiNomini.percentage = this.percentage.value.toString();
-        uiNomini.createdBy = this._sharedService.applicationUser.userName;
-        uiNomini.modifiedBy = this._sharedService.applicationUser.userName;
+        uiNomini.createdBy = this._sharedService.applicationUser.id;
+        uiNomini.modifiedBy = this._sharedService.applicationUser.id;
         uiNomini.status = 'A';
         this.uiNominis.push(uiNomini);
       }
@@ -967,7 +968,7 @@ export class DepositAccountsComponent {
     // accountModel.Close_Flag = this.clo.value.toString();
     // accountModel.TDS_YN = this.tds.value.toString() == 'Y' ? true : false;
     // accountModel.TDS_Reason_Code = parseInt(this.tdsReason.value.toString());
-    accountModel.CreatedBy = this._sharedService.applicationUser.userName;
+    accountModel.CreatedBy = this._sharedService.applicationUser.id;
 
     accountModel.NomineeList = [];
 
@@ -1004,7 +1005,7 @@ export class DepositAccountsComponent {
     // Call API to save account
 
     this._depositAccountService.saveDepositAccount(accountModel).subscribe((data: any) => {
-      console.log(data);
+     
       if (data) {
         if (data.data.data && data.data.data.retId > 0) {
           if (data.data.data.status == "SUCCESS") {
@@ -1023,7 +1024,26 @@ export class DepositAccountsComponent {
   }
 
   authoriseAccount() {
+    if (this._sharedService.applicationUser.id > 0 &&
+      this.dto.id > 0 && this._sharedService.applicationUser.branchId > 0) {
+      let authAccountRequest = {
+        AccountsId: this.dto.id,
+        BranchCode: this._sharedService.applicationUser.branchId,
+        AuthByUserId: this._sharedService.applicationUser.id
+      };
 
+      this._accountsService.authoriseAccount(authAccountRequest).subscribe((data: any) => {
+
+        if (data) {
+          if (data.data.data && data.data.data.retId > 0) {
+            this._toastrService.success("Account authorised successfully!", 'Success!');
+          }
+          else {
+            this._toastrService.success("Error while authorising account!", 'Error!');
+          }
+        }
+      })
+    }
   }
 
   calculateMatureDate()
