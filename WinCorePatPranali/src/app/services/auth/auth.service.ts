@@ -29,44 +29,50 @@ export class AuthService {
 
   decodeToken(accessToken: string) {
     if (!this.isTokenExpired(accessToken)) {
-      let decodedToken: any = this.getDecodedToken(accessToken);
-      if (decodedToken) {
-        let userData = JSON.parse(decodedToken['http://schemas.microsoft.com/ws/2008/06/identity/claims/userdata']);
-
-        let loggedInUser: UiUser = {
-          id: userData.Id,
-          name: userData.name,
-          branchId: userData.BranchCode,
-          userName: userData.UserName,
-          emailId: userData.EmailId,
-          authority: userData.Authority,
-          access: userData.Access,
-          transferLimit: userData.Transfer_Limit,
-          cashRect: userData.Cash_Rect,
-          cashPayt: userData.Cash_Payt,
-          passRect: userData.Pass_Rect,
-          passPayt: userData.Pass_Payt,
-          todayAccess: userData.TodayAccess,
-          todayCashRect: userData.Today_Cash_Rect,
-          todayCashPayt: userData.Today_Cash_Payt,
-          todayPassRect: userData.Today_Pass_Rect,
-          todayPassPayt: userData.Today_Pass_Payt,
-          allowAdd: userData.AllowAdd,
-          allowChange: userData.AllowChange,
-          allowDelete: userData.AllowDelete,
-          allowList: userData.AllowList,
-          userLocked: userData.IsUserLocked,
-          isSuperUser: userData.IsSuperUser
-        }
-
-        this._sharedService.applicationUser = loggedInUser;
-      }
+      this.setUser(accessToken);
     }
     else {
+      console.log("Token expired!");
       this.refreshToken();
     }
-
   }
+
+  setUser(accessToken: string) {
+    let decodedToken: any = this.getDecodedToken(accessToken);
+    if (decodedToken) {
+      let userData = JSON.parse(decodedToken['http://schemas.microsoft.com/ws/2008/06/identity/claims/userdata']);
+
+      let loggedInUser: UiUser = {
+        id: userData.Id,
+        name: userData.name,
+        branchId: userData.BranchCode,
+        userName: userData.UserName,
+        emailId: userData.EmailId,
+        authority: userData.Authority,
+        access: userData.Access,
+        transferLimit: userData.Transfer_Limit,
+        cashRect: userData.Cash_Rect,
+        cashPayt: userData.Cash_Payt,
+        passRect: userData.Pass_Rect,
+        passPayt: userData.Pass_Payt,
+        todayAccess: userData.TodayAccess,
+        todayCashRect: userData.Today_Cash_Rect,
+        todayCashPayt: userData.Today_Cash_Payt,
+        todayPassRect: userData.Today_Pass_Rect,
+        todayPassPayt: userData.Today_Pass_Payt,
+        allowAdd: userData.AllowAdd,
+        allowChange: userData.AllowChange,
+        allowDelete: userData.AllowDelete,
+        allowList: userData.AllowList,
+        userLocked: userData.IsUserLocked,
+        isSuperUser: userData.IsSuperUser
+      }
+
+      this._sharedService.applicationUser = loggedInUser;
+      console.log("Token decoded!");
+    }
+  }
+
 
   isTokenExpired(accessToken: string): boolean {
     const decoded = this.getDecodedToken(accessToken);
@@ -134,12 +140,14 @@ export class AuthService {
         let responseData = response.data;
         this.storeTokens(responseData.token, responseData.refreshToken);
         this.authSubject.next(true);
-
+        console.log("Token refreshed!");
+        this.setUser(responseData.token);
+        console.log("User set after token refresh!");
         resolve(true);
       }
       else {
         this.authSubject.next(false);
-
+        console.log("Token not refreshed!");
         resolve(false);
       }
     });

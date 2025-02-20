@@ -38,6 +38,7 @@ export class LoaderInterceptor implements HttpInterceptor {
       finalize(() => this._sharedService.hideLoader()),
       catchError((error) => {
         if (error.status === 401) {  // Token expired or invalid
+          console.log("API error code 401!");
           if (!this._authService.isTokenExpired(accessToken ? accessToken : "")) {
             let token = localStorage.getItem("accessToken");
             const clonedReqWithNewToken = request.clone({
@@ -49,6 +50,7 @@ export class LoaderInterceptor implements HttpInterceptor {
           }
           else
           {
+            console.log("Requested token refresh!");
             this._authService.refreshToken();
             let token = localStorage.getItem("accessToken");
             const clonedReqWithNewToken = request.clone({
