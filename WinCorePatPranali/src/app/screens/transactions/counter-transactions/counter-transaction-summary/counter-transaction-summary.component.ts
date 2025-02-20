@@ -44,9 +44,16 @@ export class CounterTransactionSummaryComponent implements OnInit {
   }
   
   getDailyCounterSummary() {
-    this.pendingTransactions = [];
-    this._cashierTransactionsService.getCounterDailyTransactionSummary(this._sharedService.applicationUser.branchId,
-      this._sharedService.applicationUser.id).subscribe((data: any) => {
+    this.pendingTransactions = []; 
+    
+    let transactionSummaryRequest = {
+      UserId: this._sharedService.applicationUser.id,
+      BranchCode: this._sharedService.applicationUser.branchId,
+      TransactionDate: this._sharedService.getWorkOperationDate()
+    };
+    
+    this._cashierTransactionsService.getCounterDailyTransactionSummary(transactionSummaryRequest)
+    .subscribe((data: any) => {
 
         if (data.data.data.pendingTransactions && data.data.data.pendingTransactions.length) {
           //this.pendingTransactions = data.data.data.pendingTransactions;

@@ -6,6 +6,7 @@ import { NgxDropdownConfig } from 'ngx-select-dropdown';
 import { ToastrService } from 'ngx-toastr';
 import { AccountDeclarations } from 'src/app/common/account-declarations';
 import { IGeneralDTO, UiEnumGeneralMaster } from 'src/app/common/models/common-ui-models';
+import { UserRoleHeper } from 'src/app/common/utils/user-role-helper';
 import { AccountsService } from 'src/app/services/accounts/accounts/accounts.service';
 import { DepositAccountService } from 'src/app/services/accounts/deposit-accounts/deposit-account.service';
 import { CustomerService } from 'src/app/services/customers/customer/customer.service';
@@ -254,18 +255,6 @@ export class DepositAccountsComponent {
       drInterestDate: new FormControl(formatDate(new Date(Date.now()), 'yyyy-MM-dd', 'en'), [Validators.required]),
     });
 
-    // this.parametersForm = new FormGroup({
-    //   interestRateParam: new FormControl("", [Validators.required]),
-    //   ledgerNumber: new FormControl("", []),
-    //   //introducedByGI: new FormControl("", []),
-    //   minimumBalance: new FormControl("", [Validators.required]),
-    //   additionalBalance: new FormControl("", [Validators.required]),
-    //   form60: new FormControl(this.uiForm60Options[0].code, [Validators.required]),
-    //   form61: new FormControl(this.uiForm61Options[0].code, [Validators.required]),
-    //   tds: new FormControl(this.uiTDSOptions[0].code, [Validators.required]),
-    //   tdsReason: new FormControl(this.uiTDSReasons[0].constantNo, [Validators.required]),
-    // });
-
     this.nominiForm = new FormGroup({
       nominiName: new FormControl("", []),
       relation: new FormControl(this.uiRelations[0].constantNo, []),
@@ -313,6 +302,24 @@ export class DepositAccountsComponent {
     }).catch(error => {
       this._toastrService.error('Error loading general ledgers', 'Warning!');
     });
+    
+    UserRoleHeper.initialiseUserRoles(this._sharedService.applicationUser);
+  }
+
+  isOperatorUser() {
+    return UserRoleHeper.isOperatorUser();
+  }
+
+  isPassingOfficerUser() {
+    return UserRoleHeper.isPassingOfficerUser();
+  }
+
+  isAdministratorUser() {
+    return UserRoleHeper.isAdministratorUser();
+  }
+
+  isDepositOfficerUser() {
+    return UserRoleHeper.isDepositOfficerUser();
   }
 
   retrieveMasters(uiEnumGeneralMaster: UiEnumGeneralMaster) {

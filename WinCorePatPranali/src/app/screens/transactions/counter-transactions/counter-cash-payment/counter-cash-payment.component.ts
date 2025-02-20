@@ -5,6 +5,7 @@ import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { DenominationsComponent } from 'src/app/common/directives/denominations/denominations.component';
 import { MessageBoxComponent } from 'src/app/common/directives/message-box/message-box.component';
+import { UserRoleHeper } from 'src/app/common/utils/user-role-helper';
 import { AccountsService } from 'src/app/services/accounts/accounts/accounts.service';
 import { SavingAccountService } from 'src/app/services/accounts/saving-accounts/saving-account.service';
 import { BranchMasterService } from 'src/app/services/masters/branch-master/branch-master.service';
@@ -25,8 +26,9 @@ export interface ITransactionSummaryModel {
   UTR_ChequeDate: Date;
   TransactionPassing: boolean;
   CreatedBy: number;
-  VerifiedBy: string;
+  VerifiedBy: number;
   VerifiedDateTime: Date;
+  CDType: number;
   TransactionDetails: ITransactionDetailsModel[];
   Denominations: IDenomination[];
 }
@@ -106,11 +108,27 @@ export class CounterCashPaymentComponent implements OnInit {
     this.getVoucherNumber();
     this.getBranches();
     this.getGeneralLedgers();
+    UserRoleHeper.initialiseUserRoles(this._sharedService.applicationUser);
+  }
+
+  isAdministratorUser() {
+    return UserRoleHeper.isAdministratorUser();
+  }
+
+  isOperatorUser() {
+    return UserRoleHeper.isOperatorUser();
   }
 
   getVoucherNumber()
   {
-    this._transactionMasterService.getMaxVoucherNumber(this._sharedService.applicationUser.branchId, 2).subscribe((data: any) => {
+    let maxVoucherRequest = {
+      BranchCode : this._sharedService.applicationUser.branchId,
+      VoucherType : 1, 
+      VoucherDate : this._sharedService.getWorkOperationDate(),
+      CDType: 2 // 1= Credit , 2 = Debit 
+    };
+
+    this._transactionMasterService.getMaxVoucherNumber(maxVoucherRequest).subscribe((data: any) => {
      
       if (data) {
         if (data.data.data && data.data.data > 0) {
@@ -282,8 +300,8 @@ export class CounterCashPaymentComponent implements OnInit {
       let transactionSummary = {} as ITransactionSummaryModel;
       transactionSummary.Id = 0;
       transactionSummary.BranchCode = this._sharedService.applicationUser.branchId;
-      transactionSummary.VoucherDate = new Date();
-      transactionSummary.VoucherType = 2; // 1 = Receipt 2 = Payment
+      transactionSummary.VoucherDate = new Date(this._sharedService.getWorkOperationDate());
+      transactionSummary.VoucherType = 1; // 1 = cash 2 = transfer 3 = UPI
       transactionSummary.VoucherNo = parseInt(this.tokenId.value);
       transactionSummary.VoucherAmount = parseFloat(this.transactionAmount.value);
       transactionSummary.TransactionNarration = this.transactionDesc.value;
@@ -292,7 +310,8 @@ export class CounterCashPaymentComponent implements OnInit {
       transactionSummary.UTR_ChequeDate = this.chequeNo.value.length? this.chequeDate.value : formatDate(new Date(Date.now()), 'yyyy-MM-dd', 'en'), [];
       transactionSummary.TransactionPassing = false;
       transactionSummary.CreatedBy = this._sharedService.applicationUser.id;
-      transactionSummary.VerifiedBy = "";
+      transactionSummary.VerifiedBy = 0;
+      transactionSummary.CDType = 2;// 1 = CREDIT 2 = Debit
       transactionSummary.VerifiedDateTime = new Date();
 
       let transactionDetails = {} as ITransactionDetailsModel;

@@ -226,7 +226,7 @@ export class UserComponent implements OnInit {
         if (data) {
           if (data.statusCode == 200 && data.data.data && data.data.data.retId > 0) {
             if (data.data.data.status == "SUCCESS") {
-              this._toastrService.success(data.data.data.message, 'Success!');
+              this._toastrService.success("User added successfully.", 'Success!');
               this.clear();
               this.configClick("user-search");
             }

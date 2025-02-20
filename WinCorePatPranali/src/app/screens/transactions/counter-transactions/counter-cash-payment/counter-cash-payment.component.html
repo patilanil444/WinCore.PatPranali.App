@@ -94,16 +94,18 @@
                             </div> -->
                             <div class="row">
                                 <div class="col-md-12">
-                                    <button class="btn btn-info" style="float: right;">
+                                    <button class="btn btn-info" style="float: right;" *ngIf="isOperatorUser()">
                                         Customer Identity</button>
                                 </div>
                             </div>
                            
                         </fieldset>
                         <div style="margin-top: 10px;">
-                            <button class="btn btn-primary" style="float: left;" tabindex="2" (click)="makeTransaction()">
+                            <button class="btn btn-primary" style="float: left;" tabindex="2" (click)="makeTransaction()"
+                            *ngIf="isOperatorUser()">
                                 Finish Transaction</button>
-                            <button class="btn btn-danger btn-left-margin10" style="float: left;" tabindex="2" (click)="clearTransaction()">
+                            <button class="btn btn-danger btn-left-margin10" style="float: left;" tabindex="2" (click)="clearTransaction()"
+                            *ngIf="isOperatorUser()">
                                 Clear</button>
                         
                         </div>

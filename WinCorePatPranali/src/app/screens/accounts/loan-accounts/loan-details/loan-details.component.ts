@@ -6,6 +6,7 @@ import { NgxDropdownConfig } from 'ngx-select-dropdown';
 import { ToastrService } from 'ngx-toastr';
 import { AccountDeclarations } from 'src/app/common/account-declarations';
 import { IGeneralDTO } from 'src/app/common/models/common-ui-models';
+import { UserRoleHeper } from 'src/app/common/utils/user-role-helper';
 import { AccountsService } from 'src/app/services/accounts/accounts/accounts.service';
 import { LoanAccountsService } from 'src/app/services/accounts/loan-accounts/loan-accounts.service';
 import { CustomerService } from 'src/app/services/customers/customer/customer.service';
@@ -169,6 +170,7 @@ export class LoanDetailsComponent implements OnInit {
   isCashCredit = false;
   isVehicleLoan = false;
   isMortgageLoan = false;
+  isAccountAuthorized = true;
 
   constructor(private router: Router, private _sharedService: SharedService,
     private _toastrService: ToastrService, private _generalLedgerService: GeneralLedgerService,
@@ -231,6 +233,24 @@ export class LoanDetailsComponent implements OnInit {
     }).catch(error => {
       this._toastrService.error('Error loading general ledgers', 'Error!');
     });
+  
+    UserRoleHeper.initialiseUserRoles(this._sharedService.applicationUser);
+  }
+
+  isOperatorUser() {
+    return UserRoleHeper.isOperatorUser();
+  }
+
+  isPassingOfficerUser() {
+    return UserRoleHeper.isPassingOfficerUser();
+  }
+
+  isAdministratorUser() {
+    return UserRoleHeper.isAdministratorUser();
+  }
+
+  isLoanOfficerUser() {
+    return UserRoleHeper.isLoanOfficerUser();
   }
 
   getGeneralLedgers() {
@@ -296,6 +316,8 @@ export class LoanDetailsComponent implements OnInit {
         if (data) {
           if (data.statusCode == 200 && data.data.data) {
             var loanAccount = data.data.data;
+
+            this.isAccountAuthorized = loanAccount.authBy > 0;
 
             // bind general ledger
             let gl = this.uiAllGeneralLedgers.filter(g => g.code == loanAccount.code1);

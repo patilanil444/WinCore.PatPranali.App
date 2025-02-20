@@ -4,7 +4,8 @@ import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { CustomerDeclarations } from 'src/app/common/customer-declarations';
 import { CustSearchComponent } from 'src/app/common/directives/cust-search/cust-search.component';
-import { IGeneralDTO } from 'src/app/common/models/common-ui-models';
+import { IGeneralDTO, UiUserRole } from 'src/app/common/models/common-ui-models';
+import { UserRoleHeper } from 'src/app/common/utils/user-role-helper';
 import { CustomerService } from 'src/app/services/customers/customer/customer.service';
 import { SharedService } from 'src/app/services/shared.service';
 
@@ -22,16 +23,29 @@ export class CustomerSearchComponent implements OnInit {
   //uiCustomerSearchBy: any[] = [];
   p: number = 1;
   total: number = 0;
+
+  isManager = false;
+  isClerkOperator = false;
+  isMainCashier = false;
+  isSubCashier = false;
+  isPassingOfficer = false;
+  isLoanOfficer = false;
+  isDepositOfficer = false;
+  isPigmyAgent = false;
+  isRecoveryOfficer = false;
+  isAdmin = false;
+  isSuperUser = false;
+  isCashier = false;
+
   constructor(private router: Router, private _toastrService: ToastrService, 
     private _customerService: CustomerService, private _sharedService: SharedService ) { }
 
   ngOnInit(): void {
+    UserRoleHeper.initialiseUserRoles(this._sharedService.applicationUser);
+  }
 
-    // this.uiCustomerSearchBy = CustomerDeclarations.customerSearchBy;
-    // this.searchForm = new FormGroup({
-    //   searchBy: new FormControl(this.uiCustomerSearchBy[0].code, []),
-    //   searchText: new FormControl("", []),
-    // });
+  isOperatorUser() {
+    return UserRoleHeper.isOperatorUser();
   }
 
   pageChangeEvent(event: number) {

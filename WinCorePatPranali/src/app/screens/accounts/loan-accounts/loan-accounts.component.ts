@@ -6,6 +6,7 @@ import { NgxDropdownConfig } from 'ngx-select-dropdown';
 import { ToastrService } from 'ngx-toastr';
 import { AccountDeclarations } from 'src/app/common/account-declarations';
 import { IGeneralDTO, UiEnumAccountStatus, UiEnumGeneralMaster } from 'src/app/common/models/common-ui-models';
+import { UserRoleHeper } from 'src/app/common/utils/user-role-helper';
 import { AccountsService } from 'src/app/services/accounts/accounts/accounts.service';
 import { LoanAccountsService } from 'src/app/services/accounts/loan-accounts/loan-accounts.service';
 import { CustomerService } from 'src/app/services/customers/customer/customer.service';
@@ -293,7 +294,26 @@ export class LoanAccountsComponent {
     }).catch(error => {
       this._toastrService.error('Error loading general ledgers', 'Error!');
     });
+  
+    UserRoleHeper.initialiseUserRoles(this._sharedService.applicationUser);
   }
+
+  isOperatorUser() {
+    return UserRoleHeper.isOperatorUser();
+  }
+
+  isPassingOfficerUser() {
+    return UserRoleHeper.isPassingOfficerUser();
+  }
+
+  isLoanOfficerUser() {
+    return UserRoleHeper.isLoanOfficerUser();
+  }
+
+  isAdministratorUser() {
+    return UserRoleHeper.isAdministratorUser();
+  }
+
 
   retrieveMasters(uiEnumGeneralMaster: UiEnumGeneralMaster) {
     let mastersData = this._sharedService.uiAllMasters.filter((m: any) => m.identifier == uiEnumGeneralMaster);

@@ -68,7 +68,8 @@
                                         <div class="row" style="margin-top: 10px;">
                                             <div class="col-md-2">
                                                 <button class="btn btn-focus" tabindex="2" data-toggle="modal"
-                                                    data-target="#statusDenominationModel"> Cash Status</button>
+                                                    data-target="#statusDenominationModel" *ngIf="isCashierUser()"> 
+                                                    Cash Status</button>
 
                                                 <!-- <button class="btn btn-focus" tabindex="2" data-toggle="modal"
                                                     style="margin-left: 20px;" data-target="#statusDenominationModel">

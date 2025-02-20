@@ -24,13 +24,13 @@ export class CashierTransactionsService {
 
 
 
-  getCashierDailyTransactionSummary(branchCode: number, userId: number): any {
+  getCashierDailyTransactionSummary(transactionSummaryRequest: any): any {
     let options = GlobleDeclarations.getHeaderOptions();
-    return this.http.get(GlobleDeclarations.apiBaseURL + "api/TransactionMaster/cashier-daily-transactions?branchCode="+ branchCode +"&UserId="+ userId , options);
+    return this.http.post(GlobleDeclarations.apiBaseURL + "api/TransactionMaster/cashier-daily-transactions", transactionSummaryRequest , options);
   }
 
-  getCounterDailyTransactionSummary(branchCode: number, userId: number): any {
+  getCounterDailyTransactionSummary(transactionSummaryRequest: any): any {
     let options = GlobleDeclarations.getHeaderOptions();
-    return this.http.get(GlobleDeclarations.apiBaseURL + "api/TransactionMaster/counter-daily-transactions?branchCode="+ branchCode +"&UserId="+ userId , options);
+    return this.http.post(GlobleDeclarations.apiBaseURL + "api/TransactionMaster/counter-daily-transactions", transactionSummaryRequest, options);
   }
 }

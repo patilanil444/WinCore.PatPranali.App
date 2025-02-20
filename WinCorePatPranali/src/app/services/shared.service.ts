@@ -20,6 +20,8 @@ export class SharedService {
 
   public uiAllMasters: any[] = [];
 
+  private workOperationDate: string;
+
   private apiCount = 0;
   private isLoadingSubject = new BehaviorSubject<boolean>(false);
   isLoading$ = this.isLoadingSubject.asObservable();
@@ -35,6 +37,7 @@ export class SharedService {
   setDTO(object: any) {
     this.dto.next(object);
   }
+
   getDTO() {
     return this.dto.asObservable();
   }
@@ -53,6 +56,14 @@ export class SharedService {
     if (this.apiCount === 0) {
       this.isLoadingSubject.next(false);
     }
+  }
+
+  setWorkOperationDate(openDate: string) {
+    this.workOperationDate = openDate;
+  }
+
+  getWorkOperationDate() {
+    return this.workOperationDate;
   }
 
 }

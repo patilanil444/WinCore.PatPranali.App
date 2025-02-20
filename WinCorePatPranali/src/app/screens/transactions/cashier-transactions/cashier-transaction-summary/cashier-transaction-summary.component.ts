@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
+import { UserRoleHeper } from 'src/app/common/utils/user-role-helper';
 import { SharedService } from 'src/app/services/shared.service';
 import { CashierTransactionsService } from 'src/app/services/transactions/cashier-transactions/cashier-transactions.service';
 import { TransactionMasterService } from 'src/app/services/transactions/transaction-master/transaction-master.service';
@@ -38,7 +39,15 @@ export class CashierTransactionSummaryComponent implements OnInit {
     });
 
     this.getDailyCashierSummary();
+    UserRoleHeper.initialiseUserRoles(this._sharedService.applicationUser);
+  }
 
+  isAdministratorUser() {
+    return UserRoleHeper.isAdministratorUser();
+  }
+
+  isCashierUser() {
+    return UserRoleHeper.isCashierUser();
   }
 
   loadSummary()
@@ -47,9 +56,16 @@ export class CashierTransactionSummaryComponent implements OnInit {
   }
 
   getDailyCashierSummary() {
-    this._cashierTransactionsService.getCashierDailyTransactionSummary(this._sharedService.applicationUser.branchId,
-      this._sharedService.applicationUser.id).subscribe((data: any) => {
+    this.pendingTransactions = [];
 
+    let transactionSummaryRequest = {
+      UserId: this._sharedService.applicationUser.id,
+      BranchCode: this._sharedService.applicationUser.branchId,
+      TransactionDate: this._sharedService.getWorkOperationDate()
+    };
+
+    this._cashierTransactionsService.getCashierDailyTransactionSummary(transactionSummaryRequest)
+    .subscribe((data: any) => {
         if (data.data.data.pendingTransactions && data.data.data.pendingTransactions.length) {
           //this.pendingTransactions = data.data.data.pendingTransactions;
           data.data.data.pendingTransactions.forEach((t: any) => {

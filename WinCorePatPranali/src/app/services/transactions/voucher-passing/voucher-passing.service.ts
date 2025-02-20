@@ -28,9 +28,9 @@ export class VoucherPassingService {
     return this.http.post(GlobleDeclarations.apiBaseURL + "api/TransactionMaster/save-transaction", transactionModel, options);
   }
 
-  getVoucher(voucherRequestModel: any): any {
+  getCashVoucher(voucherRequestModel: any): any {
     let options = GlobleDeclarations.getHeaderOptions();
-    return this.http.post(GlobleDeclarations.apiBaseURL + "api/TransactionMaster/voucher", voucherRequestModel , options);
+    return this.http.post(GlobleDeclarations.apiBaseURL + "api/TransactionMaster/cash-voucher", voucherRequestModel , options);
   }
 
   getTransferVoucher(voucherRequestModel: any): any {

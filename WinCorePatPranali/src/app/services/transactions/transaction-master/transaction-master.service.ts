@@ -26,10 +26,9 @@ export class TransactionMasterService {
     return this.http.get(GlobleDeclarations.apiBaseURL + "api/TransactionMaster/denominations", options);
   }
 
-  getMaxVoucherNumber(branchCode: number, voucherType : number) {
+  getMaxVoucherNumber(maxVoucherRequest: any) {
     let options = GlobleDeclarations.getHeaderOptions();
-    return this.http.get(GlobleDeclarations.apiBaseURL + "api/TransactionMaster/max-voucher?branchCode="
-      + branchCode +"&voucherType=" + voucherType , options);
+    return this.http.post(GlobleDeclarations.apiBaseURL + "api/TransactionMaster/max-voucher" , maxVoucherRequest, options);
   }
 
   saveTransaction(transactionModel: any): any {

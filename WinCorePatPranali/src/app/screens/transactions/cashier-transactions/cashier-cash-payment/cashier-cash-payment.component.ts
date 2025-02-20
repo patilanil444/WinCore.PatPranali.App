@@ -5,6 +5,7 @@ import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { DenominationsComponent } from 'src/app/common/directives/denominations/denominations.component';
 import { UiEnumGeneralMaster } from 'src/app/common/models/common-ui-models';
+import { UserRoleHeper } from 'src/app/common/utils/user-role-helper';
 import { AccountsService } from 'src/app/services/accounts/accounts/accounts.service';
 import { SavingAccountService } from 'src/app/services/accounts/saving-accounts/saving-account.service';
 import { BranchMasterService } from 'src/app/services/masters/branch-master/branch-master.service';
@@ -111,6 +112,16 @@ export class CashierCashPaymentComponent implements OnInit {
 
     this.getBranches();
     this.getGeneralLedgers();
+    
+    UserRoleHeper.initialiseUserRoles(this._sharedService.applicationUser);
+  }
+
+  isAdministratorUser() {
+    return UserRoleHeper.isAdministratorUser();
+  }
+
+  isCashierUser() {
+    return UserRoleHeper.isCashierUser();
   }
 
   retrieveMasters(uiEnumGeneralMaster: UiEnumGeneralMaster) {
@@ -166,10 +177,11 @@ export class CashierCashPaymentComponent implements OnInit {
         VoucherNo: parseInt(this.tokenId.value),
         CDFlag: 2,
         UserId: this._sharedService.applicationUser.id,
-        IsPassing: false
+        IsPassing: false,
+        VoucherDate: this._sharedService.getWorkOperationDate()
       };
 
-      this._voucherPassingService.getVoucher(voucherRequestModel).subscribe((data: any) => {
+      this._voucherPassingService.getCashVoucher(voucherRequestModel).subscribe((data: any) => {
         let voucherModel = data.data.data;
         if (voucherModel) {
 

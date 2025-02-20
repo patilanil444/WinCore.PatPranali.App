@@ -23,7 +23,8 @@
                             <label  class="">Search by Account Number</label>
                             <input tabindex="3" type="text" formControlName="accountNumber" class="form-control">
                         </div>
-                        <div class="col-md-3 position-relative form-group">
+                        <div class="col-md-3 position-relative form-group" 
+                        *ngIf="isOperatorUser() || isDepositOfficerUser() || isLoanOfficerUser() || isPassingOfficerUser()">
                             <div style="float: right; margin-top: 30px;">
                                 <button class="btn  btn-warning"  tabindex="7"
                                     (click)="clear()">
@@ -32,9 +33,10 @@
                            
     
                             <div class="mb-2 mr-2 btn-group" style="float: right; margin-top: 30px;margin-left: 10px;">
-                                <button class="btn btn-primary" tabindex="5">Add Account</button>
-                                <button type="button" aria-haspopup="true"  tabindex="6" aria-expanded="false" data-toggle="dropdown" class="dropdown-toggle-split dropdown-toggle btn btn-primary"><span class="sr-only">Toggle Dropdown</span></button>
-                                <div tabindex="-1" role="menu" aria-hidden="true" class="dropdown-menu" x-placement="bottom-start" style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(67px, 32px, 0px);">
+                                <button  class="btn btn-success" tabindex="5">Add Account</button>
+                                <button type="button" aria-haspopup="true"  tabindex="6" aria-expanded="false" data-toggle="dropdown" class="dropdown-toggle-split dropdown-toggle btn btn-success"><span class="sr-only">Toggle Dropdown</span></button>
+                                <div tabindex="-1" role="menu" aria-hidden="true" class="dropdown-menu" x-placement="bottom-start" 
+                                style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(67px, 32px, 0px);">
                                     <button type="button" tabindex="0" class="dropdown-item" (click)="addAccount('saving-accounts')">Saving</button>
                                     <button type="button" tabindex="0" class="dropdown-item" (click)="addAccount('deposit-accounts')">Deposit</button>
                                     <button type="button" tabindex="0" class="dropdown-item" (click)="addAccount('loan-accounts')">Loan</button>
@@ -47,22 +49,6 @@
                                     tabindex="4" (click)="searchAccounts()">
                                     Search</button>
                             </div>
-                            <!-- <div class="dropdown d-inline-block" style="float: right; margin-top: 30px;">
-                                <button class="btn btn-left-margin10 btn-success" 
-                                    type="button" aria-haspopup="true" aria-expanded="true" data-toggle="dropdown"
-                                    class="mb-2 mr-2 dropdown-toggle btn btn-success" tabindex="2"><i
-                                        class="fa fa-plus"></i> Add Account </button>
-                                <div tabindex="-1" role="menu" aria-hidden="true" class="dropdown-menu show"
-                                    x-placement="bottom-start"
-                                    style="position: absolute; transform: translate3d(0px, 32px, 0px); top:30px; left: 0px; will-change: transform;">
-                                    <button type="button" tabindex="0" class="dropdown-item"
-                                        (click)="addNewAccount()">Saving</button>
-                                    <button type="button" tabindex="0" class="dropdown-item"
-                                        (click)="addNewAccount()">Deposit</button>
-                                    <button type="button" tabindex="0" class="dropdown-item"
-                                        (click)="addNewAccount()">Loan</button>
-                                </div>
-                            </div> -->
                         </div>
                     </div>
                 </form>
@@ -99,13 +85,15 @@
                                     <td>
                                         <div class="widget-content-right">
                                             <button type="button" title="Edit record"
-                                                class="btn-shadow btn btn-info btn-actions" (click)="edit(uiAccount)">
+                                                class="btn-shadow btn btn-info btn-actions" 
+                                                *ngIf="isOperatorUser() || isDepositOfficerUser() || isLoanOfficerUser() || isPassingOfficerUser" 
+                                                (click)="edit(uiAccount)">
                                                 <span class="btn-icon-wrapper opacity-10">
                                                     <i class="fa fa-edit fa-w-10"></i>
                                                 </span>
                                             </button>
                                             <button type="button" title="Delete record"
-                                                class="btn-shadow btn btn-danger btn-actions" data-toggle="modal"
+                                                class="btn-shadow btn btn-danger btn-actions" *ngIf="isOperatorUser()" data-toggle="modal"
                                                 data-target="#deleteModal" (click)="delete(uiAccount)">
                                                 <span class="btn-icon-wrapper opacity-10">
                                                     <i class="fa fa-trash fa-w-20"></i>

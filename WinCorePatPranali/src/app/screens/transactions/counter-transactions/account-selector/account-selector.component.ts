@@ -37,7 +37,8 @@ export class AccountSelectorComponent implements OnInit {
     openDate: "",
     interestRate: "",
     balanceAmountWillBe: "",
-    amount: ""
+    amount: "",
+    description: ""
   };
 
   uiBankAccounts: any = [];
@@ -46,8 +47,7 @@ export class AccountSelectorComponent implements OnInit {
   isResetAccountSearch = false;
 
   constructor(private _branchMasterService: BranchMasterService, private _toastrService: ToastrService,
-    private _generalLedgerService: GeneralLedgerService, private _sharedService: SharedService,
-    private _accountsService: AccountsService) { }
+    private _generalLedgerService: GeneralLedgerService, private _sharedService: SharedService) { }
 
   ngOnInit(): void {
 
@@ -58,6 +58,13 @@ export class AccountSelectorComponent implements OnInit {
   open(accountTypeText: string) {
     this.modal.nativeElement.style.display = 'block';
     this.accountTypeText = accountTypeText;
+
+    if (accountTypeText == 'Debit') {
+      this.selectedAccount.description = "TO TRF"
+    }
+    if (accountTypeText == 'Credit') {
+      this.selectedAccount.description = "BY TRF"
+    }
   }
 
   clear() {
@@ -83,14 +90,15 @@ export class AccountSelectorComponent implements OnInit {
       openDate: "",
       interestRate: "",
       balanceAmountWillBe: "",
-      amount: ""
+      amount: "",
+      description: ""
     };
   }
 
   getGeneralLedgers() {
     return new Promise((resolve, reject) => {
       this._generalLedgerService.getGeneralLedgers(this._sharedService.applicationUser.branchId).subscribe((data: any) => {
-       
+
         if (data) {
           this.uiAllGeneralLedgers = data.data.data;
           if (this.uiAllGeneralLedgers) {
@@ -111,11 +119,6 @@ export class AccountSelectorComponent implements OnInit {
   getBranches() {
     this._branchMasterService.getBranches().subscribe((data: any) => {
       this.uiBranches = data.data.data;
-      // if (this.uiBranches && this.uiBranches.length) {
-      //   this.transferCreditForm.patchValue({
-      //     branchId: this.uiBranches[0].branchCode,
-      //   })
-      // }
     })
   }
 
@@ -140,7 +143,8 @@ export class AccountSelectorComponent implements OnInit {
         openDate: this.uiBankAccount.openDate,
         interestRate: this.uiBankAccount.interestRate,
         balanceAmountWillBe: this.uiBankAccount.balance,
-        amount: ""
+        amount: "",
+        description: this.selectedAccount.description
       };
     }
     else {
@@ -160,43 +164,51 @@ export class AccountSelectorComponent implements OnInit {
         openDate: "",
         interestRate: "",
         balanceAmountWillBe: "",
-        amount: ""
+        amount: "",
+        description: ""
       }
     }
   }
 
   addAccount() {
+
+
+    if (parseFloat(this.selectedAccount.amount) <= 0) {
+      this._toastrService.warning("Please enter amount for the transaction!", 'Warning!');
+      return;
+    }
+
+
+    if (this.selectedAccount.description.trim().length == 0) {
+      this._toastrService.warning("Please enter transaction description!", 'Warning!');
+      return;
+    }
+
     if (this.uiBankAccount && this.uiBankAccount.accountsId > 0) {
-      if (parseFloat(this.selectedAccount.amount) > 0) {
+      let availableAmount = parseFloat(this.selectedAccount.balance) - parseFloat(this.selectedAccount.minBalance);
 
-        let availableAmount = parseFloat(this.selectedAccount.balance) - parseFloat(this.selectedAccount.minBalance);
+      if (parseFloat(this.selectedAccount.amount) > availableAmount && this.accountTypeText == "Debit") {
+        this._toastrService.error("Entered amount not available in account!", 'Warning!');
+        return;
+      }
 
-        if (parseFloat(this.selectedAccount.amount) > availableAmount && this.accountTypeText == "Debit") {
-          this._toastrService.error("Entered amount not available in account!", 'Warning!');
-          return;
-        }
+      this.uiBankAccount.accountTypeText = this.accountTypeText;
+      this.uiBankAccount.amount = parseFloat(this.selectedAccount.amount);
+      this.uiBankAccount.narration = this.selectedAccount.description;
 
-        this.uiBankAccount.accountTypeText = this.accountTypeText;
-        this.uiBankAccount.amount = parseFloat(this.selectedAccount.amount);
-
-        let gls = this.uiAllGeneralLedgers.filter((gl: any) => gl.code == this.selectedAccount.glCode);
-        if (gls && gls.length) {
-          this.uiBankAccount.glName = gls[0].glName;
-          if (gls[0].glParameters && gls[0].glParameters.payableGL) {
-            let payableGLs = this.uiAllGeneralLedgers.filter((gl: any) => gl.code == gls[0].glParameters.payableGL);
-            if (payableGLs && payableGLs.length) {
-              this.uiBankAccount.payableGLCode = payableGLs[0].code;
-              this.uiBankAccount.payableGLName = payableGLs[0].glName;
-            }
+      let gls = this.uiAllGeneralLedgers.filter((gl: any) => gl.code == this.selectedAccount.glCode);
+      if (gls && gls.length) {
+        this.uiBankAccount.glName = gls[0].glName;
+        if (gls[0].glParameters && gls[0].glParameters.payableGL) {
+          let payableGLs = this.uiAllGeneralLedgers.filter((gl: any) => gl.code == gls[0].glParameters.payableGL);
+          if (payableGLs && payableGLs.length) {
+            this.uiBankAccount.payableGLCode = payableGLs[0].code;
+            this.uiBankAccount.payableGLName = payableGLs[0].glName;
           }
         }
-
-        this.account.emit(this.uiBankAccount);
-
       }
-      else {
-        this._toastrService.warning("Please enter amount to add for transaction!", 'Warning!');
-      }
+
+      this.account.emit(this.uiBankAccount);
     }
     else {
       this._toastrService.warning("Please search account to add for transaction!", 'Warning!');

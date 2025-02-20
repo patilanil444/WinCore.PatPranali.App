@@ -11,6 +11,7 @@ import { AccountSelectorComponent } from '../account-selector/account-selector.c
 import { ConfirmBoxComponent } from 'src/app/common/directives/confirm-box/confirm-box.component';
 import { TransactionMasterService } from 'src/app/services/transactions/transaction-master/transaction-master.service';
 import { MessageBoxComponent } from 'src/app/common/directives/message-box/message-box.component';
+import { UserRoleHeper } from 'src/app/common/utils/user-role-helper';
 
 export interface ITransactionSummaryModel {
   Id: number;
@@ -27,6 +28,7 @@ export interface ITransactionSummaryModel {
   CreatedBy: number;
   VerifiedBy: number;
   VerifiedDateTime: Date;
+  CDType: number;
   TransactionDetails: ITransactionDetailsModel[];
 }
 
@@ -97,11 +99,26 @@ export class CounterTransferComponent implements OnInit {
     });
 
     this.getVoucherNumber();
+    UserRoleHeper.initialiseUserRoles(this._sharedService.applicationUser);
+  }
+
+  isAdministratorUser() {
+    return UserRoleHeper.isAdministratorUser();
+  }
+
+  isOperatorUser() {
+    return UserRoleHeper.isOperatorUser();
   }
 
   getVoucherNumber()
   {
-    this._transactionMasterService.getMaxVoucherNumber(this._sharedService.applicationUser.branchId, 2).subscribe((data: any) => {
+    let maxVoucherRequest = {
+      BranchCode : this._sharedService.applicationUser.branchId,
+      VoucherType : 2, 
+      VoucherDate : this._sharedService.getWorkOperationDate(),
+      CDType: 0 // 1= Credit , 2 = Debit 
+    };
+    this._transactionMasterService.getMaxVoucherNumber(maxVoucherRequest).subscribe((data: any) => {
      
       if (data) {
         if (data.data.data && data.data.data > 0) {
@@ -157,12 +174,12 @@ export class CounterTransferComponent implements OnInit {
         amount: bankAccount.amount.toFixed(2),
         ctFlag: 2,
         ctFlagText: "Transfer",
-        narration: ""
+        narration: bankAccount.narration
       };
 
       if (bankAccount.accountTypeText == 'Debit') {
         this.uiDebitAccounts = [];
-        account.narration = "TO TRF";
+        //account.narration = "TO TRF";
         this.transferCreditForm.patchValue({
           debitAmount: parseFloat(account.amount)
         });
@@ -176,7 +193,7 @@ export class CounterTransferComponent implements OnInit {
 
           let debitIndex = this.uiDebitAccounts.findIndex((da: any) => da.accountId == account.accountId);
           if (debitIndex == -1) {
-            account.narration = "BY TRF";
+            //account.narration = "BY TRF";
             let accounts = this.uiCreditAccounts.filter((acc: any) => acc.accountId == account.accountId);
             if (accounts && accounts.length) {
               // confirmation to add amount into existing account
@@ -333,22 +350,26 @@ export class CounterTransferComponent implements OnInit {
 
       let uidebitAccount = this.uiDebitAccounts[0];
       let transactionSummaries = [];
-      let transactionDebitSummary = {} as ITransactionSummaryModel;
-      transactionDebitSummary.Id = 0;
-      transactionDebitSummary.BranchCode = this._sharedService.applicationUser.branchId;
-      transactionDebitSummary.VoucherDate = new Date();
-      transactionDebitSummary.VoucherType = 2; // 1 = Receipt 2 = Payment
-      transactionDebitSummary.VoucherNo = parseInt(this.tokenId.value);
-      transactionDebitSummary.VoucherAmount = parseFloat(uidebitAccount.amount);
-      transactionDebitSummary.TransactionNarration = uidebitAccount.narration;
-      transactionDebitSummary.YearEnd = false;
-      transactionDebitSummary.UTR_ChequeNo = this.chequeNo.value.length? this.chequeNo.value : "";
-      transactionDebitSummary.UTR_ChequeDate = this.chequeNo.value.length? this.chequeDate.value : formatDate(new Date(Date.now()), 'yyyy-MM-dd', 'en'), [];
-      transactionDebitSummary.TransactionPassing = false;
-      transactionDebitSummary.CreatedBy = this._sharedService.applicationUser.id;
-      transactionDebitSummary.VerifiedBy = 0;
-      transactionDebitSummary.VerifiedDateTime = new Date();
+      let transactionSummary = {} as ITransactionSummaryModel;
+      transactionSummary.Id = 0;
+      transactionSummary.BranchCode = this._sharedService.applicationUser.branchId;
+      transactionSummary.VoucherDate = new Date( this._sharedService.getWorkOperationDate());
+      transactionSummary.VoucherType = 2; // 1 = cash 2 = transfer 3 = UPI
+      transactionSummary.VoucherNo = parseInt(this.tokenId.value);
+      transactionSummary.VoucherAmount = parseFloat(uidebitAccount.amount);
+      transactionSummary.TransactionNarration = uidebitAccount.narration;
+      transactionSummary.YearEnd = false;
+      transactionSummary.UTR_ChequeNo = this.chequeNo.value.length? this.chequeNo.value : "";
+      transactionSummary.UTR_ChequeDate = this.chequeNo.value.length? this.chequeDate.value : formatDate(new Date(Date.now()), 'yyyy-MM-dd', 'en'), [];
+      transactionSummary.TransactionPassing = false;
+      transactionSummary.CreatedBy = this._sharedService.applicationUser.id;
+      transactionSummary.VerifiedBy = 0;
+      transactionSummary.CDType = 0;// 1 = CREDIT 2 = Debit
+      transactionSummary.VerifiedDateTime = new Date();
+      transactionSummary.TransactionDetails = [];
 
+
+      // Debit account
       let transactionDebitDetails = {} as ITransactionDetailsModel;
       transactionDebitDetails.VoucherHeadId = 0;
       transactionDebitDetails.Code1 = parseInt(uidebitAccount.glCode);
@@ -359,28 +380,10 @@ export class CounterTransferComponent implements OnInit {
       transactionDebitDetails.CTFlag = 2;  // 1 = Cash 2 = Transfer
       transactionDebitDetails.Transaction_Amount = parseFloat(uidebitAccount.amount);
       transactionDebitDetails.Transaction_Narration = uidebitAccount.narration;
-      transactionDebitSummary.TransactionDetails = [];
-      transactionDebitSummary.TransactionDetails.push(transactionDebitDetails);
+      transactionSummary.TransactionDetails = [];
+      transactionSummary.TransactionDetails.push(transactionDebitDetails);
 
       // Credit accounts
-
-      let transactionCreditSummary = {} as ITransactionSummaryModel;
-      transactionCreditSummary.Id = 0;
-      transactionCreditSummary.BranchCode = this._sharedService.applicationUser.branchId;
-      transactionCreditSummary.VoucherDate = new Date();
-      transactionCreditSummary.VoucherType = 1; // 1 = Receipt 2 = Payment
-      transactionCreditSummary.VoucherNo = parseInt(this.tokenId.value);
-      transactionCreditSummary.VoucherAmount = parseFloat(uidebitAccount.amount);
-      transactionCreditSummary.TransactionNarration = "BY TRF";
-      transactionCreditSummary.YearEnd = false;
-      transactionCreditSummary.UTR_ChequeNo = this.chequeNo.value.length? this.chequeNo.value : "";
-      transactionCreditSummary.UTR_ChequeDate = this.chequeNo.value.length? this.chequeDate.value : formatDate(new Date(Date.now()), 'yyyy-MM-dd', 'en'), [];
-      transactionCreditSummary.TransactionPassing = false;
-      transactionCreditSummary.CreatedBy = this._sharedService.applicationUser.id;
-      transactionCreditSummary.VerifiedBy = 0;
-      transactionCreditSummary.VerifiedDateTime = new Date();
-
-      transactionCreditSummary.TransactionDetails = [];
 
       for (let index = 0; index < this.uiCreditAccounts.length; index++) {
         let uiCreditAccount = this.uiCreditAccounts[index];
@@ -394,11 +397,10 @@ export class CounterTransferComponent implements OnInit {
         transactionCreditDetails.CTFlag = 2;  // 1 = Cash 2 = Transfer
         transactionCreditDetails.Transaction_Amount = parseFloat(uiCreditAccount.amount);
         transactionCreditDetails.Transaction_Narration = uiCreditAccount.narration;
-        transactionCreditSummary.TransactionDetails.push(transactionCreditDetails);
+        transactionSummary.TransactionDetails.push(transactionCreditDetails);
       }
      
-      transactionSummaries.push(transactionDebitSummary);
-      transactionSummaries.push(transactionCreditSummary);
+      transactionSummaries.push(transactionSummary);
       this.executeTransaction(transactionSummaries);
 
     }

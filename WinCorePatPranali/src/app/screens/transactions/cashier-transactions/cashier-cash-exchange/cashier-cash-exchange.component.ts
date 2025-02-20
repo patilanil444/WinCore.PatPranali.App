@@ -2,6 +2,7 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ToastrService } from 'ngx-toastr';
 import { DenominationsComponent } from 'src/app/common/directives/denominations/denominations.component';
+import { UserRoleHeper } from 'src/app/common/utils/user-role-helper';
 import { SharedService } from 'src/app/services/shared.service';
 import { TransactionMasterService } from 'src/app/services/transactions/transaction-master/transaction-master.service';
 
@@ -52,6 +53,15 @@ export class CashierCashExchangeComponent implements OnInit {
     this.cashExchangeForm = new FormGroup({
       receiptAmount: new FormControl("", [Validators.required]),
     });
+    UserRoleHeper.initialiseUserRoles(this._sharedService.applicationUser);
+  }
+
+  isAdministratorUser() {
+    return UserRoleHeper.isAdministratorUser();
+  }
+
+  isCashierUser() {
+    return UserRoleHeper.isCashierUser();
   }
 
   openDenominations()
@@ -92,8 +102,8 @@ export class CashierCashExchangeComponent implements OnInit {
       let transactionSummary = {} as ITransactionSummaryModel;
       transactionSummary.Id = 0;
       transactionSummary.BranchCode = this._sharedService.applicationUser.branchId;
-      transactionSummary.VoucherDate = new Date();
-      transactionSummary.VoucherType = 3; // 1 = Receipt 2 = Payment
+      transactionSummary.VoucherDate = new Date(this._sharedService.getWorkOperationDate());
+      transactionSummary.VoucherType = 1; // 1 = cash 2 = transfer 3 = UPI
       transactionSummary.VoucherNo = 0;
       transactionSummary.VoucherAmount = parseFloat(this.receiptAmount.value);
       transactionSummary.TransactionNarration = "";

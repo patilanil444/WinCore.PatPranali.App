@@ -17,7 +17,7 @@
             </div>
             <div class="col-md-3 position-relative form-group">
                 <button type="button" style="margin-top: 30px !important;" class="mt-1 btn btn-primary" tabindex="7"
-                    [disabled]="areDaysOpen" (click)="saveBeginDay()">Submit</button>
+                    [disabled]="areDaysOpen" (click)="saveBeginDay()" *ngIf="isAdministratorUser()">Submit</button>
             </div>
         </div>
 

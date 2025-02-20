@@ -8,8 +8,9 @@
                             <legend>Debit Accounts</legend>
                             <div class="row">
                                 <div class="col-md-1">
-                                    <button class="btn btn-primary" style="float: left; margin-top: 10px;" tabindex="2" (click)="selectDebitAccount()">Add
-                                        Account</button>
+                                    <button class="btn btn-primary" style="float: left;" tabindex="2" (click)="selectDebitAccount()"
+                                    *ngIf="isOperatorUser()">Add
+                                       Debit Account</button>
                                 </div>
                                 <div class="col-md-11 customer-panel">
                                     <table style="width: 100%;"
@@ -77,7 +78,8 @@
                                     <input tabindex="28" type="date" class="form-control" formControlName="chequeDate">
                                 </div>
                                 <div class="col-md-2 position-relative form-group">
-                                    <button class="btn btn-info" style="margin-top: 30px;">Customer Identity</button>
+                                    <button class="btn btn-info" style="margin-top: 30px;"
+                                    *ngIf="isOperatorUser()">Customer Identity</button>
                                 </div>
                                 <div class="col-md-2 position-relative form-group">
                                     <label class="">Total Credit Amount</label>
@@ -96,8 +98,9 @@
                             <legend>Credit Accounts</legend>
                             <div class="row">
                                 <div class="col-md-1">
-                                    <button class="btn btn-primary" style="float: left; margin-top: 10px;" tabindex="2" (click)="selectCreditAccount()">Add
-                                        Account</button>
+                                    <button class="btn btn-primary" style="float: left;" tabindex="2" (click)="selectCreditAccount()"
+                                    *ngIf="isOperatorUser()">Add
+                                       Credit Account</button>
                                 </div>
                                 <div class="col-md-11 customer-panel">
                                     <table style="width: 100%;"
@@ -150,11 +153,11 @@
 
                         <div style="margin-top: 10px;">
                             <button class="btn btn-primary" style="float: left;" tabindex="2"
-                                (click)="makeTransaction()">
+                                (click)="makeTransaction()" *ngIf="isOperatorUser()">
                                 Finish Transaction</button>
 
                             <button class="btn btn-danger btn-left-margin10" style="float: left;" tabindex="2"
-                                (click)="clearTransaction()">
+                                (click)="clearTransaction()" *ngIf="isOperatorUser()">
                                 Clear</button>
 
                         </div>

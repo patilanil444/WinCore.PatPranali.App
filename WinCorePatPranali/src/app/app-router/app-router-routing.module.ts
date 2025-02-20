@@ -46,6 +46,7 @@ import { CounterTransactionSummaryComponent } from '../screens/transactions/coun
 import { VoucherPassingSummaryComponent } from '../screens/transactions/voucher-passing/voucher-passing-summary/voucher-passing-summary.component';
 import { StartOfWorkSummaryComponent } from '../screens/transactions/start-of-work/start-of-work-summary/start-of-work-summary.component';
 import { AuthGuard } from '../common/auth-guard/auth.guard';
+import { UiUserRole } from '../common/models/common-ui-models';
 
 const routes: Routes = [
   {
@@ -58,50 +59,232 @@ const routes: Routes = [
       [{
         path: 'home', component: HomeComponent, //canActivate: [AuthGuard]
       },
-      { path: 'deposit-accounts', component: DepositAccountsComponent, canActivate: [AuthGuard] },
-      { path: 'saving-accounts', component: SavingAccountsComponent, canActivate: [AuthGuard] },
-      { path: 'loan-accounts', component: LoanAccountsComponent, canActivate: [AuthGuard] },
-      { path: 'other-accounts', component: OtherAccountsComponent, canActivate: [AuthGuard] },
-      { path: 'bank', component: BankMasterFormComponent, canActivate: [AuthGuard] },
-      { path: 'banks', component: BankMasterComponent, canActivate: [AuthGuard] },
-      { path: 'branch', component: BranchMasterFormComponent, canActivate: [AuthGuard] },
-      { path: 'branches', component: BranchMasterComponent, canActivate: [AuthGuard] },
-      { path: 'priority', component: PriorityFormComponent, canActivate: [AuthGuard] },
-      { path: 'priorities', component: PriorityComponent, canActivate: [AuthGuard] },
-      { path: 'master-list', component: GeneralMasterComponent, canActivate: [AuthGuard] },
-      { path: 'general-master', component: GeneralMasterFormComponent, canActivate: [AuthGuard] },
-      { path: 'general-ledger-list', component: GeneralLedgerMasterListComponent, canActivate: [AuthGuard] },
-      { path: 'general-ledger', component: GeneralLedgerMasterFormComponent, canActivate: [AuthGuard] },
-      { path: 'deposit-interest', component: DepositInterestStructureComponent, canActivate: [AuthGuard] },
-      { path: 'loan-interest', component: LoanInterestStructureComponent, canActivate: [AuthGuard] },
-      { path: 'gl-interest-parameters', component: GLInterestParameterComponent, canActivate: [AuthGuard] },
-      { path: 'profile', component: BankProfileMasterComponent, canActivate: [AuthGuard] },
-      { path: 'district', component: DistrictMasterFormComponent, canActivate: [AuthGuard] },
-      { path: 'districts', component: DistrictMasterComponent, canActivate: [AuthGuard] },
-      { path: 'tahsil', component: TahshilMasterFormComponent, canActivate: [AuthGuard] },
-      { path: 'tahsils', component: TahshilMasterComponent, canActivate: [AuthGuard] },
-      { path: 'customer', component: CustomerFormComponent, canActivate: [AuthGuard] },
-      { path: 'customer-search', component: CustomerSearchComponent, canActivate: [AuthGuard] },
-      { path: 'member-list', component: MemberSearchComponent, canActivate: [AuthGuard] },
-      { path: 'member', component: MemberFormComponent, canActivate: [AuthGuard] },
-      { path: 'account-search', component: AccountSearchComponent, canActivate: [AuthGuard] },
-      { path: 'user-search', component: UserSearchComponent, canActivate: [AuthGuard] },
-      { path: 'user', component: UserComponent, canActivate: [AuthGuard] },
-      { path: 'role-access', component: RoleAccessComponent, canActivate: [AuthGuard] },
-      { path: 'activity', component: UserActivityComponent, canActivate: [AuthGuard] },
-      { path: 'daily-role', component: UserDailyRoleComponent, canActivate: [AuthGuard] },
-      { path: 'opening-balance', component: OpeningBalanceComponent, canActivate: [AuthGuard] },
-      { path: 'balance-cert', component: BalanceCertificateComponent, canActivate: [AuthGuard] },
-      { path: 'cheque-request', component: ChequeBookRequestComponent, canActivate: [AuthGuard] },
-      { path: 'cheque-book-issue', component: ChequeBookIssueComponent, canActivate: [AuthGuard] },
-      { path: 'loan-details', component: LoanDetailsComponent, canActivate: [AuthGuard] },
-      // { path: 'saving-transactions', component: SavingTransactionsComponent, canActivate: [AuthGuard] },
-      // { path: 'fd-transactions', component: FixDepositTransactionsComponent, canActivate: [AuthGuard] },
-      // { path: 'pigmy-transactions', component: PigmyTransactionsComponent , canActivate: [AuthGuard]},
-      { path: 'cashier-transactions', component: CashierTransactionSummaryComponent, canActivate: [AuthGuard] },
-      { path: 'counter-transactions', component: CounterTransactionSummaryComponent, canActivate: [AuthGuard] },
-      { path: 'voucher-passing', component: VoucherPassingSummaryComponent, canActivate: [AuthGuard] },
-      { path: 'day-start', component: StartOfWorkSummaryComponent, canActivate: [AuthGuard] },
+      {
+        path: 'deposit-accounts', component: DepositAccountsComponent, canActivate: [AuthGuard],
+        data: {
+          roles: [UiUserRole.MANAGER, UiUserRole.GENERAL_MANAGER, UiUserRole.ASSISTENT_MANAGER,
+          UiUserRole.PASSING_OFFICER, UiUserRole.CLERK, UiUserRole.DEPOSIT_OFFICER]
+        }
+      },
+      {
+        path: 'saving-accounts', component: SavingAccountsComponent, canActivate: [AuthGuard],
+        data: {
+          roles: [UiUserRole.MANAGER, UiUserRole.GENERAL_MANAGER, UiUserRole.PASSING_OFFICER,
+          UiUserRole.CLERK, UiUserRole.ASSISTENT_MANAGER]
+        }
+      },
+      {
+        path: 'loan-accounts', component: LoanAccountsComponent, canActivate: [AuthGuard],
+        data: {
+          roles: [UiUserRole.MANAGER, UiUserRole.GENERAL_MANAGER, UiUserRole.PASSING_OFFICER,
+          UiUserRole.CLERK, UiUserRole.LOAN_OFFICER, UiUserRole.ASSISTENT_MANAGER]
+        }
+      },
+      {
+        path: 'other-accounts', component: OtherAccountsComponent, canActivate: [AuthGuard],
+        data: {
+          roles: [UiUserRole.MANAGER, UiUserRole.GENERAL_MANAGER, UiUserRole.PASSING_OFFICER,
+          UiUserRole.CLERK, UiUserRole.ASSISTENT_MANAGER]
+        }
+      },
+      {
+        path: 'bank', component: BankMasterFormComponent, canActivate: [AuthGuard],
+        data: {
+          roles: [UiUserRole.MANAGER, UiUserRole.GENERAL_MANAGER, UiUserRole.ASSISTENT_MANAGER]
+        }
+      },
+      { path: 'banks', component: BankMasterComponent, canActivate: [AuthGuard],
+        data: {
+          roles: [UiUserRole.MANAGER, UiUserRole.GENERAL_MANAGER, UiUserRole.ASSISTENT_MANAGER]
+        }
+      },
+      { path: 'branch', component: BranchMasterFormComponent, canActivate: [AuthGuard],
+        data: {
+          roles: [UiUserRole.MANAGER, UiUserRole.GENERAL_MANAGER, UiUserRole.ASSISTENT_MANAGER]
+        }
+       },
+      { path: 'branches', component: BranchMasterComponent, canActivate: [AuthGuard],
+        data: {
+          roles: [UiUserRole.MANAGER, UiUserRole.GENERAL_MANAGER, UiUserRole.ASSISTENT_MANAGER]
+        }
+       },
+      { path: 'priority', component: PriorityFormComponent, canActivate: [AuthGuard],
+        data: {
+          roles: [UiUserRole.MANAGER, UiUserRole.GENERAL_MANAGER, UiUserRole.ASSISTENT_MANAGER]
+        }
+       },
+      { path: 'priorities', component: PriorityComponent, canActivate: [AuthGuard],
+        data: {
+          roles: [UiUserRole.MANAGER, UiUserRole.GENERAL_MANAGER, UiUserRole.ASSISTENT_MANAGER]
+        }
+       },
+      { path: 'master-list', component: GeneralMasterComponent, canActivate: [AuthGuard],
+        data: {
+          roles: [UiUserRole.MANAGER, UiUserRole.GENERAL_MANAGER, UiUserRole.ASSISTENT_MANAGER]
+        }
+       },
+      { path: 'general-master', component: GeneralMasterFormComponent, canActivate: [AuthGuard],
+        data: {
+          roles: [UiUserRole.MANAGER, UiUserRole.GENERAL_MANAGER, UiUserRole.ASSISTENT_MANAGER]
+        }
+       },
+      { path: 'general-ledger-list', component: GeneralLedgerMasterListComponent, canActivate: [AuthGuard],
+        data: {
+          roles: [UiUserRole.MANAGER, UiUserRole.GENERAL_MANAGER, UiUserRole.ASSISTENT_MANAGER]
+        }
+       },
+      { path: 'general-ledger', component: GeneralLedgerMasterFormComponent, canActivate: [AuthGuard],
+        data: {
+          roles: [UiUserRole.MANAGER, UiUserRole.GENERAL_MANAGER, UiUserRole.ASSISTENT_MANAGER]
+        }
+       },
+      { path: 'deposit-interest', component: DepositInterestStructureComponent, canActivate: [AuthGuard],
+        data: {
+          roles: [UiUserRole.MANAGER, UiUserRole.GENERAL_MANAGER, UiUserRole.ASSISTENT_MANAGER]
+        }
+       },
+      { path: 'loan-interest', component: LoanInterestStructureComponent, canActivate: [AuthGuard],
+        data: {
+          roles: [UiUserRole.MANAGER, UiUserRole.GENERAL_MANAGER, UiUserRole.ASSISTENT_MANAGER]
+        }
+       },
+      { path: 'gl-interest-parameters', component: GLInterestParameterComponent, canActivate: [AuthGuard],
+        data: {
+          roles: [UiUserRole.MANAGER, UiUserRole.GENERAL_MANAGER, UiUserRole.ASSISTENT_MANAGER]
+        }
+       },
+      { path: 'profile', component: BankProfileMasterComponent, canActivate: [AuthGuard],
+        data: {
+          roles: [UiUserRole.MANAGER, UiUserRole.GENERAL_MANAGER, UiUserRole.ASSISTENT_MANAGER]
+        }
+       },
+      { path: 'district', component: DistrictMasterFormComponent, canActivate: [AuthGuard],
+        data: {
+          roles: [UiUserRole.MANAGER, UiUserRole.GENERAL_MANAGER, UiUserRole.ASSISTENT_MANAGER]
+        }
+       },
+      { path: 'districts', component: DistrictMasterComponent, canActivate: [AuthGuard],
+        data: {
+          roles: [UiUserRole.MANAGER, UiUserRole.GENERAL_MANAGER, UiUserRole.ASSISTENT_MANAGER]
+        }
+       },
+      { path: 'tahsil', component: TahshilMasterFormComponent, canActivate: [AuthGuard],
+        data: {
+          roles: [UiUserRole.MANAGER, UiUserRole.GENERAL_MANAGER, UiUserRole.ASSISTENT_MANAGER]
+        }
+       },
+      { path: 'tahsils', component: TahshilMasterComponent, canActivate: [AuthGuard],
+        data: {
+          roles: [UiUserRole.MANAGER, UiUserRole.GENERAL_MANAGER, UiUserRole.ASSISTENT_MANAGER]
+        }
+       },
+      { path: 'customer', component: CustomerFormComponent, canActivate: [AuthGuard],
+        data: {
+          roles: [UiUserRole.MANAGER, UiUserRole.GENERAL_MANAGER, UiUserRole.ASSISTENT_MANAGER, 
+            UiUserRole.CLERK]
+        }
+       },
+      { path: 'customer-search', component: CustomerSearchComponent, canActivate: [AuthGuard],
+        data: {
+          roles: [UiUserRole.MANAGER, UiUserRole.GENERAL_MANAGER, UiUserRole.ASSISTENT_MANAGER, 
+            UiUserRole.CLERK]
+        }
+       },
+      { path: 'member-list', component: MemberSearchComponent, canActivate: [AuthGuard],
+        data: {
+          roles: [UiUserRole.MANAGER, UiUserRole.GENERAL_MANAGER, UiUserRole.ASSISTENT_MANAGER, 
+            UiUserRole.CLERK]
+        }
+       },
+      { path: 'member', component: MemberFormComponent, canActivate: [AuthGuard],
+        data: {
+          roles: [UiUserRole.MANAGER, UiUserRole.GENERAL_MANAGER, UiUserRole.ASSISTENT_MANAGER, 
+            UiUserRole.CLERK]
+        }
+       },
+      { path: 'account-search', component: AccountSearchComponent, canActivate: [AuthGuard],
+        data: {
+          roles: [UiUserRole.MANAGER, UiUserRole.GENERAL_MANAGER, UiUserRole.ASSISTENT_MANAGER, 
+            UiUserRole.CLERK, UiUserRole.LOAN_OFFICER, UiUserRole.DEPOSIT_OFFICER, UiUserRole.PASSING_OFFICER]
+        }
+       },
+      { path: 'user-search', component: UserSearchComponent, canActivate: [AuthGuard],
+        data: {
+          roles: [UiUserRole.MANAGER, UiUserRole.GENERAL_MANAGER, UiUserRole.ASSISTENT_MANAGER]
+        }
+       },
+      { path: 'user', component: UserComponent, canActivate: [AuthGuard],
+        data: {
+          roles: [UiUserRole.MANAGER, UiUserRole.GENERAL_MANAGER, UiUserRole.ASSISTENT_MANAGER]
+        }
+       },
+      { path: 'role-access', component: RoleAccessComponent, canActivate: [AuthGuard],
+        data: {
+          roles: [UiUserRole.MANAGER, UiUserRole.GENERAL_MANAGER, UiUserRole.ASSISTENT_MANAGER]
+        }
+       },
+      { path: 'activity', component: UserActivityComponent, canActivate: [AuthGuard],
+        data: {
+          roles: [UiUserRole.MANAGER, UiUserRole.GENERAL_MANAGER, UiUserRole.ASSISTENT_MANAGER]
+        }
+       },
+      { path: 'daily-role', component: UserDailyRoleComponent, canActivate: [AuthGuard],
+        data: {
+          roles: [UiUserRole.MANAGER, UiUserRole.GENERAL_MANAGER, UiUserRole.ASSISTENT_MANAGER]
+        }
+       },
+      { path: 'opening-balance', component: OpeningBalanceComponent, canActivate: [AuthGuard],
+        data: {
+          roles: [UiUserRole.MANAGER, UiUserRole.GENERAL_MANAGER, UiUserRole.ASSISTENT_MANAGER]
+        }
+       },
+      { path: 'balance-cert', component: BalanceCertificateComponent, canActivate: [AuthGuard] ,
+        data: {
+          roles: [UiUserRole.MANAGER, UiUserRole.GENERAL_MANAGER, UiUserRole.ASSISTENT_MANAGER]
+        }
+      },
+      { path: 'cheque-request', component: ChequeBookRequestComponent, canActivate: [AuthGuard],
+        data: {
+          roles: [UiUserRole.MANAGER, UiUserRole.GENERAL_MANAGER, UiUserRole.ASSISTENT_MANAGER]
+        }
+       },
+      { path: 'cheque-book-issue', component: ChequeBookIssueComponent, canActivate: [AuthGuard],
+        data: {
+          roles: [UiUserRole.MANAGER, UiUserRole.GENERAL_MANAGER, UiUserRole.ASSISTENT_MANAGER]
+        }
+       },
+      { path: 'loan-details', component: LoanDetailsComponent, canActivate: [AuthGuard],
+        data: {
+          roles: [UiUserRole.MANAGER, UiUserRole.GENERAL_MANAGER, UiUserRole.ASSISTENT_MANAGER, 
+            UiUserRole.LOAN_OFFICER, UiUserRole.PASSING_OFFICER]
+        }
+       },
+      { path: 'cashier-transactions', component: CashierTransactionSummaryComponent, canActivate: [AuthGuard],
+        data: {
+          roles: [UiUserRole.MANAGER, UiUserRole.GENERAL_MANAGER, UiUserRole.ASSISTENT_MANAGER,
+            UiUserRole.MAIN_CASHIER, UiUserRole.SUB_CASHIER
+          ]
+        }
+       },
+      { path: 'counter-transactions', component: CounterTransactionSummaryComponent, canActivate: [AuthGuard],
+        data: {
+          roles: [UiUserRole.MANAGER, UiUserRole.GENERAL_MANAGER, UiUserRole.ASSISTENT_MANAGER,
+            UiUserRole.CLERK,
+          ]
+        }
+       },
+      { path: 'voucher-passing', component: VoucherPassingSummaryComponent, canActivate: [AuthGuard],
+        data: {
+          roles: [UiUserRole.MANAGER, UiUserRole.GENERAL_MANAGER, UiUserRole.ASSISTENT_MANAGER,
+             UiUserRole.PASSING_OFFICER
+          ]
+        }
+       },
+      { path: 'day-start', component: StartOfWorkSummaryComponent, canActivate: [AuthGuard],
+        data: {
+          roles: [UiUserRole.MANAGER, UiUserRole.GENERAL_MANAGER, UiUserRole.ASSISTENT_MANAGER]
+        }
+       },
       { path: '**', component: NotFoundComponent },
       { path: '', redirectTo: 'projects', pathMatch: 'full' },
       ]

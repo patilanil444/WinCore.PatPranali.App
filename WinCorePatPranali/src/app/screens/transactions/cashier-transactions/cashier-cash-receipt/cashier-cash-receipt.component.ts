@@ -6,6 +6,7 @@ import { NgxDropdownConfig } from 'ngx-select-dropdown';
 import { ToastrService } from 'ngx-toastr';
 import { DenominationsComponent } from 'src/app/common/directives/denominations/denominations.component';
 import { MessageBoxComponent } from 'src/app/common/directives/message-box/message-box.component';
+import { UserRoleHeper } from 'src/app/common/utils/user-role-helper';
 import { AccountsService } from 'src/app/services/accounts/accounts/accounts.service';
 import { SavingAccountService } from 'src/app/services/accounts/saving-accounts/saving-account.service';
 import { BranchMasterService } from 'src/app/services/masters/branch-master/branch-master.service';
@@ -29,6 +30,7 @@ export interface ITransactionSummaryModel {
   CreatedBy: number;
   VerifiedBy: number;
   VerifiedDateTime: Date;
+  CDType: number;
   TransactionDetails: ITransactionDetailsModel[];
   Denominations: IDenomination[];
 }
@@ -106,6 +108,15 @@ export class CashierCashReceiptComponent implements OnInit {
 
     this.getBranches();
     this.getGeneralLedgers();
+    UserRoleHeper.initialiseUserRoles(this._sharedService.applicationUser);
+  }
+
+  isAdministratorUser() {
+    return UserRoleHeper.isAdministratorUser();
+  }
+
+  isCashierUser() {
+    return UserRoleHeper.isCashierUser();
   }
 
   getGeneralLedgers() {
@@ -260,8 +271,8 @@ export class CashierCashReceiptComponent implements OnInit {
       let transactionSummary = {} as ITransactionSummaryModel;
       transactionSummary.Id = 0;
       transactionSummary.BranchCode = this._sharedService.applicationUser.branchId;
-      transactionSummary.VoucherDate = new Date();
-      transactionSummary.VoucherType = 1; // 1 = Receipt 2 = Payment
+      transactionSummary.VoucherDate = new Date(this._sharedService.getWorkOperationDate());
+      transactionSummary.VoucherType = 1; // 1 = cash 2 = transfer 3 = UPI
       transactionSummary.VoucherNo = 0;
       transactionSummary.VoucherAmount = parseFloat(this.receiptAmount.value);
       transactionSummary.TransactionNarration = this.receiptDesc.value;
@@ -271,6 +282,7 @@ export class CashierCashReceiptComponent implements OnInit {
       transactionSummary.TransactionPassing = false;
       transactionSummary.CreatedBy = this._sharedService.applicationUser.id;
       transactionSummary.VerifiedBy = 0;
+      transactionSummary.CDType = 1;// 1 = CREDIT 2 = Debit
       transactionSummary.VerifiedDateTime = new Date();
 
       let transactionDetails = {} as ITransactionDetailsModel;
@@ -309,7 +321,13 @@ export class CashierCashReceiptComponent implements OnInit {
       // get voucher number before saving transaction 
 
       this.messageNotes = [];
-      this._transactionMasterService.getMaxVoucherNumber(this._sharedService.applicationUser.branchId, 1).subscribe((data: any) => {
+      let maxVoucherRequest = {
+        BranchCode : this._sharedService.applicationUser.branchId,
+        VoucherType : 1, 
+        VoucherDate : this._sharedService.getWorkOperationDate(),
+        CDType: 1 // 1= Credit , 2 = Debit 
+      };
+      this._transactionMasterService.getMaxVoucherNumber(maxVoucherRequest).subscribe((data: any) => {
        
         if (data) {
           if (data.data.data && data.data.data > 0) {

@@ -27,14 +27,13 @@ export class PassingInfoComponent implements OnInit {
       this.uiBankAccount = bankAccounts[0];
     }
     if (voucherTransactionSummary) {
-
       
 
       this.uiVoucherTransactionSummary = voucherTransactionSummary;
       this.uiVoucherTransactionDetails = voucherTransactionSummary.transactionDetails[0];
     }
     if (this.uiBankAccount && this.uiVoucherTransactionDetails) {
-      if (voucherTransactionSummary.voucherType == 1) {
+      if (voucherTransactionSummary.voucherType == 1 && voucherTransactionSummary.cdType == 0) {
         this.uiBankAccount.nextBalance = parseFloat(this.uiBankAccount.balance) + parseFloat(this.uiVoucherTransactionDetails.transaction_Amount)
       }
       else

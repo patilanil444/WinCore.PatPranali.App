@@ -8,14 +8,15 @@
                         <input tabindex="28" type="text" class="form-control" placeholder="Voucher No" formControlName="voucherNumber">
                     </div>
                     <div class="col-md-3 position-relative form-group">
-                        <button class="btn btn-info" tabindex="2" style="margin-top: 30px;" (click)="fetchVoucher()">
+                        <button class="btn btn-info" tabindex="2" style="margin-top: 30px;" (click)="fetchVoucher()"
+                        *ngIf="isPassingOfficerUser()">
                             Search Voucher</button>
                     </div>
                     <div class="col-md-6 position-relative form-group">
                         <button class="btn btn-success" tabindex="2"  (click)="passVoucher(false)"
-                        style=" margin-left: 30px; margin-top: 30px;"> Accept</button>
+                        style=" margin-left: 30px; margin-top: 30px;" *ngIf="isPassingOfficerUser()"> Accept</button>
                         <button class="btn btn-danger" tabindex="2" (click)="passVoucher(true)"
-                            style="margin-top: 30px; margin-left: 30px;"> Reject</button>
+                            style="margin-top: 30px; margin-left: 30px;" *ngIf="isPassingOfficerUser()"> Reject</button>
                     </div>
                     <div class="col-md-12">
                         <fieldset>
@@ -61,7 +62,7 @@
                                                 </td>
                                                 </tr>
                                                 <tr *ngIf="uiVoucherDetails.length==0">
-                                                    <td colspan="9">No transactions found..</td>
+                                                    <td colspan="10">No transactions found..</td>
                                                 </tr>
                                             </tbody>
                                         </table>

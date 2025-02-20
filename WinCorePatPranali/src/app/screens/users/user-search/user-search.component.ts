@@ -35,7 +35,8 @@ export class UserSearchComponent implements OnInit {
             this.uiUsers = users.map((user: any) => (
               {
                 ...user,
-                status: this.getUserStatus(user.isActive)
+                status: this.getUserStatus(user.isActive),
+                unlockStatus: this.getLockStatus(user.isUserLocked)
               }))
           }
 
@@ -52,6 +53,18 @@ export class UserSearchComponent implements OnInit {
     else
     {
       return "In-Active";
+    }
+  }
+
+  getLockStatus(isUserLocked: boolean) {
+    if (isUserLocked == null || isUserLocked == true) {
+      return "Locked";
+    }
+    else if (isUserLocked == false) {
+      return "Unlocked";
+    }
+    else {
+      return "Locked";
     }
   }
 
@@ -127,6 +140,32 @@ export class UserSearchComponent implements OnInit {
     this._userService.setDTO(dtObject);
 
     this.configClick("daily-role");
+  }
+
+  unlockUser(uiUser: any) {
+    if (uiUser.id > 0) {
+      if (uiUser.isUserLocked) {
+        let model = {
+          UserId: uiUser.id,
+          BranchCode: uiUser.branchCode
+        }
+    
+        this._userService.unlockUser(model).subscribe((data: any) => {
+          if (data) {
+            this._toastrService.success('User unlocked. Request the user to re-login.', 'Success!');
+            this.getBranchUsers();
+          }
+        })
+      }
+      else
+      {
+        this._toastrService.info('User is already unlocked.', 'Info!');
+      }
+    }
+    else
+    {
+      this._toastrService.error('Invalid user.', 'Error!');
+    }
   }
 
   configClick(routeValue: string) {

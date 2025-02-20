@@ -6,6 +6,7 @@ import { NgxDropdownConfig } from 'ngx-select-dropdown';
 import { ToastrService } from 'ngx-toastr';
 import { AccountDeclarations } from 'src/app/common/account-declarations';
 import { IGeneralDTO, UiEnumGeneralMaster } from 'src/app/common/models/common-ui-models';
+import { UserRoleHeper } from 'src/app/common/utils/user-role-helper';
 import { AccountsService } from 'src/app/services/accounts/accounts/accounts.service';
 import { OtherAccountsService } from 'src/app/services/accounts/other-accounts/other-accounts.service';
 import { SavingAccountService } from 'src/app/services/accounts/saving-accounts/saving-account.service';
@@ -147,8 +148,25 @@ export class OtherAccountsComponent {
     }).catch(error => {
       this._toastrService.error('Error loading general ledgers', 'Warning!');
     });;
+    UserRoleHeper.initialiseUserRoles(this._sharedService.applicationUser);
   }
 
+  isOperatorUser() {
+    return UserRoleHeper.isOperatorUser();
+  }
+
+  isPassingOfficerUser() {
+    return UserRoleHeper.isPassingOfficerUser();
+  }
+
+  isAdministratorUser() {
+    return UserRoleHeper.isAdministratorUser();
+  }
+
+  isLoanOfficerUser() {
+    return UserRoleHeper.isLoanOfficerUser();
+  }
+  
   retrieveMasters(uiEnumGeneralMaster: UiEnumGeneralMaster) {
     let mastersData = this._sharedService.uiAllMasters.filter((m: any) => m.identifier == uiEnumGeneralMaster);
     if (mastersData && mastersData.length) {
@@ -399,7 +417,7 @@ export class OtherAccountsComponent {
     return true;
   }
 
-  saveSavingAccount() {
+  saveOtherAccount() {
     // validate all tabs
     if (!this.validCustomer()) {
       this._toastrService.error('Please link customer with account.', 'Error!');

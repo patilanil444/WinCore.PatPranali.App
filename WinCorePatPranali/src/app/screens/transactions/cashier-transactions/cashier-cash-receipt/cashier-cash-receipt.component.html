@@ -35,7 +35,8 @@
                                 <div class="col-md-3 position-relative form-group" style="margin-top: 30px;">
                                     <!-- <button class="btn btn-success" tabindex="2" data-toggle="modal" data-target="#cashDenominationModel">
                                         Denomination</button> -->
-                                    <button class="btn btn-success" tabindex="2" (click)="openDenominations()">
+                                    <button class="btn btn-success" tabindex="2" (click)="openDenominations()"
+                                    *ngIf="isCashierUser()">
                                         Add Denomination</button>
                                 </div>
                             </div>
@@ -76,16 +77,18 @@
 
                             <div class="row">
                                 <div class="col-md-12">
-                                    <button class="btn btn-info" style="float: right;">
+                                    <button class="btn btn-info" style="float: right;" *ngIf="isCashierUser()">
                                         Customer Identity</button>
                                 </div>
                             </div>
                         </fieldset>
                         <div style="margin-top: 10px;">
-                            <button class="btn btn-primary btn" tabindex="2" (click)="makeTransaction()" style="float: left;">
+                            <button class="btn btn-primary btn" tabindex="2" (click)="makeTransaction()" style="float: left;"
+                            *ngIf="isCashierUser()">
                                 Finish Transaction</button>
                         
-                            <button class="btn btn-danger btn btn-left-margin10" style="float: left;" tabindex="2" (click)="clearTransaction()">
+                            <button class="btn btn-danger btn btn-left-margin10" style="float: left;" tabindex="2" (click)="clearTransaction()"
+                            *ngIf="isCashierUser()">
                                 Clear</button>
                         </div>
                     </div>

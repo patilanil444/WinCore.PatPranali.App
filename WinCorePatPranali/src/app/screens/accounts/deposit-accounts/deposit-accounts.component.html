@@ -715,11 +715,11 @@
 
                 <div class="row">
                     <div class="col-md-6 position-relative">
-                        <button class="mt-1 btn btn-primary" (click)="saveDepositAccount()"
+                        <button class="mt-1 btn btn-primary" (click)="saveDepositAccount()" *ngIf="isOperatorUser() || isDepositOfficerUser()"
                             tabindex="53">Submit</button>
-                            <button class="mt-1 btn btn-left-margin10 btn-success" *ngIf="!isAccountAuthorized" (click)="authoriseAccount()"
+                            <button class="mt-1 btn btn-left-margin10 btn-success" *ngIf="!isAccountAuthorized && isPassingOfficerUser()" (click)="authoriseAccount()"
                             tabindex="54">Authorise Account</button>
-                        <button class="mt-1 btn btn-left-margin10 btn-danger" (click)="clear()"
+                        <button class="mt-1 btn btn-left-margin10 btn-danger" (click)="clear()" *ngIf="isOperatorUser() || isDepositOfficerUser()"
                             tabindex="55">Clear</button>
                     </div>
                 </div>

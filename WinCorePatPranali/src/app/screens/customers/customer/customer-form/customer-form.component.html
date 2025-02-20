@@ -263,63 +263,7 @@
                                                     </option>
                                                 </select>
                                             </div>
-                                           
                                         </div>
-
-                                        <!-- <div class="row">
-                                             
-                                            <div class="col-md-2 position-relative form-group">
-                                                <label class="">TDS applicable</label>
-                                                <select class="mb-2 form-control" 
-                                                    tabindex="17" formControlName="personalTDSApplicable">
-                                                    <option *ngFor="let uiTdsApplicable of uiTdsApplicables"
-                                                        [ngValue]="uiTdsApplicable.code">
-                                                        {{uiTdsApplicable.name}}
-                                                    </option>
-                                                </select>
-                                            </div>
-                                            <div class="col-md-2 position-relative form-group">
-                                                <label class="">TDS printing</label>
-                                                <select class="mb-2 form-control"
-                                                    tabindex="18" formControlName="personalTDSPrinting">
-                                                    <option *ngFor="let uiTdsPrinting of uiTdsPrintings"
-                                                        [ngValue]="uiTdsPrinting.code">
-                                                        {{uiTdsPrinting.name}}
-                                                    </option>
-                                                </select>
-                                            </div>
-                                            <div class="col-md-2 position-relative form-group">
-                                                <label class="">Rate</label>
-                                                <input tabindex="19" type="text" class="form-control" placeholder="TDS Rate"
-                                                    formControlName="personalTDSRate">
-                                            </div>
-                                            <div class="col-md-2 position-relative form-group">
-                                                <label class="">Form 60</label>
-                                                <select class="mb-2 form-control" 
-                                                    tabindex="20" formControlName="personalForm60">
-                                                    <option *ngFor="let uiForm60 of uiForm60YN"
-                                                        [ngValue]="uiForm60.code">
-                                                        {{uiForm60.name}}
-                                                    </option>
-                                                </select>
-                                            </div>
-                                            <div class="col-md-2 position-relative form-group">
-                                                <label class="">Form 61</label>
-                                                <select class="mb-2 form-control" 
-                                                    tabindex="21" formControlName="personalForm61">
-                                                    <option *ngFor="let uiForm61 of uiForm61YN"
-                                                        [ngValue]="uiForm61.code">
-                                                        {{uiForm61.name}}
-                                                    </option>
-                                                </select>
-                                            </div>
-                                            <div class="col-md-4 position-relative form-group">
-                                                <label class="">Member</label>
-                                                <ngx-select-dropdown [config]="config" tabindex="10" (change)="selectMember($event)"
-                                                    [options]="uiMembers" style="width: 100%;" [multiple]="false"
-                                                    formControlName="personalMember"></ngx-select-dropdown>
-                                            </div>
-                                        </div> -->
                                     </div>
                                 </div>
                             </div>
@@ -702,8 +646,8 @@
 
                 <div class="row">
                     <div class="col-md-6 position-relative">
-                        <button class="mt-1 btn btn-primary" (click)="saveCustomer()" tabindex="23">Submit</button>
-                        <button class="mt-1 btn btn-left-margin10 btn-danger" (click)="clear()">Clear</button>
+                        <button class="mt-1 btn btn-primary" *ngIf="isOperatorUser()" (click)="saveCustomer()" tabindex="23">Submit</button>
+                        <button class="mt-1 btn btn-left-margin10 btn-danger" *ngIf="isOperatorUser()" (click)="clear()">Clear</button>
                         <button class="mt-1 btn btn-left-margin10 btn-secondary" (click)="searchCustomer()">Search Customer</button>
                     </div>
                 </div>

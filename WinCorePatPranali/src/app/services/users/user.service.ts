@@ -70,6 +70,11 @@ export class UserService {
     return this.http.post(GlobleDeclarations.apiBaseURL + "api/User/authenticate-user", userModel, options);
   }
 
+  unlockUser(unlockModel: any): any {
+    let options = GlobleDeclarations.getHeaderOptions();
+    return this.http.post(GlobleDeclarations.apiBaseURL + "api/User/unlock-user", unlockModel, options);
+  }
+
   refreshUserToken(tokenModel: any): any {
     let options = GlobleDeclarations.getHeaderOptions();
     return this.http.post(GlobleDeclarations.apiBaseURL + "api/User/refresh-token", tokenModel, options);

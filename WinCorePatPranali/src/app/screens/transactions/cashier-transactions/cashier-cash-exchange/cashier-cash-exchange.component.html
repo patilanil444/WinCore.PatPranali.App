@@ -6,10 +6,10 @@
                 <input tabindex="28" type="number" class="form-control" formControlName="receiptAmount">
             </div>
             <div class="col-md-3 position-relative form-group" style="margin-top: 30px;">
-                <button class="btn btn-success" tabindex="2" data-toggle="modal"
+                <button class="btn btn-success" tabindex="2" data-toggle="modal" *ngIf="isCashierUser()"
                 (click)="openDenominations()"> Denomination</button>
-                <button class="btn btn-primary btn btn-left-margin10" tabindex="2" (click)="makeTransaction()">
-                    Finish</button>
+                <button class="btn btn-primary btn btn-left-margin10" tabindex="2" (click)="makeTransaction()"
+                *ngIf="isCashierUser()">Finish</button>
             </div>
             <div class="col-md-6 position-relative form-group">
                 <label style="font-weight: bold;">Denominations</label>

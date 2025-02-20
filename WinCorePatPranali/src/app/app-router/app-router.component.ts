@@ -3,6 +3,8 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { SharedService } from '../services/shared.service';
 import { UiUserRole } from '../common/models/common-ui-models';
 import { AuthService } from '../services/auth/auth.service';
+import { WorkOperationsService } from '../services/transactions/work-operations/work-operations.service';
+import { formatDate } from '@angular/common';
 
 @Component({
   selector: 'app-app-router',
@@ -24,7 +26,8 @@ export class AppRouterComponent implements OnInit, AfterViewInit {
   isSidebarEnabled = true;
 
   constructor(private router: Router, private activatedRoute: ActivatedRoute,
-    private _sharedService: SharedService, private _authService: AuthService) { }
+    private _sharedService: SharedService, private _authService: AuthService, 
+    private _workOperationsService: WorkOperationsService,) { }
 
   ngOnInit(): void {
     this.activatedRoute.data.subscribe((response: any) => {
@@ -47,7 +50,29 @@ export class AppRouterComponent implements OnInit, AfterViewInit {
     }
 
     this.setApplicationUser();
-   
+    this.getOpenDay();
+  }
+
+  getOpenDay()
+  {
+    this._workOperationsService.getOpenDays(this._sharedService.applicationUser.branchId).subscribe((data: any) => {
+      let uiOpenDay = data.data.data;
+      if (uiOpenDay && uiOpenDay.id > 0) {
+        let openDay = uiOpenDay.workingDate;
+        openDay = formatDate(new Date(openDay), 'yyyy-MM-dd', 'en');
+
+        this._sharedService.setWorkOperationDate(openDay);
+      }
+      else
+      {
+        this._sharedService.setWorkOperationDate("");
+      }
+    })
+  }
+
+  getWorkOperationDate()
+  {
+    return this._sharedService.getWorkOperationDate();
   }
 
   setApplicationUser() {
@@ -63,7 +88,7 @@ export class AppRouterComponent implements OnInit, AfterViewInit {
             }
           }
         }).catch(error => {
-          alert("Error");
+          //alert("Error");
         });
       }
       else

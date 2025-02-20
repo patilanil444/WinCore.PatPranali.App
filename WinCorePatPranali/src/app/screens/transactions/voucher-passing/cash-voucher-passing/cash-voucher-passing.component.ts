@@ -10,6 +10,7 @@ import { SharedService } from 'src/app/services/shared.service';
 import { VoucherPassingService } from 'src/app/services/transactions/voucher-passing/voucher-passing.service';
 import { PassingInfoComponent } from '../passing-info/passing-info.component';
 import { BranchMasterService } from 'src/app/services/masters/branch-master/branch-master.service';
+import { UserRoleHeper } from 'src/app/common/utils/user-role-helper';
 
 @Component({
   selector: 'app-cash-voucher-passing',
@@ -70,6 +71,15 @@ export class CashVoucherPassingComponent implements OnInit {
     this.uiAccountTypes = this.retrieveMasters(UiEnumGeneralMaster.ACTYPE);
     this.uiModeOfOperations = this.retrieveMasters(UiEnumGeneralMaster.OPRMODE);
     this.getBranches();
+    UserRoleHeper.initialiseUserRoles(this._sharedService.applicationUser);
+  }
+
+  isAdministratorUser() {
+    return UserRoleHeper.isAdministratorUser();
+  }
+
+  isPassingOfficerUser() {
+    return UserRoleHeper.isPassingOfficerUser();
   }
 
   getBranches() {
@@ -93,12 +103,13 @@ export class CashVoucherPassingComponent implements OnInit {
 
       let voucherRequestModel = {
         VoucherNo: parseInt(this.voucherNumber.value),
-        CDFlag: this.transactionType.value === "R"? 1: 2,
+        CDFlag: this.transactionType.value === "R" ? 1 : 2,
         UserId: this._sharedService.applicationUser.id,
-        IsPassing: true
+        IsPassing: true,
+        VoucherDate: this._sharedService.getWorkOperationDate()
       };
 
-      this._voucherPassingService.getVoucher(voucherRequestModel).subscribe((data: any) => {
+      this._voucherPassingService.getCashVoucher(voucherRequestModel).subscribe((data: any) => {
         let voucherModel = data.data.data;
         if (voucherModel) {
 
@@ -197,7 +208,8 @@ export class CashVoucherPassingComponent implements OnInit {
         let passVoucherRequestModel = {
           TransactionHeadId: parseInt(this.transactionHeadId.value),
           IsRejected: isRejected,
-          PassedByUserId: this._sharedService.applicationUser.id
+          PassedByUserId: this._sharedService.applicationUser.id,
+          PassingDate: this._sharedService.getWorkOperationDate()
         };
 
         this._voucherPassingService.passVoucher(passVoucherRequestModel).subscribe((data: any) => {

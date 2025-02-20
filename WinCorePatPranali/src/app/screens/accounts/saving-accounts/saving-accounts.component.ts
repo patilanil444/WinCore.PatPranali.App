@@ -6,6 +6,7 @@ import { NgxDropdownConfig } from 'ngx-select-dropdown';
 import { ToastrService } from 'ngx-toastr';
 import { AccountDeclarations } from 'src/app/common/account-declarations';
 import { IGeneralDTO, UiEnumGeneralMaster } from 'src/app/common/models/common-ui-models';
+import { UserRoleHeper } from 'src/app/common/utils/user-role-helper';
 import { AccountsService } from 'src/app/services/accounts/accounts/accounts.service';
 import { SavingAccountService } from 'src/app/services/accounts/saving-accounts/saving-account.service';
 import { CustomerService } from 'src/app/services/customers/customer/customer.service';
@@ -263,6 +264,20 @@ export class SavingAccountsComponent {
     }).catch(error => {
       this._toastrService.error('Error loading general ledgers', 'Warning!');
     });;
+
+    UserRoleHeper.initialiseUserRoles(this._sharedService.applicationUser);
+  }
+
+  isOperatorUser() {
+    return UserRoleHeper.isOperatorUser();
+  }
+
+  isPassingOfficerUser() {
+    return UserRoleHeper.isPassingOfficerUser();
+  }
+
+  isAdministratorUser() {
+    return UserRoleHeper.isAdministratorUser();
   }
 
   retrieveMasters(uiEnumGeneralMaster: UiEnumGeneralMaster) {

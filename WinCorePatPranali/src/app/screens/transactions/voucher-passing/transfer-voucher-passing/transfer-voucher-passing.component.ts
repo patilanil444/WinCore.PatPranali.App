@@ -9,6 +9,7 @@ import { BranchMasterService } from 'src/app/services/masters/branch-master/bran
 import { TransactionsDeclarations } from 'src/app/common/transaction-declarations';
 import { FormControl, FormGroup } from '@angular/forms';
 import { UiEnumGeneralMaster } from 'src/app/common/models/common-ui-models';
+import { UserRoleHeper } from 'src/app/common/utils/user-role-helper';
 
 @Component({
   selector: 'app-transfer-voucher-passing',
@@ -51,6 +52,15 @@ export class TransferVoucherPassingComponent implements OnInit {
     this.uiAccountTypes = this.retrieveMasters(UiEnumGeneralMaster.ACTYPE);
     this.uiModeOfOperations = this.retrieveMasters(UiEnumGeneralMaster.OPRMODE);
     this.getBranches();
+    UserRoleHeper.initialiseUserRoles(this._sharedService.applicationUser);
+  }
+
+  isAdministratorUser() {
+    return UserRoleHeper.isAdministratorUser();
+  }
+
+  isPassingOfficerUser() {
+    return UserRoleHeper.isPassingOfficerUser();
   }
 
   getBranches() {
@@ -76,7 +86,9 @@ export class TransferVoucherPassingComponent implements OnInit {
         VoucherNo: parseInt(this.voucherNumber.value),
         CTFlag: 2,
         UserId: this._sharedService.applicationUser.id,
-        IsPassing: true
+        IsPassing: true,
+        VoucherDate: this._sharedService.getWorkOperationDate(),
+        VoucherType: 2 // 1=Cash, 2=Transfer, 3=UPI.
       };
 
       this._voucherPassingService.getTransferVoucher(voucherRequestModel).subscribe((data: any) => {
@@ -173,7 +185,8 @@ export class TransferVoucherPassingComponent implements OnInit {
       let passVoucherRequestModel = {
         VoucherNo: parseInt(this.voucherNumber.value.trim()),
         IsRejected: isRejected,
-        PassedByUserId: this._sharedService.applicationUser.id
+        PassedByUserId: this._sharedService.applicationUser.id,
+        PassingDate: this._sharedService.getWorkOperationDate()
       };
 
       this._voucherPassingService.passTransferVoucher(passVoucherRequestModel).subscribe((data: any) => {

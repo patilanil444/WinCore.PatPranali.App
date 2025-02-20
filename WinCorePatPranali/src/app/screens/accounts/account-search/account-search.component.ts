@@ -3,7 +3,7 @@ import { FormControl, FormGroup } from '@angular/forms';
 import { Router } from '@angular/router';
 import { NgxDropdownConfig } from 'ngx-select-dropdown';
 import { ToastrService } from 'ngx-toastr';
-import { IGeneralDTO, UiEnumAccountStatus } from 'src/app/common/models/common-ui-models';
+import { IGeneralDTO, UiEnumAccountStatus, UiUserRole } from 'src/app/common/models/common-ui-models';
 import { DepositAccountService } from 'src/app/services/accounts/deposit-accounts/deposit-account.service';
 import { SavingAccountService } from 'src/app/services/accounts/saving-accounts/saving-account.service';
 import { GeneralLedgerService } from 'src/app/services/masters/general-ledger/general-ledger.service';
@@ -11,6 +11,7 @@ import { SharedService } from 'src/app/services/shared.service';
 import { OtherAccountsService } from 'src/app/services/accounts/other-accounts/other-accounts.service';
 import { AccountsService } from 'src/app/services/accounts/accounts/accounts.service';
 import { LoanAccountsService } from 'src/app/services/accounts/loan-accounts/loan-accounts.service';
+import { UserRoleHeper } from 'src/app/common/utils/user-role-helper';
 
 @Component({
   selector: 'app-account-search',
@@ -57,6 +58,23 @@ export class AccountSearchComponent implements OnInit {
     });
 
     this.getGeneralLedgers();
+    UserRoleHeper.initialiseUserRoles(this._sharedService.applicationUser);
+  }
+
+  isOperatorUser() {
+    return UserRoleHeper.isOperatorUser();
+  }
+
+  isDepositOfficerUser() {
+    return UserRoleHeper.isDepositOfficerUser();
+  }
+
+  isPassingOfficerUser() {
+    return UserRoleHeper.isPassingOfficerUser();
+  }
+
+  isLoanOfficerUser() {
+    return UserRoleHeper.isLoanOfficerUser();
   }
 
   getGeneralLedgers() {

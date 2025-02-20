@@ -551,13 +551,13 @@
 
                 <div class="row">
                     <div class="col-md-6 position-relative">
-                        <button class="mt-1 btn btn-primary" (click)="saveLoanAccount()"
+                        <button class="mt-1 btn btn-primary" (click)="saveLoanAccount()" *ngIf="isOperatorUser() || isLoanOfficerUser()"
                             tabindex="23">Submit</button>
-                        <button class="mt-1 btn btn-left-margin10 btn-success" *ngIf="!isAccountAuthorized" (click)="authoriseAccount()"
-                            tabindex="24">Authorise Account</button>
-                        <button class="mt-1 btn btn-left-margin10 btn-success" (click)="accountDetails()"
+                        <!-- <button class="mt-1 btn btn-left-margin10 btn-success" *ngIf="!isAccountAuthorized && (isPassingOfficerUser() || isAdministratorUser())" (click)="authoriseAccount()"
+                            tabindex="24">Authorise Account</button> -->
+                        <button class="mt-1 btn btn-left-margin10 btn-success" (click)="accountDetails()" *ngIf="isOperatorUser() || isPassingOfficerUser() || isLoanOfficerUser()"
                             tabindex="24" [ngClass]="{'disabled': isAddMode}">Loan Details</button>
-                        <button class="mt-1 btn btn-left-margin10 btn-danger" (click)="clear()"
+                        <button class="mt-1 btn btn-left-margin10 btn-danger" (click)="clear()" *ngIf="isOperatorUser() || isLoanOfficerUser()"
                             tabindex="25">Clear</button>
                     </div>
                 </div>

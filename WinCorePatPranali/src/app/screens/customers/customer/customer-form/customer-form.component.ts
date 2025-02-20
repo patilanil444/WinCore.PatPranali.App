@@ -8,6 +8,7 @@ import { CustomerService } from 'src/app/services/customers/customer/customer.se
 import { SharedService } from 'src/app/services/shared.service';
 import { NgxDropdownConfig } from 'ngx-select-dropdown';
 import { Router } from '@angular/router';
+import { UserRoleHeper } from 'src/app/common/utils/user-role-helper';
 
 interface ICustomerModel {
   CustomerId: number;
@@ -288,6 +289,11 @@ export class CustomerFormComponent implements OnInit {
     });
 
     this.loadForm();
+    UserRoleHeper.initialiseUserRoles(this._sharedService.applicationUser);
+  }
+
+  isOperatorUser() {
+    return UserRoleHeper.isOperatorUser();
   }
 
   retrieveMasters(uiEnumGeneralMaster: UiEnumGeneralMaster) {

@@ -30,11 +30,25 @@ export class CalenderViewComponent implements OnInit {
     this.firstDayOfMonth = new Date(this.currentYear, this.currentMonth, 1).getDay();
 
     // Create a list of years (you can adjust this as needed)
-    const startYear = this.currentYear - 10;
-    const endYear = this.currentYear + 10;
-    for (let year = startYear; year <= endYear; year++) {
+    let years = this.getFinancialYear();
+    for (let year = years[0]; year <= years[1]; year++) {
       this.yearList.push(year);
     }
+  }
+
+  getFinancialYear(): number[] {
+    const currentDate = new Date();
+    let year = currentDate.getFullYear();
+
+    // If current date is before April, it's part of the previous financial year
+    if (currentDate.getMonth() < 3) { // Months are 0-indexed, so 3 = April
+      year -= 1;
+    }
+
+    const startYear = year;
+    const endYear = year + 1;
+
+    return [startYear, endYear];
   }
 
   ngOnInit(): void {

@@ -17,13 +17,14 @@
                             <thead>
                                 <tr>
                                     <th width="15%">Name</th>
-                                    <th width="7%">Username</th>
-                                    <th width="15%">Email</th>
-                                    <th width="10%">Mobile</th>
-                                    <th width="15%">Role</th>
-                                    <th width="15%">Todays Role</th>
+                                    <th width="10%">Username</th>
+                                    <!-- <th width="15%">Email</th> -->
+                                    <th width="8%">Mobile</th>
+                                    <th width="12%">Role</th>
+                                    <th width="12%">Todays Role</th>
+                                    <th width="8%">User Locked</th>
                                     <th width="5%">Status</th>
-                                    <th width="13%">Actions</th>
+                                    <th width="20%">Actions</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -31,10 +32,11 @@
                                     *ngFor="let uiUser of uiUsers | paginate: { itemsPerPage: 10, currentPage: p, totalItems: total }">
                                     <th scope="row">{{uiUser.name}}</th>
                                     <td>{{uiUser.userName}}</td>
-                                    <td>{{uiUser.emailId}}</td>
+                                    <!-- <td>{{uiUser.emailId}}</td> -->
                                     <td>{{uiUser.mobileNo}}</td>
                                     <td>{{uiUser.accessString}}</td>
                                     <td>{{uiUser.todayAccessString}}</td>
+                                    <td>{{uiUser.unlockStatus}}</td>
                                     <td>
                                         <div class="badge"
                                             [ngClass]="{'badge-danger': !uiUser.isActive, 'badge-success' : uiUser.isActive}">
@@ -44,10 +46,16 @@
                                     </td>
                                     <td>
                                         <div class="widget-content-right">
+                                            <button type="button" title="Unlock User" [disabled]="!uiUser.isActive"
+                                            class="btn-shadow btn btn-warning btn-actions" (click)="unlockUser(uiUser)">
+                                            <span class="btn-icon-wrapper opacity-10">
+                                                <i class="fa fa-lock-open fa-w-10"></i>
+                                            </span>
+                                        </button>
                                             <button type="button" title="Todays Role" [disabled]="!uiUser.isActive"
-                                                class="btn-shadow btn btn-alternate btn-actions" (click)="setTodaysLimit(uiUser)">
+                                                class="btn-shadow btn btn-secondary btn-actions" (click)="setTodaysLimit(uiUser)">
                                                 <span class="btn-icon-wrapper opacity-10">
-                                                    <i class="fa fa-cog fa-w-10"></i>
+                                                    <i class="fa fa-calendar-alt fa-w-10"></i>
                                                 </span>
                                             </button>
                                             <button type="button" title="Edit record" [disabled]="!uiUser.isActive"
