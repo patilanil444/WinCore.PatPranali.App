@@ -1,0 +1,17 @@
+
+<div class="modal fade bd-example-modal-lg show" #cashStatusModal tabindex="-1" role="dialog"
+    aria-labelledby="CashStatusModalTitle" aria-hidden="true" data-backdrop="false">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header" style="padding: 0.5rem 1rem !important;">
+                <h5 class="modal-title" id="CashStatusModalTitle">Cash Status</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true" (click)="close()">×</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <app-cash-status [UserId]="UserId" [canLoadData]="canLoadData"></app-cash-status>
+            </div>
+        </div>
+    </div>
+</div>

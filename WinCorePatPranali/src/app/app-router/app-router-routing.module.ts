@@ -44,9 +44,17 @@ import { LoanDetailsComponent } from '../screens/accounts/loan-accounts/loan-det
 import { CashierTransactionSummaryComponent } from '../screens/transactions/cashier-transactions/cashier-transaction-summary/cashier-transaction-summary.component';
 import { CounterTransactionSummaryComponent } from '../screens/transactions/counter-transactions/counter-transaction-summary/counter-transaction-summary.component';
 import { VoucherPassingSummaryComponent } from '../screens/transactions/voucher-passing/voucher-passing-summary/voucher-passing-summary.component';
-import { StartOfWorkSummaryComponent } from '../screens/transactions/start-of-work/start-of-work-summary/start-of-work-summary.component';
 import { AuthGuard } from '../common/auth-guard/auth.guard';
 import { UiUserRole } from '../common/models/common-ui-models';
+import { BeginDayComponent } from '../screens/daily-setup/begin-day/begin-day.component';
+import { CashOpenComponent } from '../screens/daily-setup/cash-open/cash-open.component';
+import { CashierCashTransferComponent } from '../screens/daily-setup/cashier-cash-transfer/cashier-cash-transfer.component';
+import { PigmyAccountSearchComponent } from '../screens/pigmy/accounts/pigmy-account-search/pigmy-account-search.component';
+import { PigmyAccountFormComponent } from '../screens/pigmy/accounts/pigmy-account-form/pigmy-account-form.component';
+import { AgentsListComponent } from '../screens/pigmy/agents/agents-list/agents-list.component';
+import { AgentFormComponent } from '../screens/pigmy/agents/agent-form/agent-form.component';
+import { PigmyEntryComponent } from '../screens/pigmy/pigmy-entry/pigmy-entry.component';
+import { PigmyPassingComponent } from '../screens/pigmy/pigmy-passing/pigmy-passing.component';
 
 const routes: Routes = [
   {
@@ -280,9 +288,61 @@ const routes: Routes = [
           ]
         }
        },
-      { path: 'day-start', component: StartOfWorkSummaryComponent, canActivate: [AuthGuard],
+      { path: 'begin-day', component: BeginDayComponent, canActivate: [AuthGuard],
         data: {
           roles: [UiUserRole.MANAGER, UiUserRole.GENERAL_MANAGER, UiUserRole.ASSISTENT_MANAGER]
+        }
+       },
+       { path: 'cash-open', component: CashOpenComponent, canActivate: [AuthGuard],
+        data: {
+          roles: [UiUserRole.MANAGER, UiUserRole.GENERAL_MANAGER, UiUserRole.ASSISTENT_MANAGER,
+            UiUserRole.MAIN_CASHIER
+          ]
+        }
+       },
+       { path: 'cashier-cash-transfer', component: CashierCashTransferComponent, canActivate: [AuthGuard],
+        data: {
+          roles: [UiUserRole.MANAGER, UiUserRole.GENERAL_MANAGER, UiUserRole.MAIN_CASHIER
+            // UiUserRole.ASSISTENT_MANAGER,
+          ]
+        }
+       },
+       { path: 'pigmy-account-serach', component: PigmyAccountSearchComponent, canActivate: [AuthGuard],
+        data: {
+          roles: [UiUserRole.MANAGER, UiUserRole.GENERAL_MANAGER, UiUserRole.ASSISTENT_MANAGER, UiUserRole.CLERK, UiUserRole.OPERATOR
+          ]
+        }
+       },
+       { path: 'pigmy-account', component: PigmyAccountFormComponent, canActivate: [AuthGuard],
+        data: {
+          roles: [UiUserRole.MANAGER, UiUserRole.GENERAL_MANAGER, UiUserRole.ASSISTENT_MANAGER, UiUserRole.CLERK, UiUserRole.OPERATOR
+          ]
+        }
+       },
+       { path: 'pigmy-agent-list', component: AgentsListComponent, canActivate: [AuthGuard],
+        data: {
+          roles: [UiUserRole.MANAGER, UiUserRole.GENERAL_MANAGER, UiUserRole.ASSISTENT_MANAGER, UiUserRole.CLERK, UiUserRole.OPERATOR
+          ]
+        }
+       },
+       { path: 'pigmy-agent', component: AgentFormComponent, canActivate: [AuthGuard],
+        data: {
+          roles: [UiUserRole.MANAGER, UiUserRole.GENERAL_MANAGER, UiUserRole.ASSISTENT_MANAGER, UiUserRole.CLERK, UiUserRole.OPERATOR
+          ]
+        }
+       },
+       { path: 'pigmy-entry', component: PigmyEntryComponent, canActivate: [AuthGuard],
+        data: {
+          roles: [UiUserRole.MANAGER, UiUserRole.GENERAL_MANAGER, UiUserRole.ASSISTENT_MANAGER, 
+            UiUserRole.CLERK, UiUserRole.OPERATOR, UiUserRole.PIGMY_AGENT
+          ]
+        }
+       },
+       { path: 'pigmy-passing', component: PigmyPassingComponent, canActivate: [AuthGuard],
+        data: {
+          roles: [UiUserRole.MANAGER, UiUserRole.GENERAL_MANAGER, UiUserRole.ASSISTENT_MANAGER, 
+            UiUserRole.CLERK, UiUserRole.OPERATOR, UiUserRole.PASSING_OFFICER
+          ]
         }
        },
       { path: '**', component: NotFoundComponent },

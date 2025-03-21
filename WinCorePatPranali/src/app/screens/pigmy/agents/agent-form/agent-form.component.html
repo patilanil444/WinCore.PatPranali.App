@@ -1,0 +1,65 @@
+<div class="row">
+    <div class="col-md-12">
+        <div class="main-card mb-3 card">
+            <div class="card-body">
+                <form [formGroup]="agentForm" #form="ngForm">
+                    <h5 class="card-title">Pigmy Agent</h5>
+                    <div class="row">
+                        <div class="col-md-3 position-relative form-group">
+                            <label class="">Agent Number <span class="mandatory">*</span></label>
+                            <input type="text" tabindex="1" id="txtAgentNumber"
+                              readonly class="form-control" formControlName="agentNumber" maxlength="50">
+                        </div>
+                        <div class="col-md-3 position-relative form-group">
+                            <label  class="">User Name <span class="mandatory">*</span></label>
+                            <select class="mb-2 form-control" tabindex="2" formControlName="userId">
+                                <option *ngFor="let uiUser of uiUsers" [ngValue]="uiUser.id">
+                                    {{uiUser.userName}}
+                                </option>
+                            </select>
+                        </div>
+                        <div class="col-md-3 position-relative form-group">
+                            <label class="">Pigmy GL <span class="mandatory">*</span></label>
+                            <ngx-select-dropdown [config]="config" tabindex="3" [options]="uiPigmyGeneralLedgers"
+                            style="width: 100%;" formControlName="pigmyGL"
+                            [multiple]="false" ></ngx-select-dropdown>
+                        </div>
+                        <div class="col-md-3 position-relative form-group">
+                            <label class="">Collection GL <span class="mandatory">*</span></label>
+                            <ngx-select-dropdown [config]="config" tabindex="4" [options]="uiAllGeneralLedgers"
+                                    style="width: 100%;" formControlName="collectionGL"
+                                    [multiple]="false" ></ngx-select-dropdown>
+                        </div>
+                        <div class="col-md-3 position-relative form-group">
+                            <label class="">Commision GL <span class="mandatory">*</span></label>
+                            <ngx-select-dropdown [config]="config" tabindex="5" [options]="uiAllGeneralLedgers"
+                                    style="width: 100%;" formControlName="commGL"
+                                    [multiple]="false" ></ngx-select-dropdown>
+                        </div>
+                        <div class="col-md-3 position-relative form-group">
+                            <label class="">Commision A/C <span class="mandatory">*</span></label>
+                            <input type="email" tabindex="6" autocomplete="off" id="txtAccount"
+                                class="form-control" formControlName="commAccountId" required maxlength="50">
+                        </div>
+                        <div class="col-md-3 position-relative form-group">
+                            <button type="button" class="mt-1 btn btn-secondary" tabindex="7" style="margin-top: 30px !important;"
+                            (click)="validateAccountNumber()">Validate</button>
+                        </div>
+                    </div>
+                    
+                    <div class="divider"></div>
+                    <div class="row">
+                        <div class="col-md-6 position-relative">
+                            <button type="button" class="mt-1 btn btn-primary" tabindex="8"
+                                (click)="saveAgent()">Submit</button>
+                            <button class="mt-1 btn btn-left-margin10 btn-danger" tabindex="9"
+                                (click)="clear()">Clear</button>
+                            <button class="mt-1 btn btn-left-margin10 btn-secondary" tabindex="10"
+                                (click)="configClick('pigmy-agent-list')">Agent List</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

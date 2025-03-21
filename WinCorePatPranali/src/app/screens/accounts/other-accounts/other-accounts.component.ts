@@ -463,7 +463,7 @@ export class OtherAccountsComponent {
           if (data.data.data.status == "SUCCESS") {
             this._toastrService.success(data.data.data.message, 'Success!');
             this.clear();
-            this.configClick("account-search");
+            //this.configClick("account-search");
           }
           else {
             this._toastrService.success("Error saving account!", 'Error!');

@@ -1,5 +1,4 @@
 import { Component, ElementRef, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
-import { FormControl, FormGroup } from '@angular/forms';
 import { ToastrService } from 'ngx-toastr';
 import { SharedService } from 'src/app/services/shared.service';
 import { TransactionMasterService } from 'src/app/services/transactions/transaction-master/transaction-master.service';
@@ -29,8 +28,7 @@ export class DenominationsComponent implements OnInit {
   @Output() addedDenominations = new EventEmitter<any>();
   @ViewChild('denominationModal', {static: false}) modal: ElementRef;
 
-  constructor(private _sharedService: SharedService, private _toastrService: ToastrService,
-     private _transactionMasterService: TransactionMasterService) { }
+  constructor(private _sharedService: SharedService, private _toastrService: ToastrService) { }
 
   ngOnInit(): void {
 

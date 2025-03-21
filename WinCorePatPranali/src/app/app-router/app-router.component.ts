@@ -22,6 +22,8 @@ export class AppRouterComponent implements OnInit, AfterViewInit {
   isUsersExpanded = false;
   isRegistersExpanded = false;
   isTransactionExpanded = false;
+  isDailySetupExpanded = false;
+  isPigmyWorkExpanded = false;
 
   isSidebarEnabled = true;
 
@@ -131,6 +133,9 @@ export class AppRouterComponent implements OnInit, AfterViewInit {
     else if (menu == 'transactions') {
       this.isTransactionExpanded = !this.isTransactionExpanded;
     }
+    else if (menu == 'dailySetup') {
+      this.isDailySetupExpanded = !this.isDailySetupExpanded;
+    }
     else if (menu == 'registers') {
       this.isRegistersExpanded = !this.isRegistersExpanded;
     }
@@ -139,6 +144,9 @@ export class AppRouterComponent implements OnInit, AfterViewInit {
     }
     else if (menu == 'users') {
       this.isUsersExpanded = !this.isUsersExpanded;
+    }
+    else if (menu == 'pigmy') {
+      this.isPigmyWorkExpanded = !this.isPigmyWorkExpanded;
     }
   }
 

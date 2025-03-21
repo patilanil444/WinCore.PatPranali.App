@@ -3,22 +3,20 @@ import { FormControl, FormGroup } from '@angular/forms';
 import { Router } from '@angular/router';
 import { NgxDropdownConfig } from 'ngx-select-dropdown';
 import { ToastrService } from 'ngx-toastr';
-import { IGeneralDTO, UiEnumAccountStatus, UiUserRole } from 'src/app/common/models/common-ui-models';
-import { DepositAccountService } from 'src/app/services/accounts/deposit-accounts/deposit-account.service';
-import { SavingAccountService } from 'src/app/services/accounts/saving-accounts/saving-account.service';
-import { GeneralLedgerService } from 'src/app/services/masters/general-ledger/general-ledger.service';
-import { SharedService } from 'src/app/services/shared.service';
-import { OtherAccountsService } from 'src/app/services/accounts/other-accounts/other-accounts.service';
-import { AccountsService } from 'src/app/services/accounts/accounts/accounts.service';
-import { LoanAccountsService } from 'src/app/services/accounts/loan-accounts/loan-accounts.service';
+import { IGeneralDTO, UiEnumAccountStatus } from 'src/app/common/models/common-ui-models';
 import { UserRoleHeper } from 'src/app/common/utils/user-role-helper';
+import { AccountsService } from 'src/app/services/accounts/accounts/accounts.service';
+import { GeneralLedgerService } from 'src/app/services/masters/general-ledger/general-ledger.service';
+import { PigmyAccountService } from 'src/app/services/pigmy/pigmy-account/pigmy-account.service';
+import { PigmyMasterService } from 'src/app/services/pigmy/pigmy-master/pigmy-master.service';
+import { SharedService } from 'src/app/services/shared.service';
 
 @Component({
-  selector: 'app-account-search',
-  templateUrl: './account-search.component.html',
-  styleUrls: ['./account-search.component.css']
+  selector: 'app-pigmy-account-search',
+  templateUrl: './pigmy-account-search.component.html',
+  styleUrls: ['./pigmy-account-search.component.css']
 })
-export class AccountSearchComponent implements OnInit {
+export class PigmyAccountSearchComponent implements OnInit {
 
   config: NgxDropdownConfig = {
     displayKey: "glName",
@@ -38,23 +36,20 @@ export class AccountSearchComponent implements OnInit {
   searchForm!: FormGroup;
 
   uiAllGeneralLedgers: any[] = [];
+  uiPigmyGeneralLedgers: any[] = [];
+
   uiAccounts: any[] = [];
   p: number = 1;
   total: number = 0;
 
   constructor(private router: Router, private _sharedService: SharedService,
     private _toastrService: ToastrService, private _generalLedgerService: GeneralLedgerService,
-    private _accountsService: AccountsService,
-    private _depositAccountService: DepositAccountService,
-    private _savingAccountService: SavingAccountService,
-    private _otherAccountsService: OtherAccountsService,
-    private _loanAccountsService: LoanAccountsService) { }
+    private _pigmyAccountService: PigmyAccountService) { }
 
   ngOnInit(): void {
     this.searchForm = new FormGroup({
       generalLedger: new FormControl("", []),
       accountNumber: new FormControl("", []),
-      customerNumber: new FormControl("", []),
     });
 
     this.getGeneralLedgers();
@@ -78,6 +73,7 @@ export class AccountSearchComponent implements OnInit {
   }
 
   getGeneralLedgers() {
+    this.uiPigmyGeneralLedgers = [];
     this._generalLedgerService.getGeneralLedgers(this._sharedService.applicationUser.branchId).subscribe((data: any) => {
      
       if (data) {
@@ -88,19 +84,14 @@ export class AccountSearchComponent implements OnInit {
             gl.glName = gl.code + "-" + gl.glName;
           });
 
-          this.uiAllGeneralLedgers = this.uiAllGeneralLedgers.filter(gl => gl.glType != 'P');
+          this.uiPigmyGeneralLedgers = this.uiAllGeneralLedgers.filter(gl => gl.glGroup == 'D' && gl.glType == 'P');
         }
       }
     })
   }
 
-  // getCustomers(custData: any) {
-  //   this.uiCustomers = custData;
-  // }
-
   searchAccounts() {
     let ledgerId = 0;
-    let custNumber = '';
     let accNumber = '';
     if (this.generalLedger && this.generalLedger.value && this.generalLedger.value.code > 0) {
       ledgerId = this.generalLedger.value.code;
@@ -110,17 +101,13 @@ export class AccountSearchComponent implements OnInit {
     //     this._toastrService.info('Please select GL', 'Info!');
     //   }
 
-    if (this.customerNumber) {
-      custNumber = this.customerNumber.value;
-    }
-
     if (this.accountNumber) {
       accNumber = this.accountNumber.value;
     }
 
-    if (ledgerId > 0 || custNumber.length || accNumber.length) {
-      this._accountsService.SearchAccountsAsync(this._sharedService.applicationUser.branchId, 
-        ledgerId, custNumber, accNumber).subscribe((data: any) => {
+    if (ledgerId > 0 || accNumber.length) {
+      this._pigmyAccountService.SearchAccountsAsync(this._sharedService.applicationUser.branchId, 
+        ledgerId, accNumber).subscribe((data: any) => {
        
         if (data) {
           let accounts = data.data.data;
@@ -157,7 +144,6 @@ export class AccountSearchComponent implements OnInit {
     this.p = event;
   }
 
-
   cancelDelete() {
     
   }
@@ -178,10 +164,7 @@ export class AccountSearchComponent implements OnInit {
   }
 
   addAccount(route: string) {
-    this._depositAccountService.setDTO({});
-    this._savingAccountService.setDTO({});
-    this._loanAccountsService.setDTO({});
-    this._otherAccountsService.setDTO({});
+    this._pigmyAccountService.setDTO({id: 0});
     this.configClick(route);
   }
 
@@ -193,27 +176,9 @@ export class AccountSearchComponent implements OnInit {
       maxId: 0,
       models: this.uiAccounts
     }
-    if (uiAccount.glGroup == 'D' && uiAccount.glType =='S') {
-      // Saving accounts
-      this._savingAccountService.setDTO(dtObject);
-      this.configClick("saving-accounts");
-    }
-    else if (uiAccount.glGroup == 'D' && uiAccount.glType !='S') {
-      // Deposit accounts
-      this._depositAccountService.setDTO(dtObject);
-      this.configClick("deposit-accounts");
-    }
-    else if (uiAccount.glGroup == 'B' || uiAccount.glGroup == 'G') {
-      this._otherAccountsService.setDTO(dtObject);
-      this.configClick("other-accounts");
-    }
-    else if (uiAccount.glGroup == 'L' || uiAccount.glGroup == 'L') {
-      this._loanAccountsService.setDTO(dtObject);
-      this.configClick("loan-accounts");
-    }
-    else if (uiAccount.glGroup == 'B') {
-      
-    }
+
+    this._pigmyAccountService.setDTO(dtObject);
+    this.configClick("pigmy-account");
   }
 
   configClick(routeValue: string) {
@@ -224,9 +189,7 @@ export class AccountSearchComponent implements OnInit {
   get generalLedger() {
     return this.searchForm.get('generalLedger')!;
   }
-  get customerNumber() {
-    return this.searchForm.get('customerNumber')!;
-  }
+ 
   get accountNumber() {
     return this.searchForm.get('accountNumber')!;
   }

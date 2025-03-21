@@ -42,6 +42,10 @@ export class UserRoleHeper {
         return this.isAdministratorUser() || this.isMainCashier || this.isSubCashier;
     }
 
+    static isMainCashierUser() {
+        return this.isAdministratorUser() || this.isMainCashier;
+    }
+
     static isPassingOfficerUser() {
         return this.isAdministratorUser() || this.isPassingOfficer;
     }

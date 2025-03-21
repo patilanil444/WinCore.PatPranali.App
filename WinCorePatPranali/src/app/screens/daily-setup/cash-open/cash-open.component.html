@@ -1,0 +1,62 @@
+<div class="row">
+    <div class="col-md-12">
+        <div class="main-card mb-3 card">
+            <div class="card-body">
+                <h5 class="card-title">Cash Opening - Main Cashier</h5>
+                
+                    <table style="width: 50%;" class="table table-hover table-bordered dataTable dtr-inline table-compressed">
+                        <thead>
+                            <tr role="row">
+                                <th style="width: 6%;">Nos</th>
+                                <th style="width: 30%;">Denomination</th>
+                                <th style="width: 2%;"></th>
+                                <th style="width: 30%;">Quantity</th>
+                                <th style="width: 2%;"></th>
+                                <th style="width: 30%;">Amount</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr role="row"
+                                *ngFor="let denominationNote of denominationNotes; let ind=index">
+                                <td>{{ind + 1}}</td>
+                                <td>{{denominationNote.denomination_Label}} </td>
+                                <td>X</td>
+                                <td><input type="number" width="100%" [(ngModel)]="denominationNote.quantity"
+                                        (change)="changeDenominationAmount(ind)" autofocus></td>
+                                <td>=</td>
+                                <td>
+                                    <input type="number" width="100%" [disabled]="true"
+                                    [(ngModel)]="denominationNote.total">
+                                </td>
+                            </tr>
+                            <tr role="row">
+                                <td colspan="3"></td>
+                                <td>Total Amount</td>
+                                <td>=</td>
+                                <td>
+                                    <form #form="ngForm" [formGroup]="cashOpenForm">
+                                    {{totalCashOpenAmountText.value}}
+                                    </form>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                
+                <div>
+                    <button type="button" class="btn btn-alternate" tabindex="1"
+                        (click)="cashStatus()" *ngIf="isMainCashierUser()">Cash Status</button>
+
+                    <button type="button" class="btn btn-primary btn-left-margin10"
+                        tabindex="2" (click)="saveOpenCash()" *ngIf="isMainCashierUser()">Submit</button>
+
+                    <button type="button" class="btn btn-danger btn-left-margin10"
+                        tabindex="3" (click)="clear()">
+                        Clear</button>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+<app-cash-status-modal #cashStatusModal [UserId]="UserId" [canLoadData]="canLoadData"></app-cash-status-modal>

@@ -83,9 +83,19 @@ import { PassingInfoComponent } from '../screens/transactions/voucher-passing/pa
 import { CounterTransferComponent } from '../screens/transactions/counter-transactions/counter-transfer/counter-transfer.component';
 import { AccountSelectorComponent } from '../screens/transactions/counter-transactions/account-selector/account-selector.component';
 import { ConfirmBoxComponent } from '../common/directives/confirm-box/confirm-box.component';
-import { StartOfWorkSummaryComponent } from '../screens/transactions/start-of-work/start-of-work-summary/start-of-work-summary.component';
-import { BeginDayComponent } from '../screens/transactions/start-of-work/begin-day/begin-day.component';
+import { BeginDayComponent } from '../screens/daily-setup/begin-day/begin-day.component';
 import { CalenderViewComponent } from '../common/directives/calender-view/calender-view.component';
+import { CashOpenComponent } from '../screens/daily-setup/cash-open/cash-open.component';
+import { CashierCashTransferComponent } from '../screens/daily-setup/cashier-cash-transfer/cashier-cash-transfer.component';
+import { CashStatusComponent } from '../common/directives/cash-status/cash-status.component';
+import { CashStatusModalComponent } from '../common/directives/cash-status/cash-status-modal/cash-status-modal.component';
+import { AgentsListComponent } from '../screens/pigmy/agents/agents-list/agents-list.component';
+import { AgentFormComponent } from '../screens/pigmy/agents/agent-form/agent-form.component';
+import { PigmyEntryComponent } from '../screens/pigmy/pigmy-entry/pigmy-entry.component';
+import { PigmyAccountFormComponent } from '../screens/pigmy/accounts/pigmy-account-form/pigmy-account-form.component';
+import { PigmyAccountSearchComponent } from '../screens/pigmy/accounts/pigmy-account-search/pigmy-account-search.component';
+import { PigmyPassingComponent } from '../screens/pigmy/pigmy-passing/pigmy-passing.component';
+import { PigmyCollectionInfoComponent } from '../screens/pigmy/pigmy-collection-info/pigmy-collection-info.component';
 
 @NgModule({
   declarations: [
@@ -167,9 +177,20 @@ import { CalenderViewComponent } from '../common/directives/calender-view/calend
     PassingInfoComponent,
     AccountSelectorComponent,
     ConfirmBoxComponent,
-    StartOfWorkSummaryComponent,
     BeginDayComponent,
-    CalenderViewComponent
+    CalenderViewComponent,
+    CashOpenComponent,
+    CashierCashTransferComponent,
+    CashStatusComponent,
+    CashStatusModalComponent,
+    AgentsListComponent,
+    AgentFormComponent,
+    AccountSearchComponent,
+    PigmyAccountSearchComponent,
+    PigmyAccountFormComponent,
+    PigmyEntryComponent,
+    PigmyPassingComponent,
+    PigmyCollectionInfoComponent,
   ],
   imports: [
     CommonModule,

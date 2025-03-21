@@ -1,0 +1,27 @@
+<div class="row">
+    <div class="col-md-12">
+        <div class="main-card mb-3 card">
+            <div class="card-body">
+                <h5 class="card-title">Search customer</h5>
+               
+                <div class="row">
+
+                    <div class="col-md-6 position-relative form-group">
+                        <app-calender-view (currentSelectedDate)="getSelectedDate($event)"
+                            [isDisabled]="areDaysOpen"></app-calender-view>
+                    </div>
+                    <div class="col-md-3 position-relative form-group">
+                        <label class="">Selected Working Day</label>
+                        <input type="date" tabindex="2" autocomplete="off" [(ngModel)]="dtStartDay" id="dtStartDay"
+                            [disabled]="areDaysOpen" class="form-control">
+                    </div>
+                    <div class="col-md-3 position-relative form-group">
+                        <button type="button" style="margin-top: 30px !important;" class="mt-1 btn btn-primary"
+                            tabindex="7" [disabled]="areDaysOpen" (click)="saveBeginDay()"
+                            *ngIf="isAdministratorUser()">Submit</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

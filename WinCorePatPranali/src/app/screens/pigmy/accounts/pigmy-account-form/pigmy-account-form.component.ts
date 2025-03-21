@@ -1,17 +1,20 @@
 import { formatDate } from '@angular/common';
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { NgxDropdownConfig } from 'ngx-select-dropdown';
 import { ToastrService } from 'ngx-toastr';
 import { AccountDeclarations } from 'src/app/common/account-declarations';
-import { IGeneralDTO, UiEnumGeneralMaster } from 'src/app/common/models/common-ui-models';
+import { IGeneralDTO, UiEnumGeneralMaster, UiUserRole } from 'src/app/common/models/common-ui-models';
 import { UserRoleHeper } from 'src/app/common/utils/user-role-helper';
-import { AccountsService } from 'src/app/services/accounts/accounts/accounts.service';
-import { SavingAccountService } from 'src/app/services/accounts/saving-accounts/saving-account.service';
 import { CustomerService } from 'src/app/services/customers/customer/customer.service';
 import { GeneralLedgerService } from 'src/app/services/masters/general-ledger/general-ledger.service';
+import { PigmyAccountService } from 'src/app/services/pigmy/pigmy-account/pigmy-account.service';
+import { PigmyMasterService } from 'src/app/services/pigmy/pigmy-master/pigmy-master.service';
 import { SharedService } from 'src/app/services/shared.service';
+import { UserService } from 'src/app/services/users/user.service';
+
+
 
 export interface UiNomini {
   id: number,
@@ -45,8 +48,10 @@ export interface UiJoint {
   status: string
 }
 
-export interface ISavingAccountModel {
+export interface IPigmyAccountModel {
+  PigmyAccountId: number;
   AccountsId: number;
+  PigmyAgentId: number;
   BranchCode: number;
   CustomerId: number;
   Code1: number;
@@ -54,27 +59,36 @@ export interface ISavingAccountModel {
   AccountNo: string;
   AccountType: number;
   AccountStatus: number;
-  Int_Rate: number;
-  SavingsAccountId: number;
-  Mode_Opr: number;
-  Mode_Sgn: number;
+  ModeOfOperation: number;
+  StaffCode: string;
+  PassbookDate: Date;
+  DebitInterestDate: Date;
+  MinimumBalance: number;
+  Inst_Amt: number;
+  Inst_No: number;
+  Inst_Type: string;
+  Payb_Amt: number;
   Opn_Date: Date;
   Exp_Date: Date;
   Last_Int_Date: Date;
   Last_Trn_Date: Date;
-  Passbook_Date: Date;
-  Penal_Date: Date;
   Close_Flag: number;
   Close_Date: Date;
-  Min_Bal: number;
-  Print_Date: Date;
-  Currency: number;
-  Other_Branch_Trf: number;
-  LedgerFolioNo: string;
-  StaffCode: string;
+  Int_Rate: number;
+  ClearingAmount: number;
+  TDS_YN: boolean;
+  TDS_Reason_Code: number;
+  PeriodInDays: number;
+  Ac_Statement_Freq: number;
+  Email_Day_Freq: number;
+  Pass_Book_Charges: number;
+  MinBal_Charges: boolean;
+  Service_Charges: boolean;
+  PrintCount: number;
   Active: number;
   CreatedBy: number;
   CreatedDate: Date;
+  BankAccountType: string;
   NomineeList: INominiModel[];
   JointList: IJointModel[];
 }
@@ -106,20 +120,19 @@ export interface IJointModel {
   CreatedDate: Date;
 }
 
-
 @Component({
-  selector: 'app-saving-accounts',
-  templateUrl: './saving-accounts.component.html',
-  styleUrls: ['./saving-accounts.component.css']
+  selector: 'app-pigmy-account-form',
+  templateUrl: './pigmy-account-form.component.html',
+  styleUrls: ['./pigmy-account-form.component.css']
 })
-export class SavingAccountsComponent {
+export class PigmyAccountFormComponent implements OnInit {
 
   customerDetailsForm!: FormGroup;
   summaryForm!: FormGroup;
-  accountForm!: FormGroup;
-  parametersForm!: FormGroup;
+  accountForm!: FormGroup;  
   nominiForm!: FormGroup;
   jointForm!: FormGroup;
+  PigmyDetailsForm!: FormGroup;
 
   config: NgxDropdownConfig = {
     displayKey: "glName",
@@ -136,8 +149,23 @@ export class SavingAccountsComponent {
     enableSelectAll: false,
   };
 
+  configAgent: NgxDropdownConfig = {
+    displayKey: "name",
+    height: "auto",
+    search: true,
+    placeholder: "Select Agent",
+    searchPlaceholder: "Search by name...",
+    limitTo: 0,
+    customComparator: undefined,
+    noResultsFound: "No results found",
+    moreText: "more",
+    clearOnSelection: false,
+    inputDirection: "ltr",
+    enableSelectAll: false,
+  };
+
   uiAllGeneralLedgers: any[] = [];
-  uiSavingGeneralLedgers: any[] = [];
+  uiPigmyGeneralLedgers: any[] = [];
   uiAccountTypes: any[] = [];
   uiModeOfOperations: any[] = [];
   uiEmployyeTypes: any[] = [];
@@ -152,12 +180,11 @@ export class SavingAccountsComponent {
   uiForm61Options: any[] = [];
   uiAccountStatuses: any[] = [];
 
+  uiPigmyAgents: any[] = [];
+
   //toggleSearchCustomers = false;
   // toggleSearchJointCustomers = false;
   isNotJointAccount = true;
-  isFDAccount = false;
-  isRDAccount = false;
-
   selectedCustomerId = 0;
 
   uiCustomers: any[] = [];
@@ -175,7 +202,8 @@ export class SavingAccountsComponent {
 
   constructor(private router: Router, private _sharedService: SharedService, private _toastrService: ToastrService,
     private _generalLedgerService: GeneralLedgerService, private _customerService: CustomerService,
-    private _savingAccountService: SavingAccountService, private _accountsService: AccountsService) { }
+    private _pigmyMasterService: PigmyMasterService, private _pigmyAccountService: PigmyAccountService,
+    private _userService: UserService) { }
 
   ngOnInit(): void {
 
@@ -211,6 +239,7 @@ export class SavingAccountsComponent {
 
     this.summaryForm = new FormGroup({
       generalLedger: new FormControl("", [Validators.required]),
+      pigmyAgent: new FormControl("", [Validators.required]),
       glAccountNumberStr: new FormControl("", [Validators.required]),
       glAccountNumber: new FormControl("", [Validators.required]),
       customerId: new FormControl("", [Validators.required]),
@@ -219,15 +248,14 @@ export class SavingAccountsComponent {
     this.accountForm = new FormGroup({
       accountType: new FormControl(this.uiAccountTypes[0].constantNo, [Validators.required]),
       modeOfOperation: new FormControl(this.uiModeOfOperations[0].constantNo, [Validators.required]),
-      modeOfSignature: new FormControl(this.uiModeOfOperations[0].constantNo, [Validators.required]),
+      //modeOfSignature: new FormControl(this.uiModeOfOperations[0].constantNo, [Validators.required]),
       staffDirectorOther: new FormControl(this.uiEmployyeTypes[0].code, [Validators.required]),
       accountStatus: new FormControl(this.uiAccountStatuses[0].constantNo, [Validators.required]),
-      accountOpeningDate: new FormControl(formatDate(new Date(Date.now()), 'yyyy-MM-dd', 'en'), [Validators.required]),
       passbookDate: new FormControl(formatDate(new Date(Date.now()), 'yyyy-MM-dd', 'en'), [Validators.required]),
       lastInterestDate: new FormControl(formatDate(new Date(Date.now()), 'yyyy-MM-dd', 'en'), [Validators.required]),
       lastTransactionDate: new FormControl(formatDate(new Date(Date.now()), 'yyyy-MM-dd', 'en'), [Validators.required]),
-      //drInterestDate: new FormControl(formatDate(new Date(Date.now()), 'yyyy-MM-dd', 'en'), [Validators.required]),
-      printDate: new FormControl("", []),
+      drInterestDate: new FormControl(formatDate(new Date(Date.now()), 'yyyy-MM-dd', 'en'), [Validators.required]),
+      //printDate: new FormControl("", []),
       accountCloseDate: new FormControl("", []),
       close_Flag: new FormControl(false, [Validators.required])
     });
@@ -235,14 +263,9 @@ export class SavingAccountsComponent {
     this.accountStatus.disable();
     this.lastTransactionDate.disable();
     this.lastInterestDate.disable();
+    this.drInterestDate.disable();
 
-    this.parametersForm = new FormGroup({
-      interestRateParam: new FormControl("", [Validators.required]),
-      ledgerNumber: new FormControl("", []),
-      minimumBalance: new FormControl("", [Validators.required]),
-      currency: new FormControl(this.uiCurrencies[0].currencyId, [Validators.required]),
-      otherBranchTransfer: new FormControl(this.uiTDSOptions[1].code, [Validators.required]),
-    });
+    this.isNotJointAccount = true;
 
     this.nominiForm = new FormGroup({
       nominiName: new FormControl("", []),
@@ -257,9 +280,26 @@ export class SavingAccountsComponent {
       operativeInstruction: new FormControl("", []),
     });
 
+    this.PigmyDetailsForm = new FormGroup({
+      dailyInstallmentAmount: new FormControl("", [Validators.required]),
+      accountOpeningDate: new FormControl(formatDate(new Date(Date.now()), 'yyyy-MM-dd', 'en'), [Validators.required]),
+      pigmyPeriod: new FormControl("", [Validators.required]),
+      interestRateParam: new FormControl("", [Validators.required]),
+      clearingAmount: new FormControl("0", [Validators.required]),
+      minimumBalance: new FormControl("0", [Validators.required]),
+      expiryDate: new FormControl(formatDate(new Date(Date.now()), 'yyyy-MM-dd', 'en'), []),
+      payableAmount: new FormControl("0", [Validators.required]),
+    });
+
+    this.expiryDate.disable();
+
     this.getGeneralLedgers().then(result => {
       if (result) {
-        this.loadForm();
+        this.getPigmyAgents().then((userResult) => {
+          if (userResult) {
+            this.loadForm();
+          }
+        })
       }
     }).catch(error => {
       this._toastrService.error('Error loading general ledgers', 'Warning!');
@@ -292,7 +332,7 @@ export class SavingAccountsComponent {
   getGeneralLedgers() {
     return new Promise((resolve, reject) => {
       this._generalLedgerService.getGeneralLedgers(this._sharedService.applicationUser.branchId).subscribe((data: any) => {
-       
+
         if (data) {
           this.uiAllGeneralLedgers = data.data.data;
           if (this.uiAllGeneralLedgers) {
@@ -301,7 +341,7 @@ export class SavingAccountsComponent {
               gl.glName = gl.code + "-" + gl.glName;
             });
 
-            this.uiSavingGeneralLedgers = this.uiAllGeneralLedgers.filter(gl => gl.glGroup == 'D' && gl.glType == 'S');
+            this.uiPigmyGeneralLedgers = this.uiAllGeneralLedgers.filter(gl => gl.glGroup == 'D' && gl.glType == 'P');
             resolve(true);
           }
         }
@@ -312,166 +352,243 @@ export class SavingAccountsComponent {
     })
   }
 
-  loadForm() {
-    this._savingAccountService.getDTO().subscribe(obj => this.dto = obj);
-    if (this.dto) {
-      this.accountsId = this.dto.id;
-      if (this.accountsId == 0 || this.accountsId == undefined) {
-        this.isAddMode = true;
+  getPigmyAgents() {
+    return new Promise((resolve, reject) => {
+      this.uiPigmyAgents = [];
+      this._pigmyMasterService.getBranchAgents(this._sharedService.applicationUser.branchId).subscribe((data: any) => {
+        if (data) {
+          if (data.statusCode == 200 && data.data.data) {
+            var agents = data.data.data;
+            if (agents && agents.length) {
+              this.uiPigmyAgents = agents;
 
+              this.uiPigmyAgents.map((pa: any, i: any) => {
+                pa.name = pa.agentNumber + "-" + pa.name;
+              });
+              // this.summaryForm.patchValue({
+              //   pigmyAgent: this.uiPigmyAgents[0],
+              // });
+            }
+            resolve(true);
+          }
+        }
+      })
+    })
+  }
+
+  loadForm() {
+    this._pigmyAccountService.getDTO().subscribe(obj => this.dto = obj);
+    if (this.dto) {
+      if (this.dto.id >= 0) {
+        this.accountsId = this.dto.id;
+        if (this.accountsId == 0 || this.accountsId == undefined) {
+          this.isAddMode = true;
+        }
+        else {
+          this.isAddMode = false;
+          this._pigmyAccountService.getPigmyAccount(this.accountsId).subscribe((data: any) => {
+
+            if (data) {
+              if (data.statusCode == 200 && data.data.data) {
+                var pigmyAccount = data.data.data;
+
+                this.selectCustomer(pigmyAccount.customerId);
+
+                // bind general ledger
+                let gl = this.uiAllGeneralLedgers.filter(g => g.code == pigmyAccount.code1);
+
+                let agents = this.uiPigmyAgents.filter(g => g.id == pigmyAccount.pigmyAgentId);
+
+                this.summaryForm.patchValue({
+                  generalLedger: gl && gl.length ? gl[0] : null,
+                  pigmyAgent: agents && agents.length ? agents[0] : null,
+                  glAccountNumberStr: pigmyAccount.accountNo,
+                  glAccountNumber: pigmyAccount.code2,
+                  customerId: pigmyAccount.customerId,
+                })
+
+                this.customerDetailsForm.patchValue({
+                  customerNumber: "",
+                  name: "",
+                  address: "",
+                  mobile: "",
+                  email: "",
+                  pan: "",
+                  dob: formatDate(new Date(Date.now()), 'yyyy-MM-dd', 'en'),
+                  aadhar: "",
+                  joiningDate: formatDate(new Date(Date.now()), 'yyyy-MM-dd', 'en'),
+                  group: "",
+                  occupation: "",
+                  city: "",
+                  zone: "",
+                })
+
+
+                this.accountForm.patchValue({
+                  accountType: pigmyAccount.accountType,
+                  modeOfOperation: pigmyAccount.modeOfOperation,
+                  //modeOfSignature: pigmyAccount.mode_Sgn,
+                  staffDirectorOther: pigmyAccount.staffCode,
+                  accountStatus: pigmyAccount.accountStatus,
+                  passbookDate: formatDate(new Date(pigmyAccount.passbookDate), 'yyyy-MM-dd', 'en'),
+                  //matureDate: formatDate(new Date(pigmyAccount.exp_Date), 'yyyy-MM-dd', 'en'),
+                  lastInterestDate: formatDate(new Date(pigmyAccount.last_Int_Date), 'yyyy-MM-dd', 'en'),
+                  lastTransactionDate: formatDate(new Date(pigmyAccount.last_Trn_Date), 'yyyy-MM-dd', 'en'),
+                  //printDate: (pigmyAccount.print_Date == null) ? "" : formatDate(new Date(pigmyAccount.print_Date), 'yyyy-MM-dd', 'en'),
+                  accountCloseDate: (pigmyAccount.close_Date == null) ? "" : formatDate(new Date(pigmyAccount.close_Date), 'yyyy-MM-dd', 'en'),
+                  drInterestDate: formatDate(new Date(pigmyAccount.debitInterestDate), 'yyyy-MM-dd', 'en'),
+                  close_Flag: (pigmyAccount.close_Flag == 1) ? 'Y' : 'N',
+                })
+
+                this.accountStatus.enable();
+
+                // depositAccount.nomineeList
+                if (pigmyAccount.nomineeList && pigmyAccount.nomineeList.length) {
+                  let relationName = "";
+                  pigmyAccount.nomineeList.forEach((nominee: any) => {
+                    let uiNominee: any = {};
+                    let uiRelation = this.uiRelations.filter(r => r.constantNo == parseInt(nominee.relation));
+                    if (uiRelation) {
+                      relationName = (uiRelation && uiRelation.length > 0) ? uiRelation[0].constantname : "";
+                    }
+
+                    uiNominee.id = nominee.id;
+                    uiNominee.accountId = nominee.accountsId;
+                    uiNominee.customerId = pigmyAccount.customerId;
+                    uiNominee.nomineeName = nominee.nomineeName;
+                    uiNominee.nomineeAddress = nominee.nomineeAddress;
+                    uiNominee.relation = nominee.relation;
+                    uiNominee.relationName = relationName;
+                    uiNominee.guardian = nominee.guardian;
+                    uiNominee.percentage = nominee.percentage;
+                    uiNominee.createdBy = nominee.createdBy;
+                    uiNominee.status = '';
+                    this.uiNominis.push(uiNominee);
+                  });
+                }
+
+                //depositAccount.jointList
+                if (pigmyAccount.jointList && pigmyAccount.jointList.length) {
+
+                  pigmyAccount.jointList.forEach((joint: any) => {
+                    let uiJointCust = {} as UiJoint;
+                    uiJointCust.accountId = joint.accountsId;
+                    uiJointCust.id = joint.id;
+                    uiJointCust.customerId = joint.customerId;
+                    uiJointCust.customerName = joint.custName;
+                    uiJointCust.customerNumber = joint.customerCodeStr;
+                    uiJointCust.operativeInstruction = joint.operativeInstruction;
+                    uiJointCust.status = '';
+                    uiJointCust.createdBy = joint.createdBy;
+                    this.uiSelectedJointCustomers.push(uiJointCust);
+                  });
+                }
+
+                this.PigmyDetailsForm.patchValue({
+                  dailyInstallmentAmount: pigmyAccount.inst_Amt,
+                  accountOpeningDate: formatDate(new Date(pigmyAccount.opn_Date), 'yyyy-MM-dd', 'en'),
+                  pigmyPeriod: pigmyAccount.periodInDays,
+                  interestRateParam: pigmyAccount.int_Rate,
+                  clearingAmount: pigmyAccount.clearingAmount,
+                  minimumBalance: pigmyAccount.minimumBalance,
+                  expiryDate: (pigmyAccount.exp_Date == null) ? "" : formatDate(new Date(pigmyAccount.exp_Date), 'yyyy-MM-dd', 'en'),
+                  payableAmount: pigmyAccount.payb_Amt,
+                })
+
+                this.isAccountAuthorized = pigmyAccount.authBy > 0;
+                this.isNotJointAccount = !(pigmyAccount.accountType == 2); // TODO: Need to make it configurable
+              }
+            }
+          })
+        }
       }
       else {
-        this.isAddMode = false;
-        this._savingAccountService.getSavingAccount(this.accountsId).subscribe((data: any) => {
-         
-          if (data) {
-            if (data.statusCode == 200 && data.data.data) {
-              var savingAccount = data.data.data;
-
-              this.selectCustomer(savingAccount.customerId);
-
-              // bind general ledger
-              let gl = this.uiAllGeneralLedgers.filter(g => g.code == savingAccount.code1);
-
-              this.summaryForm.patchValue({
-                generalLedger: gl && gl.length ? gl[0] : null,
-                glAccountNumberStr: savingAccount.accountNo,
-                glAccountNumber: savingAccount.code2,
-                customerId: savingAccount.customerId,
-              })
-
-              this.customerDetailsForm.patchValue({
-                customerNumber: "",
-                name: "",
-                address: "",
-                mobile: "",
-                email: "",
-                pan: "",
-                dob: formatDate(new Date(Date.now()), 'yyyy-MM-dd', 'en'),
-                aadhar: "",
-                joiningDate: formatDate(new Date(Date.now()), 'yyyy-MM-dd', 'en'),
-                group: "",
-                occupation: "",
-                city: "",
-                zone: "",
-              })
-
-
-              this.accountForm.patchValue({
-                accountType: savingAccount.accountType,
-                modeOfOperation: savingAccount.mode_Opr,
-                modeOfSignature: savingAccount.mode_Sgn,
-                staffDirectorOther: savingAccount.staffCode,
-                accountStatus: savingAccount.accountStatus,
-                accountOpeningDate: formatDate(new Date(savingAccount.opn_Date), 'yyyy-MM-dd', 'en'),
-                passbookDate: formatDate(new Date(savingAccount.passbook_Date), 'yyyy-MM-dd', 'en'),
-                //matureDate: formatDate(new Date(savingAccount.exp_Date), 'yyyy-MM-dd', 'en'),
-                lastInterestDate: formatDate(new Date(savingAccount.last_Int_Date), 'yyyy-MM-dd', 'en'),
-                lastTransactionDate: formatDate(new Date(savingAccount.last_Trn_Date), 'yyyy-MM-dd', 'en'),
-                printDate: (savingAccount.print_Date == null) ? "" : formatDate(new Date(savingAccount.print_Date), 'yyyy-MM-dd', 'en'),
-                accountCloseDate: (savingAccount.close_Date == null) ? "" : formatDate(new Date(savingAccount.close_Date), 'yyyy-MM-dd', 'en'),
-                close_Flag: (savingAccount.close_Flag == 1) ? 'Y' : 'N',
-              })
-
-              this.accountStatus.enable();
-
-              this.parametersForm.patchValue({
-                interestRateParam: savingAccount.int_Rate,
-                ledgerNumber: savingAccount.ledgerFolioNo,
-                minimumBalance: savingAccount.min_Bal,
-                currency: savingAccount.currency,
-                otherBranchTransfer: savingAccount.other_Branch_Trf == 1 ? 'Y' : 'N',
-              })
-
-              // depositAccount.nomineeList
-              if (savingAccount.nomineeList && savingAccount.nomineeList.length) {
-                let relationName = "";
-                savingAccount.nomineeList.forEach((nominee: any) => {
-                  let uiNominee: any = {};
-                  let uiRelation = this.uiRelations.filter(r => r.constantNo == parseInt(nominee.relation));
-                  if (uiRelation) {
-                    relationName = (uiRelation && uiRelation.length > 0) ? uiRelation[0].constantname : "";
-                  }
-
-                  uiNominee.id = nominee.id;
-                  uiNominee.accountId = nominee.accountsId;
-                  uiNominee.customerId = savingAccount.customerId;
-                  uiNominee.nomineeName = nominee.nomineeName;
-                  uiNominee.nomineeAddress = nominee.nomineeAddress;
-                  uiNominee.relation = nominee.relation;
-                  uiNominee.relationName = relationName;
-                  uiNominee.guardian = nominee.guardian;
-                  uiNominee.percentage = nominee.percentage;
-                  uiNominee.createdBy = nominee.createdBy;
-                  uiNominee.status = '';
-                  this.uiNominis.push(uiNominee);
-                });
-              }
-
-              //depositAccount.jointList
-              if (savingAccount.jointList && savingAccount.jointList.length) {
-
-                savingAccount.jointList.forEach((joint: any) => {
-                  let uiJointCust = {} as UiJoint;
-                  uiJointCust.accountId = joint.accountsId;
-                  uiJointCust.id = joint.id;
-                  uiJointCust.customerId = joint.customerId;
-                  uiJointCust.customerName = joint.custName;
-                  uiJointCust.customerNumber = joint.customerCodeStr;
-                  uiJointCust.operativeInstruction = joint.operativeInstruction;
-                  uiJointCust.status = '';
-                  uiJointCust.createdBy = joint.createdBy;
-                  this.uiSelectedJointCustomers.push(uiJointCust);
-                });
-              }
-
-              this.isAccountAuthorized = savingAccount.authBy > 0;
-              this.isNotJointAccount = !(savingAccount.accountType == 2); // TODO: Need to make it configurable
-            }
-          }
-        })
+        this.configClick("pigmy-account-serach");
       }
     }
   }
+
+  calculatePayableAmount() {
+    const dailyAmount = isNaN(parseFloat(this.dailyInstallmentAmount.value)) ? 0 : parseFloat(this.dailyInstallmentAmount.value);
+    const interestRate = isNaN(parseFloat(this.interestRateParam.value)) ? 0 : parseFloat(this.interestRateParam.value);
+    const days = isNaN(parseFloat(this.pigmyPeriod.value)) ? 0 : parseFloat(this.pigmyPeriod.value);
+
+    let payableAmt = this.calculateSimpleInterestPayableAmount(dailyAmount, interestRate, days);
+    if (payableAmt > 0) {
+      this.PigmyDetailsForm.patchValue({
+        payableAmount: payableAmt.toFixed(2),
+      })
+    }
+  }
+
+  calculateCompoundInterestPayableAmount(dailyAmount: number, interestRate: number, days: number): number {
+    const dailyInterestRate = interestRate / 365;
+    const totalAmount = dailyAmount * Math.pow(1 + dailyInterestRate, days);
+    return totalAmount;
+  }
+
+  calculateSimpleInterestPayableAmount(dailyAmount: number, interestRate: number, days: number): number {
+    const dailyInterestRate = interestRate / 365;  // Convert annual interest rate to daily rate
+    const totalAmount = dailyAmount * days;
+    const totalInterest = totalAmount * dailyInterestRate;
+    return totalAmount + totalInterest;
+  }
+
+  calculateExpiryDate()
+  {
+    let periodInDays = isNaN(parseInt(this.pigmyPeriod.value))? 0: parseInt(this.pigmyPeriod.value);
+
+    let maturityDate = new Date().setDate(periodInDays);
+    this.PigmyDetailsForm.patchValue({
+      expiryDate: formatDate(maturityDate, 'yyyy-MM-dd', 'en'),
+    })
+
+    this.calculatePayableAmount();
+  }
+
 
   changeGeneralLedger(event: any) {
     let glValue = event.value;
     if (glValue) {
-      this.isFDAccount = false;
-      this.isRDAccount = false;
-      if (glValue.glGroup == 'D' && glValue.glType == 'F') {
-        this.isFDAccount = true;
-      }
-      if (glValue.glGroup == 'D' && glValue.glType == 'R') {
-        this.isRDAccount = true;
-      }
-
-      this.parametersForm.patchValue({
+      this.PigmyDetailsForm.patchValue({
         interestRateParam: glValue.int_Rate,
       })
-      this.getMaxAccountNumber(glValue.code);
+      this.getMaxAccountNumber();
     }
   }
 
+  changePigmyAgent(event: any) {
+    let agentValue = event.value;
+    if (agentValue) {
+      this.summaryForm.patchValue({
+        pigmyAgent: agentValue,
+      })
+      this.getMaxAccountNumber();
+    }
+  }
 
-  getMaxAccountNumber(glId: number) {
-    this._accountsService.getMaxAccountNumber(this._sharedService.applicationUser.branchId, glId).subscribe((data: any) => {
-     
-      if (data) {
-        let maxAccountModel = data.data.data;
-        if (maxAccountModel) {
-          this.summaryForm.patchValue({
-            glAccountNumberStr: maxAccountModel.accountNo,
-            glAccountNumber: maxAccountModel.maxAccountNo,
-          })
+  getMaxAccountNumber() {
+    let gl = this.generalLedger.value;
+    let agent = this.pigmyAgent.value;
+    if (gl.code > 0 && agent.id > 0) {
+      this._pigmyAccountService.getMaxAccountNumber(this._sharedService.applicationUser.branchId, gl.code, agent.id).subscribe((data: any) => {
+        if (data) {
+          let maxAccountModel = data.data.data;
+          if (maxAccountModel) {
+            this.summaryForm.patchValue({
+              glAccountNumberStr: maxAccountModel.accountNo,
+              glAccountNumber: maxAccountModel.maxAccountNo,
+            })
+          }
         }
-      }
-    })
+      })
+    }
+
   }
 
   getCustomers(custData: any) {
     // this.uiCustomers = custData;
-    if(custData && custData.status == 'Active') {
+    if (custData && custData.status == 'Active') {
       this.selectCustomer(custData.id);
     }
 
@@ -495,7 +612,7 @@ export class SavingAccountsComponent {
 
   getCustomer(customerId: number) {
     this._customerService.getCustomer(this._sharedService.applicationUser.branchId, customerId).subscribe((data: any) => {
-     
+
       if (data) {
         var customer = data.data.data;
         let zones = this.uiZones.filter(z => z.constantNo == customer.custZone);
@@ -578,12 +695,12 @@ export class SavingAccountsComponent {
 
   deleteJoinCustomer(customer: any) {
     if (customer) {
-      this._savingAccountService.jointCustomerToDelete = customer.customerId;
+      this._pigmyAccountService.jointCustomerToDelete = customer.customerId;
     }
   }
 
   onJointDelete() {
-    let customerIdToDelete = this._savingAccountService.jointCustomerToDelete;
+    let customerIdToDelete = this._pigmyAccountService.jointCustomerToDelete;
     if (customerIdToDelete > 0) {
 
       let customers = this.uiSelectedJointCustomers.filter(c => c.customerId == customerIdToDelete);
@@ -594,7 +711,7 @@ export class SavingAccountsComponent {
   }
 
   cancelJointDelete() {
-    this._savingAccountService.jointCustomerToDelete = -1;
+    this._pigmyAccountService.jointCustomerToDelete = -1;
   }
 
   getCustomerStatus(status: number) {
@@ -719,6 +836,8 @@ export class SavingAccountsComponent {
       guardian: uiNomini.guardian,
       percentage: uiNomini.percentage
     });
+
+    
   }
 
   deleteNomini(uiNomini: any, index: number) {
@@ -728,10 +847,10 @@ export class SavingAccountsComponent {
   clearNomini() {
     this.nominiForm.patchValue({
       nominiName: "",
-      nominiAddress: "",
-      nominiRelation: this.uiRelations[0].constantNo,
-      nominiGuardian: "",
-      nominiPercentage: "100",
+      nomineeAddress: "",
+      relation: this.uiRelations[0].constantNo,
+      guardian: "",
+      percentage: "",
     });
   }
 
@@ -759,15 +878,6 @@ export class SavingAccountsComponent {
     return true;
   }
 
-  validParameters() {
-    if (this.parametersForm.invalid) {
-      for (const control of Object.keys(this.parametersForm.controls)) {
-        this.parametersForm.controls[control].markAsTouched();
-      }
-      return false;
-    }
-    return true;
-  }
 
   validNominiDetails() {
     return (this.uiNominis && this.uiNominis.length > 0);
@@ -780,7 +890,17 @@ export class SavingAccountsComponent {
     return true;
   }
 
-  saveSavingAccount() {
+  validPigmyDetails() {
+    if (this.PigmyDetailsForm.invalid) {
+      for (const control of Object.keys(this.PigmyDetailsForm.controls)) {
+        this.PigmyDetailsForm.controls[control].markAsTouched();
+      }
+      return false;
+    }
+    return true;
+  }
+
+  savePigmyAccount() {
     // validate all tabs
     if (!this.validCustomer()) {
       this._toastrService.error('Please link customer with account.', 'Error!');
@@ -794,10 +914,6 @@ export class SavingAccountsComponent {
       this._toastrService.error('Please enter account details.', 'Error!');
       return;
     }
-    if (!this.validParameters()) {
-      this._toastrService.error('Please enter paramater details.', 'Error!');
-      return;
-    }
     if (!this.validNominiDetails()) {
       this._toastrService.error('Please enter nominee details.', 'Error!');
       return;
@@ -806,36 +922,43 @@ export class SavingAccountsComponent {
       this._toastrService.error('Please enter joint customer details.', 'Error!');
       return;
     }
+    if (!this.validPigmyDetails()) {
+      this._toastrService.error('Please enter pigmy details.', 'Error!');
+      return;
+    }
 
     // add values into model
-    let accountModel = {} as ISavingAccountModel;
+    let accountModel = {} as IPigmyAccountModel;
     accountModel.AccountsId = this.dto.id;
     accountModel.BranchCode = this._sharedService.applicationUser.branchId;
+    accountModel.PigmyAgentId =parseInt(this.pigmyAgent.value.id.toString());
     accountModel.CustomerId = parseInt(this.customerId.value.toString());
     accountModel.Code1 = parseInt(this.generalLedger.value.code.toString());
     accountModel.Code2 = parseInt(this.glAccountNumber.value.toString());
     accountModel.AccountNo = this.glAccountNumberStr.value.toString()
     accountModel.AccountType = parseInt(this.accountType.value.toString());
     accountModel.AccountStatus = parseInt(this.accountStatus.value.toString());
-    accountModel.SavingsAccountId = 0;
-    accountModel.Mode_Opr = parseInt(this.modeOfOperation.value.toString());
-    accountModel.Mode_Sgn = parseInt(this.modeOfSignature.value.toString());
+    accountModel.ModeOfOperation = parseInt(this.modeOfOperation.value.toString());
     accountModel.StaffCode = this.staffDirectorOther.value.toString();
-    accountModel.LedgerFolioNo = this.ledgerNumber.value.toString();
-    accountModel.Min_Bal = parseFloat(this.minimumBalance.value.toString());
+    accountModel.ClearingAmount = parseFloat(this.clearingAmount.value.toString());
+    accountModel.MinimumBalance = parseFloat(this.minimumBalance.value.toString());
     accountModel.Last_Int_Date = this.lastInterestDate.value.toString();
     accountModel.Last_Trn_Date = this.lastTransactionDate.value.toString();
     accountModel.Int_Rate = parseFloat(this.interestRateParam.value.toString());
     accountModel.Opn_Date = this.accountOpeningDate.value.toString();
-    // accountModel.Print_Date = this.printDate.value.toString();
-    accountModel.Passbook_Date = this.passbookDate.value.toString();
+    accountModel.PassbookDate = this.passbookDate.value.toString();
+    accountModel.Inst_Amt = parseFloat(this.dailyInstallmentAmount.value.toString());
+    accountModel.Inst_No = 0;
+    accountModel.Inst_Type = "D";
+    accountModel.Payb_Amt = parseFloat(this.payableAmount.value.toString());
+    accountModel.Exp_Date = this.expiryDate.value.toString();
+    accountModel.PeriodInDays = parseFloat(this.pigmyPeriod.value.toString());
     accountModel.Close_Flag = this.close_Flag.value.toString() == 'true' ? 1 : 0;
     if (accountModel.Close_Flag == 1) {
       accountModel.Close_Date = this.accountCloseDate.value.toString();
       accountModel.Exp_Date = this.accountCloseDate.value.toString();
     }
-    accountModel.Currency = this.currency.value.toString();
-    accountModel.Other_Branch_Trf = this.otherBranchTransfer.value.toString() == 'Y' ? 1 : 0;
+
     accountModel.CreatedBy = this._sharedService.applicationUser.id;
     accountModel.NomineeList = [];
 
@@ -870,8 +993,8 @@ export class SavingAccountsComponent {
     }
     // Call API to save account
 
-    this._savingAccountService.saveSavingAccount(accountModel).subscribe((data: any) => {
-     
+    this._pigmyAccountService.savePigmyAccount(accountModel).subscribe((data: any) => {
+
       if (data) {
         if (data.data.data && data.data.data.retId > 0) {
           if (data.data.data.status == "SUCCESS") {
@@ -890,26 +1013,26 @@ export class SavingAccountsComponent {
   }
 
   authoriseAccount() {
-    if (this._sharedService.applicationUser.id > 0 &&
-      this.dto.id > 0 && this._sharedService.applicationUser.branchId > 0) {
-      let authAccountRequest = {
-        AccountsId: this.dto.id,
-        BranchCode: this._sharedService.applicationUser.branchId,
-        AuthByUserId: this._sharedService.applicationUser.id
-      };
+    // if (this._sharedService.applicationUser.id > 0 &&
+    //   this.dto.id > 0 && this._sharedService.applicationUser.branchId > 0) {
+    //   let authAccountRequest = {
+    //     AccountsId: this.dto.id,
+    //     BranchCode: this._sharedService.applicationUser.branchId,
+    //     AuthByUserId: this._sharedService.applicationUser.id
+    //   };
 
-      this._accountsService.authoriseAccount(authAccountRequest).subscribe((data: any) => {
+    //   this._accountsService.authoriseAccount(authAccountRequest).subscribe((data: any) => {
 
-        if (data) {
-          if (data.data.data && data.data.data.retId > 0) {
-            this._toastrService.success("Account authorised successfully!", 'Success!');
-          }
-          else {
-            this._toastrService.success("Error while authorising account!", 'Error!');
-          }
-        }
-      })
-    }
+    //     if (data) {
+    //       if (data.data.data && data.data.data.retId > 0) {
+    //         this._toastrService.success("Account authorised successfully!", 'Success!');
+    //       }
+    //       else {
+    //         this._toastrService.success("Error while authorising account!", 'Error!');
+    //       }
+    //     }
+    //   })
+    // }
   }
 
   configClick(routeValue: string) {
@@ -921,9 +1044,9 @@ export class SavingAccountsComponent {
     this.clearSummaryDetails();
     this.clearCustomerDetails();
     this.clearAccountsDetails();
-    this.clearParametersDetails();
     this.clearNomineeDetails();
     this.clearJointDetails();
+    this.clearPigmyDetails();
     this.isAddMode = false;
   }
 
@@ -957,27 +1080,19 @@ export class SavingAccountsComponent {
     this.accountForm.patchValue({
       accountType: this.uiAccountTypes[0].constantNo,
       modeOfOperation: this.uiModeOfOperations[0].constantNo,
-      modeOfSignature: this.uiModeOfOperations[0].constantNo,
+      //modeOfSignature: this.uiModeOfOperations[0].constantNo,
       staffDirectorOther: this.uiEmployyeTypes[0].code,
       accountStatus: this.uiAccountStatuses[0].constantNo,
-      accountOpeningDate: formatDate(new Date(Date.now()), 'yyyy-MM-dd', 'en'),
       passbookDate: formatDate(new Date(Date.now()), 'yyyy-MM-dd', 'en'),
       lastInterestDate: formatDate(new Date(Date.now()), 'yyyy-MM-dd', 'en'),
       lastTransactionDate: formatDate(new Date(Date.now()), 'yyyy-MM-dd', 'en'),
-      printDate: formatDate(new Date(Date.now()), 'yyyy-MM-dd', 'en'),
+      //printDate: formatDate(new Date(Date.now()), 'yyyy-MM-dd', 'en'),
       accountCloseDate: "",
+      drInterestDate: formatDate(new Date(Date.now()), 'yyyy-MM-dd', 'en'),
       close_Flag: false
     })
   }
-  clearParametersDetails() {
-    this.parametersForm.patchValue({
-      interestRateParam: "",
-      ledgerNumber: "",
-      minimumBalance: "",
-      currency: this.uiCurrencies[0].currencyId,
-      otherBranchTransfer: this.uiTDSOptions[0].code,
-    })
-  }
+
   clearNomineeDetails() {
     this.uiNominis = [];
     this.nominiForm.patchValue({
@@ -989,22 +1104,26 @@ export class SavingAccountsComponent {
     })
   }
   clearJointDetails() {
-    this.uiSelectedJointCustomers = []
+    this.uiSelectedJointCustomers = [];
     this.jointForm.patchValue({
       jointCustomers: [],
       operativeInstruction: "",
     })
   }
 
-  // openSearchedCustomers() {
-  //   this.toggleSearchCustomers = !this.toggleSearchCustomers;
-  // }
 
-  // openSearchedJointCustomers() {
-  //   this.toggleSearchJointCustomers = !this.toggleSearchJointCustomers;
-  // }
-
-  //
+  clearPigmyDetails() {
+    this.PigmyDetailsForm.patchValue({
+      dailyInstallmentAmount: "",
+      accountOpeningDate: formatDate(new Date(Date.now()), 'yyyy-MM-dd', 'en'),
+      pigmyPeriod: "",
+      interestRateParam: "",
+      clearingAmount: "",
+      minimumBalance: "",
+      expiryDate: formatDate(new Date(Date.now()), 'yyyy-MM-dd', 'en'),
+      payableAmount: "",
+    })
+  }
 
   get customerNumber() {
     return this.customerDetailsForm.get('customerNumber')!;
@@ -1051,6 +1170,9 @@ export class SavingAccountsComponent {
   get generalLedger() {
     return this.summaryForm.get('generalLedger')!;
   }
+  get pigmyAgent() {
+    return this.summaryForm.get('pigmyAgent')!;
+  }
   get glAccountNumberStr() {
     return this.summaryForm.get('glAccountNumberStr')!;
   }
@@ -1069,9 +1191,9 @@ export class SavingAccountsComponent {
   get modeOfOperation() {
     return this.accountForm.get('modeOfOperation')!;
   }
-  get modeOfSignature() {
-    return this.accountForm.get('modeOfSignature')!;
-  }
+  // get modeOfSignature() {
+  //   return this.accountForm.get('modeOfSignature')!;
+  // }
   get staffDirectorOther() {
     return this.accountForm.get('staffDirectorOther')!;
   }
@@ -1082,9 +1204,7 @@ export class SavingAccountsComponent {
   get passbookDate() {
     return this.accountForm.get('passbookDate')!;
   }
-  get accountOpeningDate() {
-    return this.accountForm.get('accountOpeningDate')!;
-  }
+
   get accountCloseDate() {
     return this.accountForm.get('accountCloseDate')!;
   }
@@ -1094,47 +1214,14 @@ export class SavingAccountsComponent {
   get lastTransactionDate() {
     return this.accountForm.get('lastTransactionDate')!;
   }
-  // get drInterestDate() {
-  //   return this.accountForm.get('drInterestDate')!;
-  // }
-  get printDate() {
-    return this.accountForm.get('printDate')!;
+  get drInterestDate() {
+    return this.accountForm.get('drInterestDate')!;
   }
+  // get printDate() {
+  //   return this.accountForm.get('printDate')!;
+  // }
   get close_Flag() {
     return this.accountForm.get('close_Flag')!;
-  }
-
-  //
-
-  get interestRateParam() {
-    return this.parametersForm.get('interestRateParam')!;
-  }
-  get ledgerNumber() {
-    return this.parametersForm.get('ledgerNumber')!;
-  }
-  get minimumBalance() {
-    return this.parametersForm.get('minimumBalance')!;
-  }
-  get additionalBalance() {
-    return this.parametersForm.get('additionalBalance')!;
-  }
-  get currency() {
-    return this.parametersForm.get('currency')!;
-  }
-  get otherBranchTransfer() {
-    return this.parametersForm.get('otherBranchTransfer')!;
-  }
-  get form60() {
-    return this.parametersForm.get('form60')!;
-  }
-  get form61() {
-    return this.parametersForm.get('form61')!;
-  }
-  get tds() {
-    return this.parametersForm.get('tds')!;
-  }
-  get tdsReason() {
-    return this.parametersForm.get('tdsReason')!;
   }
 
   //
@@ -1159,9 +1246,34 @@ export class SavingAccountsComponent {
   get jointCustomers() {
     return this.jointForm.get('jointCustomers')!;
   }
-
   get operativeInstruction() {
     return this.jointForm.get('operativeInstruction')!;
   }
 
+  //
+
+  get dailyInstallmentAmount() {
+    return this.PigmyDetailsForm.get('dailyInstallmentAmount')!;
+  }
+  get accountOpeningDate() {
+    return this.PigmyDetailsForm.get('accountOpeningDate')!;
+  }
+  get pigmyPeriod() {
+    return this.PigmyDetailsForm.get('pigmyPeriod')!;
+  }
+  get interestRateParam() {
+    return this.PigmyDetailsForm.get('interestRateParam')!;
+  }
+  get clearingAmount() {
+    return this.PigmyDetailsForm.get('clearingAmount')!;
+  }
+  get minimumBalance() {
+    return this.PigmyDetailsForm.get('minimumBalance')!;
+  }
+  get expiryDate() {
+    return this.PigmyDetailsForm.get('expiryDate')!;
+  }
+  get payableAmount() {
+    return this.PigmyDetailsForm.get('payableAmount')!;
+  }
 }

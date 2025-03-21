@@ -1,0 +1,132 @@
+<div class="row">
+    <div class="col-md-12">
+        <div class="main-card mb-3 card">
+            <div class="card-body">
+                <h5 class="card-title">Cash Transfer To And From Sub Cashier</h5>
+
+                <div class="row">
+                    <div class="position-relative form-group" style="width: 50%;">
+                        <label class="" for="transactionType">Transaction Type</label>
+                        <select class="form-control" id="transactionType" name="transactionType"
+                        (change)="changeTransactionType($event)" [(ngModel)]="selectedTransactionType">
+                        <option *ngFor="let uiTransactionType of uiTransactionTypes" [value]="uiTransactionType.code">
+                            {{uiTransactionType.name}}
+                        </option>
+                        </select>
+                    </div>
+                    <div class="position-relative form-group" style="width: 50%;">
+                        <label class="" for="cashier">Select Cashier</label>
+                        <select class="form-control" id="cashier" name="cashier" [(ngModel)]="selectedUserId"
+                        (change)="changeUser($event)">
+                            <option *ngFor="let uiCashier of uiCashiers" [value]="uiCashier.id">
+                                {{uiCashier.name}}
+                            </option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div style="width: 50%; padding-right: 5px;">
+                        <!-- <app-cash-status [UserId]="UserId"></app-cash-status> -->
+                        <fieldset>
+                            <legend> Cash Status - Main Cashier</legend>
+                            
+                            <table  class="table table-hover table-bordered dataTable dtr-inline table-compressed">
+                                <thead>
+                                    <tr role="row">
+                                        <th style="width: 6%;">Nos</th>
+                                        <th style="width: 30%;">Denomination</th>
+                                        <th style="width: 2%;"></th>
+                                        <th style="width: 30%;">Quantity</th>
+                                        <th style="width: 2%;"></th>
+                                        <th style="width: 30%;">Amount</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr role="row" *ngFor="let mainCashierDenomination of mainCashierDenominations; let ind=index">
+                                        <td>{{ind + 1}}</td>
+                                        <td>{{mainCashierDenomination.denomination_Label}} </td>
+                                        <td>X</td>
+                                        <td><input type="number" width="50%" [disabled]="isPayment"
+                                            [(ngModel)]="mainCashierDenomination.quantity" 
+                                            (change)="changeMainCashierDenominationAmount(ind)"></td>
+                                        <td>=</td>
+                                        <td>
+                                            <input type="number" width="50%" [disabled]="true"
+                                                [(ngModel)]="mainCashierDenomination.total">
+                                        </td>
+                                    </tr>
+                                    <tr role="row">
+                                        <td colspan="3"></td>
+                                        <td>Total Amount</td>
+                                        <td>=</td>
+                                        <td>
+                                            <form #form="ngForm" [formGroup]="cashMainCashierForm">
+                                                {{totalMainCashOpenAmountText.value}}
+                                            </form>
+                                           
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </fieldset>
+                    </div>
+                    <div style="width: 50%; padding-right: 5px;">
+                        <fieldset>
+                            <legend> Cash Transfer</legend>
+                            
+                            <table  class="table table-hover table-bordered dataTable dtr-inline table-compressed">
+                                <thead>
+                                    <tr role="row">
+                                        <th style="width: 6%;">Nos</th>
+                                        <th style="width: 30%;">Denomination</th>
+                                        <th style="width: 2%;"></th>
+                                        <th style="width: 30%;">Quantity</th>
+                                        <th style="width: 2%;"></th>
+                                        <th style="width: 30%;">Amount</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr role="row" *ngFor="let subCashierDenomination of subCashierDenominations; let ind=index">
+                                        <td>{{ind + 1}}</td>
+                                        <td>{{subCashierDenomination.denomination_Label}} </td>
+                                        <td>X</td>
+                                        <td><input type="number" width="50%" [disabled]="!isPayment"
+                                            [(ngModel)]="subCashierDenomination.quantity" 
+                                            (change)="changeSubCashierDenominationAmount(ind)"></td>
+                                        <td>=</td>
+                                        <td>
+                                            <input type="number" width="50%" [disabled]="true"
+                                                [(ngModel)]="subCashierDenomination.total">
+                                        </td>
+                                    </tr>
+                                    <tr role="row">
+                                        <td colspan="3"></td>
+                                        <td>Total Amount</td>
+                                        <td>=</td>
+                                        <td>
+                                            <form #form="ngForm" [formGroup]="cashSubCashierForm">
+                                                {{totalSubCashOpenAmountText.value}}
+                                            </form>
+                                           
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </fieldset>
+                    </div>
+                </div>
+                    <div>
+                        <button type="button" style="margin-top: 30px !important;" class="mt-1 btn btn-primary"
+                        tabindex="1" (click)="transferCash()"
+                        *ngIf="isMainCashierUser()">Transfer</button>
+
+                        <button class="btn btn-danger btn-left-margin10" style="margin-top: 30px !important;" 
+                        tabindex="2" (click)="clear()">
+                            Clear</button>
+                    </div>
+               
+            </div>
+        </div>
+    </div>
+</div>

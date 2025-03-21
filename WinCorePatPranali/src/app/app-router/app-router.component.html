@@ -529,8 +529,39 @@
                                     <a [class.mm-active]="isMenuSelected('account-search')"
                                         (click)="configClick('account-search')">
                                         <i class="metismenu-icon pe-7s-next-2"></i>
-                                        Bank Accounts
+                                        Accounts
                                     </a>
+                                    <ul [ngClass]="isAccountsExpanded ? 'mm-collapse mm-show': 'mm-collapse'">
+                                        <li>
+                                            <a [class.mm-active]="isMenuSelected('saving-accounts')"
+                                                (click)="configClick('saving-accounts')">
+                                                <i class="metismenu-icon pe-7s-next-2"></i>
+                                                Savings
+                                            </a>
+                                        </li>
+                                       
+                                        <li>
+                                            <a [class.mm-active]="isMenuSelected('deposit-accounts')"
+                                                (click)="configClick('deposit-accounts')">
+                                                <i class="metismenu-icon pe-7s-note2"></i>
+                                                Deposit
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a [class.mm-active]="isMenuSelected('loan-accounts')"
+                                                (click)="configClick('loan-accounts')">
+                                                <i class="metismenu-icon pe-7s-note2"></i>
+                                                Loan
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a [class.mm-active]="isMenuSelected('other-accounts')"
+                                                (click)="configClick('other-accounts')">
+                                                <i class="metismenu-icon pe-7s-note2"></i>
+                                                Other
+                                            </a>
+                                        </li>
+                                    </ul>
                                 </li>
                                
                                 <li>
@@ -593,20 +624,20 @@
                                         Vouchers Passing 
                                     </a>
                                 </li>
-                                <li>
+                                <!-- <li>
                                     <a [class.mm-active]="isMenuSelected('work-starting')"
                                         (click)="configClick('day-start')">
                                         <i class="metismenu-icon pe-7s-note2"></i>
                                         Starting of Work  
                                     </a>
-                                </li>
-                                <!-- <li>
+                                </li> -->
+                                <li>
                                     <a [class.mm-active]="isMenuSelected('pending-vouchers')"
                                         (click)="configClick('pending-vouchers')">
                                         <i class="metismenu-icon pe-7s-note2"></i>
                                         Pending Vouchers  
                                     </a>
-                                </li> -->
+                                </li>
                                
                                 <!-- <li>
                                     <a [class.mm-active]="isMenuSelected('saving-transactions')"
@@ -633,10 +664,80 @@
                             </ul>
                         </li>
 
+                        <li class="app-sidebar__heading">
+                            <a (click)="clickMenu('dailySetup')">
+                                <i class="metismenu-icon pe-7s-wristwatch icon-gradient bg-love-kiss"></i>
+                                    Daily Setup
+                                <i class="metismenu-state-icon pe-7s-angle-down caret-left"
+                                [ngClass]="isDailySetupExpanded ? 'pe-7s-angle-down mm-up-arrow': 'pe-7s-angle-down'"></i>
+                            </a>
+                            <ul [ngClass]="isDailySetupExpanded ? 'mm-collapse mm-show': 'mm-collapse'">
+                                <li>
+                                    <a [class.mm-active]="isMenuSelected('begin-day')"
+                                        (click)="configClick('begin-day')">
+                                        <i class="metismenu-icon pe-7s-note2"></i>
+                                        Begin Day
+                                    </a>
+                                </li>
+                                <li>
+                                    <a [class.mm-active]="isMenuSelected('cash-open')"
+                                        (click)="configClick('cash-open')">
+                                        <i class="metismenu-icon pe-7s-note2"></i>
+                                        Cash Open
+                                    </a>
+                                </li>
+                                <li>
+                                    <a [class.mm-active]="isMenuSelected('cashier-cash-transfer')"
+                                        (click)="configClick('cashier-cash-transfer')">
+                                        <i class="metismenu-icon pe-7s-note2"></i>
+                                        Cashier Cash Transfer
+                                    </a>
+                                </li>
+                            </ul>
+                        </li>
+
+                        <li class="app-sidebar__heading">
+                            <a (click)="clickMenu('pigmy')">
+                                <i class="metismenu-icon pe-7s-note icon-gradient bg-love-kiss"></i>
+                                    Pigmy Work
+                                <i class="metismenu-state-icon pe-7s-angle-down caret-left"
+                                [ngClass]="isPigmyWorkExpanded ? 'pe-7s-angle-down mm-up-arrow': 'pe-7s-angle-down'"></i>
+                            </a>
+                            <ul [ngClass]="isPigmyWorkExpanded ? 'mm-collapse mm-show': 'mm-collapse'">
+                                <li>
+                                    <a [class.mm-active]="isMenuSelected('pigmy-agent-list')"
+                                        (click)="configClick('pigmy-agent-list')">
+                                        <i class="metismenu-icon pe-7s-note2"></i>
+                                        Agents
+                                    </a>
+                                </li>
+                                <li>
+                                    <a [class.mm-active]="isMenuSelected('pigmy-account-serach')"
+                                        (click)="configClick('pigmy-account-serach')">
+                                        <i class="metismenu-icon pe-7s-note2"></i>
+                                        Accounts
+                                    </a>
+                                </li>
+                                <li>
+                                    <a [class.mm-active]="isMenuSelected('pigmy-entry')"
+                                        (click)="configClick('pigmy-entry')">
+                                        <i class="metismenu-icon pe-7s-note2"></i>
+                                        Pigmy Entry
+                                    </a>
+                                </li>
+                                <li>
+                                    <a [class.mm-active]="isMenuSelected('pigmy-passing')"
+                                        (click)="configClick('pigmy-passing')">
+                                        <i class="metismenu-icon pe-7s-note2"></i>
+                                        Pigmy Passing
+                                    </a>
+                                </li>
+                            </ul>
+                        </li>
 
                         <li class="app-sidebar__heading">
                             <a (click)="clickMenu('registers')">
-                                <i class="metismenu-icon pe-7s-note icon-gradient bg-love-kiss"></i>
+                                <i class="metismenu-icon pe-7s-wallet icon-gradient bg-love-kiss"></i>
                                     Registers
                                 <i class="metismenu-state-icon pe-7s-angle-down caret-left"
                                 [ngClass]="isRegistersExpanded ? 'pe-7s-angle-down mm-up-arrow': 'pe-7s-angle-down'"></i>

@@ -24395,3 +24395,7 @@ input::-webkit-inner-spin-button {
 input[type=number] {
   -moz-appearance: textfield;
 }
+
+.table-compressed th, .table-compressed td {
+    padding: .45rem !important;
+}

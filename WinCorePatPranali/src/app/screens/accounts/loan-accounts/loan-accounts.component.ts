@@ -1092,6 +1092,7 @@ export class LoanAccountsComponent {
   }
 
   clearJointDetails() {
+    this.uiSelectedJointCustomers = []
     this.jointForm.patchValue({
       jointCustomers: [],
       operativeInstruction: "",

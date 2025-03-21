@@ -1,0 +1,105 @@
+<div class="row">
+    <div class="col-md-12">
+        <div class="main-card mb-3 card">
+            <div class="card-body">
+               
+                <h5 class="card-title">Pigmy Entries</h5>
+                <form [formGroup]="pigmyEntriesForm" #form="ngForm">
+                    <div class="row">
+                        <div class="col-md-3 position-relative form-group">
+                            <label class="">Collection Date <span class="mandatory">*</span></label>
+                            <input tabindex="1" type="date" class="form-control" formControlName="pigmyDate">
+                        </div>
+                        <div class="col-md-3 position-relative">
+                            <label class="">Pigmy Agent</label>
+                            <div class="input-group">
+                                <ngx-select-dropdown [config]="configAgent" tabindex="2" [options]="uiPigmyAgents"
+                                formControlName="pigmyAgent" style="width: 100%;"
+                                    [multiple]="false" [ngClass]="{'disabled': !isAddMode}"></ngx-select-dropdown>
+                            </div>
+                        </div>
+                       
+                        <div class="col-md-3 position-relative">
+                            <button type="button" class="mt-1 btn btn-info" tabindex="4" style="margin-top: 30px !important;"
+                                (click)="showAccounts()">Show All Accounts</button>
+                        </div>
+                        
+                        <div class="col-md-3 position-relative form-group">
+                            <label class="">Total Collection Cash <span class="mandatory">*</span></label>
+                            <input tabindex="3" type="number" class="form-control" formControlName="pigmyCollection">
+                        </div>
+                    </div>
+                </form>
+
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div style="max-height: 320px; min-height: 320px; overflow: auto; margin-top: 10px;">
+                            <table class="table table-bordered">
+                                <thead>
+                                    <tr>
+                                        <th width="25%">Customer Name</th>
+                                        <th width="25%">Pigmy Account</th>
+                                        <th width="40%">Amount</th>
+                                        <th width="10%">Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr *ngFor="let uiPigmyAccount of uiPigmyAccounts; let i = index">
+                                        <td>
+                                            {{uiPigmyAccount.custName}}
+                                        </td>
+                                        <td>
+                                            <input class="form-control" [(ngModel)]="uiPigmyAccount.accountNo" readonly/>
+                                        </td>
+                                        <td>
+                                            <input class="form-control" [(ngModel)]="uiPigmyAccount.pigmyAmount" type="number"
+                                            (click)="onAmountClick(i)" (blur)="onAmountBlur()"/>
+                                        </td>
+                                        <td>
+                                            <button (click)="removeEntry(i)" class="btn btn-danger">Clear</button>
+                                        </td>
+                                    </tr>
+                                    <tr *ngIf="uiPigmyAccounts.length==0">
+                                        <td colspan="4">No records found..</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="divider"></div>
+                <div class="row">
+                    <div class="col-lg-12">
+                        <table class="table table-bordered">
+                                <tr>
+                                    <td width="25%">
+                                        Total Daily Collection
+                                    </td>
+                                    <td width="25%">
+                                        <input class="form-control" [(ngModel)]="totalDailyPigmyCollection" readonly/>
+                                    </td>
+                                    <td width="25%">
+                                        
+                                    </td>
+                                    <td width="25%">
+                                        
+                                    </td>
+                                </tr>
+                        </table>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-6 position-relative">
+                        <button type="button" class="mt-1 btn btn-primary" tabindex="8"
+                            (click)="SavePigmyEntries()">Submit</button>
+                        <button class="mt-1 btn btn-left-margin10 btn-danger" tabindex="9" (click)="clearAll()">Clear
+                            All</button>
+                    </div>
+                </div>
+              
+            </div>
+        </div>
+    </div>
+</div>
