@@ -55,6 +55,9 @@ import { AgentsListComponent } from '../screens/pigmy/agents/agents-list/agents-
 import { AgentFormComponent } from '../screens/pigmy/agents/agent-form/agent-form.component';
 import { PigmyEntryComponent } from '../screens/pigmy/pigmy-entry/pigmy-entry.component';
 import { PigmyPassingComponent } from '../screens/pigmy/pigmy-passing/pigmy-passing.component';
+import { CollectionAccountsListComponent } from '../screens/pigmy/collection-accounts/collection-accounts-list/collection-accounts-list.component';
+import { LinkCollectionAccountComponent } from '../screens/pigmy/collection-accounts/link-collection-account/link-collection-account.component';
+import { StandingInstructionsListComponent } from '../screens/transactions/standing-instructions/standing-instructions-list/standing-instructions-list.component';
 
 const routes: Routes = [
   {
@@ -339,6 +342,27 @@ const routes: Routes = [
         }
        },
        { path: 'pigmy-passing', component: PigmyPassingComponent, canActivate: [AuthGuard],
+        data: {
+          roles: [UiUserRole.MANAGER, UiUserRole.GENERAL_MANAGER, UiUserRole.ASSISTENT_MANAGER, 
+            UiUserRole.CLERK, UiUserRole.OPERATOR, UiUserRole.PASSING_OFFICER
+          ]
+        }
+       },
+       { path: 'collection-accounts', component: CollectionAccountsListComponent, canActivate: [AuthGuard],
+        data: {
+          roles: [UiUserRole.MANAGER, UiUserRole.GENERAL_MANAGER, UiUserRole.ASSISTENT_MANAGER, 
+            UiUserRole.CLERK, UiUserRole.OPERATOR, UiUserRole.PASSING_OFFICER
+          ]
+        }
+       },
+       { path: 'link-collection-account', component: LinkCollectionAccountComponent, canActivate: [AuthGuard],
+        data: {
+          roles: [UiUserRole.MANAGER, UiUserRole.GENERAL_MANAGER, UiUserRole.ASSISTENT_MANAGER, 
+            UiUserRole.CLERK, UiUserRole.OPERATOR, UiUserRole.PASSING_OFFICER
+          ]
+        }
+       },
+       { path: 'standing-instructions', component: StandingInstructionsListComponent, canActivate: [AuthGuard],
         data: {
           roles: [UiUserRole.MANAGER, UiUserRole.GENERAL_MANAGER, UiUserRole.ASSISTENT_MANAGER, 
             UiUserRole.CLERK, UiUserRole.OPERATOR, UiUserRole.PASSING_OFFICER

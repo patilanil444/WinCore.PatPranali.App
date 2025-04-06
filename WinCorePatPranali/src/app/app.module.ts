@@ -17,7 +17,8 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
     AppComponent,
     LoginComponent,
     NotFoundComponent,
-    SpinnerComponent
+    SpinnerComponent,
+   
   ],
   imports: [
     CommonModule,

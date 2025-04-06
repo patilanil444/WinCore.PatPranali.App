@@ -20,13 +20,13 @@
                         </div>
                        
                         <div class="col-md-3 position-relative">
-                            <button type="button" class="mt-1 btn btn-info" tabindex="4" style="margin-top: 30px !important;"
+                            <button type="button" class="mt-1 btn btn-info" tabindex="3" style="margin-top: 30px !important;"
                                 (click)="showAccounts()">Show All Accounts</button>
                         </div>
-                        
+
                         <div class="col-md-3 position-relative form-group">
                             <label class="">Total Collection Cash <span class="mandatory">*</span></label>
-                            <input tabindex="3" type="number" class="form-control" formControlName="pigmyCollection">
+                            <input tabindex="4" type="number" class="form-control" formControlName="pigmyCollection">
                         </div>
                     </div>
                 </form>
@@ -37,9 +37,10 @@
                             <table class="table table-bordered">
                                 <thead>
                                     <tr>
-                                        <th width="25%">Customer Name</th>
-                                        <th width="25%">Pigmy Account</th>
-                                        <th width="40%">Amount</th>
+                                        <th width="20%">Customer Name</th>
+                                        <th width="20%">GL Name</th>
+                                        <th width="20%">Pigmy Account</th>
+                                        <th width="30%">Amount</th>
                                         <th width="10%">Actions</th>
                                     </tr>
                                 </thead>
@@ -48,6 +49,10 @@
                                         <td>
                                             {{uiPigmyAccount.custName}}
                                         </td>
+                                        <td>
+                                            {{uiPigmyAccount.glName}}
+                                        </td>
+                                        
                                         <td>
                                             <input class="form-control" [(ngModel)]="uiPigmyAccount.accountNo" readonly/>
                                         </td>
@@ -73,31 +78,34 @@
                     <div class="col-lg-12">
                         <table class="table table-bordered">
                                 <tr>
-                                    <td width="25%">
+                                    <td width="20%">
                                         Total Daily Collection
                                     </td>
-                                    <td width="25%">
+                                    <td width="20%">
                                         <input class="form-control" [(ngModel)]="totalDailyPigmyCollection" readonly/>
                                     </td>
-                                    <td width="25%">
-                                        
+                                    <td width="60%">
+                                        <div class="position-relative">
+                                            <button type="button" class="mt-1 btn btn-primary" tabindex="8"
+                                                (click)="SavePigmyEntries()">Submit</button>
+                                            <button class="mt-1 btn btn-left-margin10 btn-danger" tabindex="9" (click)="clearAll()">Clear
+                                                All</button>
+                                        </div>
                                     </td>
-                                    <td width="25%">
-                                        
-                                    </td>
+                                    
                                 </tr>
                         </table>
                     </div>
                 </div>
 
-                <div class="row">
+                <!-- <div class="row">
                     <div class="col-md-6 position-relative">
                         <button type="button" class="mt-1 btn btn-primary" tabindex="8"
                             (click)="SavePigmyEntries()">Submit</button>
                         <button class="mt-1 btn btn-left-margin10 btn-danger" tabindex="9" (click)="clearAll()">Clear
                             All</button>
                     </div>
-                </div>
+                </div> -->
               
             </div>
         </div>

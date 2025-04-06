@@ -638,6 +638,14 @@
                                         Pending Vouchers  
                                     </a>
                                 </li>
+
+                                <li>
+                                    <a [class.mm-active]="isMenuSelected('standing-instructions')"
+                                        (click)="configClick('standing-instructions')">
+                                        <i class="metismenu-icon pe-7s-note2"></i>
+                                        Standing Instructions 
+                                    </a>
+                                </li>
                                
                                 <!-- <li>
                                     <a [class.mm-active]="isMenuSelected('saving-transactions')"
@@ -715,7 +723,14 @@
                                     <a [class.mm-active]="isMenuSelected('pigmy-account-serach')"
                                         (click)="configClick('pigmy-account-serach')">
                                         <i class="metismenu-icon pe-7s-note2"></i>
-                                        Accounts
+                                        Pigmy Accounts
+                                    </a>
+                                </li>
+                                <li>
+                                    <a [class.mm-active]="isMenuSelected('collection-accounts')"
+                                        (click)="configClick('collection-accounts')">
+                                        <i class="metismenu-icon pe-7s-note2"></i>
+                                        Collection Accounts
                                     </a>
                                 </li>
                                 <li>

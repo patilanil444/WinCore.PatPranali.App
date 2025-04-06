@@ -12,6 +12,8 @@ export class PigmyMasterService {
   serviceBaseURL = "";
   agentIdToDelete = -1;
 
+  CollectionAccountToDelete = -1;
+
   constructor(private http: HttpClient) { }
 
   private dto = new BehaviorSubject<IGeneralDTO>({} as IGeneralDTO);
@@ -53,9 +55,26 @@ export class PigmyMasterService {
     return this.http.post(GlobleDeclarations.apiBaseURL + "api/PigmyMaster/save-agent", agentModel, options);
   }
 
+  linkAgentCollectionAccount(collectionModel: any): any {
+    let options = GlobleDeclarations.getHeaderOptions();
+    return this.http.post(GlobleDeclarations.apiBaseURL + "api/PigmyMaster/link-collection-account", collectionModel, options);
+  }
+
+  getLinkedAgentCollectionAccounts(agentId: number) {
+    let options = GlobleDeclarations.getHeaderOptions();
+    return this.http.get(GlobleDeclarations.apiBaseURL + "api/PigmyMaster/linked-collection-accounts?agentId=" + agentId , options);
+  }
+
+  deleteLinkedAccount(deleteModel: any)
+  {
+    let options = GlobleDeclarations.getHeaderOptions();
+    return this.http.post(GlobleDeclarations.apiBaseURL + "api/PigmyMaster/delete-link-account", deleteModel, options);
+  }
+
   getMaxAccountNumber(branchId: number, code1: number, agentId: number) {
     let options = GlobleDeclarations.getHeaderOptions();
     return this.http.get(GlobleDeclarations.apiBaseURL + "api/PigmyMaster/max-account-no?branchCode=" + branchId+ "&code1="+ code1, options);
   }
+
   
 }

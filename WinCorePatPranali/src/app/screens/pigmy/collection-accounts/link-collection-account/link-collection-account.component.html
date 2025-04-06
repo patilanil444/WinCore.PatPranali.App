@@ -1,0 +1,95 @@
+<div class="row">
+    <div class="col-md-12">
+        <div class="main-card mb-3 card">
+            <div class="card-body">
+               
+                <h5 class="card-title">Link Collection Account</h5>
+                <form [formGroup]="collectionAccountForm" #form="ngForm">
+                    <div class="row">
+                        <div class="position-relative">
+                            <fieldset>
+                                <legend class="">Pigmy Agent</legend>
+                                <div class="col-md-3 input-group">
+                                    <ngx-select-dropdown [config]="configAgent" tabindex="1" [options]="uiPigmyAgents" style="width: 100%;"
+                                        formControlName="pigmyAgent" [multiple]="false"></ngx-select-dropdown>
+                                </div>
+                            </fieldset>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-12 position-relative" style="margin-top: 10px;">
+                            <fieldset>
+                                <legend>Search Account</legend>
+                                <app-bank-acc-search [generalLedgers]="uiGeneralLedgers" [uiBranches]="uiBranches" tabindex="2"
+                                [isReset]="isResetAccountSearch"  (accounts)="getAccounts($event)"></app-bank-acc-search>
+                                    
+                            </fieldset>
+                        </div>
+                    </div>
+                   
+
+                    <div class="row">
+                        <div class="col-md-4">
+                            <fieldset>
+                                <legend>Account Details</legend>
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <label>Customer Name </label>
+                                        <label style="float: right;">{{customerName.value}}</label>
+                                    </div>
+                                    <div class="col-md-12">
+                                        <label>Account Number </label>
+                                        <label style="float: right;">{{accountNumber.value}}</label>
+                                    </div>
+                                    <div class="col-md-12">
+                                        <label>Account Type </label>
+                                        <label style="float: right;">{{accountType.value}}</label>
+                                    </div>
+                                    <div class="col-md-12">
+                                        <label>Last Transaction Date </label>
+                                        <label style="float: right;">{{lastTransactionDate.value}}</label>
+                                    </div>
+                                    <div class="col-md-12">
+                                        <label>Last Interest Date</label>
+                                        <label style="float: right;">{{lastInterestDate.value}}</label>
+                                    </div>
+                                    <div class="col-md-12">
+                                        <label>Opening Date</label>
+                                        <label style="float: right;">{{openDate.value}}</label>
+                                    </div>
+                                    <div class="col-md-12">
+                                        <label>Interest Rate </label>
+                                        <label style="float: right;">{{interestRate.value}}</label>
+                                    </div>
+                                    <div class="col-md-12">
+                                        <label>Balance </label>
+                                        <label style="float: right;">{{balance.value}}</label>
+                                    </div>
+                                    <div class="col-md-12">
+                                        <label>Min Balance </label>
+                                        <label style="float: right;">{{minBalance.value}}</label>
+                                    </div>
+                                    <!-- <div class="col-md-12" [ngClass]="{'blink': (unclearedReceipt.value > 0)}">
+                                        <label>Uncleared Receipt Amount </label>
+                                        <label style="float: right;">{{unclearedReceipt.value}}</label>
+                                    </div>
+                                    <div class="col-md-12" [ngClass]="{'blink': (unclearedPayment.value > 0)}">
+                                        <label>Uncleared Payment Amount </label>
+                                        <label style="float: right;">{{unclearedPayment.value}}</label>
+                                    </div> -->
+                                </div>
+                        
+                            </fieldset>
+                        </div>
+
+                        <div class="col-md-4">
+                            <button type="button" class="mt-1 btn btn-primary" tabindex="4" style="margin-top: 30px !important;"
+                            (click)="linkAccount()">Link Account</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

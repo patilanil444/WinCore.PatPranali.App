@@ -96,6 +96,10 @@ import { PigmyAccountFormComponent } from '../screens/pigmy/accounts/pigmy-accou
 import { PigmyAccountSearchComponent } from '../screens/pigmy/accounts/pigmy-account-search/pigmy-account-search.component';
 import { PigmyPassingComponent } from '../screens/pigmy/pigmy-passing/pigmy-passing.component';
 import { PigmyCollectionInfoComponent } from '../screens/pigmy/pigmy-collection-info/pigmy-collection-info.component';
+import { CollectionAccountsListComponent } from '../screens/pigmy/collection-accounts/collection-accounts-list/collection-accounts-list.component';
+import { LinkCollectionAccountComponent } from '../screens/pigmy/collection-accounts/link-collection-account/link-collection-account.component';
+import { StandingInstructionsListComponent } from '../screens/transactions/standing-instructions/standing-instructions-list/standing-instructions-list.component';
+import { StandingInstructionsFormComponent } from '../screens/transactions/standing-instructions/standing-instructions-form/standing-instructions-form.component';
 
 @NgModule({
   declarations: [
@@ -191,6 +195,10 @@ import { PigmyCollectionInfoComponent } from '../screens/pigmy/pigmy-collection-
     PigmyEntryComponent,
     PigmyPassingComponent,
     PigmyCollectionInfoComponent,
+    CollectionAccountsListComponent,
+    LinkCollectionAccountComponent,
+    StandingInstructionsListComponent,
+    StandingInstructionsFormComponent
   ],
   imports: [
     CommonModule,
