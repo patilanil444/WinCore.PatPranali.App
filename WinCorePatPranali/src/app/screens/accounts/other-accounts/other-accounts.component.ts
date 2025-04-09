@@ -1,7 +1,8 @@
-import { formatDate } from '@angular/common';
+import { DatePipe, formatDate } from '@angular/common';
 import { Component } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
+import { BsDatepickerConfig } from 'ngx-bootstrap/datepicker';
 import { NgxDropdownConfig } from 'ngx-select-dropdown';
 import { ToastrService } from 'ngx-toastr';
 import { AccountDeclarations } from 'src/app/common/account-declarations';
@@ -40,7 +41,8 @@ export interface IOtherAccountModel {
 @Component({
   selector: 'app-other-accounts',
   templateUrl: './other-accounts.component.html',
-  styleUrls: ['./other-accounts.component.css']
+  styleUrls: ['./other-accounts.component.css'],
+  providers: [DatePipe]
 })
 export class OtherAccountsComponent {
   customerDetailsForm!: FormGroup;
@@ -87,13 +89,16 @@ export class OtherAccountsComponent {
   accountsId!: number;
   isAddMode = true;
   isAccountAuthorized = true;
+  datepickerConfig: BsDatepickerConfig;
 
   constructor(private router: Router, private _sharedService: SharedService, private _toastrService: ToastrService,
     private _generalLedgerService: GeneralLedgerService, private _customerService: CustomerService,
-    private _savingAccountService: SavingAccountService, private _otherAccountsService: OtherAccountsService,
-    private _accountsService: AccountsService) { }
+    private _otherAccountsService: OtherAccountsService, private _accountsService: AccountsService,
+    private datePipe: DatePipe) { }
 
   ngOnInit(): void {
+
+    this.datepickerConfig = this._sharedService.getDatepickerConfig();
 
     this.uiAccountTypes = this.retrieveMasters(UiEnumGeneralMaster.ACTYPE);
     this.uiModeOfOperations = this.retrieveMasters(UiEnumGeneralMaster.OPRMODE);
@@ -112,14 +117,17 @@ export class OtherAccountsComponent {
       mobile: new FormControl("", []),
       email: new FormControl("", []),
       pan: new FormControl("", []),
-      dob: new FormControl(formatDate(new Date(Date.now()), 'yyyy-MM-dd', 'en'), []),
+      dob: new FormControl(new Date(Date.now()), []),
       aadhar: new FormControl("", []),
-      joiningDate: new FormControl(formatDate(new Date(Date.now()), 'yyyy-MM-dd', 'en'), []),
+      joiningDate: new FormControl(new Date(Date.now()), []),
       group: new FormControl("", []),
       occupation: new FormControl("", []),
       city: new FormControl("", []),
       zone: new FormControl("", [])
     });
+
+    this.dob.disable();
+    this.joiningDate.disable();
 
     this.summaryForm = new FormGroup({
       generalLedger: new FormControl("", [Validators.required]),
@@ -129,12 +137,12 @@ export class OtherAccountsComponent {
     });
 
     this.accountForm = new FormGroup({
-      accountOpeningDate: new FormControl(formatDate(new Date(Date.now()), 'yyyy-MM-dd', 'en'), [Validators.required]),
+      accountOpeningDate: new FormControl(new Date(Date.now()), [Validators.required]),
       accountStatus: new FormControl(this.uiAccountStatuses[0].constantNo, [Validators.required]),
       interestRate: new FormControl("", [Validators.required]),
-      lastInterestDate: new FormControl(formatDate(new Date(Date.now()), 'yyyy-MM-dd', 'en'), [Validators.required]),
-      lastTransactionDate: new FormControl(formatDate(new Date(Date.now()), 'yyyy-MM-dd', 'en'), [Validators.required]),
-      matureDate: new FormControl(formatDate(new Date(Date.now()), 'yyyy-MM-dd', 'en'), [Validators.required]),
+      lastInterestDate: new FormControl(new Date(Date.now()), [Validators.required]),
+      lastTransactionDate: new FormControl(new Date(Date.now()), [Validators.required]),
+      matureDate: new FormControl(new Date(Date.now()), [Validators.required]),
       accountCloseDate: new FormControl("", []),
       close_Flag: new FormControl(false, [Validators.required])
     });
@@ -166,7 +174,7 @@ export class OtherAccountsComponent {
   isLoanOfficerUser() {
     return UserRoleHeper.isLoanOfficerUser();
   }
-  
+
   retrieveMasters(uiEnumGeneralMaster: UiEnumGeneralMaster) {
     let mastersData = this._sharedService.uiAllMasters.filter((m: any) => m.identifier == uiEnumGeneralMaster);
     if (mastersData && mastersData.length) {
@@ -179,7 +187,7 @@ export class OtherAccountsComponent {
   getGeneralLedgers() {
     return new Promise((resolve, reject) => {
       this._generalLedgerService.getGeneralLedgers(this._sharedService.applicationUser.branchId).subscribe((data: any) => {
-       
+
         if (data) {
           this.uiAllGeneralLedgers = data.data.data;
           if (this.uiAllGeneralLedgers) {
@@ -210,7 +218,7 @@ export class OtherAccountsComponent {
       else {
         this.isAddMode = false;
         this._otherAccountsService.getOtherAccount(this.accountsId).subscribe((data: any) => {
-         
+
           if (data) {
             if (data.statusCode == 200 && data.data.data) {
               var otherAccount = data.data.data;
@@ -234,29 +242,39 @@ export class OtherAccountsComponent {
                 mobile: "",
                 email: "",
                 pan: "",
-                dob: formatDate(new Date(Date.now()), 'yyyy-MM-dd', 'en'),
+                dob: new Date(Date.now()),
                 aadhar: "",
-                joiningDate: formatDate(new Date(Date.now()), 'yyyy-MM-dd', 'en'),
+                joiningDate: new Date(Date.now()),
                 group: "",
                 occupation: "",
                 city: "",
                 zone: "",
               })
 
+              this.isAccountAuthorized = otherAccount.authBy > 0;
+
               this.accountForm.patchValue({
-                accountOpeningDate: formatDate(new Date(otherAccount.opn_Date), 'yyyy-MM-dd', 'en'),
+                accountOpeningDate: new Date(otherAccount.opn_Date),
                 accountStatus: otherAccount.accountStatus,
                 interestRate: otherAccount.int_Rate,
-                lastInterestDate: formatDate(new Date(otherAccount.last_Int_Date), 'yyyy-MM-dd', 'en'),
-                lastTransactionDate: formatDate(new Date(otherAccount.last_Trn_Date), 'yyyy-MM-dd', 'en'),
-                matureDate: (otherAccount.mature_Date == null) ? "" :  formatDate(new Date(otherAccount.mature_Date), 'yyyy-MM-dd', 'en'),
-                accountCloseDate: (otherAccount.close_Date == null) ? "" : formatDate(new Date(otherAccount.close_Date), 'yyyy-MM-dd', 'en'),
+                lastInterestDate: new Date(otherAccount.last_Int_Date),
+                lastTransactionDate: new Date(otherAccount.last_Trn_Date),
+                matureDate: (otherAccount.mature_Date == null) ? "" : new Date(otherAccount.mature_Date),
+                accountCloseDate: (otherAccount.close_Date == null) ? "" : this.datePipe.transform(new Date(otherAccount.close_Date),'dd-MM-yyyy'),
                 close_Flag: (otherAccount.close_Flag == 1) ? 'Y' : 'N',
               })
 
-              this.isAccountAuthorized = otherAccount.authBy > 0;
+              if (this.isAccountAuthorized) {
+                this.accountOpeningDate.disable();
+                // this.accountStatus.disable();
+                this.interestRate.disable();
+                this.lastInterestDate.disable();
+                this.lastTransactionDate.disable();
+                this.matureDate.disable();
+                this.accountCloseDate.disable();
+              }
               this.accountStatus.enable();
-             
+
             }
           }
         })
@@ -274,7 +292,7 @@ export class OtherAccountsComponent {
 
   getMaxAccountNumber(glId: number) {
     this._accountsService.getMaxAccountNumber(this._sharedService.applicationUser.branchId, glId).subscribe((data: any) => {
-     
+
       if (data) {
         let maxAccountModel = data.data.data;
         if (maxAccountModel) {
@@ -288,7 +306,7 @@ export class OtherAccountsComponent {
   }
 
   getCustomers(custData: any) {
-    if(custData && custData.status == 'Active') {
+    if (custData && custData.status == 'Active') {
       this.selectCustomer(custData.id);
     }
     // this.uiCustomers = custData;
@@ -304,7 +322,7 @@ export class OtherAccountsComponent {
 
   getCustomer(customerId: number) {
     this._customerService.getCustomer(this._sharedService.applicationUser.branchId, customerId).subscribe((data: any) => {
-     
+
       if (data) {
         var customer = data.data.data;
         let zones = this.uiZones.filter(z => z.constantNo == customer.custZone);
@@ -336,9 +354,9 @@ export class OtherAccountsComponent {
           mobile: customer.mobileno,
           email: customer.emailid,
           pan: customer.panNo,
-          dob: formatDate(new Date(customer.birthDate), 'yyyy-MM-dd', 'en'),
+          dob: new Date(customer.birthDate),
           aadhar: customer.aadharno,
-          joiningDate: formatDate(new Date(customer.custOpenDate), 'yyyy-MM-dd', 'en'),
+          joiningDate: new Date(customer.custOpenDate),
           group: custGroup,
           occupation: custOccupation,
           city: custCity,
@@ -367,7 +385,7 @@ export class OtherAccountsComponent {
       if (event.target.value) {
         let targetValue = event.target.value;
         let accountType = targetValue.split(":");
-       
+
       }
     }
   }
@@ -380,7 +398,7 @@ export class OtherAccountsComponent {
         if (parseInt(accountType[1]) == 4) { //TODO: Need to make it configurable
           this.accountForm.patchValue({
             close_Flag: true,
-            accountCloseDate: formatDate(new Date(Date.now()), 'MM/dd/yyyy', 'en')
+            accountCloseDate: this.datePipe.transform(new Date(Date.now()), 'dd-MM-yyyy'),//formatDate(new Date(Date.now()), 'MM/dd/yyyy', 'en')
           })
         }
         else {
@@ -443,21 +461,21 @@ export class OtherAccountsComponent {
     // accountModel.AccountType = parseInt(this.accountType.value.toString());
     accountModel.AccountStatus = parseInt(this.accountStatus.value.toString());
     accountModel.OtherAccountId = 0;
-    accountModel.Last_Int_Date = this.lastInterestDate.value.toString();
-    accountModel.Last_Trn_Date = this.lastTransactionDate.value.toString();
+    accountModel.Last_Int_Date = new Date(this.lastInterestDate.value.toString());
+    accountModel.Last_Trn_Date = new Date(this.lastTransactionDate.value.toString());
     accountModel.Int_Rate = parseFloat(this.interestRate.value.toString());
-    accountModel.Opn_Date = this.accountOpeningDate.value.toString();
-    accountModel.Mature_Date = this.matureDate.value.toString();
+    accountModel.Opn_Date = new Date(this.accountOpeningDate.value.toString());
+    accountModel.Mature_Date = new Date(this.matureDate.value.toString());
     accountModel.Close_Flag = this.close_Flag.value.toString() == 'true' ? 1 : 0;
     if (accountModel.Close_Flag == 1) {
-      accountModel.Close_Date = this.accountCloseDate.value.toString();
+      accountModel.Close_Date = new Date(this.accountCloseDate.value.toString());
     }
     accountModel.CreatedBy = this._sharedService.applicationUser.id;
-    
+
     //Call API to save account
 
     this._otherAccountsService.saveOtherAccount(accountModel).subscribe((data: any) => {
-     
+
       if (data) {
         if (data.data.data && data.data.data.retId > 0) {
           if (data.data.data.status == "SUCCESS") {
@@ -553,7 +571,7 @@ export class OtherAccountsComponent {
       close_Flag: false
     })
   }
-  
+
   // openSearchedCustomers() {
   //   this.toggleSearchCustomers = !this.toggleSearchCustomers;
   // }
@@ -644,7 +662,7 @@ export class OtherAccountsComponent {
   get accountCloseDate() {
     return this.accountForm.get('accountCloseDate')!;
   }
- 
+
   get close_Flag() {
     return this.accountForm.get('close_Flag')!;
   }

@@ -80,8 +80,8 @@
                         <div class="col-md-3 position-relative form-group">
                             <label for="txtName" class="">Opening Date</label>
                             <div class="input-group">
-                                <input tabindex="8" type="date" class="form-control" required
-                                    formControlName="openDate">
+                                <input tabindex="8" type="text" class="form-control" required
+                                    formControlName="openDate" bsDatepicker [bsConfig]="datepickerConfig">
                             </div>
                         </div>
 

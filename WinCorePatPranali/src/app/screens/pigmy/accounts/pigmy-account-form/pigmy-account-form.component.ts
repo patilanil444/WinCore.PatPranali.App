@@ -1,7 +1,7 @@
-import { formatDate } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
+import { BsDatepickerConfig } from 'ngx-bootstrap/datepicker';
 import { NgxDropdownConfig } from 'ngx-select-dropdown';
 import { ToastrService } from 'ngx-toastr';
 import { AccountDeclarations } from 'src/app/common/account-declarations';
@@ -123,7 +123,7 @@ export interface IJointModel {
 @Component({
   selector: 'app-pigmy-account-form',
   templateUrl: './pigmy-account-form.component.html',
-  styleUrls: ['./pigmy-account-form.component.css']
+  styleUrls: ['./pigmy-account-form.component.css'],
 })
 export class PigmyAccountFormComponent implements OnInit {
 
@@ -199,6 +199,7 @@ export class PigmyAccountFormComponent implements OnInit {
   accountsId!: number;
   isAddMode = true;
   isAccountAuthorized = true;
+  datepickerConfig: BsDatepickerConfig;
 
   constructor(private router: Router, private _sharedService: SharedService, private _toastrService: ToastrService,
     private _generalLedgerService: GeneralLedgerService, private _customerService: CustomerService,
@@ -206,6 +207,8 @@ export class PigmyAccountFormComponent implements OnInit {
     private _userService: UserService) { }
 
   ngOnInit(): void {
+
+    this.datepickerConfig = this._sharedService.getDatepickerConfig();
 
     this.uiAccountTypes = this.retrieveMasters(UiEnumGeneralMaster.ACTYPE);
     this.uiModeOfOperations = this.retrieveMasters(UiEnumGeneralMaster.OPRMODE);
@@ -228,14 +231,17 @@ export class PigmyAccountFormComponent implements OnInit {
       mobile: new FormControl("", []),
       email: new FormControl("", []),
       pan: new FormControl("", []),
-      dob: new FormControl(formatDate(new Date(Date.now()), 'yyyy-MM-dd', 'en'), []),
+      dob: new FormControl(new Date(Date.now()), []),
       aadhar: new FormControl("", []),
-      joiningDate: new FormControl(formatDate(new Date(Date.now()), 'yyyy-MM-dd', 'en'), []),
+      joiningDate: new FormControl(new Date(Date.now()), []),
       group: new FormControl("", []),
       occupation: new FormControl("", []),
       city: new FormControl("", []),
       zone: new FormControl("", [])
     });
+
+    this.dob.disable();
+    this.joiningDate.disable();
 
     this.summaryForm = new FormGroup({
       generalLedger: new FormControl("", [Validators.required]),
@@ -251,10 +257,10 @@ export class PigmyAccountFormComponent implements OnInit {
       //modeOfSignature: new FormControl(this.uiModeOfOperations[0].constantNo, [Validators.required]),
       staffDirectorOther: new FormControl(this.uiEmployyeTypes[0].code, [Validators.required]),
       accountStatus: new FormControl(this.uiAccountStatuses[0].constantNo, [Validators.required]),
-      passbookDate: new FormControl(formatDate(new Date(Date.now()), 'yyyy-MM-dd', 'en'), [Validators.required]),
-      lastInterestDate: new FormControl(formatDate(new Date(Date.now()), 'yyyy-MM-dd', 'en'), [Validators.required]),
-      lastTransactionDate: new FormControl(formatDate(new Date(Date.now()), 'yyyy-MM-dd', 'en'), [Validators.required]),
-      drInterestDate: new FormControl(formatDate(new Date(Date.now()), 'yyyy-MM-dd', 'en'), [Validators.required]),
+      passbookDate: new FormControl(new Date(Date.now()), [Validators.required]),
+      lastInterestDate: new FormControl(new Date(Date.now()), [Validators.required]),
+      lastTransactionDate: new FormControl(new Date(Date.now()), [Validators.required]),
+      drInterestDate: new FormControl(new Date(Date.now()), [Validators.required]),
       //printDate: new FormControl("", []),
       accountCloseDate: new FormControl("", []),
       close_Flag: new FormControl(false, [Validators.required])
@@ -282,12 +288,12 @@ export class PigmyAccountFormComponent implements OnInit {
 
     this.PigmyDetailsForm = new FormGroup({
       dailyInstallmentAmount: new FormControl("", [Validators.required]),
-      accountOpeningDate: new FormControl(formatDate(new Date(Date.now()), 'yyyy-MM-dd', 'en'), [Validators.required]),
+      accountOpeningDate: new FormControl(new Date(Date.now()), [Validators.required]),
       pigmyPeriod: new FormControl("", [Validators.required]),
       interestRateParam: new FormControl("", [Validators.required]),
       clearingAmount: new FormControl("0", [Validators.required]),
       minimumBalance: new FormControl("0", [Validators.required]),
-      expiryDate: new FormControl(formatDate(new Date(Date.now()), 'yyyy-MM-dd', 'en'), []),
+      expiryDate: new FormControl(new Date(Date.now()), []),
       payableAmount: new FormControl("0", [Validators.required]),
     });
 
@@ -414,9 +420,9 @@ export class PigmyAccountFormComponent implements OnInit {
                   mobile: "",
                   email: "",
                   pan: "",
-                  dob: formatDate(new Date(Date.now()), 'yyyy-MM-dd', 'en'),
+                  dob: new Date(Date.now()),
                   aadhar: "",
-                  joiningDate: formatDate(new Date(Date.now()), 'yyyy-MM-dd', 'en'),
+                  joiningDate: new Date(Date.now()),
                   group: "",
                   occupation: "",
                   city: "",
@@ -430,13 +436,13 @@ export class PigmyAccountFormComponent implements OnInit {
                   //modeOfSignature: pigmyAccount.mode_Sgn,
                   staffDirectorOther: pigmyAccount.staffCode,
                   accountStatus: pigmyAccount.accountStatus,
-                  passbookDate: formatDate(new Date(pigmyAccount.passbookDate), 'yyyy-MM-dd', 'en'),
+                  passbookDate: new Date(pigmyAccount.passbookDate),
                   //matureDate: formatDate(new Date(pigmyAccount.exp_Date), 'yyyy-MM-dd', 'en'),
-                  lastInterestDate: formatDate(new Date(pigmyAccount.last_Int_Date), 'yyyy-MM-dd', 'en'),
-                  lastTransactionDate: formatDate(new Date(pigmyAccount.last_Trn_Date), 'yyyy-MM-dd', 'en'),
+                  lastInterestDate: new Date(pigmyAccount.last_Int_Date),
+                  lastTransactionDate: new Date(pigmyAccount.last_Trn_Date),
                   //printDate: (pigmyAccount.print_Date == null) ? "" : formatDate(new Date(pigmyAccount.print_Date), 'yyyy-MM-dd', 'en'),
-                  accountCloseDate: (pigmyAccount.close_Date == null) ? "" : formatDate(new Date(pigmyAccount.close_Date), 'yyyy-MM-dd', 'en'),
-                  drInterestDate: formatDate(new Date(pigmyAccount.debitInterestDate), 'yyyy-MM-dd', 'en'),
+                  accountCloseDate: (pigmyAccount.close_Date == null) ? "" : new Date(pigmyAccount.close_Date),
+                  drInterestDate: new Date(pigmyAccount.debitInterestDate),
                   close_Flag: (pigmyAccount.close_Flag == 1) ? 'Y' : 'N',
                 })
 
@@ -486,12 +492,12 @@ export class PigmyAccountFormComponent implements OnInit {
 
                 this.PigmyDetailsForm.patchValue({
                   dailyInstallmentAmount: pigmyAccount.inst_Amt,
-                  accountOpeningDate: formatDate(new Date(pigmyAccount.opn_Date), 'yyyy-MM-dd', 'en'),
+                  accountOpeningDate: new Date(pigmyAccount.opn_Date),
                   pigmyPeriod: pigmyAccount.periodInDays,
                   interestRateParam: pigmyAccount.int_Rate,
                   clearingAmount: pigmyAccount.clearingAmount,
                   minimumBalance: pigmyAccount.minimumBalance,
-                  expiryDate: (pigmyAccount.exp_Date == null) ? "" : formatDate(new Date(pigmyAccount.exp_Date), 'yyyy-MM-dd', 'en'),
+                  expiryDate: (pigmyAccount.exp_Date == null) ? "" : new Date(pigmyAccount.exp_Date),
                   payableAmount: pigmyAccount.payb_Amt,
                 })
 
@@ -540,7 +546,7 @@ export class PigmyAccountFormComponent implements OnInit {
 
     let maturityDate = new Date().setDate(periodInDays);
     this.PigmyDetailsForm.patchValue({
-      expiryDate: formatDate(maturityDate, 'yyyy-MM-dd', 'en'),
+      expiryDate: new Date(maturityDate),
     })
 
     this.calculatePayableAmount();
@@ -644,9 +650,9 @@ export class PigmyAccountFormComponent implements OnInit {
           mobile: customer.mobileno,
           email: customer.emailid,
           pan: customer.panNo,
-          dob: formatDate(new Date(customer.birthDate), 'yyyy-MM-dd', 'en'),
+          dob: new Date(customer.birthDate),
           aadhar: customer.aadharno,
-          joiningDate: formatDate(new Date(customer.custOpenDate), 'yyyy-MM-dd', 'en'),
+          joiningDate: new Date(customer.custOpenDate),
           group: custGroup,
           occupation: custOccupation,
           city: custCity,
@@ -745,7 +751,7 @@ export class PigmyAccountFormComponent implements OnInit {
         if (parseInt(accountType[1]) == 4) { //TODO: Need to make it configurable
           this.accountForm.patchValue({
             close_Flag: true,
-            accountCloseDate: formatDate(new Date(Date.now()), 'MM/dd/yyyy', 'en')
+            accountCloseDate: new Date(Date.now())
           })
         }
         else {
@@ -942,21 +948,21 @@ export class PigmyAccountFormComponent implements OnInit {
     accountModel.StaffCode = this.staffDirectorOther.value.toString();
     accountModel.ClearingAmount = parseFloat(this.clearingAmount.value.toString());
     accountModel.MinimumBalance = parseFloat(this.minimumBalance.value.toString());
-    accountModel.Last_Int_Date = this.lastInterestDate.value.toString();
-    accountModel.Last_Trn_Date = this.lastTransactionDate.value.toString();
+    accountModel.Last_Int_Date = new Date(this.lastInterestDate.value.toString());
+    accountModel.Last_Trn_Date = new Date(this.lastTransactionDate.value.toString());
     accountModel.Int_Rate = parseFloat(this.interestRateParam.value.toString());
-    accountModel.Opn_Date = this.accountOpeningDate.value.toString();
-    accountModel.PassbookDate = this.passbookDate.value.toString();
+    accountModel.Opn_Date = new Date(this.accountOpeningDate.value.toString());
+    accountModel.PassbookDate = new Date(this.passbookDate.value.toString());
     accountModel.Inst_Amt = parseFloat(this.dailyInstallmentAmount.value.toString());
     accountModel.Inst_No = 0;
     accountModel.Inst_Type = "D";
     accountModel.Payb_Amt = parseFloat(this.payableAmount.value.toString());
-    accountModel.Exp_Date = this.expiryDate.value.toString();
+    accountModel.Exp_Date = new Date(this.expiryDate.value.toString());
     accountModel.PeriodInDays = parseFloat(this.pigmyPeriod.value.toString());
     accountModel.Close_Flag = this.close_Flag.value.toString() == 'true' ? 1 : 0;
     if (accountModel.Close_Flag == 1) {
-      accountModel.Close_Date = this.accountCloseDate.value.toString();
-      accountModel.Exp_Date = this.accountCloseDate.value.toString();
+      accountModel.Close_Date = new Date(this.accountCloseDate.value.toString());
+      accountModel.Exp_Date = new Date(this.accountCloseDate.value.toString());
     }
 
     accountModel.CreatedBy = this._sharedService.applicationUser.id;
@@ -1067,9 +1073,9 @@ export class PigmyAccountFormComponent implements OnInit {
       mobile: "",
       email: "",
       pan: "",
-      dob: formatDate(new Date(Date.now()), 'yyyy-MM-dd', 'en'),
+      dob: new Date(Date.now()),
       aadhar: "",
-      joiningDate: formatDate(new Date(Date.now()), 'yyyy-MM-dd', 'en'),
+      joiningDate: new Date(Date.now()),
       group: "",
       occupation: "",
       city: "",
@@ -1083,12 +1089,12 @@ export class PigmyAccountFormComponent implements OnInit {
       //modeOfSignature: this.uiModeOfOperations[0].constantNo,
       staffDirectorOther: this.uiEmployyeTypes[0].code,
       accountStatus: this.uiAccountStatuses[0].constantNo,
-      passbookDate: formatDate(new Date(Date.now()), 'yyyy-MM-dd', 'en'),
-      lastInterestDate: formatDate(new Date(Date.now()), 'yyyy-MM-dd', 'en'),
-      lastTransactionDate: formatDate(new Date(Date.now()), 'yyyy-MM-dd', 'en'),
+      passbookDate: new Date(Date.now()),
+      lastInterestDate: new Date(Date.now()),
+      lastTransactionDate: new Date(Date.now()),
       //printDate: formatDate(new Date(Date.now()), 'yyyy-MM-dd', 'en'),
       accountCloseDate: "",
-      drInterestDate: formatDate(new Date(Date.now()), 'yyyy-MM-dd', 'en'),
+      drInterestDate: new Date(Date.now()),
       close_Flag: false
     })
   }
@@ -1115,12 +1121,12 @@ export class PigmyAccountFormComponent implements OnInit {
   clearPigmyDetails() {
     this.PigmyDetailsForm.patchValue({
       dailyInstallmentAmount: "",
-      accountOpeningDate: formatDate(new Date(Date.now()), 'yyyy-MM-dd', 'en'),
+      accountOpeningDate: new Date(Date.now()),
       pigmyPeriod: "",
       interestRateParam: "",
       clearingAmount: "",
       minimumBalance: "",
-      expiryDate: formatDate(new Date(Date.now()), 'yyyy-MM-dd', 'en'),
+      expiryDate: new Date(Date.now()),
       payableAmount: "",
     })
   }

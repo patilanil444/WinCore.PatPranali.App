@@ -88,10 +88,19 @@
                         </div>
                         <div class="col-md-3 position-relative form-group">
                             <label for="txtName" class="">Opening Date</label>
+                           
+
                             <div class="input-group">
-                                <input tabindex="8" type="date" class="form-control" required
+                                <!-- <input tabindex="8" type="date" class="form-control" required formControlName="openingDate"
+                                    [class.is-invalid]="openingDate.invalid && (openingDate.dirty || openingDate.touched)"> -->
+                                   
+                                    <input type="text" required
+                                    tabindex="8"
+                                    class="form-control"
+                                    bsDatepicker
                                     formControlName="openingDate"
-                                    [class.is-invalid]="openingDate.invalid && (openingDate.dirty || openingDate.touched)">
+                                    [bsConfig]="{ isAnimated: true, dateInputFormat: 'DD-MM-YYYY' }">
+                                    
                                 <div *ngIf="openingDate.invalid && (openingDate.dirty || openingDate.touched)"
                                     class="invalid-feedback">
                                     <div *ngIf="openingDate.errors?.['required']">

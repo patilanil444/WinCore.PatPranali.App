@@ -2,6 +2,7 @@ import { formatDate } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { Router } from '@angular/router';
+import { BsDatepickerConfig } from 'ngx-bootstrap/datepicker';
 import { NgxDropdownConfig } from 'ngx-select-dropdown';
 import { ToastrService } from 'ngx-toastr';
 import { PigmyAccountService } from 'src/app/services/pigmy/pigmy-account/pigmy-account.service';
@@ -12,7 +13,7 @@ export interface IPigmyCollectionMasterModel {
   Id: number;
   BranchCode: number;
   PigmyAgentId: number;
-  PigmyDate: number;
+  PigmyDate: Date;
   IsPassed: number;
   PassedByUser: number;
   TotalCollection: number;
@@ -57,7 +58,7 @@ export class PigmyEntryComponent implements OnInit {
   uiPigmyAccounts: any[] = [];
 
   totalDailyPigmyCollection = 0;
-
+  datepickerConfig: BsDatepickerConfig;
 
   isAddMode = false;
   constructor(private router: Router, private _sharedService: SharedService, private _toastrService: ToastrService,
@@ -65,9 +66,11 @@ export class PigmyEntryComponent implements OnInit {
 
   ngOnInit(): void {
 
+    this.datepickerConfig = this._sharedService.getDatepickerConfig();
+
     this.pigmyEntriesForm = new FormGroup({
       pigmyAgent: new FormControl("", []),
-      pigmyDate: new FormControl(formatDate(new Date(Date.now()), 'yyyy-MM-dd', 'en'), [], []),
+      pigmyDate: new FormControl(new Date(Date.now()), []),
       pigmyCollection: new FormControl("", [])
     });
 
@@ -205,9 +208,9 @@ export class PigmyEntryComponent implements OnInit {
     // add values into model
     let collectionModel = {} as IPigmyCollectionMasterModel;
     collectionModel.BranchCode = this._sharedService.applicationUser.branchId;
-    collectionModel.PigmyAgentId =parseInt(this.pigmyAgent.value.id.toString());
+    collectionModel.PigmyAgentId = parseInt(this.pigmyAgent.value.id.toString());
     collectionModel.CreatedBy = this._sharedService.applicationUser.id;
-    collectionModel.PigmyDate = this.pigmyDate.value.toString();
+    collectionModel.PigmyDate = new Date(this.pigmyDate.value.toString());
     collectionModel.TotalCollection = parseFloat(this.pigmyCollection.value.toString());
     collectionModel.PigmyCollections = [];
 

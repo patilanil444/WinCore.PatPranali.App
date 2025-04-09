@@ -2,6 +2,7 @@ import { formatDate } from '@angular/common';
 import { Component } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
+import { BsDatepickerConfig } from 'ngx-bootstrap/datepicker';
 import { NgxDropdownConfig } from 'ngx-select-dropdown';
 import { ToastrService } from 'ngx-toastr';
 import { AccountDeclarations } from 'src/app/common/account-declarations';
@@ -189,6 +190,8 @@ export class LoanAccountsComponent {
   isAddMode = true;
   isAccountAuthorized = true;
 
+  datepickerConfig: BsDatepickerConfig;
+
   // formatter = new Intl.NumberFormat('en-IN', {
   //   style: 'currency',
   //   currency: 'INR',
@@ -201,6 +204,8 @@ export class LoanAccountsComponent {
     private _accountsService: AccountsService) { }
 
   ngOnInit(): void {
+
+    this.datepickerConfig = this._sharedService.getDatepickerConfig();
 
     this.uiAccountTypes = this.retrieveMasters(UiEnumGeneralMaster.ACTYPE);
     this.uiModeOfOperations = this.retrieveMasters(UiEnumGeneralMaster.OPRMODE);
@@ -227,14 +232,17 @@ export class LoanAccountsComponent {
       mobile: new FormControl("", []),
       email: new FormControl("", []),
       pan: new FormControl("", []),
-      dob: new FormControl(formatDate(new Date(Date.now()), 'yyyy-MM-dd', 'en'), []),
+      dob: new FormControl(new Date(Date.now()), []),
       aadhar: new FormControl("", []),
-      joiningDate: new FormControl(formatDate(new Date(Date.now()), 'yyyy-MM-dd', 'en'), []),
+      joiningDate: new FormControl(new Date(Date.now()), []),
       group: new FormControl("", []),
       occupation: new FormControl("", []),
       city: new FormControl("", []),
       zone: new FormControl("", [])
     });
+
+    this.dob.disable();
+    this.joiningDate.disable();
 
     this.summaryForm = new FormGroup({
       generalLedger: new FormControl("", [Validators.required]),
@@ -249,12 +257,12 @@ export class LoanAccountsComponent {
       modeOfSignature: new FormControl(this.uiModeOfOperations[0].constantNo, [Validators.required]),
       staffDirectorOther: new FormControl(this.uiEmployyeTypes[0].code, [Validators.required]),
       accountStatus: new FormControl(this.uiAccountStatuses[0].constantNo, [Validators.required]),
-      accountOpeningDate: new FormControl(formatDate(new Date(Date.now()), 'yyyy-MM-dd', 'en'), [Validators.required]),
+      accountOpeningDate: new FormControl(new Date(Date.now()), [Validators.required]),
       //loanType: new FormControl(this.uiLoanTypes[0].constantNo, [Validators.required]),
-      insuranceDate: new FormControl(formatDate(new Date(Date.now()), 'yyyy-MM-dd', 'en'), [Validators.required]),
+      insuranceDate: new FormControl(new Date(Date.now()), [Validators.required]),
       contactPerson: new FormControl("", [Validators.required]),
-      lastInterestDate: new FormControl(formatDate(new Date(Date.now()), 'yyyy-MM-dd', 'en'), [Validators.required]),
-      lastTransactionDate: new FormControl(formatDate(new Date(Date.now()), 'yyyy-MM-dd', 'en'), [Validators.required]),
+      lastInterestDate: new FormControl(new Date(Date.now()), [Validators.required]),
+      lastTransactionDate: new FormControl(new Date(Date.now()), [Validators.required]),
       // lastPenalDate: new FormControl(formatDate(new Date(Date.now()), 'yyyy-MM-dd', 'en'), [Validators.required]),
       accountCloseDate: new FormControl("", []),
       close_Flag: new FormControl(false, [])
@@ -423,14 +431,17 @@ export class LoanAccountsComponent {
                 mobile: "",
                 email: "",
                 pan: "",
-                dob: new FormControl(formatDate(new Date(Date.now()), 'yyyy-MM-dd', 'en'), []),
+                dob: new FormControl(new Date(Date.now()), []),
                 aadhar: "",
-                joiningDate: new FormControl(formatDate(new Date(Date.now()), 'yyyy-MM-dd', 'en'), []),
+                joiningDate: new FormControl(new Date(Date.now()), []),
                 group: "",
                 occupation: "",
                 city: "",
                 zone: "",
               })
+
+              this.isJointAccount = (loanAccount.accountType == 2); // TODO: Need to make it configurable
+              this.isAccountAuthorized = loanAccount.authBy > 0;
 
               this.accountForm.patchValue({
                 accountType: loanAccount.accountType,
@@ -439,17 +450,29 @@ export class LoanAccountsComponent {
                 staffDirectorOther: loanAccount.staffCode,
                 accountStatus: loanAccount.accountStatus,
                 contactPerson: loanAccount.contactPerson,
-                accountOpeningDate : loanAccount.openDate? formatDate(new Date(loanAccount.openDate), 'yyyy-MM-dd', 'en'): formatDate(new Date(Date.now()), 'yyyy-MM-dd', 'en'),
-                insuranceDate : loanAccount.insuranceDate? formatDate(new Date(loanAccount.insuranceDate), 'yyyy-MM-dd', 'en'): formatDate(new Date(Date.now()), 'yyyy-MM-dd', 'en'),
-                lastTransactionDate: loanAccount.last_Trn_Date? formatDate(new Date(loanAccount.last_Trn_Date), 'yyyy-MM-dd', 'en'): formatDate(new Date(Date.now()), 'yyyy-MM-dd', 'en'),
-                matureDate: loanAccount.last_Trn_Date? formatDate(new Date(loanAccount.exp_Date), 'yyyy-MM-dd', 'en'): formatDate(new Date(Date.now()), 'yyyy-MM-dd', 'en'),
-                lastInterestDate:loanAccount.last_Int_Date? formatDate(new Date(loanAccount.last_Int_Date), 'yyyy-MM-dd', 'en'): formatDate(new Date(Date.now()), 'yyyy-MM-dd', 'en'),
+                accountOpeningDate : loanAccount.openDate? new Date(loanAccount.openDate): new Date(Date.now()),
+                insuranceDate : loanAccount.insuranceDate? new Date(loanAccount.insuranceDate): new Date(Date.now()),
+                lastTransactionDate: loanAccount.last_Trn_Date? new Date(loanAccount.last_Trn_Date): new Date(Date.now()),
+                matureDate: loanAccount.last_Trn_Date? new Date(loanAccount.exp_Date): new Date(Date.now()),
+                lastInterestDate:loanAccount.last_Int_Date? new Date(loanAccount.last_Int_Date): new Date(Date.now()),
                 // lastPenalDate:loanAccount.lastPenalDate? formatDate(new Date(loanAccount.last_Int_Date), 'yyyy-MM-dd', 'en'): formatDate(new Date(Date.now()), 'yyyy-MM-dd', 'en'),
-                accountCloseDate: loanAccount.closeDate? formatDate(new Date(loanAccount.closeDate), 'yyyy-MM-dd', 'en'): "",
+                accountCloseDate: loanAccount.closeDate? new Date(loanAccount.closeDate): "",
                 close_Flag: loanAccount.closeDate ? true: false
               })
 
-
+              if (this.isAccountAuthorized) {
+                this.accountType.disable();
+                this.modeOfOperation.disable();
+                this.modeOfSignature.disable();
+                this.staffDirectorOther.disable();
+                this.accountStatus.disable();
+                this.contactPerson.disable();
+                this.accountOpeningDate.disable();
+                this.insuranceDate.disable();
+                this.lastTransactionDate.disable();
+                this.lastInterestDate.disable();
+                this.accountCloseDate.disable();
+              }
 
               if (loanAccount.guarantorList && loanAccount.guarantorList.length) {
                 loanAccount.guarantorList.forEach((guarantor: any) => {
@@ -483,8 +506,7 @@ export class LoanAccountsComponent {
                 });
               }
 
-              this.isJointAccount = (loanAccount.accountType == 2); // TODO: Need to make it configurable
-              this.isAccountAuthorized = loanAccount.authBy > 0;
+             
             }
           }
         })
@@ -498,10 +520,6 @@ export class LoanAccountsComponent {
       this.getMaxAccountNumber(glValue.code);
     }
   }
-
- 
-
- 
 
   getMaxAccountNumber(glId: number) {
     this._accountsService.getMaxAccountNumber(this._sharedService.applicationUser.branchId, glId).subscribe((data: any) => {
@@ -581,9 +599,9 @@ export class LoanAccountsComponent {
           mobile: customer.mobileno,
           email: customer.emailid,
           pan: customer.panNo,
-          dob: formatDate(new Date(customer.birthDate), 'yyyy-MM-dd', 'en'),
+          dob: new Date(customer.birthDate),
           aadhar: customer.aadharno,
-          joiningDate: formatDate(new Date(customer.custOpenDate), 'yyyy-MM-dd', 'en'),
+          joiningDate: new Date(customer.custOpenDate),
           group: custGroup,
           occupation: custOccupation,
           city: custCity,
@@ -762,7 +780,7 @@ export class LoanAccountsComponent {
         if (parseInt(accountType[1]) == 4) { //TODO: Need to make it configurable
           this.accountForm.patchValue({
             close_Flag: true,
-            accountCloseDate: formatDate(new Date(Date.now()), 'MM/dd/yyyy', 'en')
+            accountCloseDate: new Date(Date.now())
           })
         }
         else {
@@ -948,15 +966,15 @@ export class LoanAccountsComponent {
     accountModel.ModeOfSignature = parseInt(this.modeOfSignature.value.toString());
     accountModel.StaffCode = this.staffDirectorOther.value.toString();
     accountModel.ContactPerson = this.contactPerson.value.toString();
-    accountModel.OpenDate = this.accountOpeningDate.value.toString();
-    accountModel.LastInterestDate = this.lastInterestDate.value.toString();
-    accountModel.LastTransactionDate = this.lastTransactionDate.value.toString();
+    accountModel.OpenDate = new Date(this.accountOpeningDate.value.toString());
+    accountModel.LastInterestDate = new Date(this.lastInterestDate.value.toString());
+    accountModel.LastTransactionDate = new Date(this.lastTransactionDate.value.toString());
     //accountModel.CloseFlag: number;
     if (this.close_Flag.value) {
-      accountModel.CloseDate = this.accountCloseDate.value.toString();
+      accountModel.CloseDate = new Date(this.accountCloseDate.value.toString());
     }  
     
-    accountModel.InsuranceDate = this.insuranceDate.value.toString();
+    accountModel.InsuranceDate = new Date(this.insuranceDate.value.toString());
     accountModel.CreatedBy = this._sharedService.applicationUser.id;
     accountModel.GuarantorList = [];
     accountModel.JointList = [];

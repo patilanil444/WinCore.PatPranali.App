@@ -109,6 +109,7 @@ export class CashVoucherPassingComponent implements OnInit {
         VoucherDate: this._sharedService.getWorkOperationDate()
       };
 
+      this.uiVoucherDetails = [];
       this._voucherPassingService.getCashVoucher(voucherRequestModel).subscribe((data: any) => {
         let voucherModel = data.data.data;
         if (voucherModel) {
@@ -122,7 +123,7 @@ export class CashVoucherPassingComponent implements OnInit {
                 gridAmount: transactionSummary.voucherAmount,
               });
 
-              this.uiVoucherDetails = [];
+              
               transactionSummary.transactionDetails.forEach((td:any)=> {
                 let details: any = {};
                 details.customerName = td.customerName;

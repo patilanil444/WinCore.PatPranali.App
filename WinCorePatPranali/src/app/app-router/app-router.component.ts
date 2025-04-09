@@ -4,12 +4,13 @@ import { SharedService } from '../services/shared.service';
 import { UiUserRole } from '../common/models/common-ui-models';
 import { AuthService } from '../services/auth/auth.service';
 import { WorkOperationsService } from '../services/transactions/work-operations/work-operations.service';
-import { formatDate } from '@angular/common';
+import { DatePipe, formatDate } from '@angular/common';
 
 @Component({
   selector: 'app-app-router',
   templateUrl: './app-router.component.html',
-  styleUrls: ['./app-router.component.css']
+  styleUrls: ['./app-router.component.css'],
+  providers: [DatePipe]
 })
 export class AppRouterComponent implements OnInit, AfterViewInit {
 
@@ -29,7 +30,7 @@ export class AppRouterComponent implements OnInit, AfterViewInit {
 
   constructor(private router: Router, private activatedRoute: ActivatedRoute,
     private _sharedService: SharedService, private _authService: AuthService, 
-    private _workOperationsService: WorkOperationsService,) { }
+    private _workOperationsService: WorkOperationsService, private datePipe: DatePipe) { }
 
   ngOnInit(): void {
     this.activatedRoute.data.subscribe((response: any) => {
@@ -74,7 +75,9 @@ export class AppRouterComponent implements OnInit, AfterViewInit {
 
   getWorkOperationDate()
   {
-    return this._sharedService.getWorkOperationDate();
+    let operationDate = this._sharedService.getWorkOperationDate();
+
+    return this.datePipe.transform(operationDate, 'dd-MM-yyyy');
   }
 
   setApplicationUser() {

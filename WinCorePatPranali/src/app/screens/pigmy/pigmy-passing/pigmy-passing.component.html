@@ -8,11 +8,13 @@
                     <div class="row">
                         <div class="col-md-3 position-relative form-group">
                             <label class="">Pigmy From Date <span class="mandatory">*</span></label>
-                            <input tabindex="1" type="date" class="form-control" formControlName="pigmyFromDate">
+                            <input tabindex="1" type="text" class="form-control" formControlName="pigmyFromDate"
+                            bsDatepicker [bsConfig]="datepickerConfig">
                         </div>
                         <div class="col-md-3 position-relative form-group">
                             <label class="">Pigmy To Date <span class="mandatory">*</span></label>
-                            <input tabindex="1" type="date" class="form-control" formControlName="pigmyToDate">
+                            <input tabindex="1" type="text" class="form-control" formControlName="pigmyToDate"
+                            bsDatepicker [bsConfig]="datepickerConfig">
                         </div>
                         <div class="col-md-3 position-relative">
                             <label class="">Pigmy Agent</label>

@@ -1,7 +1,8 @@
-import { formatDate } from '@angular/common';
+import { DatePipe, formatDate } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
+import { BsDatepickerConfig } from 'ngx-bootstrap/datepicker';
 import { NgxDropdownConfig } from 'ngx-select-dropdown';
 import { ToastrService } from 'ngx-toastr';
 import { AccountDeclarations } from 'src/app/common/account-declarations';
@@ -119,7 +120,8 @@ export interface IVehiLoanDetail {
 @Component({
   selector: 'app-loan-details',
   templateUrl: './loan-details.component.html',
-  styleUrls: ['./loan-details.component.css']
+  styleUrls: ['./loan-details.component.css'],
+  providers: [DatePipe]
 })
 export class LoanDetailsComponent implements OnInit {
 
@@ -171,12 +173,16 @@ export class LoanDetailsComponent implements OnInit {
   isVehicleLoan = false;
   isMortgageLoan = false;
   isAccountAuthorized = true;
+  datepickerConfig: BsDatepickerConfig;
 
   constructor(private router: Router, private _sharedService: SharedService,
     private _toastrService: ToastrService, private _generalLedgerService: GeneralLedgerService,
-    private _loanAccountsService: LoanAccountsService, private _accountsService: AccountsService) { }
+    private _loanAccountsService: LoanAccountsService, private _accountsService: AccountsService,
+    private datePipe: DatePipe) { }
 
   ngOnInit(): void {
+
+    this.datepickerConfig = this._sharedService.getDatepickerConfig();
 
     this.uiChangesInInterestRateYN = AccountDeclarations.changesInInterestRateYN;
     this.uiInstallmentWithInterestYN = AccountDeclarations.InstallmentWithInterestYN;
@@ -193,7 +199,7 @@ export class LoanDetailsComponent implements OnInit {
     this.parametersForm = new FormGroup({
       sanctionAmount: new FormControl(0, [Validators.required]),
       sanctionAmountFormatted: new FormControl(new Intl.NumberFormat('en-IN', { style: 'decimal' }).format(0), [Validators.required]),
-      sanctionDate: new FormControl(formatDate(new Date(Date.now()), 'yyyy-MM-dd', 'en'), [Validators.required]),
+      sanctionDate: new FormControl(new Date(Date.now()), [Validators.required]),
       sanctionBy: new FormControl(0, [Validators.required]),
       loanTenureInMonths: new FormControl("", [Validators.required]),
       actualLoanAmount: new FormControl(0, [Validators.required]),
@@ -201,16 +207,16 @@ export class LoanDetailsComponent implements OnInit {
       interestRate: new FormControl(0, [Validators.required]),
       amountAdvances: new FormControl(0, [Validators.required]),
       changesInInterestApplicable: new FormControl(this.uiChangesInInterestRateYN[0].code, [Validators.required]),
-      maturityDate: new FormControl(formatDate(new Date(Date.now()), 'yyyy-MM-dd', 'en', 'dd/MM/yyyy'), []),
+      maturityDate: new FormControl(new Date(Date.now()), []),
       resolutionNo: new FormControl("", []),
-      resolutionDate: new FormControl(formatDate(new Date(Date.now()), 'yyyy-MM-dd', 'en', 'dd/MM/yyyy'), []),
-      paidDate: new FormControl(formatDate(new Date(Date.now()), 'yyyy-MM-dd', 'en'), []),
+      resolutionDate: new FormControl(new Date(Date.now()), []),
+      paidDate: new FormControl(new Date(Date.now()), []),
     });
 
     this.installmentsForm = new FormGroup({
       instInstallmentType: new FormControl(this.uiInstallmentTypes[4].code, []),
       instNumberOfInstallments: new FormControl(1, [Validators.required]),
-      instFirstInstallmentDate: new FormControl(formatDate(new Date().setDate(new Date().getDate() + 30), 'yyyy-MM-dd', 'en'), []),
+      instFirstInstallmentDate: new FormControl(new Date(new Date().setDate(new Date().getDate() + 30)), []),
       instInstallWithInterest: new FormControl(this.uiInstallmentWithInterestYN[0].code, []),
       instAmountToBeReceived: new FormControl(0, []),
     });
@@ -342,7 +348,7 @@ export class LoanDetailsComponent implements OnInit {
                     this.parametersForm.patchValue({
                       sanctionAmount: parseFloat(loanAccountDetails.sanctionAmount),
                       sanctionAmountFormatted: new Intl.NumberFormat('en-IN', { style: 'decimal' }).format(parseFloat(loanAccountDetails.sanctionAmount)),
-                      sanctionDate: formatDate(new Date(loanAccountDetails.sanctionDate), 'yyyy-MM-dd', 'en'),
+                      sanctionDate: new Date(loanAccountDetails.sanctionDate),
                       sanctionBy: loanAccountDetails.sanctionBy,
                       loanTenureInMonths: loanAccountDetails.loanTenure,
                       actualLoanAmount: loanAccountDetails.actualLoanAmount,
@@ -350,10 +356,10 @@ export class LoanDetailsComponent implements OnInit {
                       interestRate: loanAccountDetails.interestRate,
                       amountAdvances: loanAccountDetails.advanceAmount,
                       changesInInterestApplicable: loanAccountDetails.rateApplicable,
-                      maturityDate: formatDate(new Date(loanAccountDetails.maturityDate), 'yyyy-MM-dd', 'en', 'dd/MM/yyyy'),
+                      maturityDate: new Date(loanAccountDetails.maturityDate),
                       resolutionNo: loanAccountDetails.resolutionNo,
-                      resolutionDate: formatDate(new Date(loanAccountDetails.resolutionDate), 'yyyy-MM-dd', 'en', 'dd/MM/yyyy'),
-                      paidDate: formatDate(new Date(loanAccountDetails.paidOn), 'yyyy-MM-dd', 'en'),
+                      resolutionDate: new Date(loanAccountDetails.resolutionDate),
+                      paidDate: new Date(loanAccountDetails.paidOn),
                     })
 
                     if (loanAccountDetails.vehiLoanDetails && loanAccountDetails.vehiLoanDetails.length) {
@@ -433,23 +439,25 @@ export class LoanDetailsComponent implements OnInit {
 
                     if (loanAccountDetails.loanEMIDetails && loanAccountDetails.loanEMIDetails.length) {
                       this.uiAllInstallments = [];
-                      let allInstallments: any[] = [];
                       let sum = 0;
                       loanAccountDetails.loanEMIDetails.forEach((el:any) => sum += el.emiAmt);
 
                       this.installmentsForm.patchValue({
                         instInstallmentType: loanAccountDetails.installmentType,
                         instNumberOfInstallments: loanAccountDetails.installmentNo,
-                        instFirstInstallmentDate: formatDate(loanAccountDetails.firstInstallmentDate, 'yyyy-MM-dd', 'en'),
+                        instFirstInstallmentDate:  new Date(loanAccountDetails.firstInstallmentDate),
                         instInstallWithInterest: loanAccountDetails.instWithInt,
                         instAmountToBeReceived: sum,
                       })
-
+                      
+                      this.uiAllInstallments = [];
+                      this.total_installments = 0;
+                      let allInstallments: any[] = [];
                       loanAccountDetails.loanEMIDetails.forEach((item: any) => {
                         let installment = {
                           id: item.id,
                           actualLoanAmount: loanAccountDetails.actualLoanAmount,
-                          installmentDate: formatDate(new Date(item.payDate), 'yyyy-MM-dd', 'en'),
+                          installmentDate: this.datePipe.transform(item.payDate, 'dd-MM-yyyy'), //new Date(item.payDate),
                           interestRate: loanAccountDetails.interestRate,
                           installmentAmount: item.emiAmt,
                           interestAmount: item.interest_DB,
@@ -459,7 +467,8 @@ export class LoanDetailsComponent implements OnInit {
                         allInstallments.push(installment);
                       });
 
-                      this.uiAllInstallments = allInstallments;
+                      //this.p_installments = this.uiAllInstallments.length;
+                       this.uiAllInstallments = allInstallments;
                       //this._loanAccountsService.updateEMIData(this.uiAllInstallments);
                     }
                   }
@@ -532,7 +541,7 @@ export class LoanDetailsComponent implements OnInit {
       let firstInstallDate = new Date().setDate(new Date(this.sanctionDate.value).getDate() + 30)
       if (firstInstallDate) {
         this.parametersForm.patchValue({
-          firstInstallmentDate: formatDate(firstInstallDate, 'yyyy-MM-dd', 'en')
+          firstInstallmentDate: new Date(firstInstallDate)
         })
       }
     }
@@ -543,7 +552,7 @@ export class LoanDetailsComponent implements OnInit {
       let matureDate = new Date().setMonth(new Date().getMonth() + parseInt(this.loanTenureInMonths.value))
       if (matureDate) {
         this.parametersForm.patchValue({
-          maturityDate: formatDate(matureDate, 'yyyy-MM-dd', 'en')
+          maturityDate: new Date(matureDate)
         })
       }
     }
@@ -556,7 +565,7 @@ export class LoanDetailsComponent implements OnInit {
       let tempSactionDate = formatDate(new Date(this.sanctionDate.value), 'yyyy-MM-dd', 'en');
       if (tempFirstInstallmentDate < tempSactionDate) {
         this.parametersForm.patchValue({
-          firstInstallmentDate: formatDate(new Date().setDate(new Date(this.sanctionDate.value).getDate() + 30), 'yyyy-MM-dd', 'en')
+          firstInstallmentDate: new Date(new Date().setDate(new Date(this.sanctionDate.value).getDate() + 30))
         })
 
         this._toastrService.error('First installment can not be less than sanction date', 'Error!');
@@ -575,7 +584,7 @@ export class LoanDetailsComponent implements OnInit {
         paidDate.setMonth(paidDate.getMonth() + parseInt(this.loanTenureInMonths.value));
 
         this.parametersForm.patchValue({
-          maturityDate: formatDate(paidDate, 'yyyy-MM-dd', 'en'),
+          maturityDate: new Date(paidDate),
         })
       }
       else {
@@ -595,22 +604,23 @@ export class LoanDetailsComponent implements OnInit {
       isParametersValid = false;
     }
 
-    if (this.sanctionAmount.value && this.loanTenureInMonths.value) {
-      if (this.sanctionAmount.value <= 0 && this.loanTenureInMonths.value <= 0) {
-        this._toastrService.warning('Invalid sanction amount or loan tenure.', 'Error!');
-        isParametersValid = false;
-      }
+    if (this.sanctionAmount.value <= 0) {
+      this._toastrService.error('Invalid sanction amount.', 'Error!');
+      isParametersValid = false;
     }
 
-    if (this.actualLoanAmount.value) {
-      if (this.actualLoanAmount.value <= 0) {
-        this._toastrService.warning('Invalid actual loan amount.', 'Error!');
-        isParametersValid = false;
-      }
+    if (this.loanTenureInMonths.value <= 0) {
+      this._toastrService.error('Invalid loan tenure.', 'Error!');
+      isParametersValid = false;
     }
 
-    if (this.interestRate.value && this.interestRate.value <= 0) {
-      this._toastrService.warning('Invalid interest rate.', 'Error!');
+    if (this.actualLoanAmount.value <= 0) {
+      this._toastrService.error('Invalid actual loan amount.', 'Error!');
+      isParametersValid = false;
+    }
+
+    if (this.interestRate.value <= 0) {
+      this._toastrService.error('Invalid interest rate.', 'Error!');
       isParametersValid = false;
     }
 
@@ -657,7 +667,7 @@ export class LoanDetailsComponent implements OnInit {
 
         let installment: any = {};
         installment.actualLoanAmount = actulaOutstandingAmount;
-        installment.installmentDate = formatDate(new Date(this.maturityDate.value), 'yyyy-MM-dd', 'en');
+        installment.installmentDate = this.datePipe.transform(this.maturityDate.value, 'dd-MM-yyyy'); //new Date(this.maturityDate.value);
         installment.interestRate = interestRate;
         installment.installmentAmount = installmentAmount;
         installment.outstandingAmount = 0;
@@ -673,14 +683,14 @@ export class LoanDetailsComponent implements OnInit {
         let noOfInstallments = loanTenureInMonths / 12;
         let firstInstallmentDate = new Date(this.instFirstInstallmentDate.value);
         let totalOutstanding = actulaOutstandingAmount;
-        let installmentAmount = Math.round((totalOutstanding * interestRate / 100 * Math.pow(1 + interestRate / 100, loanTenureInMonths) /
-          (Math.pow(1 + interestRate / 100, loanTenureInMonths - 1))));
+        let installmentAmount = Math.round((totalOutstanding * interestRate / 100 * Math.pow(1 + interestRate / 100, noOfInstallments) /
+          (Math.pow(1 + interestRate / 100, noOfInstallments) - 1)));
 
         for (let index = 0; index < noOfInstallments; index++) {
           if (totalOutstanding > 0) {
             let installment: any = {};
             installment.actualLoanAmount = actulaOutstandingAmount;
-            installment.installmentDate = formatDate(firstInstallmentDate.setFullYear(firstInstallmentDate.getFullYear() + 1), 'yyyy-MM-dd', 'en');
+            installment.installmentDate = this.datePipe.transform(firstInstallmentDate.setFullYear(firstInstallmentDate.getFullYear() + 1), 'dd-MM-yyyy'); //firstInstallmentDate.setFullYear(firstInstallmentDate.getFullYear() + 1);
             installment.interestRate = interestRate;
             installment.installmentAmount = installmentAmount;
 
@@ -714,19 +724,22 @@ export class LoanDetailsComponent implements OnInit {
         let firstInstallmentDate = new Date(this.instFirstInstallmentDate.value);
         let totalOutstanding = actulaOutstandingAmount;
 
-        let installmentAmount = Math.round((totalOutstanding * interestRate / 100 / 2 * Math.pow(1 + interestRate / 100 / 2, noOfInstallments) /
-          (Math.pow(1 + interestRate / 100 / 2, noOfInstallments) - 1)));
+        let int_r = interestRate / 2 / 100;
+        let int_calc = 1 + int_r;
+        let int_power = Math.pow(int_calc, noOfInstallments);
+
+        let installmentAmount = (totalOutstanding * int_r * int_power) / (int_power - 1);
 
         for (let index = 0; index < noOfInstallments; index++) {
           if (totalOutstanding > 0) {
             let installment: any = {};
             installment.actualLoanAmount = actulaOutstandingAmount;
             if (index == 0) {
-              installment.installmentDate = formatDate(firstInstallmentDate, 'yyyy-MM-dd', 'en'); //formatDate(firstInstallmentDate, 'dd-MM-yyyy', 'en', 'dd/MM/yyyy');
+              installment.installmentDate = this.datePipe.transform(firstInstallmentDate, 'dd-MM-yyyy'); //formatDate(firstInstallmentDate, 'dd-MM-yyyy', 'en', 'dd/MM/yyyy');
             }  
             else
             {
-              installment.installmentDate = formatDate(firstInstallmentDate.setMonth(firstInstallmentDate.getMonth() + 6), 'yyyy-MM-dd', 'en');
+              installment.installmentDate = this.datePipe.transform(firstInstallmentDate.setMonth(firstInstallmentDate.getMonth() + 6), 'dd-MM-yyyy'); //firstInstallmentDate.setMonth(firstInstallmentDate.getMonth() + 6);
             }
             installment.interestRate = interestRate;
             installment.installmentAmount = Math.round(installmentAmount);
@@ -739,11 +752,11 @@ export class LoanDetailsComponent implements OnInit {
             installment.principleAmount = Math.round(principleAmount);
 
             installment.outstandingAmount = Math.round(totalOutstanding);
-            if (installment.outstandingAmount < installment.installmentAmount) {
-              installment.installmentAmount = installment.outstandingAmount;
-              installment.outstandingAmount = 0;
-              totalOutstanding = 0;
-            }
+            // if (installment.outstandingAmount < installment.installmentAmount) {
+            //   installment.installmentAmount = installment.outstandingAmount;
+            //   installment.outstandingAmount = 0;
+            //   totalOutstanding = 0;
+            // }
             //if (installment.installmentAmount > 0) {
             allInstallments.push(installment);
             //}
@@ -764,11 +777,11 @@ export class LoanDetailsComponent implements OnInit {
             let installment: any = {};
             installment.actualLoanAmount = actulaOutstandingAmount;
             if (index == 0) {
-              installment.installmentDate = formatDate(firstInstallmentDate, 'yyyy-MM-dd', 'en');
+              installment.installmentDate = this.datePipe.transform(firstInstallmentDate, 'dd-MM-yyyy'); // firstInstallmentDate;
             }
             else
             {
-              installment.installmentDate = formatDate(firstInstallmentDate.setMonth(firstInstallmentDate.getMonth() + 3), 'yyyy-MM-dd', 'en');
+              installment.installmentDate = this.datePipe.transform(firstInstallmentDate.setMonth(firstInstallmentDate.getMonth() + 3), 'dd-MM-yyyy'); //firstInstallmentDate.setMonth(firstInstallmentDate.getMonth() + 3);
             }
             installment.interestRate = interestRate;
             installment.installmentAmount = Math.round(installmentAmount);
@@ -781,11 +794,11 @@ export class LoanDetailsComponent implements OnInit {
             installment.principleAmount = Math.round(principleAmount);
 
             installment.outstandingAmount = Math.round(totalOutstanding);
-            if (installment.outstandingAmount < installment.installmentAmount) {
-              installment.installmentAmount = installment.outstandingAmount;
-              installment.outstandingAmount = 0;
-              totalOutstanding = 0;
-            }
+            // if (installment.outstandingAmount < installment.installmentAmount) {
+            //   installment.installmentAmount = installment.outstandingAmount;
+            //   installment.outstandingAmount = 0;
+            //   totalOutstanding = 0;
+            // }
             allInstallments.push(installment);
           }
         }
@@ -804,11 +817,11 @@ export class LoanDetailsComponent implements OnInit {
             let installment: any = {};
             installment.actualLoanAmount = actulaOutstandingAmount;
             if (index==0) {
-              installment.installmentDate = formatDate(firstInstallmentDate, 'yyyy-MM-dd', 'en');
+              installment.installmentDate = this.datePipe.transform(firstInstallmentDate, 'dd-MM-yyyy');
             }
             else
             {
-              installment.installmentDate = formatDate(firstInstallmentDate.setMonth(firstInstallmentDate.getMonth() + 1), 'yyyy-MM-dd', 'en');
+              installment.installmentDate = this.datePipe.transform( firstInstallmentDate.setMonth(firstInstallmentDate.getMonth() + 1), 'dd-MM-yyyy');
             }
             installment.interestRate = interestRate;
             installment.installmentAmount = Math.round(installmentAmount);
@@ -820,11 +833,14 @@ export class LoanDetailsComponent implements OnInit {
             installment.interestAmount = Math.round(interestAmount);
             installment.principleAmount = Math.round(principleAmount);
             installment.outstandingAmount = Math.round(totalOutstanding);
-            if (installment.outstandingAmount < installment.installmentAmount) {
-              installment.installmentAmount = installment.outstandingAmount;
+            if (installment.outstandingAmount < 0) {
               installment.outstandingAmount = 0;
-              totalOutstanding = 0;
             }
+            // if (installment.outstandingAmount < installment.installmentAmount) {
+            //   installment.installmentAmount = installment.outstandingAmount;
+            //   installment.outstandingAmount = 0;
+            //   totalOutstanding = 0;
+            // }
             //if (installment.installmentAmount > 0) {
             allInstallments.push(installment);
             //}
@@ -870,20 +886,20 @@ export class LoanDetailsComponent implements OnInit {
     accountModel.AccountsId = this.dto.id;;
     accountModel.BranchCode = this._sharedService.applicationUser.branchId;
     accountModel.SanctionAmount = parseFloat(this.sanctionAmount.value);
-    accountModel.SanctionDate = this.sanctionDate.value.toString();
+    accountModel.SanctionDate = new Date(this.sanctionDate.value.toString());
     accountModel.SanctionBy = this.sanctionBy.value;
     accountModel.LoanTenure = parseInt(this.loanTenureInMonths.value);
     accountModel.ActualLoanAmount = parseFloat(this.actualLoanAmount.value);
     accountModel.InterestRate = parseFloat(this.interestRate.value);
     accountModel.AdvanceAmount = parseFloat(this.amountAdvances.value);
     accountModel.RateApplicable = this.changesInInterestApplicable.value;
-    accountModel.MaturityDate = this.maturityDate.value.toString();
+    accountModel.MaturityDate = new Date(this.maturityDate.value.toString());
     accountModel.ResolutionNo = this.resolutionNo.value.toString();
-    accountModel.ResolutionDate = this.resolutionDate.value.toString();
-    accountModel.PaidOn = this.paidDate.value.toString();
+    accountModel.ResolutionDate = new Date(this.resolutionDate.value.toString());
+    accountModel.PaidOn = new Date(this.paidDate.value.toString());
     accountModel.InstallmentType = this.instInstallmentType.value;
     accountModel.InstallmentNo = this.uiAllInstallments && this.uiAllInstallments.length ? this.uiAllInstallments.length : 0;
-    accountModel.FirstInstallmentDate = this.instFirstInstallmentDate.value.toString();
+    accountModel.FirstInstallmentDate = new Date(this.instFirstInstallmentDate.value.toString());
     accountModel.InstWithInt = this.instInstallWithInterest.value;
     accountModel.CreatedBy = this._sharedService.applicationUser.id;
 
@@ -901,7 +917,7 @@ export class LoanDetailsComponent implements OnInit {
           goldLoanItem.GWeight = d.grossWeight;
           goldLoanItem.Rate = d.ratePerGram;
           goldLoanItem.Custody = "";
-          goldLoanItem.PaidDate = this.paidDate.value;
+          goldLoanItem.PaidDate = new Date(this.paidDate.value);
           goldLoanItem.Active = 1;
           accountModel.GoldLoanDetails.push(goldLoanItem);
         });
@@ -919,12 +935,12 @@ export class LoanDetailsComponent implements OnInit {
           depositLoanItem.DepoCode1 = d.gl;
           depositLoanItem.DepoCode2 = d.accountNumber;
           depositLoanItem.FD_Amt = d.fdAmount;
-          depositLoanItem.DepoOpnDate = d.opening;
-          depositLoanItem.DepoExpDate = d.maturity;;
+          depositLoanItem.DepoOpnDate = new Date(d.opening);
+          depositLoanItem.DepoExpDate = new Date(d.maturity);
           depositLoanItem.MarkBy = d.markBy;
-          depositLoanItem.MarkDate = d.markOn;
+          depositLoanItem.MarkDate = new Date(d.markOn);
           depositLoanItem.ReleaseBy = d.releaseBy;
-          depositLoanItem.ReleaseDate = d.releaseOn;
+          depositLoanItem.ReleaseDate = new Date(d.releaseOn);
           depositLoanItem.Active = 1;
           accountModel.LoanDepoDetails.push(depositLoanItem);
         });
@@ -996,7 +1012,7 @@ export class LoanDetailsComponent implements OnInit {
         loanEMIDetail.Id = d.id;
         loanEMIDetail.AccounstId = this.accountsId;
         loanEMIDetail.LoanAmt = d.actualLoanAmount;
-        loanEMIDetail.PayDate = new Date(formatDate(d.installmentDate, 'yyyy-MM-dd', 'en')); // new Date(d.installmentDate);
+        loanEMIDetail.PayDate = new Date(d.installmentDate);
         loanEMIDetail.EMIAmt = d.installmentAmount;
         loanEMIDetail.Principle_DB = d.principleAmount;
         loanEMIDetail.Interest_DB = d.interestAmount;

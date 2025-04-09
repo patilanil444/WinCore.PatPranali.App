@@ -41,27 +41,21 @@ export class GeneralLedgerMasterFormComponent implements OnInit {
   uiAllGLTypes: any = [];
   uiGLTypes: any = [];
   uiScheduleMasters: any = [];
-  datepickerConfig!:Partial<BsDatepickerConfig>;
   todate=new Date();
   //uiSubAccounts = [new UiValueType(1, "Yes"), new UiValueType(2, "No")];
 
   newCode!: string;
   isAddMode!: boolean;
-
+  datepickerConfig: BsDatepickerConfig;
   dto: IGeneralLedgerDTO = {} as IGeneralLedgerDTO;
 
   constructor(private router: Router, private _sharedService: SharedService,
     private _generalLedgerService: GeneralLedgerService, private _generalMasterService: GeneralMasterService,
     private _toastrService: ToastrService) {
-
-      this.datepickerConfig=Object.assign({},{containerClass:'theme-green',showWeekNumbers:false,showTodayButton:true},
-      {dateInputFormat:'DD/MM/YYYY'},
-      {minDate:new Date(2000,1,1)},
-      {maxDate:new Date(2050,12,31)}
-      );
   }
 
   ngOnInit() {
+    this.datepickerConfig = this._sharedService.getDatepickerConfig();
 
     let glTypesAndGroups = this._sharedService.uiGLTypesAndGroups;
     if (glTypesAndGroups && glTypesAndGroups.length > 0) {
@@ -87,7 +81,7 @@ export class GeneralLedgerMasterFormComponent implements OnInit {
       group: new FormControl("", [Validators.required]),
       type: new FormControl("", [Validators.required]),
       interestRate: new FormControl("", [Validators.required]),
-      openDate: new FormControl(formatDate(new Date(), 'yyyy-MM-dd', 'en'), [Validators.required]),
+      openDate: new FormControl(new Date(Date.now()), [Validators.required]),
       balance: new FormControl(0, []),
       openBalance: new FormControl(0, []),
       regularSchedule: new FormControl(1, [Validators.required]),
@@ -180,7 +174,7 @@ export class GeneralLedgerMasterFormComponent implements OnInit {
                 group: generalLedger.glGroup,
                 type: generalLedger.glType,
                 interestRate: generalLedger.int_Rate,
-                openDate: formatDate(new Date(generalLedger.opBlDt), 'yyyy-MM-dd', 'en'),
+                openDate: new Date(generalLedger.opBlDt),
                 balance: generalLedger.balance,
                 openBalance: generalLedger.opn_Bal,
                 regularSchedule: generalLedger.schedule,
@@ -261,7 +255,7 @@ export class GeneralLedgerMasterFormComponent implements OnInit {
       glMasterModel.Balance = this.balance.value ? this.balance.value.toString() : 0;
       glMasterModel.GLType = this.type.value.toString();
       glMasterModel.GLGroup = this.group.value.toString();
-      glMasterModel.OpBlDt = this.openDate.value.toString();
+      glMasterModel.OpBlDt = new Date(this.openDate.value.toString());
       glMasterModel.Int_Rate = this.interestRate.value.toString();
       glMasterModel.Schedule = this.regularSchedule.value.toString();
       glMasterModel.AssetSche = this.assetSchedule.value.toString();
@@ -309,7 +303,7 @@ export class GeneralLedgerMasterFormComponent implements OnInit {
       group: new FormControl(this.uiGLGroups[0].id, [Validators.required]),
       subAccounts: new FormControl(1, [Validators.required]),
       interestRate: new FormControl("", [Validators.required]),
-      openDate: new FormControl(formatDate(new Date(new Date()), 'yyyy-MM-dd', 'en'), [Validators.required]),
+      openDate: new FormControl(new Date(new Date()), [Validators.required]),
       balance: new FormControl("", []),
       openBalance: new FormControl("", [Validators.required]),
       accountType: new FormControl(this.uiGLTypes[0].id, [Validators.required]),

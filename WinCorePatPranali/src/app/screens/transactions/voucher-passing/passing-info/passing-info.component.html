@@ -53,12 +53,13 @@
                                 </div>
                                 <div class="col-md-6 position-relative form-group">
                                     <label>Cheque No </label>
-                                    <input tabindex="28" type="number" class="form-control" readonly
-                                    >
+                                    <input tabindex="28" type="text" class="form-control" readonly
+                                    [(ngModel)]="uiBankAccount.chequeNo">
                                 </div>
                                 <div class="col-md-6 position-relative form-group">
                                     <label>Cheque Date </label>
-                                    <input tabindex="28" type="number" class="form-control" readonly>
+                                    <input tabindex="28" type="text" class="form-control" readonly
+                                    [(ngModel)]="uiBankAccount.chequeDate">
                                 </div>
                                 <div class="col-md-12 position-relative form-group">
                                     <button class="btn btn-info" tabindex="2"

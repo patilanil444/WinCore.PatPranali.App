@@ -12,6 +12,7 @@ import { ConfirmBoxComponent } from 'src/app/common/directives/confirm-box/confi
 import { TransactionMasterService } from 'src/app/services/transactions/transaction-master/transaction-master.service';
 import { MessageBoxComponent } from 'src/app/common/directives/message-box/message-box.component';
 import { UserRoleHeper } from 'src/app/common/utils/user-role-helper';
+import { BsDatepickerConfig } from 'ngx-bootstrap/datepicker';
 
 export interface ITransactionSummaryModel {
   Id: number;
@@ -62,6 +63,7 @@ export class CounterTransferComponent implements OnInit {
   messageNotes : any = [];
   isResetAccountSearch: boolean = false;
   accountTypeText = "";
+  datepickerConfig: BsDatepickerConfig;
 
   @ViewChild('accountSelectorModal', { static: false }) accountSelectorModal: AccountSelectorComponent
   @ViewChild('confirmModal', { static: false }) confirmModal: ConfirmBoxComponent
@@ -71,6 +73,9 @@ export class CounterTransferComponent implements OnInit {
     private _transactionMasterService: TransactionMasterService) { }
 
   ngOnInit(): void {
+
+    this.datepickerConfig = this._sharedService.getDatepickerConfig();
+
     this.transferCreditForm = new FormGroup({
       tokenId: new FormControl("", []),
       branch: new FormControl("", []),
@@ -81,7 +86,7 @@ export class CounterTransferComponent implements OnInit {
       differenceAmount: new FormControl("", []),
       transactionDesc: new FormControl("To Cash", [Validators.required]),
       chequeNo: new FormControl("", []),
-      chequeDate: new FormControl(formatDate(new Date(Date.now()), 'yyyy-MM-dd', 'en'), []),
+      chequeDate: new FormControl(new Date(Date.now()), []),
       balanceAmountWillBe: new FormControl("", []),
       customerName: new FormControl("", []),
       accountId: new FormControl("", []),
@@ -295,7 +300,7 @@ export class CounterTransferComponent implements OnInit {
       differenceAmount:  "",
       transactionDesc:  "",
       chequeNo:  "",
-      chequeDate: new FormControl(formatDate(new Date(Date.now()), 'yyyy-MM-dd', 'en'), []),
+      chequeDate: new FormControl(new Date(Date.now()), []),
       balanceAmountWillBe:  "",
       customerName:  "",
       accountId:  "",
@@ -360,7 +365,7 @@ export class CounterTransferComponent implements OnInit {
       transactionSummary.TransactionNarration = uidebitAccount.narration;
       transactionSummary.YearEnd = false;
       transactionSummary.UTR_ChequeNo = this.chequeNo.value.length? this.chequeNo.value : "";
-      transactionSummary.UTR_ChequeDate = this.chequeNo.value.length? this.chequeDate.value : formatDate(new Date(Date.now()), 'yyyy-MM-dd', 'en'), [];
+      transactionSummary.UTR_ChequeDate = this.chequeNo.value.length? new Date(this.chequeDate.value) : new Date(Date.now()), [];
       transactionSummary.TransactionPassing = false;
       transactionSummary.CreatedBy = this._sharedService.applicationUser.id;
       transactionSummary.VerifiedBy = 0;

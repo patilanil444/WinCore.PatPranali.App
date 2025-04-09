@@ -1,3 +1,4 @@
+import { DatePipe } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { Router } from '@angular/router';
@@ -11,7 +12,8 @@ import { SharedService } from 'src/app/services/shared.service';
 @Component({
   selector: 'app-link-collection-account',
   templateUrl: './link-collection-account.component.html',
-  styleUrls: ['./link-collection-account.component.css']
+  styleUrls: ['./link-collection-account.component.css'],
+  providers: [DatePipe]
 })
 export class LinkCollectionAccountComponent implements OnInit {
 
@@ -55,7 +57,7 @@ export class LinkCollectionAccountComponent implements OnInit {
 
   constructor(private router: Router, private _sharedService: SharedService, private _toastrService: ToastrService,
     private _generalLedgerService: GeneralLedgerService, private _pigmyMasterService: PigmyMasterService,
-    private _branchMasterService: BranchMasterService) { }
+    private _branchMasterService: BranchMasterService, private datePipe: DatePipe) { }
 
   ngOnInit(): void {
     this.collectionAccountForm = new FormGroup({
@@ -157,9 +159,9 @@ export class LinkCollectionAccountComponent implements OnInit {
         minBalance:  this.uiBankAccount.minBalance,
         unclearedReceipt: isNaN(parseFloat(this.uiBankAccount.unClearedReceiptAmt)) ? "0.00": parseFloat(this.uiBankAccount.unClearedReceiptAmt).toFixed(2),
         unclearedPayment: isNaN(parseFloat(this.uiBankAccount.unClearedPaymentAmt)) ? "0.00": parseFloat(this.uiBankAccount.unClearedPaymentAmt).toFixed(2),
-        lastTransactionDate:  this.uiBankAccount.lastTransactionDate,
-        lastInterestDate:  this.uiBankAccount.lastInterestDate,
-        openDate:  this.uiBankAccount.openDate,
+        lastTransactionDate:  this.datePipe.transform(this.uiBankAccount.lastTransactionDate, 'dd-MM-yyyy'), //this.uiBankAccount.lastTransactionDate,
+        lastInterestDate:  this.datePipe.transform(this.uiBankAccount.lastInterestDate, 'dd-MM-yyyy'),
+        openDate:  this.datePipe.transform(this.uiBankAccount.openDate, 'dd-MM-yyyy'),// this.uiBankAccount.openDate,
         interestRate :  this.uiBankAccount.interestRate,
         balanceWillBe: this.uiBankAccount.balance
       })

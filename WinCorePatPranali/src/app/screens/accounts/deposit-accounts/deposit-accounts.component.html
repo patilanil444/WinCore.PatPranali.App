@@ -12,28 +12,30 @@
                             <label class="">General Ledger</label>
                             <div class="input-group">
                                 <ngx-select-dropdown [config]="config" tabindex="1" [options]="uiDepositGeneralLedgers"
-                                    style="width: 100%;" formControlName="generalLedger"
-                                    [multiple]="false" (change)="changeGeneralLedger($event)"
-                                    [ngClass]="{'disabled': !isAddMode}" ></ngx-select-dropdown>
+                                    style="width: 100%;" formControlName="generalLedger" [multiple]="false"
+                                    (change)="changeGeneralLedger($event)"
+                                    [ngClass]="{'disabled': !isAddMode}"></ngx-select-dropdown>
                             </div>
                         </div>
 
                         <div class="col-md-3 position-relative form-group">
                             <label class="">Account Number</label>
                             <div class="input-group">
-                                <input tabindex="2" type="text" readonly class="form-control" formControlName="glAccountNumberStr">
+                                <input tabindex="2" type="text" readonly class="form-control"
+                                    formControlName="glAccountNumberStr">
                             </div>
                         </div>
                         <div class="col-md-6 position-relative">
-                            <app-cust-search tabindex="3" [ngClass]="{'disabled': !isAddMode}" 
-                            (customers)="getCustomers($event)" [allowMultiSearch]="false">
+                            <app-cust-search tabindex="3" [ngClass]="{'disabled': !isAddMode}"
+                                (customers)="getCustomers($event)" [allowMultiSearch]="false">
                             </app-cust-search>
                         </div>
                     </div>
                 </form>
                 <ul class="nav nav-tabs">
                     <li class="nav-item">
-                        <a role="tab" class="nav-link active" tabindex="4" id="tab-0" data-toggle="tab" href="#tab-content-0">
+                        <a role="tab" class="nav-link active" tabindex="4" id="tab-0" data-toggle="tab"
+                            href="#tab-content-0">
                             <span>Customer Details </span>
                         </a>
                     </li>
@@ -108,8 +110,11 @@
                                             </div>
                                             <div class="col-md-3 position-relative form-group">
                                                 <label class="">Date Of Birth</label>
-                                                <input tabindex="11" type="date" class="form-control" readonly
-                                                    formControlName="dob">
+                                                <!-- <input tabindex="11" type="date" class="form-control" readonly
+                                                    formControlName="dob"> -->
+                                                <input type="text" required tabindex="11" class="form-control"
+                                                    bsDatepicker formControlName="dob"
+                                                    [bsConfig]="datepickerConfig">
                                             </div>
                                             <div class="col-md-3 position-relative form-group">
                                                 <label class="">Aadhar Number</label>
@@ -118,8 +123,11 @@
                                             </div>
                                             <div class="col-md-3 position-relative form-group">
                                                 <label class="">Joining Date</label>
-                                                <input tabindex="13" type="date" class="form-control" readonly
-                                                    formControlName="joiningDate">
+                                                <!-- <input tabindex="13" type="date" class="form-control" readonly
+                                                                                                formControlName="joiningDate"> -->
+                                                <input type="text" required tabindex="13" class="form-control"
+                                                    bsDatepicker formControlName="joiningDate"
+                                                    [bsConfig]="datepickerConfig">
                                             </div>
                                             <div class="col-md-3 position-relative form-group">
                                                 <label class="">Customer Group</label>
@@ -154,8 +162,7 @@
                                     <div class="tab-content">
                                         <div class="row">
                                             <div class="col-md-3 position-relative form-group">
-                                                <label class="">Account Type <span
-                                                        class="mandatory">*</span></label>
+                                                <label class="">Account Type <span class="mandatory">*</span></label>
                                                 <select class="mb-2 form-control" tabindex="6"
                                                     formControlName="accountType" (change)="selectAccountType($event)">
                                                     <option *ngFor="let uiAccountType of uiAccountTypes"
@@ -195,12 +202,14 @@
                                             <div class="col-md-3 position-relative form-group">
                                                 <label class="">Last Transaction Date <span
                                                         class="mandatory">*</span></label>
-                                                <input tabindex="9" type="date" readonly class="form-control"
-                                                    formControlName="lastTransactionDate">
+                                                <!-- <input tabindex="9" type="date" readonly class="form-control"
+                                                    formControlName="lastTransactionDate"> -->
+                                                <input type="text" required tabindex="9" class="form-control"
+                                                    bsDatepicker formControlName="lastTransactionDate"
+                                                    [bsConfig]="datepickerConfig">
                                             </div>
                                             <div class="col-md-3 position-relative form-group">
-                                                <label class="">Account Status <span
-                                                        class="mandatory">*</span></label>
+                                                <label class="">Account Status <span class="mandatory">*</span></label>
                                                 <select class="mb-2 form-control" tabindex="10"
                                                     formControlName="accountStatus">
                                                     <option *ngFor="let uiAccountStatus of uiAccountStatuses"
@@ -210,10 +219,12 @@
                                                 </select>
                                             </div>
                                             <div class="col-md-3 position-relative form-group">
-                                                <label class="">Passbook Date <span
-                                                        class="mandatory">*</span></label>
-                                                <input tabindex="11" type="date" readonly class="form-control"
-                                                    formControlName="passbookDate">
+                                                <label class="">Passbook Date <span class="mandatory">*</span></label>
+                                                <!-- <input tabindex="11" type="date" readonly class="form-control"
+                                                    formControlName="passbookDate"> -->
+                                                <input type="text" required tabindex="11" class="form-control"
+                                                    bsDatepicker formControlName="passbookDate"
+                                                    [bsConfig]="datepickerConfig">
                                             </div>
                                             <!-- <div class="col-md-3 position-relative form-group">
                                                 <label class="">Mature Date <span
@@ -224,14 +235,20 @@
                                             <div class="col-md-3 position-relative form-group">
                                                 <label class="">Last Interest Date <span
                                                         class="mandatory">*</span></label>
-                                                <input tabindex="12" type="date" readonly class="form-control"
-                                                    formControlName="lastInterestDate">
+                                                <!-- <input tabindex="12" type="date" readonly class="form-control"
+                                                    formControlName="lastInterestDate"> -->
+                                                <input type="text" required tabindex="12" class="form-control"
+                                                    bsDatepicker formControlName="lastInterestDate"
+                                                    [bsConfig]="datepickerConfig">
                                             </div>
                                             <div class="col-md-3 position-relative form-group">
                                                 <label class="">Debit Interest Date <span
                                                         class="mandatory">*</span></label>
-                                                <input tabindex="13" type="date" readonly class="form-control"
-                                                    formControlName="drInterestDate">
+                                                <!-- <input tabindex="13" type="date" readonly class="form-control"
+                                                    formControlName="drInterestDate"> -->
+                                                <input type="text" required tabindex="13" class="form-control"
+                                                    bsDatepicker formControlName="drInterestDate"
+                                                    [bsConfig]="datepickerConfig">
                                             </div>
                                         </div>
                                     </div>
@@ -239,86 +256,6 @@
                             </div>
                         </form>
                     </div>
-                    <!-- <div class="tab-pane tabs-animation fade" id="tab-content-2" role="tabpanel">
-                        <form [formGroup]="parametersForm" #form="ngForm">
-                            <div class="row">
-                                <div class="col-md-12">
-                                    <div class="tab-content">
-                                        <div class="row">
-                                            <div class="col-md-3 position-relative form-group">
-                                                <label class="">Interest Rate <span
-                                                        class="mandatory">*</span></label>
-                                                <input tabindex="1" type="number" class="form-control"
-                                                    formControlName="interestRateParam" min="0" 
-                                                    onKeyPress="if(this.value.length >=3) return false;">
-                                            </div>
-                                            <div class="col-md-3 position-relative form-group">
-                                                <label class="">Ledger Number</label>
-                                                <input tabindex="1" type="text" class="form-control"
-                                                    formControlName="ledgerNumber">
-                                            </div>
-                                            <div class="col-md-3 position-relative form-group">
-                                                <label class="">Minimum Balance <span
-                                                        class="mandatory">*</span></label>
-                                                <input tabindex="1" type="number" min="0" class="form-control"
-                                                    formControlName="minimumBalance">
-                                            </div>
-                                            <div class="col-md-3 position-relative form-group">
-                                                <label class="">Additional Balance <span
-                                                        class="mandatory">*</span></label>
-                                                <input tabindex="1" type="number" min="0" class="form-control"
-                                                    formControlName="additionalBalance">
-                                            </div>
-                                            <div class="col-md-3 position-relative form-group">
-                                                <label class="">TDS <span
-                                                        class="mandatory">*</span></label>
-                                                <select class="mb-2 form-control" tabindex="1" formControlName="tds">
-                                                    <option *ngFor="let uiTDSOption of uiTDSOptions"
-                                                        [ngValue]="uiTDSOption.code">
-                                                        {{uiTDSOption.name}}
-                                                    </option>
-                                                </select>
-                                            </div>
-                                            <div class="col-md-3 position-relative form-group">
-                                                <label class="">TDS Reason <span
-                                                        class="mandatory">*</span></label>
-                                                <select class="mb-2 form-control" tabindex="1"
-                                                    formControlName="tdsReason">
-                                                    <option *ngFor="let uiTDSReason of uiTDSReasons"
-                                                        [ngValue]="uiTDSReason.constantNo">
-                                                        {{uiTDSReason.constantname}}
-                                                    </option>
-                                                </select>
-                                            </div>
-
-                                            <div class="col-md-3 position-relative form-group">
-                                                <label class="">Form No 60 <span
-                                                        class="mandatory">*</span></label>
-                                                <select class="mb-2 form-control" tabindex="1" formControlName="form60">
-                                                    <option *ngFor="let uiForm60Option of uiForm60Options"
-                                                        [ngValue]="uiForm60Option.code">
-                                                        {{uiForm60Option.name}}
-                                                    </option>
-                                                </select>
-                                            </div>
-                                            <div class="col-md-3 position-relative form-group">
-                                                <label class="">Form No 61 <span
-                                                        class="mandatory">*</span></label>
-                                                <select class="mb-2 form-control" tabindex="1" formControlName="form61">
-                                                    <option *ngFor="let uiForm61Option of uiForm61Options"
-                                                        [ngValue]="uiForm61Option.code">
-                                                        {{uiForm61Option.name}}
-                                                    </option>
-                                                </select>
-                                            </div>
-
-
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </form>
-                    </div> -->
                     <div class="tab-pane tabs-animation fade" id="tab-content-3" role="tabpanel">
                         <form [formGroup]="nominiForm" #form="ngForm">
                             <div class="row">
@@ -326,14 +263,12 @@
                                     <div class="tab-content">
                                         <div class="row">
                                             <div class="col-md-3 position-relative form-group">
-                                                <label class="">Nomini Name <span
-                                                        class="mandatory">*</span></label>
+                                                <label class="">Nomini Name <span class="mandatory">*</span></label>
                                                 <input tabindex="15" type="text" class="form-control"
                                                     formControlName="nominiName">
                                             </div>
                                             <div class="col-md-3 position-relative form-group">
-                                                <label class="">Relation <span
-                                                        class="mandatory">*</span></label>
+                                                <label class="">Relation <span class="mandatory">*</span></label>
                                                 <select class="mb-2 form-control" tabindex="16"
                                                     formControlName="relation">
                                                     <option *ngFor="let uiRelation of uiRelations"
@@ -343,14 +278,13 @@
                                                 </select>
                                             </div>
                                             <div class="col-md-3 position-relative form-group">
-                                                <label class="">Percentage <span
-                                                        class="mandatory">*</span></label>
+                                                <label class="">Percentage <span class="mandatory">*</span></label>
                                                 <input tabindex="17" type="number" min="0" class="form-control"
-                                                    formControlName="percentage" onKeyPress="if(this.value >= 100) return false;">
+                                                    formControlName="percentage"
+                                                    onKeyPress="if(this.value >= 100) return false;">
                                             </div>
                                             <div class="col-md-3 position-relative form-group">
-                                                <label class="">Address <span
-                                                        class="mandatory">*</span></label>
+                                                <label class="">Address <span class="mandatory">*</span></label>
                                                 <input tabindex="18" type="text" class="form-control"
                                                     formControlName="nomineeAddress">
                                             </div>
@@ -431,8 +365,9 @@
                                     <div class="tab-content">
                                         <div class="row">
                                             <div class="col-md-6 position-relative form-group">
-                                                <app-cust-search tabindex="23" (customers)="getCustomersForJoint($event)"
-                                                [allowMultiSearch]="false">
+                                                <app-cust-search tabindex="23"
+                                                    (customers)="getCustomersForJoint($event)"
+                                                    [allowMultiSearch]="false">
                                                 </app-cust-search>
                                             </div>
 
@@ -442,54 +377,6 @@
                                                     formControlName="operativeInstruction">
                                             </div>
                                         </div>
-                                        <!-- <div class="row">
-                                            <div class="col-md-12 position-relative">
-                                                <button class="customer-accordion" 
-                                                    [ngClass]="{'customer-panel-active': toggleSearchJointCustomers===true}"
-                                                    (click)="openSearchedJointCustomers()">Searched Customers
-                                                </button>
-                                                <div class="customer-panel" *ngIf="toggleSearchJointCustomers">
-                                                    <table style="width: 100%;"
-                                                        class="table table-hover table-striped table-bordered dataTable dtr-inline">
-                                                        <thead>
-                                                            <tr role="row">
-                                                                <th style="width: 5%;">Add</th>
-                                                                <th style="width: 18%;">Customer Number</th>
-                                                                <th style="width: 18%;">Customer Name</th>
-                                                                <th style="width: 18%">Mobile</th>
-                                                                <th style="width: 18%">Date</th>
-                                                                <th style="width: 18%">PAN</th>
-                                                                <th style="width: 5%">Status</th>
-                                                            </tr>
-                                                        </thead>
-                                                        <tbody>
-                                                            <tr role="row" *ngFor="let uiCustomer of uiJointCustomers"
-                                                                class="odd">
-                                                                <td class="sorting_1 dtr-control"><button
-                                                                        class="mb-2 mr-2 btn btn-link"
-                                                                        style="--bs-btn-padding-x:none !important; padding:0 !important;"
-                                                                        (click)="selectJointCustomer(uiCustomer)">Add</button>
-                                                                </td>
-                                                                <td>{{uiCustomer.id}}</td>
-                                                                <td>{{uiCustomer.custName}}</td>
-                                                                <td>{{uiCustomer.mobile}}</td>
-                                                                <td>{{uiCustomer.joinDate}}</td>
-                                                                <td>{{uiCustomer.pan}}</td>
-                                                                <td>
-                                                                    <div class="badge"
-                                                                        [ngClass]="{'badge-danger': uiCustomer.status==='Deleted', 'badge-success' : uiCustomer.status=== 'Active', 'badge-warning' : uiCustomer.status=== 'In-Active'}">
-                                                                        {{uiCustomer.status}}
-                                                                    </div>
-                                                                </td>
-                                                            </tr>
-                                                            <tr *ngIf="uiJointCustomers.length==0">
-                                                                <td colspan="7">No records..</td>
-                                                            </tr>
-                                                        </tbody>
-                                                    </table>
-                                                </div>
-                                            </div>
-                                        </div> -->
 
                                         <div class="row">
                                             <div class="col-md-12 position-relative" style="margin: 10px 0 0 0;">
@@ -512,7 +399,9 @@
                                                         </tr>
                                                     </thead>
                                                     <tbody>
-                                                        <tr role="row" *ngFor="let uiCustomer of uiSelectedJointCustomers; let i=index" class="odd">
+                                                        <tr role="row"
+                                                            *ngFor="let uiCustomer of uiSelectedJointCustomers; let i=index"
+                                                            class="odd">
                                                             <ng-container *ngIf="uiCustomer.status!='D'">
                                                                 <td>{{i+1}}</td>
                                                                 <td>{{uiCustomer.customerNumber}}</td>
@@ -520,8 +409,11 @@
                                                                 <td>{{uiCustomer.operativeInstruction}}</td>
                                                                 <td>
                                                                     <div class="widget-content-right">
-                                                                        <button type="button" title="Delete record" class="btn-shadow btn btn-danger btn-actions"
-                                                                            data-toggle="modal" data-target="#deleteJointModal" (click)="deleteJoinCustomer(uiCustomer)">
+                                                                        <button type="button" title="Delete record"
+                                                                            class="btn-shadow btn btn-danger btn-actions"
+                                                                            data-toggle="modal"
+                                                                            data-target="#deleteJointModal"
+                                                                            (click)="deleteJoinCustomer(uiCustomer)">
                                                                             <span class="btn-icon-wrapper opacity-10">
                                                                                 <i class="fa fa-trash fa-w-20"></i>
                                                                             </span>
@@ -550,8 +442,7 @@
                                     <div class="tab-content">
                                         <div class="row">
                                             <div class="col-md-3 position-relative form-group">
-                                                <label class="">Slip Number <span
-                                                        class="mandatory">*</span></label>
+                                                <label class="">Slip Number <span class="mandatory">*</span></label>
                                                 <input tabindex="34" type="text" class="form-control"
                                                     formControlName="slipNo">
                                             </div>
@@ -560,8 +451,7 @@
                                                     <span class="mandatory">*</span></label>
                                                 <!-- <input tabindex="1" type="text" class="form-control"
                                                     formControlName="renewFD"> -->
-                                                <select class="form-control" tabindex="35"
-                                                    formControlName="renewFD">
+                                                <select class="form-control" tabindex="35" formControlName="renewFD">
                                                     <option *ngFor="let uiRenewalType of uiRenewalTypes"
                                                         [ngValue]="uiRenewalType.code">
                                                         {{uiRenewalType.name}}
@@ -569,26 +459,28 @@
                                                 </select>
                                             </div>
                                             <div class="col-md-3 position-relative form-group">
-                                                <label class="">Opening Date <span
-                                                        class="mandatory">*</span></label>
-                                                <input tabindex="36" type="date" class="form-control"
-                                                    formControlName="fdOpeningDate">
+                                                <label class="">Opening Date <span class="mandatory">*</span></label>
+                                                <!-- <input tabindex="36" type="date" class="form-control"
+                                                    formControlName="fdOpeningDate"> -->
+
+                                                <input type="text" required tabindex="36" class="form-control"
+                                                    bsDatepicker formControlName="fdOpeningDate"
+                                                    [bsConfig]="datepickerConfig">
                                             </div>
 
                                             <div class="col-md-3 position-relative form-group">
-                                                <label class="">FD Amount <span
-                                                        class="mandatory">*</span></label>
-                                                <input tabindex="42" type="number" min="0" class="form-control"
+                                                <label class="">FD Amount <span class="mandatory">*</span></label>
+                                                <input tabindex="37" type="number" min="0" class="form-control"
                                                     formControlName="fdAmount">
                                             </div>
-                                            
+
                                             <div class="col-md-3 position-relative form-group">
                                                 <label class="">FD Tenure <span class="mandatory">*</span></label>
                                                 <div class="input-group">
-                                                    <input tabindex="39" type="number" min="0" class="form-control"
-                                                    formControlName="days" (change)="calculateMatureDate()">
-                                                <div class="input-group-append"><span
-                                                        class="input-group-text">Days</span></div>
+                                                    <input tabindex="38" type="number" min="0" class="form-control"
+                                                        formControlName="days" (change)="calculateMatureDate()">
+                                                    <div class="input-group-append"><span
+                                                            class="input-group-text">Days</span></div>
                                                 </div>
                                             </div>
                                             <div class="col-md-3 position-relative form-group">
@@ -602,44 +494,49 @@
                                             </div>
                                             <div class="col-md-3 position-relative form-group">
                                                 <label> &nbsp;</label>
-                                                 <div class="input-group">
-                                                    <input tabindex="41" type="number" min="0" class="form-control" formControlName="years"
-                                                    (change)="calculateMatureDate()">
-                                                    <div class="input-group-append"><span class="input-group-text">Years</span></div>
-                                                   
+                                                <div class="input-group">
+                                                    <input tabindex="41" type="number" min="0" class="form-control"
+                                                        formControlName="years" (change)="calculateMatureDate()">
+                                                    <div class="input-group-append"><span
+                                                            class="input-group-text">Years</span></div>
+
                                                 </div>
                                             </div>
                                             <div class="col-md-3 position-relative form-group">
-                                                <label class="">Mature Date <span
-                                                        class="mandatory">*</span></label>
-                                                <input tabindex="38" type="date" style="color: red !important;" class="form-control"
-                                                    formControlName="fdMatureDate">
+                                                <label class="">Mature Date <span class="mandatory">*</span></label>
+                                                <!-- <input tabindex="38" type="date" style="color: red !important;" class="form-control"
+                                                    formControlName="fdMatureDate"> -->
+                                                <input type="text" required tabindex="42" class="form-control"
+                                                    bsDatepicker formControlName="fdMatureDate"
+                                                    style="color: red !important;"
+                                                    [bsConfig]="datepickerConfig">
                                             </div>
 
                                             <div class="col-md-3 position-relative form-group">
-                                                <label class="">Renewal On <span
-                                                        class="mandatory">*</span></label>
-                                                <input tabindex="37" type="date" class="form-control"
-                                                    formControlName="renewalOnDate">
+                                                <label class="">Renewal On <span class="mandatory">*</span></label>
+                                                <!-- <input tabindex="37" type="date" class="form-control"
+                                                    formControlName="renewalOnDate"> -->
+
+                                                <input type="text" required tabindex="43" class="form-control"
+                                                    bsDatepicker formControlName="renewalOnDate"
+                                                    [bsConfig]="datepickerConfig">
                                             </div>
-                                           
+
                                             <div class="col-md-3 position-relative form-group">
-                                                <label class="">Interest Rate <span
-                                                        class="mandatory">*</span></label>
-                                                <input tabindex="43" type="number" min="0" maxlength ="3" class="form-control"
-                                                    formControlName="interestRateFD" onKeyPress="if(this.value.length >=3) return false;">
+                                                <label class="">Interest Rate <span class="mandatory">*</span></label>
+                                                <input tabindex="44" type="number" min="0" maxlength="3"
+                                                    class="form-control" formControlName="interestRateFD"
+                                                    onKeyPress="if(this.value.length >=3) return false;">
                                             </div>
                                             <div class="col-md-3 position-relative form-group">
-                                                <label class="">Payable Amount <span
-                                                        class="mandatory">*</span></label>
-                                                <input tabindex="44" type="number" readonly min="0" class="form-control"
+                                                <label class="">Payable Amount <span class="mandatory">*</span></label>
+                                                <input tabindex="45" type="number" readonly min="0" class="form-control"
                                                     formControlName="fdPayableAmount">
                                             </div>
                                             <div class="col-md-3 position-relative form-group">
-                                                <label class="">FD Printed For <span
-                                                        class="mandatory">*</span></label>
+                                                <label class="">FD Printed For <span class="mandatory">*</span></label>
                                                 <div class="input-group">
-                                                    <input tabindex="45" type="text" class="form-control"
+                                                    <input tabindex="46" type="text" class="form-control"
                                                         formControlName="fdPrintedFor">
                                                     <div class="input-group-append"><span
                                                             class="input-group-text">Times</span></div>
@@ -658,8 +555,8 @@
                                     <div class="tab-content">
                                         <div class="row">
                                             <div class="col-md-3 position-relative form-group">
-                                                <label class="">Installment Type <span
-                                                        class="mandatory">*</span> </label>
+                                                <label class="">Installment Type <span class="mandatory">*</span>
+                                                </label>
                                                 <select class="mb-2 form-control" tabindex="46"
                                                     formControlName="installmentType">
                                                     <option *ngFor="let uiInstallmentType of uiInstallmentTypes"
@@ -675,10 +572,12 @@
                                                     formControlName="installmentAmount">
                                             </div>
                                             <div class="col-md-3 position-relative form-group">
-                                                <label class="">Opening Date <span
-                                                        class="mandatory">*</span></label>
-                                                <input tabindex="48" type="date" class="form-control"
-                                                    formControlName="rdOpeningDate">
+                                                <label class="">Opening Date <span class="mandatory">*</span></label>
+                                                <!-- <input tabindex="48" type="date" class="form-control"
+                                                    formControlName="rdOpeningDate"> -->
+                                                <input type="text" required tabindex="48" class="form-control"
+                                                    bsDatepicker formControlName="rdOpeningDate"
+                                                    [bsConfig]="datepickerConfig">
                                             </div>
                                             <div class="col-md-3 position-relative form-group">
                                                 <label class="">No. Of Installments <span
@@ -687,21 +586,22 @@
                                                     formControlName="noOfInstallments">
                                             </div>
                                             <div class="col-md-3 position-relative form-group">
-                                                <label class="">Interest Rate <span
-                                                        class="mandatory">*</span></label>
-                                                <input tabindex="50" type="number" min="0" maxlength ="3" class="form-control"
-                                                    formControlName="interestRateRD" onKeyPress="if(this.value.length >=3) return false;">
+                                                <label class="">Interest Rate <span class="mandatory">*</span></label>
+                                                <input tabindex="50" type="number" min="0" maxlength="3"
+                                                    class="form-control" formControlName="interestRateRD"
+                                                    onKeyPress="if(this.value.length >=3) return false;">
                                             </div>
 
                                             <div class="col-md-3 position-relative form-group">
-                                                <label class="">Maturity Date <span
-                                                        class="mandatory">*</span></label>
-                                                <input tabindex="51" type="date" class="form-control"
-                                                    formControlName="rdMatureDate">
+                                                <label class="">Maturity Date <span class="mandatory">*</span></label>
+                                                <!-- <input tabindex="51" type="date" class="form-control"
+                                                    formControlName="rdMatureDate"> -->
+                                                <input type="text" required tabindex="51" class="form-control"
+                                                    bsDatepicker formControlName="rdMatureDate"
+                                                    [bsConfig]="datepickerConfig">
                                             </div>
                                             <div class="col-md-3 position-relative form-group">
-                                                <label class="">Payable Amount <span
-                                                        class="mandatory">*</span></label>
+                                                <label class="">Payable Amount <span class="mandatory">*</span></label>
                                                 <input tabindex="52" type="number" class="form-control"
                                                     formControlName="rdPaybleAmount">
                                             </div>
@@ -715,12 +615,13 @@
 
                 <div class="row">
                     <div class="col-md-6 position-relative">
-                        <button class="mt-1 btn btn-primary" (click)="saveDepositAccount()" *ngIf="isOperatorUser() || isDepositOfficerUser()"
-                            tabindex="53">Submit</button>
-                            <button class="mt-1 btn btn-left-margin10 btn-success" *ngIf="!isAccountAuthorized && isPassingOfficerUser()" (click)="authoriseAccount()"
+                        <button class="mt-1 btn btn-primary" (click)="saveDepositAccount()"
+                            *ngIf="isOperatorUser() || isDepositOfficerUser()" tabindex="53">Submit</button>
+                        <button class="mt-1 btn btn-left-margin10 btn-success"
+                            *ngIf="!isAccountAuthorized && isPassingOfficerUser()" (click)="authoriseAccount()"
                             tabindex="54">Authorise Account</button>
-                        <button class="mt-1 btn btn-left-margin10 btn-danger" (click)="clear()" *ngIf="isOperatorUser() || isDepositOfficerUser()"
-                            tabindex="55">Clear</button>
+                        <button class="mt-1 btn btn-left-margin10 btn-danger" (click)="clear()"
+                            *ngIf="isOperatorUser() || isDepositOfficerUser()" tabindex="55">Clear</button>
                     </div>
                 </div>
 
@@ -736,7 +637,8 @@
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" id="exampleModalLabel">Delete</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="cancelJointDelete()">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"
+                    (click)="cancelJointDelete()">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
@@ -745,7 +647,8 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-danger" data-dismiss="modal" (click)="onJointDelete()">Yes</button>
-                <button type="button" class="btn btn-primary" data-dismiss="modal" (click)="cancelJointDelete()">No</button>
+                <button type="button" class="btn btn-primary" data-dismiss="modal"
+                    (click)="cancelJointDelete()">No</button>
             </div>
         </div>
     </div>

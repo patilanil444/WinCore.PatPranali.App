@@ -1,4 +1,4 @@
-import { formatDate } from '@angular/common';
+import { DatePipe, formatDate } from '@angular/common';
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { Router } from '@angular/router';
@@ -9,11 +9,13 @@ import { PigmyAccountService } from 'src/app/services/pigmy/pigmy-account/pigmy-
 import { PigmyMasterService } from 'src/app/services/pigmy/pigmy-master/pigmy-master.service';
 import { SharedService } from 'src/app/services/shared.service';
 import { PigmyCollectionInfoComponent } from '../pigmy-collection-info/pigmy-collection-info.component';
+import { BsDatepickerConfig } from 'ngx-bootstrap/datepicker';
 
 @Component({
   selector: 'app-pigmy-passing',
   templateUrl: './pigmy-passing.component.html',
-  styleUrls: ['./pigmy-passing.component.css']
+  styleUrls: ['./pigmy-passing.component.css'],
+  providers: [DatePipe]
 })
 export class PigmyPassingComponent implements OnInit {
 
@@ -43,17 +45,20 @@ export class PigmyPassingComponent implements OnInit {
 
   pigmyCollection = 0;
   pigmySubmitted = 0;
+  datepickerConfig: BsDatepickerConfig;
 
   constructor(private router: Router, private _sharedService: SharedService, private _toastrService: ToastrService,
     private _pigmyMasterService: PigmyMasterService, private _pigmyAccountService: PigmyAccountService,
-    private _generalLedgerService: GeneralLedgerService) { }
+    private _generalLedgerService: GeneralLedgerService, private datePipe: DatePipe) { }
 
   ngOnInit(): void {
 
+    this.datepickerConfig = this._sharedService.getDatepickerConfig();
+
     this.pigmyPassingForm = new FormGroup({
       pigmyAgent: new FormControl("", []),
-      pigmyFromDate: new FormControl(formatDate(new Date(Date.now()), 'yyyy-MM-dd', 'en'), [], []),
-      pigmyToDate: new FormControl(formatDate(new Date(Date.now()), 'yyyy-MM-dd', 'en'), [], []),
+      pigmyFromDate: new FormControl(new Date(Date.now()), []),
+      pigmyToDate: new FormControl(new Date(Date.now()), []),
     });
 
     this.getPigmyAgents().then(() => {
@@ -118,8 +123,8 @@ export class PigmyPassingComponent implements OnInit {
     let pigmyCollectionRequest = {
       BranchCode: this._sharedService.applicationUser.branchId,
       AgentId: this.pigmyAgent.value.id,
-      PigmyFromDate: this.pigmyFromDate.value.toString(),
-      PigmyToDate: this.pigmyToDate.value.toString()
+      PigmyFromDate: new Date(this.pigmyFromDate.value.toString()),
+      PigmyToDate: new Date(this.pigmyToDate.value.toString())
     };
     this._pigmyAccountService.getPigmyCollections(pigmyCollectionRequest).subscribe((data: any) => {
       if (data) {
@@ -132,7 +137,7 @@ export class PigmyPassingComponent implements OnInit {
             if (cols && cols.length) {
               cols.forEach((c:any) => {
                 this.uiPigmyCollections.push({
-                  pigmyDate: formatDate(new Date(c.pigmyDate), 'yyyy-MM-dd', 'en'),
+                  pigmyDate: c.pigmyDate,
                   pigmyCollectionMasterId: c.pigmyCollectionMasterId,
                   totalCollection: c.pigmyCollections.reduce((accumulator:any, currentItem:any) => {
                     return accumulator + currentItem.pigmyAmount;
@@ -144,9 +149,8 @@ export class PigmyPassingComponent implements OnInit {
                 });
               });
             }
-            
 
-            // this.uiPigmyCollections.forEach(col => {
+             // this.uiPigmyCollections.forEach(col => {
             //   col.pigmyDate = formatDate(new Date(col.pigmyDate), 'yyyy-MM-dd', 'en');
             //   col.totalCollection = col.pigmyCollections.reduce((sum:any, col:any) => sum + col.pigmyAmount, 0);
             //   col.commision = 0;
@@ -172,12 +176,12 @@ export class PigmyPassingComponent implements OnInit {
     let pCollections:any[] = [];
     let groupedData = collections.reduce((acc:any, item:any) => {
       // Check if the pigmyDate already exists in the accumulator
-
-      const fCollections = pCollections.filter(c => c.pigmyDate === item.pigmyDate);
+      let pDate = this.datePipe.transform(new Date(item.pigmyDate), 'dd-MM-yyyy');
+      const fCollections = pCollections.filter(c => c.pigmyDate === pDate);
       if (fCollections && fCollections.length == 0) {
         // If not, initialize an empty array for that date
         pCollections.push({
-          pigmyDate: item.pigmyDate,
+          pigmyDate:  this.datePipe.transform(new Date(item.pigmyDate), 'dd-MM-yyyy'),
           pigmyCollectionMasterId: item.id,
           pigmyCollections: [...item.pigmyCollections],
           pigmyCollection: item.totalCollection,

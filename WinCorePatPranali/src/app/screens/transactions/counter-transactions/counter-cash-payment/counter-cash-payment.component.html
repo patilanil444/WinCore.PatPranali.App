@@ -52,7 +52,7 @@
                                 </div>
                                 <div class="col-md-3 position-relative form-group">
                                     <label class="">Cheque Date </label>
-                                    <input tabindex="28" type="date" class="form-control" formControlName="chequeDate">
+                                    <input tabindex="28" type="text" class="form-control" formControlName="chequeDate" bsDatepicker [bsConfig]="datepickerConfig">
                                 </div>
                                 <!-- <div class="col-md-3 position-relative form-group" style="margin-top: 30px;">
                                     <button class="btn btn-success" tabindex="2" (click)="openDenominations()">

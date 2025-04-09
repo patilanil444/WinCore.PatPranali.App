@@ -3,6 +3,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { parseDate } from 'ngx-bootstrap/chronos';
+import { BsDatepickerConfig } from 'ngx-bootstrap/datepicker';
 import { ToastrService } from 'ngx-toastr';
 import { IGeneralDTO } from 'src/app/common/models/common-ui-models';
 import { SharedService } from 'src/app/services/shared.service';
@@ -54,10 +55,16 @@ export class UserComponent implements OnInit {
   isAddMode!: boolean;
   uiUserRoles: any[] = [];
 
+  datepickerConfig: BsDatepickerConfig;
+
   constructor(private router: Router, private route: ActivatedRoute, private _sharedService: SharedService,
     private _userService: UserService, private _toastrService: ToastrService) { }
 
   ngOnInit(): void {
+
+    this.datepickerConfig = this._sharedService.getDatepickerConfig();
+
+    let passExpiryDate= new Date().setDate(new Date().getDate() + 90);
 
     this.userForm = new FormGroup({
       userId: new FormControl("", []),
@@ -67,7 +74,7 @@ export class UserComponent implements OnInit {
       role: new FormControl(0, [Validators.required]),
       username: new FormControl("", [Validators.required]),
       password: new FormControl("", [Validators.required]),
-      passwordExpiryDate: new FormControl(formatDate(new Date().setDate(new Date().getDate() + 90), 'yyyy-MM-dd', 'en'), [Validators.required]),
+      passwordExpiryDate: new FormControl(new Date(passExpiryDate), [Validators.required]),
       transfer_Limit:new FormControl("0", [Validators.required]),
       cash_receipt: new FormControl("0", [Validators.required]),
       cash_payment: new FormControl("0", [Validators.required]),
@@ -108,7 +115,7 @@ export class UserComponent implements OnInit {
                   role: user.access,
                   username: user.userName,
                   password: user.password,
-                  passwordExpiryDate: formatDate(new Date(user.passwordExpiryDate).setDate(new Date().getDate() + 90), 'yyyy-MM-dd', 'en'),
+                  passwordExpiryDate: new Date(user.passwordExpiryDate).setDate(new Date().getDate() + 90),
                   transfer_Limit: user.transfer_Limit,
                   cash_receipt: user.cash_Rect,
                   cash_payment: user.cash_Payt,
@@ -172,7 +179,7 @@ export class UserComponent implements OnInit {
       role: this.uiUserRoles[0].id,
       username: "",
       password: "",
-      passwordExpiryDate: formatDate(new Date().setDate(new Date().getDate() + 90), 'yyyy-MM-dd', 'en'),
+      passwordExpiryDate: new Date().setDate(new Date().getDate() + 90),
       transfer_Limit: "0",
       cash_receipt: "0",
       cash_payment: "0",
@@ -216,7 +223,7 @@ export class UserComponent implements OnInit {
       userModel.AllowChange = this.allow_change.value;
       userModel.AllowDelete = this.allow_delete.value;
       userModel.AllowList = this.allow_list.value;
-      userModel.PasswordExpiryDate = this.passwordExpiryDate.value.toString();
+      userModel.PasswordExpiryDate = new Date(this.passwordExpiryDate.value.toString());
       userModel.CreatedBy = this._sharedService.applicationUser.id;
 
       console.log(userModel);

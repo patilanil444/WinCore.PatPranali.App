@@ -24399,3 +24399,8 @@ input[type=number] {
 .table-compressed th, .table-compressed td {
     padding: .45rem !important;
 }
+
+.theme-dark-blue .bs-datepicker {
+  background-color: #004085;
+  color: white;
+}

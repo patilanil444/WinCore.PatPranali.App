@@ -69,17 +69,17 @@
                             <div class="row">
                                 <div class="col-md-3 position-relative form-group">
                                     <label class="">Saction Amount <span class="mandatory">*</span></label>
-                                    <input tabindex="1" type="number" class="form-control" formControlName="sanctionAmount"
+                                    <input tabindex="5" type="number" class="form-control" formControlName="sanctionAmount"
                                         (change)="setIntallmentSactionAmount()">
                                 </div>
                                 <div class="col-md-3 position-relative form-group">
                                     <label class="">Saction Date <span class="mandatory">*</span></label>
-                                    <input tabindex="1" type="date" class="form-control" formControlName="sanctionDate"
-                                        (change)="calculateFirstInstallmentDate()">
+                                    <input tabindex="6" type="text" class="form-control" formControlName="sanctionDate"
+                                        (change)="calculateFirstInstallmentDate()" bsDatepicker [bsConfig]="datepickerConfig">
                                 </div>
                                 <div class="col-md-3 position-relative form-group">
                                     <label class="">Saction By <span class="mandatory">*</span></label>
-                                    <select class="mb-2 form-control" tabindex="1" formControlName="sanctionBy">
+                                    <select class="mb-2 form-control" tabindex="7" formControlName="sanctionBy">
                                         <option *ngFor="let uiDirector of uiDirectors" [ngValue]="uiDirector.id">
                                             {{uiDirector.directorName}}
                                         </option>
@@ -88,28 +88,28 @@
                     
                                 <div class="col-md-3 position-relative form-group">
                                     <label class=""> Loan Tenure in Months <span class="mandatory">*</span></label>
-                                    <input tabindex="1" type="number" class="mb-2 form-control" formControlName="loanTenureInMonths" min="0"
+                                    <input tabindex="8" type="number" class="mb-2 form-control" formControlName="loanTenureInMonths" min="0"
                                         (change)="calculateMatureDate()" onKeyPress="if(this.value.length >=4) return false;">
                                 </div>
                                 <div class="col-md-3 position-relative form-group">
                                     <label class="">Actual Loan Amount <span class="mandatory">*</span></label>
-                                    <input tabindex="1" type="number" class="form-control" formControlName="actualLoanAmount"
+                                    <input tabindex="9" type="number" class="form-control" formControlName="actualLoanAmount"
                                         (change)="setIntallmentActualAmount()">
                                 </div>
                                 <div class="col-md-3 position-relative form-group">
                                     <label class="">Interest Rate <span class="mandatory">*</span></label>
-                                    <input tabindex="1" type="number" class="mb-2 form-control" formControlName="interestRate" min="0"
-                                        onKeyPress="if(this.value.length >=3) return false;">
+                                    <input tabindex="10" type="number" class="mb-2 form-control" formControlName="interestRate" min="0"
+                                        onKeyPress="if(this.value.length >=3) return false;" >
                                 </div>
                     
                                 <div class="col-md-3 position-relative form-group">
                                     <label class="">Amount Advances <span class="mandatory">*</span></label>
-                                    <input tabindex="1" type="number" min="0" class="form-control" formControlName="amountAdvances">
+                                    <input tabindex="11" type="number" min="0" class="form-control" formControlName="amountAdvances">
                                 </div>
                     
                                 <div class="col-md-3 position-relative form-group">
                                     <label class="">Changes In Interest Rate Applicable</label>
-                                    <select class="mb-2 form-control" tabindex="1" formControlName="changesInInterestApplicable">
+                                    <select class="mb-2 form-control" tabindex="12" formControlName="changesInInterestApplicable">
                                         <option *ngFor="let uiChangesInInterestRate of uiChangesInInterestRateYN"
                                             [ngValue]="uiChangesInInterestRate.code">
                                             {{uiChangesInInterestRate.name}}
@@ -119,23 +119,25 @@
                     
                                 <div class="col-md-3 position-relative form-group">
                                     <label class="">Maturity Date <span class="mandatory">*</span></label>
-                                    <input tabindex="1" type="date" class="mb-2 form-control" formControlName="maturityDate">
+                                    <input tabindex="13" type="text" class="mb-2 form-control" formControlName="maturityDate" 
+                                    bsDatepicker [bsConfig]="datepickerConfig">
                                 </div>
                     
                                 <div class="col-md-3 position-relative form-group">
                                     <label class="">Resolution No</label>
-                                    <input tabindex="1" type="text" class="form-control" formControlName="resolutionNo">
+                                    <input tabindex="14" type="text" class="form-control" formControlName="resolutionNo">
                                 </div>
                     
                                 <div class="col-md-3 position-relative form-group">
                                     <label class="">Resolution Date</label>
-                                    <input tabindex="1" type="date" class="form-control" formControlName="resolutionDate">
+                                    <input tabindex="15" type="text" class="form-control" formControlName="resolutionDate"
+                                    bsDatepicker [bsConfig]="datepickerConfig">
                                 </div>
 
                                 <div class="col-md-3 position-relative form-group">
                                     <label class="">Paid On <span class="mandatory">*</span></label>
-                                    <input tabindex="7" type="date" class="form-control" formControlName="paidDate"
-                                        (change)="modifyMaturityDate()">
+                                    <input tabindex="16" type="text" class="form-control" formControlName="paidDate"
+                                        (change)="modifyMaturityDate()" bsDatepicker [bsConfig]="datepickerConfig">
                                 </div>
 
                             </div>
@@ -231,8 +233,8 @@
                     
                                 <div class="col-md-2 position-relative form-group">
                                     <label class="">First Installment Date <span class="mandatory">*</span></label>
-                                    <input tabindex="1" type="date" class="form-control" formControlName="instFirstInstallmentDate"
-                                        (change)="validateFirstInstallmentDate()">
+                                    <input tabindex="1" type="text" class="form-control" formControlName="instFirstInstallmentDate"
+                                        (change)="validateFirstInstallmentDate()" bsDatepicker [bsConfig]="datepickerConfig">
                                 </div>
                     
                                 <div class="col-md-2 position-relative form-group">

@@ -29,49 +29,6 @@
                              (customers)="getCustomers($event)" [allowMultiSearch]="false">
                             </app-cust-search>
                         </div>
-                        <!-- <div class="col-md-12 position-relative">
-                            <button class="customer-accordion" tabindex="4"
-                                [ngClass]="{'customer-panel-active': toggleSearchCustomers===true}"
-                                (click)="openSearchedCustomers()">Searched Customers
-                            </button>
-                            <div class="customer-panel" *ngIf="toggleSearchCustomers">
-                                <table style="width: 100%;"
-                                    class="table table-hover table-striped table-bordered dataTable dtr-inline">
-                                    <thead>
-                                        <tr role="row">
-                                            <th style="width: 5%;">Select</th>
-                                            <th style="width: 18%;">Customer Number</th>
-                                            <th style="width: 18%;">Customer Name</th>
-                                            <th style="width: 18%">Mobile</th>
-                                            <th style="width: 18%">Date</th>
-                                            <th style="width: 18%">PAN</th>
-                                            <th style="width: 5%">Status</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr role="row" *ngFor="let uiCustomer of uiCustomers" class="odd">
-                                            <td class="sorting_1 dtr-control"><button class="mb-2 mr-2 btn btn-link"
-                                                    style="--bs-btn-padding-x:none !important; padding:0 !important;"
-                                                    (click)="selectCustomer(uiCustomer.id)">Select</button></td>
-                                            <td>{{uiCustomer.id}}</td>
-                                            <td>{{uiCustomer.custName}}</td>
-                                            <td>{{uiCustomer.mobile}}</td>
-                                            <td>{{uiCustomer.joinDate}}</td>
-                                            <td>{{uiCustomer.pan}}</td>
-                                            <td>
-                                                <div class="badge"
-                                                    [ngClass]="{'badge-danger': uiCustomer.status==='Deleted', 'badge-success' : uiCustomer.status=== 'Active', 'badge-warning' : uiCustomer.status=== 'In-Active'}">
-                                                    {{uiCustomer.status}}
-                                                </div>
-                                            </td>
-                                        </tr>
-                                        <tr *ngIf="uiCustomers.length==0">
-                                            <td colspan="7">No records..</td>
-                                        </tr>
-                                    </tbody>
-                                </table>
-                            </div>
-                        </div> -->
                     </div>
                 </form>
                 <ul class="nav nav-tabs">
@@ -141,8 +98,10 @@
                                             </div>
                                             <div class="col-md-3 position-relative form-group">
                                                 <label class="">Date Of Birth</label>
-                                                <input tabindex="11" type="date" class="form-control" readonly
-                                                    formControlName="dob">
+                                                <!-- <input tabindex="11" type="date" class="form-control" readonly
+                                                    formControlName="dob"> -->
+                                                <input type="text" required tabindex="11" class="form-control"
+                                                    bsDatepicker formControlName="dob" [bsConfig]="datepickerConfig">
                                             </div>
                                             <div class="col-md-3 position-relative form-group">
                                                 <label class="">Aadhar Number</label>
@@ -151,8 +110,10 @@
                                             </div>
                                             <div class="col-md-3 position-relative form-group">
                                                 <label class="">Joining Date</label>
-                                                <input tabindex="13" type="date" class="form-control" readonly
-                                                    formControlName="joiningDate">
+                                                <!-- <input tabindex="13" type="date" class="form-control" readonly
+                                                    formControlName="joiningDate"> -->
+                                                <input type="text" required tabindex="13" class="form-control"
+                                                    bsDatepicker formControlName="joiningDate">
                                             </div>
                                             <div class="col-md-3 position-relative form-group">
                                                 <label class="">Customer Group</label>
@@ -245,29 +206,32 @@
                                             <div class="col-md-3 position-relative form-group">
                                                 <label class="">Account Opening Date <span
                                                         class="mandatory">*</span></label>
-                                                <input tabindex="23" type="date" class="mb-2 form-control"
-                                                    formControlName="accountOpeningDate">
+                                                <!-- <input tabindex="23" type="date" class="mb-2 form-control"
+                                                    formControlName="accountOpeningDate"> -->
+                                                
+                                                <input type="text" required tabindex="23" class="form-control"
+                                                    bsDatepicker formControlName="accountOpeningDate" [bsConfig]="datepickerConfig">
                                             </div>
                                             
                                             <div class="col-md-3 position-relative form-group">
                                                 <label class="">Passbook Date <span
                                                         class="mandatory">*</span></label>
-                                                <input tabindex="24" type="date" class="form-control"
-                                                    formControlName="passbookDate">
+                                                <input tabindex="24" type="text" class="form-control" bsDatepicker
+                                                    formControlName="passbookDate" [bsConfig]="datepickerConfig">
                                             </div>
 
                                             <div class="col-md-3 position-relative form-group">
                                                 <label class="">Last Interest Date <span
                                                         class="mandatory">*</span></label>
-                                                <input tabindex="25" type="date" class="form-control"
-                                                    formControlName="lastInterestDate">
+                                                <input tabindex="25" type="text" class="form-control" bsDatepicker
+                                                    formControlName="lastInterestDate" [bsConfig]="datepickerConfig">
                                             </div>
                                         
                                             <div class="col-md-3 position-relative form-group">
                                                 <label class="">Last Transaction Date <span
                                                         class="mandatory">*</span></label>
-                                                <input tabindex="26" type="date" class="form-control"
-                                                    formControlName="lastTransactionDate">
+                                                <input tabindex="26" type="text" class="form-control" bsDatepicker
+                                                    formControlName="lastTransactionDate" [bsConfig]="datepickerConfig">
                                             </div>
                                             <!-- <div class="col-md-3 position-relative form-group">
                                                 <label class="">Debit Interest Date <span
@@ -342,50 +306,6 @@
                                                     </option>
                                                 </select>
                                             </div>
-                                            <!-- <div class="col-md-3 position-relative form-group">
-                                                <label class="">TDS <span
-                                                        class="mandatory">*</span></label>
-                                                <select class="mb-2 form-control" tabindex="1" formControlName="tds">
-                                                    <option *ngFor="let uiTDSOption of uiTDSOptions"
-                                                        [ngValue]="uiTDSOption.code">
-                                                        {{uiTDSOption.name}}
-                                                    </option>
-                                                </select>
-                                            </div>
-                                            <div class="col-md-3 position-relative form-group">
-                                                <label class="">TDS Reason <span
-                                                        class="mandatory">*</span></label>
-                                                <select class="mb-2 form-control" tabindex="1"
-                                                    formControlName="tdsReason">
-                                                    <option *ngFor="let uiTDSReason of uiTDSReasons"
-                                                        [ngValue]="uiTDSReason.constantNo">
-                                                        {{uiTDSReason.constantname}}
-                                                    </option>
-                                                </select>
-                                            </div>
-
-                                            <div class="col-md-3 position-relative form-group">
-                                                <label class="">Form No 60 <span
-                                                        class="mandatory">*</span></label>
-                                                <select class="mb-2 form-control" tabindex="1" formControlName="form60">
-                                                    <option *ngFor="let uiForm60Option of uiForm60Options"
-                                                        [ngValue]="uiForm60Option.code">
-                                                        {{uiForm60Option.name}}
-                                                    </option>
-                                                </select>
-                                            </div>
-                                            <div class="col-md-3 position-relative form-group">
-                                                <label class="">Form No 61 <span
-                                                        class="mandatory">*</span></label>
-                                                <select class="mb-2 form-control" tabindex="1" formControlName="form61">
-                                                    <option *ngFor="let uiForm61Option of uiForm61Options"
-                                                        [ngValue]="uiForm61Option.code">
-                                                        {{uiForm61Option.name}}
-                                                    </option>
-                                                </select>
-                                            </div> -->
-
-
                                         </div>
                                     </div>
                                 </div>

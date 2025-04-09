@@ -29,49 +29,6 @@
                             [allowMultiSearch]="false">
                             </app-cust-search>
                         </div>
-                        <!-- <div class="col-md-12 position-relative">
-                            <button class="customer-accordion"
-                                [ngClass]="{'customer-panel-active': toggleSearchCustomers===true}"
-                                (click)="openSearchedCustomers()">Searched Customers
-                            </button>
-                            <div class="customer-panel" *ngIf="toggleSearchCustomers">
-                                <table style="width: 100%;"
-                                    class="table table-hover table-striped table-bordered dataTable dtr-inline">
-                                    <thead>
-                                        <tr role="row">
-                                            <th style="width: 5%;">Select</th>
-                                            <th style="width: 18%;">Customer Number</th>
-                                            <th style="width: 18%;">Customer Name</th>
-                                            <th style="width: 18%">Mobile</th>
-                                            <th style="width: 18%">Date</th>
-                                            <th style="width: 18%">PAN</th>
-                                            <th style="width: 5%">Status</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr role="row" *ngFor="let uiCustomer of uiCustomers" class="odd">
-                                            <td class="sorting_1 dtr-control"><button class="mb-2 mr-2 btn btn-link"
-                                                    style="--bs-btn-padding-x:none !important; padding:0 !important;"
-                                                    (click)="selectCustomer(uiCustomer.id)">Select</button></td>
-                                            <td>{{uiCustomer.id}}</td>
-                                            <td>{{uiCustomer.custName}}</td>
-                                            <td>{{uiCustomer.mobile}}</td>
-                                            <td>{{uiCustomer.joinDate}}</td>
-                                            <td>{{uiCustomer.pan}}</td>
-                                            <td>
-                                                <div class="badge"
-                                                    [ngClass]="{'badge-danger': uiCustomer.status==='Deleted', 'badge-success' : uiCustomer.status=== 'Active', 'badge-warning' : uiCustomer.status=== 'In-Active'}">
-                                                    {{uiCustomer.status}}
-                                                </div>
-                                            </td>
-                                        </tr>
-                                        <tr *ngIf="uiCustomers.length==0">
-                                            <td colspan="7">No records..</td>
-                                        </tr>
-                                    </tbody>
-                                </table>
-                            </div>
-                        </div> -->
                     </div>
                 </form>
                 <ul class="nav nav-tabs">
@@ -112,62 +69,62 @@
                                             </div>
                                             <div class="col-md-3 position-relative form-group">
                                                 <label class="">Name</label>
-                                                <input tabindex="1" type="text" class="form-control" readonly
+                                                <input tabindex="2" type="text" class="form-control" readonly
                                                     formControlName="name">
                                             </div>
                                             <div class="col-md-3 position-relative form-group">
                                                 <label class="">Address</label>
-                                                <input tabindex="1" type="text" class="form-control" readonly
+                                                <input tabindex="3" type="text" class="form-control" readonly
                                                     formControlName="address">
                                             </div>
                                             <div class="col-md-3 position-relative form-group">
                                                 <label class="">Mobile</label>
-                                                <input tabindex="1" type="text" class="form-control" readonly
+                                                <input tabindex="4" type="text" class="form-control" readonly
                                                     formControlName="mobile">
                                             </div>
                                             <div class="col-md-3 position-relative form-group">
                                                 <label class="">Email</label>
-                                                <input tabindex="1" type="text" class="form-control" readonly
+                                                <input tabindex="5" type="text" class="form-control" readonly
                                                     formControlName="email">
                                             </div>
                                             <div class="col-md-3 position-relative form-group">
                                                 <label class="">PAN</label>
-                                                <input tabindex="1" type="text" class="form-control" readonly
+                                                <input tabindex="6" type="text" class="form-control" readonly
                                                     formControlName="pan">
                                             </div>
                                             <div class="col-md-3 position-relative form-group">
                                                 <label class="">Date Of Birth</label>
-                                                <input tabindex="1" type="date" class="form-control" readonly
-                                                    formControlName="dob">
+                                                <input tabindex="7" type="text" class="form-control" readonly
+                                                    formControlName="dob" bsDatepicker [bsConfig]="datepickerConfig">
                                             </div>
                                             <div class="col-md-3 position-relative form-group">
                                                 <label class="">Aadhar Number</label>
-                                                <input tabindex="1" type="text" class="form-control" readonly
+                                                <input tabindex="8" type="text" class="form-control" readonly
                                                     formControlName="aadhar">
                                             </div>
                                             <div class="col-md-3 position-relative form-group">
                                                 <label class="">Joining Date</label>
-                                                <input tabindex="1" type="date" class="form-control" readonly
-                                                    formControlName="joiningDate">
+                                                <input tabindex="9" type="text" class="form-control" readonly
+                                                    formControlName="joiningDate" bsDatepicker [bsConfig]="datepickerConfig">
                                             </div>
                                             <div class="col-md-3 position-relative form-group">
                                                 <label class="">Customer Group</label>
-                                                <input tabindex="1" type="text" class="form-control" readonly
+                                                <input tabindex="10" type="text" class="form-control" readonly
                                                     formControlName="group">
                                             </div>
                                             <div class="col-md-3 position-relative form-group">
                                                 <label class="">Occupation</label>
-                                                <input tabindex="1" type="text" class="form-control" readonly
+                                                <input tabindex="11" type="text" class="form-control" readonly
                                                     formControlName="occupation">
                                             </div>
                                             <div class="col-md-3 position-relative form-group">
                                                 <label class="">City</label>
-                                                <input tabindex="1" type="text" class="form-control" readonly
+                                                <input tabindex="12" type="text" class="form-control" readonly
                                                     formControlName="city">
                                             </div>
                                             <div class="col-md-3 position-relative form-group">
                                                 <label class="">Zone</label>
-                                                <input tabindex="1" type="text" class="form-control" readonly
+                                                <input tabindex="13" type="text" class="form-control" readonly
                                                     formControlName="zone">
                                             </div>
                                         </div>
@@ -260,8 +217,8 @@
                                             <div class="col-md-3 position-relative form-group">
                                                 <label class="">Account Opening Date <span
                                                         class="mandatory">*</span></label>
-                                                <input tabindex="1" type="date" class="mb-2 form-control"
-                                                    formControlName="accountOpeningDate">
+                                                <input tabindex="1" type="text" class="mb-2 form-control"
+                                                    formControlName="accountOpeningDate" bsDatepicker [bsConfig]="datepickerConfig">
                                             </div>
                                             
                                            
@@ -269,23 +226,23 @@
                                             <div class="col-md-3 position-relative form-group">
                                                 <label class="">Insurance Date <span
                                                         class="mandatory">*</span></label>
-                                                <input tabindex="1" type="date" class="mb-2 form-control"
-                                                    formControlName="insuranceDate">
+                                                <input tabindex="1" type="text" class="mb-2 form-control"
+                                                    formControlName="insuranceDate" bsDatepicker [bsConfig]="datepickerConfig">
                                             </div>
 
 
                                             <div class="col-md-3 position-relative form-group">
                                                 <label class="">Last Interest Date <span
                                                         class="mandatory">*</span></label>
-                                                <input tabindex="1" type="date" class="form-control"
-                                                    formControlName="lastInterestDate">
+                                                <input tabindex="1" type="text" class="form-control"
+                                                    formControlName="lastInterestDate" bsDatepicker [bsConfig]="datepickerConfig">
                                             </div>
                                         
                                             <div class="col-md-3 position-relative form-group">
                                                 <label class="">Last Transaction Date <span
                                                         class="mandatory">*</span></label>
-                                                <input tabindex="1" type="date" class="form-control"
-                                                    formControlName="lastTransactionDate">
+                                                <input tabindex="1" type="text" class="form-control"
+                                                    formControlName="lastTransactionDate" bsDatepicker [bsConfig]="datepickerConfig">
                                             </div>
                                            
                                             <!-- <div class="col-md-3 position-relative form-group">
@@ -323,64 +280,7 @@
                                                     formControlName="operativeInstruction">
                                             </div>
                                         </div>
-                                        <!-- <div class="row">
-                                            <div class="col-md-12 position-relative">
-                                                <button class="customer-accordion"
-                                                    [ngClass]="{'customer-panel-active': toggleSearchJointCustomers===true}"
-                                                    (click)="openSearchedJointCustomers()">Searched Customers
-                                                </button>
-                                                <div class="customer-panel" *ngIf="toggleSearchJointCustomers">
-                                                    <table style="width: 100%;"
-                                                        class="table table-hover table-striped table-bordered dataTable dtr-inline">
-                                                        <thead>
-                                                            <tr role="row">
-                                                                <th style="width: 5%;">Add</th>
-                                                                <th style="width: 18%;">Customer Number</th>
-                                                                <th style="width: 18%;">Customer Name</th>
-                                                                <th style="width: 18%">Mobile</th>
-                                                                <th style="width: 18%">Date</th>
-                                                                <th style="width: 18%">PAN</th>
-                                                                <th style="width: 5%">Status</th>
-                                                            </tr>
-                                                        </thead>
-                                                        <tbody>
-                                                            <tr role="row" *ngFor="let uiCustomer of uiJointCustomers"
-                                                                class="odd">
-                                                                <td class="sorting_1 dtr-control"><button
-                                                                        class="mb-2 mr-2 btn btn-link"
-                                                                        style="--bs-btn-padding-x:none !important; padding:0 !important;"
-                                                                        (click)="selectJointCustomer(uiCustomer)">Add</button>
-                                                                </td>
-                                                                <td>{{uiCustomer.id}}</td>
-                                                                <td>{{uiCustomer.custName}}</td>
-                                                                <td>{{uiCustomer.mobile}}</td>
-                                                                <td>{{uiCustomer.joinDate}}</td>
-                                                                <td>{{uiCustomer.pan}}</td>
-                                                                <td>
-                                                                    <div class="badge"
-                                                                        [ngClass]="{'badge-danger': uiCustomer.status==='Deleted', 'badge-success' : uiCustomer.status=== 'Active', 'badge-warning' : uiCustomer.status=== 'In-Active'}">
-                                                                        {{uiCustomer.status}}
-                                                                    </div>
-                                                                </td>
-                                                            </tr>
-                                                            <tr *ngIf="uiJointCustomers.length==0">
-                                                                <td colspan="7">No records..</td>
-                                                            </tr>
-                                                        </tbody>
-                                                    </table>
-                                                </div>
-                                            </div>
-                                        </div> -->
-
-
-                                        <!-- <div class="row">
-                                            <div style="display: flex; margin-bottom: 10px;">
-                                                <button class="mt-1 btn btn-primary" (click)="saveAccount()"
-                                                    tabindex="23">Add</button>
-                                                <button class="mt-1 btn btn-left-margin10 btn-danger"
-                                                    (click)="clear()" tabindex="24">Clear</button>
-                                            </div>
-                                        </div> -->
+                                        
                                         <div class="row">
                                             <div class="col-md-12 position-relative" style="margin: 10px 0 0 0;">
                                                 <h5 class="card-title" style="color: #bb3fd8 !important;">Joint
@@ -448,54 +348,6 @@
                                                *Note : A customer can be guarantor for maximum 2 loan accounts.
                                             </div>
                                         </div>
-                                        <!-- <div class="row">
-                                            <div class="col-md-12 position-relative">
-                                                <button class="customer-accordion"
-                                                    [ngClass]="{'customer-panel-active': toggleSearchGuarantorCustomers===true}"
-                                                    (click)="openSearchedGuarantorCustomers()">Searched Guarantor
-                                                </button>
-                                                <div class="customer-panel" *ngIf="toggleSearchGuarantorCustomers">
-                                                    <table style="width: 100%;"
-                                                        class="table table-hover table-striped table-bordered dataTable dtr-inline">
-                                                        <thead>
-                                                            <tr role="row">
-                                                                <th style="width: 5%;">Add</th>
-                                                                <th style="width: 18%;">Customer Number</th>
-                                                                <th style="width: 18%;">Customer Name</th>
-                                                                <th style="width: 18%">Mobile</th>
-                                                                <th style="width: 18%">Date</th>
-                                                                <th style="width: 18%">PAN</th>
-                                                                <th style="width: 5%">Status</th>
-                                                            </tr>
-                                                        </thead>
-                                                        <tbody>
-                                                            <tr role="row" *ngFor="let uiCustomer of uiGuarantorCustomers"
-                                                                class="odd">
-                                                                <td class="sorting_1 dtr-control"><button
-                                                                        class="mb-2 mr-2 btn btn-link"
-                                                                        style="--bs-btn-padding-x:none !important; padding:0 !important;"
-                                                                        (click)="selectGuarantorCustomer(uiCustomer)">Add</button>
-                                                                </td>
-                                                                <td>{{uiCustomer.id}}</td>
-                                                                <td>{{uiCustomer.custName}}</td>
-                                                                <td>{{uiCustomer.mobile}}</td>
-                                                                <td>{{uiCustomer.joinDate}}</td>
-                                                                <td>{{uiCustomer.pan}}</td>
-                                                                <td>
-                                                                    <div class="badge"
-                                                                        [ngClass]="{'badge-danger': uiCustomer.status==='Deleted', 'badge-success' : uiCustomer.status=== 'Active', 'badge-warning' : uiCustomer.status=== 'In-Active'}">
-                                                                        {{uiCustomer.status}}
-                                                                    </div>
-                                                                </td>
-                                                            </tr>
-                                                            <tr *ngIf="uiGuarantorCustomers.length==0">
-                                                                <td colspan="7">No records..</td>
-                                                            </tr>
-                                                        </tbody>
-                                                    </table>
-                                                </div>
-                                            </div>
-                                        </div> -->
 
                                         <div class="row">
                                             <div class="col-md-12 position-relative" style="margin: 10px 0 0 0;">

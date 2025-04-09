@@ -66,29 +66,30 @@
                             <div class="row">
                                 <div class="col-md-2 position-relative form-group">
                                     <label class="">Debit Amount </label>
-                                    <input tabindex="28" type="number" class="form-control" readonly placeholder="Debit Amount"
+                                    <input tabindex="1" type="number" class="form-control" readonly placeholder="Debit Amount"
                                         formControlName="debitAmount">
                                 </div>
                                 <div class="col-md-2 position-relative form-group">
                                     <label class="">Cheque No </label>
-                                    <input tabindex="28" type="text" class="form-control" formControlName="chequeNo">
+                                    <input tabindex="2" type="text" class="form-control" formControlName="chequeNo">
                                 </div>
                                 <div class="col-md-2 position-relative form-group">
                                     <label class="">Cheque Date </label>
-                                    <input tabindex="28" type="date" class="form-control" formControlName="chequeDate">
+                                    <input tabindex="3" type="text" class="form-control" formControlName="chequeDate"
+                                    bsDatepicker [bsConfig]="datepickerConfig">
                                 </div>
                                 <div class="col-md-2 position-relative form-group">
-                                    <button class="btn btn-info" style="margin-top: 30px;"
+                                    <button class="btn btn-info" style="margin-top: 30px;" tabindex="4"
                                     *ngIf="isOperatorUser()">Customer Identity</button>
                                 </div>
                                 <div class="col-md-2 position-relative form-group">
                                     <label class="">Total Credit Amount</label>
-                                    <input tabindex="28" type="text" class="form-control" readonly
+                                    <input tabindex="5" type="text" class="form-control" readonly
                                         formControlName="creditAmount">
                                 </div>
                                 <div class="col-md-2 position-relative form-group">
                                     <label class="">Difference</label>
-                                    <input tabindex="28" type="text" class="form-control" readonly
+                                    <input tabindex="6" type="text" class="form-control" readonly
                                         formControlName="differenceAmount">
                                 </div>
                             </div>

@@ -1,4 +1,4 @@
-import { formatDate } from '@angular/common';
+import { DatePipe, formatDate } from '@angular/common';
 import { Component, ElementRef, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { ToastrService } from 'ngx-toastr';
@@ -10,7 +10,8 @@ import { SharedService } from 'src/app/services/shared.service';
 @Component({
   selector: 'app-account-selector',
   templateUrl: './account-selector.component.html',
-  styleUrls: ['./account-selector.component.css']
+  styleUrls: ['./account-selector.component.css'],
+  providers: [DatePipe]
 })
 export class AccountSelectorComponent implements OnInit {
 
@@ -47,7 +48,8 @@ export class AccountSelectorComponent implements OnInit {
   isResetAccountSearch = false;
 
   constructor(private _branchMasterService: BranchMasterService, private _toastrService: ToastrService,
-    private _generalLedgerService: GeneralLedgerService, private _sharedService: SharedService) { }
+    private _generalLedgerService: GeneralLedgerService, private _sharedService: SharedService,
+    private datePipe: DatePipe) { }
 
   ngOnInit(): void {
 
@@ -138,9 +140,9 @@ export class AccountSelectorComponent implements OnInit {
         minBalance: this.uiBankAccount.minBalance,
         unclearedReceipt: isNaN(parseFloat(this.uiBankAccount.unClearedReceiptAmt)) ? 0.00 : parseFloat(parseFloat(this.uiBankAccount.unClearedReceiptAmt).toFixed(2)),
         unclearedPayment: isNaN(parseFloat(this.uiBankAccount.unClearedPaymentAmt)) ? 0.00 : parseFloat(parseFloat(this.uiBankAccount.unClearedPaymentAmt).toFixed(2)),
-        lastTransactionDate: this.uiBankAccount.lastTransactionDate,
-        lastInterestDate: this.uiBankAccount.lastInterestDate,
-        openDate: this.uiBankAccount.openDate,
+        lastTransactionDate: this.getDateString(this.uiBankAccount.lastTransactionDate),
+        lastInterestDate: this.getDateString(this.uiBankAccount.lastInterestDate),
+        openDate: this.getDateString(this.uiBankAccount.openDate),
         interestRate: this.uiBankAccount.interestRate,
         balanceAmountWillBe: this.uiBankAccount.balance,
         amount: "",
@@ -168,6 +170,11 @@ export class AccountSelectorComponent implements OnInit {
         description: ""
       }
     }
+  }
+
+  getDateString(date:any)
+  {
+    return this.datePipe.transform(date,'dd-MM-yyyy')!;
   }
 
   addAccount() {

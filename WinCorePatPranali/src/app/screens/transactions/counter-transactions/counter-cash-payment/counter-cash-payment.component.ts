@@ -1,7 +1,8 @@
-import { formatDate } from '@angular/common';
+import { DatePipe, formatDate } from '@angular/common';
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
+import { BsDatepickerConfig } from 'ngx-bootstrap/datepicker';
 import { ToastrService } from 'ngx-toastr';
 import { DenominationsComponent } from 'src/app/common/directives/denominations/denominations.component';
 import { MessageBoxComponent } from 'src/app/common/directives/message-box/message-box.component';
@@ -56,7 +57,8 @@ export interface IDenomination {
 @Component({
   selector: 'app-counter-cash-payment',
   templateUrl: './counter-cash-payment.component.html',
-  styleUrls: ['./counter-cash-payment.component.css']
+  styleUrls: ['./counter-cash-payment.component.css'],
+  providers: [DatePipe]
 })
 export class CounterCashPaymentComponent implements OnInit {
 
@@ -72,22 +74,24 @@ export class CounterCashPaymentComponent implements OnInit {
 
   uiBankAccount: any = [];
   isResetAccountSearch: boolean = false;
+  datepickerConfig: BsDatepickerConfig;
 
   @ViewChild('denominationModal', {static: false}) denominationsModal: DenominationsComponent
 
  constructor(private router: Router, private _branchMasterService: BranchMasterService, private _toastrService: ToastrService,
     private _generalLedgerService: GeneralLedgerService, private _sharedService: SharedService,
-    private _accountsService: AccountsService, private _savingAccountService: SavingAccountService,
-    private _transactionMasterService: TransactionMasterService) { }
+    private _transactionMasterService: TransactionMasterService, private datePipe: DatePipe) { }
 
   ngOnInit(): void {
+
+    this.datepickerConfig = this._sharedService.getDatepickerConfig();
 
     this.counterPaymentForm = new FormGroup({
       tokenId: new FormControl("", [Validators.required]),
       transactionAmount: new FormControl("", [Validators.required]),
       transactionDesc: new FormControl("To Cash", [Validators.required]),
       chequeNo: new FormControl("", []),
-      chequeDate: new FormControl(formatDate(new Date(Date.now()), 'yyyy-MM-dd', 'en'), []),
+      chequeDate: new FormControl(new Date(Date.now()), []),
       balanceAmountWillBe: new FormControl("", []),
       customerName: new FormControl("", []),
       accountNumber: new FormControl("", []),
@@ -188,9 +192,9 @@ export class CounterCashPaymentComponent implements OnInit {
         minBalance:  this.uiBankAccount.minBalance,
         unclearedReceipt: isNaN(parseFloat(this.uiBankAccount.unClearedReceiptAmt)) ? "0.00": parseFloat(this.uiBankAccount.unClearedReceiptAmt).toFixed(2),
         unclearedPayment: isNaN(parseFloat(this.uiBankAccount.unClearedPaymentAmt)) ? "0.00": parseFloat(this.uiBankAccount.unClearedPaymentAmt).toFixed(2),
-        lastTransactionDate:  this.uiBankAccount.lastTransactionDate,
-        lastInterestDate:  this.uiBankAccount.lastInterestDate,
-        openDate:  this.uiBankAccount.openDate,
+        lastTransactionDate:  this.datePipe.transform(this.uiBankAccount.lastTransactionDate, 'dd-MM-yyyy'), //this.uiBankAccount.lastTransactionDate,
+        lastInterestDate: this.datePipe.transform(this.uiBankAccount.lastInterestDate, 'dd-MM-yyyy'),// this.uiBankAccount.lastInterestDate,
+        openDate: this.datePipe.transform(this.uiBankAccount.openDate, 'dd-MM-yyyy'),// this.uiBankAccount.openDate,
         interestRate :  this.uiBankAccount.interestRate,
         balanceAmountWillBe: this.uiBankAccount.balance
       })
@@ -215,13 +219,6 @@ export class CounterCashPaymentComponent implements OnInit {
         balanceAmountWillBe: "",
       })
     }
-
-
-    // transactionAmount: new FormControl("", [Validators.required]),
-    //   transactionDesc: new FormControl("To Cash", [Validators.required]),
-    //   chequeNo: new FormControl("", []),
-    //   chequeDate: new FormControl(formatDate(new Date(Date.now()), 'yyyy-MM-dd', 'en'), []),
-    //   balanceAmountWillBe: new FormControl("", []),
   }
 
   updateBalance(event: any)
@@ -307,7 +304,7 @@ export class CounterCashPaymentComponent implements OnInit {
       transactionSummary.TransactionNarration = this.transactionDesc.value;
       transactionSummary.YearEnd = false;
       transactionSummary.UTR_ChequeNo = this.chequeNo.value.length? this.chequeNo.value : "";
-      transactionSummary.UTR_ChequeDate = this.chequeNo.value.length? this.chequeDate.value : formatDate(new Date(Date.now()), 'yyyy-MM-dd', 'en'), [];
+      transactionSummary.UTR_ChequeDate = this.chequeNo.value.length? new Date(this.chequeDate.value) : new Date(Date.now()), [];
       transactionSummary.TransactionPassing = false;
       transactionSummary.CreatedBy = this._sharedService.applicationUser.id;
       transactionSummary.VerifiedBy = 0;

@@ -24,7 +24,8 @@
                     <div class="col-md-4 position-relative">
                         <label  class="">Date</label>
                         <div class="input-group">
-                            <input tabindex="2" type="date" class="form-control" [(ngModel)]="interestStructureDate">
+                            <input tabindex="2" type="text" class="form-control" [(ngModel)]="interestStructureDate"
+                            bsDatepicker [bsConfig]="datepickerConfig">
                         </div>
                     </div>
                     <div class="col-md-2 position-relative form-group">

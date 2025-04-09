@@ -1,13 +1,13 @@
-import { formatDate } from '@angular/common';
+import { DatePipe, formatDate } from '@angular/common';
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
+import { BsDatepickerConfig } from 'ngx-bootstrap/datepicker';
 import { ToastrService } from 'ngx-toastr';
 import { DenominationsComponent } from 'src/app/common/directives/denominations/denominations.component';
 import { UiEnumGeneralMaster } from 'src/app/common/models/common-ui-models';
 import { UserRoleHeper } from 'src/app/common/utils/user-role-helper';
 import { AccountsService } from 'src/app/services/accounts/accounts/accounts.service';
-import { SavingAccountService } from 'src/app/services/accounts/saving-accounts/saving-account.service';
 import { BranchMasterService } from 'src/app/services/masters/branch-master/branch-master.service';
 import { GeneralLedgerService } from 'src/app/services/masters/general-ledger/general-ledger.service';
 import { SharedService } from 'src/app/services/shared.service';
@@ -56,7 +56,8 @@ export interface IDenomination {
 @Component({
   selector: 'app-cashier-cash-payment',
   templateUrl: './cashier-cash-payment.component.html',
-  styleUrls: ['./cashier-cash-payment.component.css']
+  styleUrls: ['./cashier-cash-payment.component.css'],
+  providers: [DatePipe]
 })
 export class CashierCashPaymentComponent implements OnInit {
 
@@ -73,14 +74,19 @@ export class CashierCashPaymentComponent implements OnInit {
   uiVoucherDetails: any[] = [];
   transactionType = "payment";
 
+  datepickerConfig: BsDatepickerConfig;
+
   @ViewChild('denominationModal', { static: false }) denominationsModal: DenominationsComponent
 
   constructor(private router: Router, private _branchMasterService: BranchMasterService, private _toastrService: ToastrService,
     private _generalLedgerService: GeneralLedgerService, private _sharedService: SharedService,
     private _voucherPassingService: VoucherPassingService, private _accountsService: AccountsService,
-    private _transactionMasterService: TransactionMasterService) { }
+    private _transactionMasterService: TransactionMasterService, private datePipe: DatePipe) { }
 
   ngOnInit(): void {
+
+    this.datepickerConfig = this._sharedService.getDatepickerConfig();
+
     this.cashierPaymentForm = new FormGroup({
       tokenId: new FormControl("", [Validators.required]),
       transactionHeadId: new FormControl("", []),
@@ -90,7 +96,7 @@ export class CashierCashPaymentComponent implements OnInit {
       transactionAmount: new FormControl("", []),
       transactionDesc: new FormControl("", []),
       chequeNo: new FormControl("", []),
-      chequeDate: new FormControl(formatDate(new Date(Date.now()), 'yyyy-MM-dd', 'en'), []),
+      chequeDate: new FormControl(this.datePipe.transform(new Date(Date.now()), 'dd-MM-yyyy'), []),
       balanceAmountWillBe: new FormControl("", []),
       customerName: new FormControl("", []),
       accountId: new FormControl("", []),
@@ -106,6 +112,8 @@ export class CashierCashPaymentComponent implements OnInit {
       openDate: new FormControl("", []),
       interestRate: new FormControl("", [])
     });
+
+    this.chequeDate.disable();
 
     this.uiAccountTypes = this.retrieveMasters(UiEnumGeneralMaster.ACTYPE);
     this.uiModeOfOperations = this.retrieveMasters(UiEnumGeneralMaster.OPRMODE);
@@ -193,7 +201,7 @@ export class CashierCashPaymentComponent implements OnInit {
               transactionAmount: transactionSummary.voucherAmount,
               transactionDesc: transactionSummary.transactionNarration,
               chequeNo: transactionSummary.utR_ChequeNo,
-              chequeDate: formatDate(new Date(transactionSummary.utR_ChequeDate), 'yyyy-MM-dd', 'en'),
+              chequeDate: this.datePipe.transform(transactionSummary.utR_ChequeDate, 'dd-MM-yyyy'),//formatDate(new Date(transactionSummary.utR_ChequeDate), 'yyyy-MM-dd', 'en'),
             });
 
             this.uiVoucherDetails = [];
@@ -280,9 +288,9 @@ export class CashierCashPaymentComponent implements OnInit {
                   minBalance: this.uiBankAccount.minBalance,
                   unclearedReceipt: isNaN(parseFloat(this.uiBankAccount.unClearedReceiptAmt)) ? "0.00" : parseFloat(this.uiBankAccount.unClearedReceiptAmt).toFixed(2),
                   unclearedPayment: isNaN(parseFloat(this.uiBankAccount.unClearedPaymentAmt)) ? "0.00" : parseFloat(this.uiBankAccount.unClearedPaymentAmt).toFixed(2),
-                  lastTransactionDate: this.uiBankAccount.lastTransactionDate,
-                  lastInterestDate: this.uiBankAccount.lastInterestDate,
-                  openDate: this.uiBankAccount.openDate,
+                  lastTransactionDate: this.datePipe.transform(this.uiBankAccount.lastTransactionDate, 'dd-MM-yyyy'),//this.uiBankAccount.lastTransactionDate,
+                  lastInterestDate: this.datePipe.transform(this.uiBankAccount.lastInterestDate, 'dd-MM-yyyy'), //this.uiBankAccount.lastInterestDate,
+                  openDate: this.datePipe.transform(this.uiBankAccount.openDate, 'dd-MM-yyyy'), //this.uiBankAccount.openDate,
                   interestRate: this.uiBankAccount.interestRate,
                   balanceAmountWillBe: isNaN(parseFloat(this.transactionAmount.value)) ? this.uiBankAccount.balance : (parseFloat(this.uiBankAccount.balance) - parseFloat(this.transactionAmount.value)) 
                 })
@@ -418,7 +426,7 @@ export class CashierCashPaymentComponent implements OnInit {
       transactionAmount: "",
       transactionDesc: "",
       chequeNo: "",
-      chequeDate: new FormControl(formatDate(new Date(Date.now()), 'yyyy-MM-dd', 'en'), []),
+      chequeDate: new FormControl(this.datePipe.transform(new Date(Date.now()), 'dd-MM-yyyy'), []),
       balanceAmountWillBe: "",
       customerName: "",
       accountId: "",

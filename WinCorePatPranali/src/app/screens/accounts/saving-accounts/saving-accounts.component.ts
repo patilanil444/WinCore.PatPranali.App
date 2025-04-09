@@ -2,6 +2,7 @@ import { formatDate } from '@angular/common';
 import { Component } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
+import { BsDatepickerConfig } from 'ngx-bootstrap/datepicker';
 import { NgxDropdownConfig } from 'ngx-select-dropdown';
 import { ToastrService } from 'ngx-toastr';
 import { AccountDeclarations } from 'src/app/common/account-declarations';
@@ -172,12 +173,15 @@ export class SavingAccountsComponent {
   accountsId!: number;
   isAddMode = true;
   isAccountAuthorized = true;
+  datepickerConfig: BsDatepickerConfig;
 
-  constructor(private router: Router, private _sharedService: SharedService, private _toastrService: ToastrService,
+  constructor( private router: Router, private _sharedService: SharedService, private _toastrService: ToastrService,
     private _generalLedgerService: GeneralLedgerService, private _customerService: CustomerService,
-    private _savingAccountService: SavingAccountService, private _accountsService: AccountsService) { }
+    private _savingAccountService: SavingAccountService, private _accountsService: AccountsService) {}
 
   ngOnInit(): void {
+
+    this.datepickerConfig = this._sharedService.getDatepickerConfig();
 
     this.uiAccountTypes = this.retrieveMasters(UiEnumGeneralMaster.ACTYPE);
     this.uiModeOfOperations = this.retrieveMasters(UiEnumGeneralMaster.OPRMODE);
@@ -200,14 +204,17 @@ export class SavingAccountsComponent {
       mobile: new FormControl("", []),
       email: new FormControl("", []),
       pan: new FormControl("", []),
-      dob: new FormControl(formatDate(new Date(Date.now()), 'yyyy-MM-dd', 'en'), []),
+      dob: new FormControl(new Date(Date.now()), []),
       aadhar: new FormControl("", []),
-      joiningDate: new FormControl(formatDate(new Date(Date.now()), 'yyyy-MM-dd', 'en'), []),
+      joiningDate: new FormControl(new Date(Date.now()), []),
       group: new FormControl("", []),
       occupation: new FormControl("", []),
       city: new FormControl("", []),
       zone: new FormControl("", [])
     });
+
+    this.dob.disable();
+    this.joiningDate.disable();
 
     this.summaryForm = new FormGroup({
       generalLedger: new FormControl("", [Validators.required]),
@@ -222,11 +229,10 @@ export class SavingAccountsComponent {
       modeOfSignature: new FormControl(this.uiModeOfOperations[0].constantNo, [Validators.required]),
       staffDirectorOther: new FormControl(this.uiEmployyeTypes[0].code, [Validators.required]),
       accountStatus: new FormControl(this.uiAccountStatuses[0].constantNo, [Validators.required]),
-      accountOpeningDate: new FormControl(formatDate(new Date(Date.now()), 'yyyy-MM-dd', 'en'), [Validators.required]),
-      passbookDate: new FormControl(formatDate(new Date(Date.now()), 'yyyy-MM-dd', 'en'), [Validators.required]),
-      lastInterestDate: new FormControl(formatDate(new Date(Date.now()), 'yyyy-MM-dd', 'en'), [Validators.required]),
-      lastTransactionDate: new FormControl(formatDate(new Date(Date.now()), 'yyyy-MM-dd', 'en'), [Validators.required]),
-      //drInterestDate: new FormControl(formatDate(new Date(Date.now()), 'yyyy-MM-dd', 'en'), [Validators.required]),
+      accountOpeningDate: new FormControl(new Date(Date.now()), [Validators.required]),
+      passbookDate: new FormControl(new Date(Date.now()), [Validators.required]),
+      lastInterestDate: new FormControl(new Date(Date.now()), [Validators.required]),
+      lastTransactionDate: new FormControl(new Date(Date.now()), [Validators.required]),
       printDate: new FormControl("", []),
       accountCloseDate: new FormControl("", []),
       close_Flag: new FormControl(false, [Validators.required])
@@ -263,7 +269,7 @@ export class SavingAccountsComponent {
       }
     }).catch(error => {
       this._toastrService.error('Error loading general ledgers', 'Warning!');
-    });;
+    });
 
     UserRoleHeper.initialiseUserRoles(this._sharedService.applicationUser);
   }
@@ -347,15 +353,17 @@ export class SavingAccountsComponent {
                 mobile: "",
                 email: "",
                 pan: "",
-                dob: formatDate(new Date(Date.now()), 'yyyy-MM-dd', 'en'),
+                dob: new Date(Date.now()),
                 aadhar: "",
-                joiningDate: formatDate(new Date(Date.now()), 'yyyy-MM-dd', 'en'),
+                joiningDate: new Date(Date.now()),
                 group: "",
                 occupation: "",
                 city: "",
                 zone: "",
-              })
+              });
 
+              this.isAccountAuthorized = savingAccount.authBy > 0;
+              this.isNotJointAccount = !(savingAccount.accountType == 2); // TODO: Need to make it configurable
 
               this.accountForm.patchValue({
                 accountType: savingAccount.accountType,
@@ -363,17 +371,28 @@ export class SavingAccountsComponent {
                 modeOfSignature: savingAccount.mode_Sgn,
                 staffDirectorOther: savingAccount.staffCode,
                 accountStatus: savingAccount.accountStatus,
-                accountOpeningDate: formatDate(new Date(savingAccount.opn_Date), 'yyyy-MM-dd', 'en'),
-                passbookDate: formatDate(new Date(savingAccount.passbook_Date), 'yyyy-MM-dd', 'en'),
-                //matureDate: formatDate(new Date(savingAccount.exp_Date), 'yyyy-MM-dd', 'en'),
-                lastInterestDate: formatDate(new Date(savingAccount.last_Int_Date), 'yyyy-MM-dd', 'en'),
-                lastTransactionDate: formatDate(new Date(savingAccount.last_Trn_Date), 'yyyy-MM-dd', 'en'),
-                printDate: (savingAccount.print_Date == null) ? "" : formatDate(new Date(savingAccount.print_Date), 'yyyy-MM-dd', 'en'),
-                accountCloseDate: (savingAccount.close_Date == null) ? "" : formatDate(new Date(savingAccount.close_Date), 'yyyy-MM-dd', 'en'),
+                accountOpeningDate: new Date(savingAccount.opn_Date),
+                passbookDate: new Date(savingAccount.passbook_Date),
+                lastInterestDate: new Date(savingAccount.last_Int_Date),
+                lastTransactionDate: new Date(savingAccount.last_Trn_Date),
+                printDate: (savingAccount.print_Date == null) ? "" : new Date(savingAccount.print_Date),
+                accountCloseDate: (savingAccount.close_Date == null) ? "" : new Date(savingAccount.close_Date),
                 close_Flag: (savingAccount.close_Flag == 1) ? 'Y' : 'N',
               })
 
-              this.accountStatus.enable();
+              if (this.isAccountAuthorized) {
+                this.accountType.disable();
+                this.modeOfOperation.disable();
+                this.modeOfSignature.disable();
+                this.staffDirectorOther.disable();
+                this.accountStatus.disable();
+                this.accountOpeningDate.disable();
+                this.passbookDate.disable();
+                this.lastInterestDate.disable();
+                this.lastTransactionDate.disable();
+              }
+
+              //this.accountStatus.enable();
 
               this.parametersForm.patchValue({
                 interestRateParam: savingAccount.int_Rate,
@@ -382,6 +401,14 @@ export class SavingAccountsComponent {
                 currency: savingAccount.currency,
                 otherBranchTransfer: savingAccount.other_Branch_Trf == 1 ? 'Y' : 'N',
               })
+
+              if (this.isAccountAuthorized) {
+                this.interestRateParam.disable();
+                this.ledgerNumber.disable();
+                this.minimumBalance.disable();
+                this.currency.disable();
+                this.otherBranchTransfer.disable();
+              }
 
               // depositAccount.nomineeList
               if (savingAccount.nomineeList && savingAccount.nomineeList.length) {
@@ -425,8 +452,7 @@ export class SavingAccountsComponent {
                 });
               }
 
-              this.isAccountAuthorized = savingAccount.authBy > 0;
-              this.isNotJointAccount = !(savingAccount.accountType == 2); // TODO: Need to make it configurable
+            
             }
           }
         })
@@ -527,9 +553,9 @@ export class SavingAccountsComponent {
           mobile: customer.mobileno,
           email: customer.emailid,
           pan: customer.panNo,
-          dob: formatDate(new Date(customer.birthDate), 'yyyy-MM-dd', 'en'),
+          dob: new Date(customer.birthDate),
           aadhar: customer.aadharno,
-          joiningDate: formatDate(new Date(customer.custOpenDate), 'yyyy-MM-dd', 'en'),
+          joiningDate: new Date(customer.custOpenDate),
           group: custGroup,
           occupation: custOccupation,
           city: custCity,
@@ -628,7 +654,7 @@ export class SavingAccountsComponent {
         if (parseInt(accountType[1]) == 4) { //TODO: Need to make it configurable
           this.accountForm.patchValue({
             close_Flag: true,
-            accountCloseDate: formatDate(new Date(Date.now()), 'MM/dd/yyyy', 'en')
+            accountCloseDate: new Date(Date.now())
           })
         }
         else {
@@ -823,16 +849,16 @@ export class SavingAccountsComponent {
     accountModel.StaffCode = this.staffDirectorOther.value.toString();
     accountModel.LedgerFolioNo = this.ledgerNumber.value.toString();
     accountModel.Min_Bal = parseFloat(this.minimumBalance.value.toString());
-    accountModel.Last_Int_Date = this.lastInterestDate.value.toString();
-    accountModel.Last_Trn_Date = this.lastTransactionDate.value.toString();
+    accountModel.Last_Int_Date = new Date(this.lastInterestDate.value.toString());
+    accountModel.Last_Trn_Date = new Date(this.lastTransactionDate.value.toString());
     accountModel.Int_Rate = parseFloat(this.interestRateParam.value.toString());
-    accountModel.Opn_Date = this.accountOpeningDate.value.toString();
+    accountModel.Opn_Date = new Date(this.accountOpeningDate.value.toString());
     // accountModel.Print_Date = this.printDate.value.toString();
-    accountModel.Passbook_Date = this.passbookDate.value.toString();
+    accountModel.Passbook_Date = new Date(this.passbookDate.value.toString());
     accountModel.Close_Flag = this.close_Flag.value.toString() == 'true' ? 1 : 0;
     if (accountModel.Close_Flag == 1) {
-      accountModel.Close_Date = this.accountCloseDate.value.toString();
-      accountModel.Exp_Date = this.accountCloseDate.value.toString();
+      accountModel.Close_Date = new Date(this.accountCloseDate.value.toString());
+      accountModel.Exp_Date = new Date(this.accountCloseDate.value.toString());
     }
     accountModel.Currency = this.currency.value.toString();
     accountModel.Other_Branch_Trf = this.otherBranchTransfer.value.toString() == 'Y' ? 1 : 0;

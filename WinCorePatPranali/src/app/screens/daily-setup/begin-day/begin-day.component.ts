@@ -1,5 +1,6 @@
-import { formatDate } from '@angular/common';
+import { DatePipe, formatDate } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
+import { BsDatepickerConfig } from 'ngx-bootstrap/datepicker';
 import { ToastrService } from 'ngx-toastr';
 import { UserRoleHeper } from 'src/app/common/utils/user-role-helper';
 import { SharedService } from 'src/app/services/shared.service';
@@ -8,19 +9,22 @@ import { WorkOperationsService } from 'src/app/services/transactions/work-operat
 @Component({
   selector: 'app-begin-day',
   templateUrl: './begin-day.component.html',
-  styleUrls: ['./begin-day.component.css']
+  styleUrls: ['./begin-day.component.css'],
+  providers: [DatePipe]
 })
 export class BeginDayComponent implements OnInit {
 
   uiOpenDay:any = {};
   areDaysOpen = false;
+  datepickerConfig: BsDatepickerConfig;
 
-  constructor(private _toastrService: ToastrService,
+  constructor(private _toastrService: ToastrService, private datePipe: DatePipe,
     private _workOperationsService: WorkOperationsService, private _sharedService: SharedService, ) { }
-  dtStartDay = formatDate(new Date(Date.now()), 'yyyy-MM-dd', 'en');
+  dtStartDay = new Date(Date.now());
   
   ngOnInit(): void {
 
+    this.datepickerConfig = this._sharedService.getDatepickerConfig();
     // Check if any day is open. If yes, disable everything
     this.checkDayOpen();
     UserRoleHeper.initialiseUserRoles(this._sharedService.applicationUser);
@@ -38,7 +42,7 @@ export class BeginDayComponent implements OnInit {
       this.uiOpenDay = data.data.data;
       if (this.uiOpenDay && this.uiOpenDay.id > 0) {
         let openDay = this.uiOpenDay.workingDate;
-        openDay = formatDate(new Date(openDay), 'yyyy-MM-dd', 'en')
+        openDay = this.datePipe.transform(new Date(openDay), 'dd-MM-yyyy')
 
         this.areDaysOpen = true;
        
@@ -51,7 +55,7 @@ export class BeginDayComponent implements OnInit {
   {
     if (event) {
       let selectedDate = new Date(event.year, event.month, event.day);
-      this.dtStartDay = formatDate(selectedDate, 'yyyy-MM-dd', 'en');
+      this.dtStartDay = new Date(selectedDate);
     }
   }
 

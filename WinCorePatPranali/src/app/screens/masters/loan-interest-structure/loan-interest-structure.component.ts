@@ -1,10 +1,9 @@
 import { formatDate } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
-import { UntypedFormBuilder } from '@angular/forms';
 import { Router } from '@angular/router';
+import { BsDatepickerConfig } from 'ngx-bootstrap/datepicker';
 import { NgxDropdownConfig } from 'ngx-select-dropdown';
 import { ToastrService } from 'ngx-toastr';
-import { UiEnumGeneralMaster } from 'src/app/common/models/common-ui-models';
 import { GeneralLedgerService } from 'src/app/services/masters/general-ledger/general-ledger.service';
 import { GeneralMasterService } from 'src/app/services/masters/general-master/general-master.service';
 import { LoanInterestRateService } from 'src/app/services/masters/loan-interest-rate/loan-interest-rate.service';
@@ -19,21 +18,20 @@ interface IUiInterestStructureModel {
   loanInterestRateId: number
 }
 
-interface ILoanInterestRate{
-  Id : number,
+interface ILoanInterestRate {
+  Id: number,
   GLId: number,
-  IntSetDate: Date,
+  IntSetDate: string,
   // FromPurposeId: number,
   // ToPurposeId: number,
   Type: string,
   BranchCode: number,
   Active: number,
-  CreatedBy : number,
+  CreatedBy: number,
   mstLoanIntRateStruct: ILoanInterestRateScheduleModel[]
 }
 
-interface ILoanInterestRateScheduleModel
-{
+interface ILoanInterestRateScheduleModel {
   Id: number,
   IntRateStructureId: number,
   FromAmount: string,
@@ -53,13 +51,15 @@ export class LoanInterestStructureComponent implements OnInit {
 
   uiGeneralLedgers: any[] = [];
   uiPurposeMasters: any[] = [];
-  interestStructureDate = formatDate(new Date(Date.now()), 'yyyy-MM-dd', 'en');
+  interestStructureDate = new Date(Date.now());
   generalLedger: any = {};
   purposeFromId = 0;
   purposeToId = 0;
-  uiLoanInterestRate :any;
+  uiLoanInterestRate: any;
   isAddMode = true;
   structureArray: IUiInterestStructureModel[] = [];
+
+  datepickerConfig: BsDatepickerConfig;
 
   config: NgxDropdownConfig = {
     displayKey: "glName",
@@ -75,20 +75,24 @@ export class LoanInterestStructureComponent implements OnInit {
     inputDirection: "ltr",
     enableSelectAll: false,
   };
-  
+
   constructor(private router: Router, private _generalLedgerService: GeneralLedgerService,
     private _sharedService: SharedService, private _generalMasterService: GeneralMasterService,
     private _loanInterestRateService: LoanInterestRateService, private _toastrService: ToastrService) { }
 
   ngOnInit(): void {
+
+    this.datepickerConfig = this._sharedService.getDatepickerConfig();
+    this.datepickerConfig.maxDate = new Date(Date.now());
+
     this.getGeneralLedgers();
     //this.getPurposeMaster();
     this.prepareTable();
   }
 
-  getGeneralLedgers(){
+  getGeneralLedgers() {
     this._generalLedgerService.getGeneralLedgers(this._sharedService.applicationUser.branchId).subscribe((data: any) => {
-     
+
       if (data) {
         this.uiGeneralLedgers = data.data.data;
         if (this.uiGeneralLedgers) {
@@ -101,27 +105,10 @@ export class LoanInterestStructureComponent implements OnInit {
     })
   }
 
-  // getPurposeMaster()
-  // {
-  //   let branchGeneralMasterModel = {
-  //     GeneralMasterId:1,// UiEnumGeneralMaster.PurposeMaster,
-  //     BranchId: this._sharedService.applicationUser.branchId
-  //   }
-  //   this._generalMasterService.getAllGeneralMasters(branchGeneralMasterModel).subscribe((data: any) => {
-  //     if (data) {
-  //       this.uiPurposeMasters = data.data.data;
-  //       if (this.uiPurposeMasters) {
-  //         this.purposeFromId = this.uiPurposeMasters[0].id;
-  //         this.purposeToId = this.uiPurposeMasters[0].id;
-  //       }
-  //     }
-  //   })
-  // }
 
-  prepareTable()
-  {
+  prepareTable() {
     this.structureArray = [];
-     for (let index = 0; index < 8; index++) {
+    for (let index = 0; index < 8; index++) {
       let row = {} as IUiInterestStructureModel;
       row.id = 0;
       row.index = index;
@@ -129,84 +116,89 @@ export class LoanInterestStructureComponent implements OnInit {
       row.toAmount = 999999999;
       row.interestRate = 0;
       this.structureArray.push(row);
-     }
+    }
   }
 
-  showSctructure()
-  {
+  showSctructure() {
     this.prepareTable();
     this.uiLoanInterestRate = {};
     this.getLoanInterestRates();
 
   }
 
-  getLoanInterestRates(){
+  getLoanInterestRates() {
     if (this.generalLedger.code) {
 
-      this._loanInterestRateService.getLoanRatesByGL(this.generalLedger.code, this.interestStructureDate).subscribe((data: any) => {
-       
-        if (data) {
-          let response = data.data.data;
-          if (response) {
-            this.uiLoanInterestRate = response;
-            if (this.uiLoanInterestRate.id > 0 && this.uiLoanInterestRate.mstLoanIntRateStruct) {
-  
-              this.interestStructureDate = formatDate(new Date(this.uiLoanInterestRate.intSetDate), 'yyyy-MM-dd', 'en');
-              // this.purposeFromId = this.uiLoanInterestRate.fromPurposeId;
-              // this.purposeToId = this.uiLoanInterestRate.toPurposeId;
-  
-              this.uiLoanInterestRate.mstLoanIntRateStruct.forEach((schedule: any) => {
-                this.structureArray[schedule.rowIndex].id = schedule.id;
-                this.structureArray[schedule.rowIndex].fromAmount = schedule.fromAmount;
-                this.structureArray[schedule.rowIndex].toAmount = schedule.toAmount;
-                this.structureArray[schedule.rowIndex].interestRate = schedule.interestRate;
-              });
-              this.isAddMode = false;
-            }
-            else
-            {
-              this.uiLoanInterestRate = {};
-              this.isAddMode = true;
-              this.interestStructureDate = formatDate(new Date(Date.now()), 'yyyy-MM-dd', 'en');
+      this._loanInterestRateService.getLoanRatesByGL(this.generalLedger.code,
+        formatDate(new Date(this.interestStructureDate), 'yyyy-MM-dd', 'en')).subscribe((data: any) => {
+
+          if (data) {
+            let response = data.data.data;
+            if (response) {
+              this.uiLoanInterestRate = response;
+              if (this.uiLoanInterestRate.id > 0 && this.uiLoanInterestRate.mstLoanIntRateStruct) {
+
+                this.interestStructureDate = new Date(this.uiLoanInterestRate.intSetDate);
+
+                this.uiLoanInterestRate.mstLoanIntRateStruct.forEach((schedule: any) => {
+                  this.structureArray[schedule.rowIndex].id = schedule.id;
+                  this.structureArray[schedule.rowIndex].fromAmount = schedule.fromAmount;
+                  this.structureArray[schedule.rowIndex].toAmount = schedule.toAmount;
+                  this.structureArray[schedule.rowIndex].interestRate = schedule.interestRate;
+                });
+                this.isAddMode = false;
+              }
+              else {
+                this.uiLoanInterestRate = {};
+                this.isAddMode = true;
+                this.interestStructureDate = new Date(Date.now());
+              }
             }
           }
-        }
-      })
+        })
     }
   }
 
-  clear()
-  {
+  clear() {
     this.uiLoanInterestRate = {};
     this.isAddMode = true;
     this.prepareTable();
   }
 
-  validateForm()
-  {
+  validateForm() {
     return true;
   }
 
-  saveStructure()
-  {
+  saveStructure() {
     if (this.validateForm()) {
       let loanInterestRateModel = {} as ILoanInterestRate;
 
-      loanInterestRateModel.Id = (this.uiLoanInterestRate && this.uiLoanInterestRate.id) ? this.uiLoanInterestRate.id : 0;
+      let originalDate = this.uiLoanInterestRate? formatDate(new Date(this.uiLoanInterestRate.intSetDate), 'yyyy-MM-dd', 'en') : "";
+      let changedDate = formatDate(new Date(this.interestStructureDate), 'yyyy-MM-dd', 'en');
+
+      loanInterestRateModel.Id = 0;
+      if (originalDate == changedDate) {
+        loanInterestRateModel.Id = (this.uiLoanInterestRate && this.uiLoanInterestRate.id) ? this.uiLoanInterestRate.id : 0;
+      }
+
       loanInterestRateModel.BranchCode = this._sharedService.applicationUser.branchId;
       loanInterestRateModel.GLId = this.generalLedger.code;
       loanInterestRateModel.Type = "L";
       loanInterestRateModel.CreatedBy = this._sharedService.applicationUser.id;
-      // loanInterestRateModel.FromPurposeId = this.purposeFromId;
-      // loanInterestRateModel.ToPurposeId = this.purposeToId;
-      loanInterestRateModel.IntSetDate = new Date(this.interestStructureDate);
+      loanInterestRateModel.IntSetDate = formatDate(new Date(this.interestStructureDate), 'yyyy-MM-dd', 'en');
       loanInterestRateModel.mstLoanIntRateStruct = [];
       console.log(loanInterestRateModel);
 
       for (let index = 0; index < this.structureArray.length; index++) {
         let model = {} as ILoanInterestRateScheduleModel;
-        model.Id = this.structureArray[index].id;
-        model.IntRateStructureId = (this.uiLoanInterestRate && this.uiLoanInterestRate.id) ? this.uiLoanInterestRate.id : 0;
+
+        model.Id = 0;
+        model.IntRateStructureId = 0;
+
+        if (originalDate == changedDate) {
+          model.Id = this.structureArray[index].id;
+          model.IntRateStructureId = (this.uiLoanInterestRate && this.uiLoanInterestRate.id) ? this.uiLoanInterestRate.id : 0;
+        }
         model.RowIndex = this.structureArray[index].index;
         model.FromAmount = this.structureArray[index].fromAmount.toString();
         model.ToAmount = this.structureArray[index].toAmount.toString();
@@ -217,7 +209,7 @@ export class LoanInterestStructureComponent implements OnInit {
       console.log(loanInterestRateModel);
 
       this._loanInterestRateService.saveLoanRateStructure(loanInterestRateModel).subscribe((data: any) => {
-       
+
         if (data) {
           if (data.statusCode == 200 && data.data.data.retId > 0) {
             this._toastrService.success('Loan interest structure saved.', 'Success!');

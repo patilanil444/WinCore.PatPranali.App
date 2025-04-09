@@ -1,4 +1,5 @@
 import { EventEmitter, Injectable } from '@angular/core';
+import { BsDatepickerConfig } from 'ngx-bootstrap/datepicker';
 import { BehaviorSubject } from 'rxjs';
 import { IGeneralMasterDTO, UiUser } from 'src/app/common/models/common-ui-models';
 
@@ -25,9 +26,15 @@ export class SharedService {
   private apiCount = 0;
   private isLoadingSubject = new BehaviorSubject<boolean>(false);
   isLoading$ = this.isLoadingSubject.asObservable();
-  
+  datepickerConfig: BsDatepickerConfig;
 
-  constructor() { }
+  constructor(private bsConfig: BsDatepickerConfig) {
+    this.datepickerConfig = Object.assign({}, this.bsConfig);
+    this.datepickerConfig.dateInputFormat = 'DD-MM-YYYY'; // Date format
+    this.datepickerConfig.containerClass = 'theme-dark-blue'; // Custom theme class for datepicker
+    this.datepickerConfig.showWeekNumbers = false; // Disable week numbers
+    this.datepickerConfig.isAnimated = true; // Enable animation
+   }
 
   bankEmitter = new EventEmitter<any>();
 
@@ -64,6 +71,11 @@ export class SharedService {
 
   getWorkOperationDate() {
     return this.workOperationDate;
+  }
+
+  getDatepickerConfig()
+  {
+    return this.datepickerConfig;
   }
 
 }

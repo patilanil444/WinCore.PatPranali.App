@@ -70,7 +70,15 @@ export class BranchMasterFormComponent {
   constructor(private router: Router, private route: ActivatedRoute,
     private _branchMasterService: BranchMasterService, private _sharedService: SharedService,
     private _toastrService: ToastrService) {
+
+      this.minDate.setDate(this.minDate.getDate() - 1);
+      this.maxDate.setDate(this.maxDate.getDate() + 7);
+      this.bsRangeValue = [this.bsValue, this.maxDate];
   }
+  bsValue = new Date();
+  bsRangeValue: Date[];
+  maxDate = new Date();
+  minDate = new Date();
 
   ngOnInit(): void {
 
@@ -87,7 +95,8 @@ export class BranchMasterFormComponent {
       zipCode: new FormControl("", [Validators.required]),
       phone: new FormControl("", [Validators.required]),
       email: new FormControl("", [Validators.required, Validators.email]),
-      openingDate: new FormControl(formatDate(new Date(Date.now()), 'yyyy-MM-dd', 'en'), [Validators.required]),
+      //openingDate: new FormControl(formatDate(new Date(Date.now()), 'yyyy-MM-dd', 'en'), [Validators.required]),
+      openingDate: new FormControl(new Date(Date.now()), [Validators.required]),
       ho: new FormControl(this.uiHOYN[0].code, []),
       clearing: new FormControl(this.uiClearingYN[0].code, []),
       regionalLanguage: new FormControl(this.uiRegionalLang[0].code, []),
@@ -163,7 +172,7 @@ export class BranchMasterFormComponent {
                   zipCode: brnch.zipCode,
                   phone: brnch.phone,
                   email: brnch.email,
-                  openingDate: formatDate(new Date(brnch.start_Date), 'yyyy-MM-dd', 'en'),
+                  openingDate: new Date(brnch.start_Date), //formatDate(new Date(brnch.start_Date), 'yyyy-MM-dd', 'en'),
                   ho: brnch.ho == 1? 'Y' : 'N',
                   clearing: brnch.clg == 1? 'Y' : 'N',
                   regionalLanguage: brnch.regionalLang,
@@ -190,6 +199,10 @@ export class BranchMasterFormComponent {
     {
       this.configClick("branches");
     }
+  }
+
+  onDateChange(newDate: Date) {
+    console.log(newDate);
   }
 
   onStateChange(event: any) {
@@ -237,7 +250,8 @@ export class BranchMasterFormComponent {
       branchModel.ZipCode = this.zipCode.value.toString();
       branchModel.Phone = this.phone.value.toString();
       branchModel.Email = this.email.value.toString();
-      branchModel.Start_Date = this.openingDate.value.toString();
+      branchModel.Start_Date = formatDate(new Date(this.openingDate.value), 'yyyy-MM-dd', 'en');
+      // branchModel.Start_Date =  this.openingDate.value.toString();
       branchModel.Ho = this.ho.value.toString() == "Y" ? 1: 0;
       branchModel.Clg = this.clearing.value.toString() == "Y" ? 1: 0;
       branchModel.RegionalLang = this.regionalLanguage.value.toString();
@@ -279,7 +293,10 @@ export class BranchMasterFormComponent {
           }
         })
       }
-
+    }
+    else
+    {
+      this._toastrService.error('Please enter required inputs.', 'Error!');
     }
   }
 

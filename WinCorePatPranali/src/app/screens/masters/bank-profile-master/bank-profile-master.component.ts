@@ -1,6 +1,7 @@
 import { formatDate } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, NumberValueAccessor, Validators } from '@angular/forms';
+import { BsDatepickerConfig } from 'ngx-bootstrap/datepicker';
 import { NgxDropdownConfig } from 'ngx-select-dropdown';
 import { ToastrService } from 'ngx-toastr';
 import { SystemEntryDeclarations } from 'src/app/common/system-entry-declarations';
@@ -141,6 +142,8 @@ export class BankProfileMasterComponent implements OnInit {
   isAddMode = true;
   uiSystemProfile: any;
 
+  datepickerConfig: BsDatepickerConfig;
+
   config: NgxDropdownConfig = {
     displayKey: "glName",
     height: "auto",
@@ -161,13 +164,15 @@ export class BankProfileMasterComponent implements OnInit {
 
   ngOnInit(): void {
 
+    this.datepickerConfig = this._sharedService.getDatepickerConfig();
+
     this.profileForm = new FormGroup({
       code: new FormControl("", []),
-      today: new FormControl(formatDate(new Date(Date.now()), 'yyyy-MM-dd', 'en'), [Validators.required]),
+      today: new FormControl(new Date(Date.now()), [Validators.required]),
       dayOpen: new FormControl(this.dayOpenGeneral[0].code, []),
       standingInstructionExe: new FormControl(this.standingInstructionGeneral[0].code, []),
-      startDate: new FormControl(formatDate(new Date(Date.now()), 'yyyy-MM-dd', 'en'), [Validators.required]),
-      correctionDate: new FormControl(formatDate(new Date(Date.now()), 'yyyy-MM-dd', 'en'), [Validators.required]),
+      startDate: new FormControl(new Date(Date.now()), [Validators.required]),
+      correctionDate: new FormControl(new Date(Date.now()), [Validators.required]),
       maxGIBalanceSheet: new FormControl("", []),
       maxScheduleBalanceSheet: new FormControl("", []),
       regularShareValue: new FormControl("", []),
@@ -364,7 +369,7 @@ export class BankProfileMasterComponent implements OnInit {
               code: systemGeneral.branchId,
               dayOpen: systemGeneral.dayOpen ,
               standingInstructionExe: systemGeneral.standingInstructionExecute,
-              startDate: formatDate(new Date(systemGeneral.startDate), 'yyyy-MM-dd', 'en'),
+              startDate: new Date(systemGeneral.startDate),
               //correctionDate: formatDate(new Date(systemGeneral.correctionDate), 'yyyy-MM-dd', 'en'),
               maxGIBalanceSheet: systemGeneral.maxGIBalance,
               maxScheduleBalanceSheet: systemGeneral.maxScheduleBalance,
@@ -510,8 +515,8 @@ export class BankProfileMasterComponent implements OnInit {
       systemGeneralModel.BranchId = this._sharedService.applicationUser.branchId;
       systemGeneralModel.DayOpen =  this.dayOpen.value.toString();
       systemGeneralModel.StandingInstructionExecute = this.standingInstructionExe.value.toString();
-      systemGeneralModel.StartDate = this.startDate.value.toString();
-      systemGeneralModel.CorrectionDate = this.correctionDate.value.toString();
+      systemGeneralModel.StartDate = new Date(this.startDate.value.toString());
+      systemGeneralModel.CorrectionDate = new Date(this.correctionDate.value.toString());
       systemGeneralModel.MaxGIBalance = this.maxGIBalanceSheet.value.toString();
       systemGeneralModel.MaxScheduleBalance = this.maxScheduleBalanceSheet.value.toString();
       systemGeneralModel.ActualProfit = this.actualProfit.value.toString();

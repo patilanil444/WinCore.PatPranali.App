@@ -2,6 +2,7 @@ import { formatDate } from '@angular/common';
 import { Component } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
+import { BsDatepickerConfig } from 'ngx-bootstrap/datepicker';
 import { NgxDropdownConfig } from 'ngx-select-dropdown';
 import { ToastrService } from 'ngx-toastr';
 import { AccountDeclarations } from 'src/app/common/account-declarations';
@@ -196,6 +197,7 @@ export class DepositAccountsComponent {
   accountsId!: number;
   isAddMode = true;
   glInterestParameters: any;
+  datepickerConfig: BsDatepickerConfig;
 
   constructor(private router: Router, private _sharedService: SharedService, private _toastrService: ToastrService,
     private _generalLedgerService: GeneralLedgerService, private _customerService: CustomerService,
@@ -203,6 +205,8 @@ export class DepositAccountsComponent {
    private _depositInterestRateService: DepositInterestRateService ) { }
 
   ngOnInit(): void {
+
+    this.datepickerConfig = this._sharedService.getDatepickerConfig();
 
     this.uiAccountTypes = this.retrieveMasters(UiEnumGeneralMaster.ACTYPE);
     this.uiModeOfOperations = this.retrieveMasters(UiEnumGeneralMaster.OPRMODE);
@@ -226,14 +230,17 @@ export class DepositAccountsComponent {
       mobile: new FormControl("", []),
       email: new FormControl("", []),
       pan: new FormControl("", []),
-      dob: new FormControl(formatDate(new Date(Date.now()), 'yyyy-MM-dd', 'en'), []),
+      dob: new FormControl(new Date(Date.now()), []),
       aadhar: new FormControl("", []),
-      joiningDate: new FormControl(formatDate(new Date(Date.now()), 'yyyy-MM-dd', 'en'), []),
+      joiningDate: new FormControl(new Date(Date.now()), []),
       group: new FormControl("", []),
       occupation: new FormControl("", []),
       city: new FormControl("", []),
       zone: new FormControl("", [])
     });
+
+    this.dob.disable();
+    this.joiningDate.disable();
 
     this.summaryForm = new FormGroup({
       generalLedger: new FormControl("", [Validators.required]),
@@ -247,12 +254,12 @@ export class DepositAccountsComponent {
       modeOfOperation: new FormControl(this.uiModeOfOperations[0].constantNo, [Validators.required]),
       staffDirectorOther: new FormControl(this.uiEmployyeTypes[0].code, [Validators.required]),
       //accountOpeningDate: new FormControl(formatDate(new Date(Date.now()), 'yyyy-MM-dd', 'en'), [Validators.required]),
-      lastTransactionDate: new FormControl(formatDate(new Date(Date.now()), 'yyyy-MM-dd', 'en'), [Validators.required]),
+      lastTransactionDate: new FormControl(new Date(Date.now()), [Validators.required]),
       accountStatus: new FormControl(this.uiAccountStatuses[0].constantNo, [Validators.required]),
-      passbookDate: new FormControl(formatDate(new Date(Date.now()), 'yyyy-MM-dd', 'en'), [Validators.required]),
+      passbookDate: new FormControl(new Date(Date.now()), [Validators.required]),
       // matureDate: new FormControl(formatDate(new Date(Date.now()), 'yyyy-MM-dd', 'en'), [Validators.required]),
-      lastInterestDate: new FormControl(formatDate(new Date(Date.now()), 'yyyy-MM-dd', 'en'), [Validators.required]),
-      drInterestDate: new FormControl(formatDate(new Date(Date.now()), 'yyyy-MM-dd', 'en'), [Validators.required]),
+      lastInterestDate: new FormControl(new Date(Date.now()), [Validators.required]),
+      drInterestDate: new FormControl(new Date(Date.now()), [Validators.required]),
     });
 
     this.nominiForm = new FormGroup({
@@ -271,9 +278,9 @@ export class DepositAccountsComponent {
     this.fdDetailsForm = new FormGroup({
       slipNo: new FormControl("", [Validators.required]),
       renewFD: new FormControl(this.uiRenewalTypes[0].code, [Validators.required]),
-      fdOpeningDate: new FormControl(formatDate(new Date(Date.now()), 'yyyy-MM-dd', 'en'), [Validators.required]),
-      renewalOnDate: new FormControl(formatDate(new Date(Date.now()), 'yyyy-MM-dd', 'en'), [Validators.required]),
-      fdMatureDate: new FormControl(formatDate(new Date(Date.now()), 'yyyy-MM-dd', 'en'), [Validators.required]),
+      fdOpeningDate: new FormControl(new Date(Date.now()), [Validators.required]),
+      renewalOnDate: new FormControl(new Date(Date.now()), [Validators.required]),
+      fdMatureDate: new FormControl(new Date(Date.now()), [Validators.required]),
       days: new FormControl("", [Validators.required]),
       months: new FormControl("", [Validators.required]),
       years: new FormControl("", [Validators.required]),
@@ -284,14 +291,15 @@ export class DepositAccountsComponent {
     });
 
     this.fdMatureDate.disable();
+    this.slipNo.disable();
 
     this.rdDetailsForm = new FormGroup({
       installmentType: new FormControl(this.uiInstallmentTypes[0].code, [Validators.required]),
       installmentAmount: new FormControl("", [Validators.required]),
-      rdOpeningDate: new FormControl(formatDate(new Date(Date.now()), 'yyyy-MM-dd', 'en'), [Validators.required]),
+      rdOpeningDate: new FormControl(new Date(Date.now()), [Validators.required]),
       noOfInstallments: new FormControl("", [Validators.required]),
       interestRateRD: new FormControl("", [Validators.required]),
-      rdMatureDate: new FormControl(formatDate(new Date(Date.now()), 'yyyy-MM-dd', 'en'), [Validators.required]),
+      rdMatureDate: new FormControl(new Date(Date.now()) , [Validators.required]),
       rdPaybleAmount: new FormControl("", [Validators.required])
     });
 
@@ -389,9 +397,9 @@ export class DepositAccountsComponent {
                 mobile: "",
                 email: "",
                 pan: "",
-                dob: new FormControl(formatDate(new Date(Date.now()), 'yyyy-MM-dd', 'en'), []),
+                dob: new FormControl(new Date(Date.now()), []),
                 aadhar: "",
-                joiningDate: new FormControl(formatDate(new Date(Date.now()), 'yyyy-MM-dd', 'en'), []),
+                joiningDate: new FormControl(new Date(Date.now()), []),
                 group: "",
                 occupation: "",
                 city: "",
@@ -403,26 +411,25 @@ export class DepositAccountsComponent {
                 modeOfOperation: depositAccount.modeOfOperation,
                 staffDirectorOther: depositAccount.staffCode,
                 //accountOpeningDate: formatDate(new Date(depositAccount.opn_Date), 'yyyy-MM-dd', 'en'),
-                lastTransactionDate: formatDate(new Date(depositAccount.last_Trn_Date), 'yyyy-MM-dd', 'en'),
+                lastTransactionDate: new Date(depositAccount.last_Trn_Date),
                 accountStatus: depositAccount.accountStatus,
-                passbookDate: formatDate(new Date(depositAccount.passbookDate), 'yyyy-MM-dd', 'en'),
+                passbookDate: new Date(depositAccount.passbookDate),
                 // matureDate: formatDate(new Date(depositAccount.exp_Date), 'yyyy-MM-dd', 'en'),
-                lastInterestDate: formatDate(new Date(depositAccount.last_Int_Date), 'yyyy-MM-dd', 'en'),
-                drInterestDate: formatDate(new Date(depositAccount.debitInterestDate), 'yyyy-MM-dd', 'en')
+                lastInterestDate: new Date(depositAccount.last_Int_Date),
+                drInterestDate: new Date(depositAccount.debitInterestDate)
               })
 
               this.isAccountAuthorized = depositAccount.authBy > 0;
-
-              // this.parametersForm.patchValue({
-              //   interestRateParam: depositAccount.int_Rate,
-              //   ledgerNumber: depositAccount.ledgerNumber,
-              //   minimumBalance: depositAccount.minimumBalance,
-              //   additionalBalance: depositAccount.additionalBalance,
-              //   form60: depositAccount.form60,
-              //   form61: depositAccount.form61,
-              //   tds: depositAccount.tdS_YN ? 'Y' : 'N',
-              //   tdsReason: depositAccount.tdS_Reason_Code,
-              // })
+              if (this.isAccountAuthorized) {
+                this.accountType.disable();
+                this.modeOfOperation.disable();
+                this.staffDirectorOther.disable();
+                this.lastTransactionDate.disable();
+                this.accountStatus.disable();
+                this.passbookDate.disable();
+                this.lastInterestDate.disable();
+                this.drInterestDate.disable();
+              }
 
               // depositAccount.nomineeList
               if (depositAccount.nomineeList && depositAccount.nomineeList.length) {
@@ -474,9 +481,9 @@ export class DepositAccountsComponent {
                 this.fdDetailsForm.patchValue({
                   slipNo: depositAccount.receiptNo,
                   renewFD: depositAccount.renewalYN ? 'Y' : 'N',
-                  fdOpeningDate: formatDate(new Date(depositAccount.opn_Date), 'yyyy-MM-dd', 'en'),
-                  renewalOnDate: formatDate(new Date(depositAccount.renewalOnDate), 'yyyy-MM-dd', 'en'),
-                  fdMatureDate: formatDate(new Date(depositAccount.exp_Date), 'yyyy-MM-dd', 'en'),
+                  fdOpeningDate: new Date(depositAccount.opn_Date),
+                  renewalOnDate: new Date(depositAccount.renewalOnDate),
+                  fdMatureDate: new Date(depositAccount.exp_Date),
                   days: depositAccount.tDays,
                   months: depositAccount.tMonths,
                   years: depositAccount.tYears,
@@ -485,18 +492,42 @@ export class DepositAccountsComponent {
                   fdPayableAmount: depositAccount.payb_Amt,
                   fdPrintedFor: depositAccount.printCount,
                 })
+
+                if (this.isAccountAuthorized) {
+                  this.slipNo.disable();
+                  this.renewFD.disable();
+                  this.days.disable();
+                  this.months.disable();
+                  this.years.disable();
+                  this.fdOpeningDate.disable();
+                  this.fdAmount.disable();
+                  this.fdPayableAmount.disable();
+                  this.fdMatureDate.disable();
+                  this.interestRateFD.disable();
+                }
+                
               }
 
               if (this.isRDAccount) {
                 this.rdDetailsForm.patchValue({
                   installmentType: depositAccount.inst_Type,
                   installmentAmount: depositAccount.inst_Amt,
-                  rdOpeningDate: formatDate(new Date(depositAccount.opn_Date), 'yyyy-MM-dd', 'en'),
+                  rdOpeningDate: new Date(depositAccount.opn_Date),
                   noOfInstallments: depositAccount.inst_No,
                   interestRateRD: depositAccount.int_Rate,
-                  rdMatureDate: formatDate(new Date(depositAccount.exp_Date), 'yyyy-MM-dd', 'en'),
+                  rdMatureDate:new Date(depositAccount.exp_Date),
                   rdPaybleAmount: depositAccount.payb_Amt,
                 })
+
+                if (this.isAccountAuthorized) {
+                  this.installmentType.disable();
+                  this.installmentAmount.disable();
+                  this.rdOpeningDate.disable();
+                  this.noOfInstallments.disable();
+                  this.rdMatureDate.disable();
+                  this.rdPaybleAmount.disable();
+                  this.interestRateRD.disable();
+                }
               }
             }
           }
@@ -637,9 +668,9 @@ export class DepositAccountsComponent {
           mobile: customer.mobileno,
           email: customer.emailid,
           pan: customer.panNo,
-          dob: formatDate(new Date(customer.birthDate), 'yyyy-MM-dd', 'en'),
+          dob: new Date(customer.birthDate),
           aadhar: customer.aadharno,
-          joiningDate: formatDate(new Date(customer.custOpenDate), 'yyyy-MM-dd', 'en'),
+          joiningDate: new Date(customer.custOpenDate),
           group: custGroup,
           occupation: custOccupation,
           city: custCity,
@@ -926,14 +957,14 @@ export class DepositAccountsComponent {
     accountModel.CustomerId = parseInt(this.customerId.value.toString());
     accountModel.Code1 = parseInt(this.generalLedger.value.code.toString());
     accountModel.Code2 = parseInt(this.glAccountNumber.value.toString());
-    accountModel.AccountNo = this.glAccountNumberStr.value.toString()
+    accountModel.AccountNo = this.glAccountNumberStr.value.toString();
     accountModel.AccountType = parseInt(this.accountType.value.toString());
     accountModel.AccountStatus= parseInt(this.accountStatus.value.toString());
     accountModel.FdDetailId = 0;
     accountModel.ModeOfOperation = parseInt(this.modeOfOperation.value.toString());
     accountModel.StaffCode = this.staffDirectorOther.value.toString();
-    accountModel.PassbookDate = this.passbookDate.value.toString();
-    accountModel.DebitInterestDate = this.drInterestDate.value.toString();
+    accountModel.PassbookDate = new Date(this.passbookDate.value.toString()); //this.passbookDate.value.toString();
+    accountModel.DebitInterestDate = new Date(this.drInterestDate.value.toString());
     // accountModel.LedgerNumber = this.ledgerNumber.value.toString();
     // accountModel.AdditionalBalance = parseFloat(this.additionalBalance.value.toString());
     // accountModel.Form60 = this.form60.value.toString();
@@ -943,35 +974,35 @@ export class DepositAccountsComponent {
 
     if (this.isFDAccount) { // If FD account
       accountModel.Payb_Amt = parseFloat(this.fdPayableAmount.value.toString()); // Or RD 
-      accountModel.Opn_Date = this.fdOpeningDate.value.toString();  // Or RD 
-      accountModel.Exp_Date = this.fdMatureDate.value.toString();// Or RD 
+      accountModel.Opn_Date = new Date(this.fdOpeningDate.value.toString());  // Or RD 
+      accountModel.Exp_Date = new Date(this.fdMatureDate.value.toString());// Or RD 
       accountModel.ReceiptNo = this.slipNo.value.toString();
       accountModel.RenewalYN = this.renewFD.value.toString() == 'Y' ? true : false;
-      accountModel.RenewalOnDate = this.renewalOnDate.value.toString();
+      accountModel.RenewalOnDate = new Date(this.renewalOnDate.value.toString());
       accountModel.TDays = parseInt(this.days.value.toString());
       accountModel.TMonths = parseInt(this.months.value.toString());
       accountModel.TYears = parseInt(this.years.value.toString());
       accountModel.FD_Amt = parseFloat(this.fdAmount.value.toString());
       accountModel.Int_Rate = parseFloat(this.interestRateFD.value.toString()); // Or RD 
       accountModel.PrintCount = parseInt(this.fdPrintedFor.value.toString());
-      accountModel.Close_Date = this.fdMatureDate.value.toString();
+      accountModel.Close_Date = new Date(this.fdMatureDate.value.toString());
       accountModel.BankAccountType = 'FD';
     }
     else if (this.isRDAccount) // If RD account
     {
       accountModel.Payb_Amt = parseFloat(this.rdPaybleAmount.value.toString());
-      accountModel.Opn_Date = this.rdOpeningDate.value.toString();
-      accountModel.Exp_Date = this.rdMatureDate.value.toString();
+      accountModel.Opn_Date = new Date(this.rdOpeningDate.value.toString());
+      accountModel.Exp_Date = new Date(this.rdMatureDate.value.toString());
       accountModel.Int_Rate = parseFloat(this.interestRateRD.value.toString());
       accountModel.Inst_Amt = parseFloat(this.installmentAmount.value.toString());
       accountModel.Inst_No = parseInt(this.noOfInstallments.value.toString());
       accountModel.Inst_Type = this.installmentType.value.toString();
-      accountModel.Close_Date = this.rdMatureDate.value.toString();
+      accountModel.Close_Date = new Date(this.rdMatureDate.value.toString());
       accountModel.BankAccountType = 'RD';
     }
 
-    accountModel.Last_Int_Date = this.lastInterestDate.value.toString();
-    accountModel.Last_Trn_Date = this.lastTransactionDate.value.toString();
+    accountModel.Last_Int_Date = new Date(this.lastInterestDate.value.toString());
+    accountModel.Last_Trn_Date = new Date(this.lastTransactionDate.value.toString());
     // accountModel.Close_Flag = this.clo.value.toString();
     // accountModel.TDS_YN = this.tds.value.toString() == 'Y' ? true : false;
     // accountModel.TDS_Reason_Code = parseInt(this.tdsReason.value.toString());
@@ -1097,8 +1128,8 @@ export class DepositAccountsComponent {
       paybleAmount = paybleAmount + fdAmount;
 
       this.fdDetailsForm.patchValue({
-        fdMatureDate: formatDate(maturityDate, 'yyyy-MM-dd', 'en'),
-        renewalOnDate: formatDate(maturityDate, 'yyyy-MM-dd', 'en'),
+        fdMatureDate: new Date(maturityDate),
+        renewalOnDate: new Date(maturityDate),
         interestRateFD : interestRateFromStructure > 0 ?  interestRateFromStructure: this.interestRateFD.value,
         fdPayableAmount: isNaN(paybleAmount) ? 0: paybleAmount.toFixed(2)
       })
@@ -1199,6 +1230,41 @@ export class DepositAccountsComponent {
       return paybleAmount;
   }
 
+  calculatePayableAmountForRD()
+  {
+    // A = Total payable amount (maturity amount)
+    // P = Monthly deposit amount (the principal amount deposited every month)
+    // r = Annual interest rate (as a decimal; for example, 8% = 0.08)
+    // n = Number of times the interest is compounded per year (typically 12 for monthly compounding)
+    // t = Time in years (the tenure of the recurring deposit)
+
+    let p = this.installmentAmount.value;
+    let r = this.interestRateRD.value;
+    let n = 12;
+    let t = 0;
+    if (this.installmentType.value == '') {
+
+    }
+    if (this.installmentType.value == '') {
+      
+    }
+    if (this.installmentType.value == '') {
+      
+    }
+    if (this.installmentType.value == '') {
+      
+    }
+    if (this.installmentType.value == '') {
+      
+    }
+    if (this.installmentType.value == '') {
+      
+    }
+
+     // NOTE : Did not implement formula because formula is based on counding frequency (Daily/Weekly/Monthly/Quarterly/ Half-yearly/Yearly)
+     // Need to confirm for this formula
+  }
+
   configClick(routeValue: string) {
     sessionStorage.setItem("configMenu", routeValue);
     this.router.navigate(['/app/' + routeValue]);
@@ -1248,12 +1314,12 @@ export class DepositAccountsComponent {
       modeOfOperation: this.uiModeOfOperations[0].constantNo,
       staffDirectorOther: this.uiEmployyeTypes[0].code,
       //accountOpeningDate: new FormControl(formatDate(new Date(Date.now()), 'yyyy-MM-dd', 'en'), [Validators.required]),
-      lastTransactionDate: formatDate(new Date(Date.now()), 'yyyy-MM-dd', 'en'),
+      lastTransactionDate: new Date(Date.now()),
       accountStatus: this.uiAccountStatuses[0].constantNo,
-      passbookDate: formatDate(new Date(Date.now()), 'yyyy-MM-dd', 'en'),
+      passbookDate: new Date(Date.now()),
       // matureDate: formatDate(new Date(Date.now()), 'yyyy-MM-dd', 'en'),
-      lastInterestDate: formatDate(new Date(Date.now()), 'yyyy-MM-dd', 'en'),
-      drInterestDate: formatDate(new Date(Date.now()), 'yyyy-MM-dd', 'en'),
+      lastInterestDate: new Date(Date.now()),
+      drInterestDate: new Date(Date.now()),
     })
   }
   // clearParametersDetails() {
@@ -1289,9 +1355,9 @@ export class DepositAccountsComponent {
     this.fdDetailsForm.patchValue({
       slipNo: "",
       renewFD: this.uiRenewalTypes[0].code,
-      fdOpeningDate: formatDate(new Date(Date.now()), 'yyyy-MM-dd', 'en'),
-      renewalOnDate: formatDate(new Date(Date.now()), 'yyyy-MM-dd', 'en'),
-      fdMatureDate: formatDate(new Date(Date.now()), 'yyyy-MM-dd', 'en'),
+      fdOpeningDate: new Date(Date.now()),
+      renewalOnDate: new Date(Date.now()),
+      fdMatureDate: new Date(Date.now()),
       days: "",
       months: "",
       years: "",
@@ -1305,21 +1371,13 @@ export class DepositAccountsComponent {
     this.rdDetailsForm.patchValue({
       installmentType: this.uiInstallmentTypes[0].code,
       installmentAmount: "",
-      rdOpeningDate: new FormControl(formatDate(new Date(Date.now()), 'yyyy-MM-dd', 'en'), [Validators.required]),
+      rdOpeningDate: new FormControl(new Date(Date.now()), [Validators.required]),
       noOfInstallments: "",
       interestRateRD: "",
-      rdMatureDate: new FormControl(formatDate(new Date(Date.now()), 'yyyy-MM-dd', 'en'), [Validators.required]),
+      rdMatureDate: new FormControl(new Date(Date.now()), [Validators.required]),
       rdPaybleAmount: "",
     })
   }
-
-  // openSearchedCustomers() {
-  //   this.toggleSearchCustomers = !this.toggleSearchCustomers;
-  // }
-
-  // openSearchedJointCustomers() {
-  //   this.toggleSearchJointCustomers = !this.toggleSearchJointCustomers;
-  // }
 
   //
 
