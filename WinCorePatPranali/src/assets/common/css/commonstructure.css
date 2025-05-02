@@ -407,20 +407,10 @@
 .page-section-tabsControls-data .tab-content .tab-pane label
 {
     font-size: var(--pixelSize12);
-    color:var(--blueShade6);
-    font-weight:500;
+    color:var(--darkGreyBlackShade2);
+    font-weight:400;
     margin: 0px 0px 1px;
 }
-
-
-.page-section-tabsControls-data .tab-content .tab-pane label
-{
-    font-size: var(--pixelSize12);
-    color:var(--blueShade6);
-    font-weight:500;
-    margin: 0px 0px 1px;
-}
-
 
 /* .page-section-tabsControls-data .tab-content .tab-pane select
 {
@@ -759,6 +749,13 @@
     font-size: var(--pixelSize14);
     box-shadow: 0px 0px 1px 1px var( --lightGreyShade1) !important;
     cursor: pointer;
+    color: var(--blueShade8);
+    font-weight: 500;
+}
+
+.actionControlsInputs
+{
+    margin: var(--pixelSize4) 0px ;
 }
 
 
@@ -803,6 +800,8 @@
 .siderBarActionMenu
 {
 
+    overflow-y: auto;
+    padding-bottom: 80px;
 
 }
 
