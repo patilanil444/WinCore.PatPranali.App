@@ -1,153 +1,153 @@
 <form [formGroup]="cashierReceiptForm" #form="ngForm">
-    <div class="row">
-        <div class="col-md-12">
-            <div class="tab-content">
-                <div class="row">
-                    <div class="col-md-12">
-                        <fieldset>
-                            <legend>Search Account</legend>
-                            <app-bank-acc-search [generalLedgers]="uiFilteredGeneralLedgers" [uiBranches]="uiBranches"
-                            [isReset]="isResetAccountSearch"  (accounts)="getAccounts($event)"></app-bank-acc-search>
-                                
-                        </fieldset>
+
+    <div class="customPageSubSections">
+        <div class="customPageSubSectionsHead">
+            <div class="customPageSubSectionsHeadTitle">Search Account</div> 
+            <app-bank-acc-search [generalLedgers]="uiFilteredGeneralLedgers" [uiBranches]="uiBranches"
+                            [isReset]="isResetAccountSearch"  (accounts)="getAccounts($event)" style="width: 100%;">
+            </app-bank-acc-search>
+        </div>
+    </div>
+
+
+    <div class="customPageSubSections1">       
+        <div class="customPageSubSections-left">
+            <div class="customPageSubSectionsHead customHeadTranspBack">
+                <div class="customPageSubSectionsHeadTitle1">Transaction Details</div> 
+            </div>
+            <div class="accountSectionInfoL">
+                <div class="row accountSectionInfo">
+                    <div class="col-md-3 position-relative form-group">
+                        <label>Transaction Amount </label>
+                        <input tabindex="28" type="number" class="form-control" placeholder="Amount"
+                            formControlName="receiptAmount" (change)="updateBalance($event)">
                     </div>
-
-                    <div class="col-md-8">
-                        <fieldset>
-                            <legend>Transaction Details</legend>
-                            <div class="row">
-                                <div class="col-md-3 position-relative form-group">
-                                    <label>Transaction Amount </label>
-                                    <input tabindex="28" type="number" class="form-control" placeholder="Amount"
-                                        formControlName="receiptAmount" (change)="updateBalance($event)">
-                                </div>
-                                <div class="col-md-3 position-relative form-group">
-                                    <label>Transaction Description </label>
-                                    <input tabindex="28" type="text" class="form-control" placeholder="Reason"
-                                        formControlName="receiptDesc">
-                                </div>
-                                <div class="col-md-3 position-relative form-group">
-                                    <label>Account Balance Will be </label>
-                                    <input tabindex="28" type="number" class="form-control" readonly
-                                        formControlName="balanceWillBe">
-                                </div>
-
-                                <div class="col-md-3 position-relative form-group" style="margin-top: 30px;">
-                                    <!-- <button class="btn btn-success" tabindex="2" data-toggle="modal" data-target="#cashDenominationModel">
-                                        Denomination</button> -->
-                                    <button class="btn btn-success" tabindex="2" (click)="openDenominations()"
-                                    *ngIf="isCashierUser()">
-                                        Add Denomination</button>
-                                </div>
-                            </div>
-                            
-                            <label style="font-weight: bold;">Denominations</label>
-
-                            <div class="col-md-12">
-                                <div class="row">
-                                    <table style="width: 100%;"
-                                        class="table table-hover table-bordered dataTable dtr-inline">
-                                        <thead>
-                                            <tr role="row">
-                                                <th style="width: 5%;">Nos</th>
-                                                <th style="width: 15%;">Denomination</th>
-                                                <th style="width: 20%;">Number (Receipt)</th>
-                                                <th style="width: 20%;">Receipt Total</th>
-                                                <th style="width: 20%;">Number (Payment)</th>
-                                                <th style="width: 17%;">Payment Total</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            <tr role="row"
-                                                *ngFor="let uiTransactionDenomination of uiTransactionDenominations; let ind=index">
-                                                <td>{{ind + 1}}</td>
-                                                <td>{{uiTransactionDenomination.denomination_Label}}</td>
-                                                <td>{{uiTransactionDenomination.receiptNumber}}</td>
-                                                <td>{{uiTransactionDenomination.receiptTotal}}</td>
-                                                <td>{{uiTransactionDenomination.paymentNumber}}</td>
-                                                <td>{{uiTransactionDenomination.paymentTotal}}</td>
-                                            </tr>
-                                            <tr *ngIf="uiTransactionDenominations.length==0">
-                                                <td colspan="9">No denominations found..</td>
-                                            </tr>
-                                        </tbody>
-                                    </table>
-                                </div>
-                            </div>
-
-                            <div class="row">
-                                <div class="col-md-12">
-                                    <button class="btn btn-info" style="float: right;" *ngIf="isCashierUser()">
-                                        Customer Identity</button>
-                                </div>
-                            </div>
-                        </fieldset>
-                        <div style="margin-top: 10px;">
-                            <button class="btn btn-primary btn" tabindex="2" (click)="makeTransaction()" style="float: left;"
-                            *ngIf="isCashierUser()">
-                                Finish Transaction</button>
-                        
-                            <button class="btn btn-danger btn btn-left-margin10" style="float: left;" tabindex="2" (click)="clearTransaction()"
-                            *ngIf="isCashierUser()">
-                                Clear</button>
-                        </div>
+                    <div class="col-md-3 position-relative form-group">
+                        <label>Transaction Description </label>
+                        <input tabindex="28" type="text" class="form-control" placeholder="Reason"
+                            formControlName="receiptDesc">
                     </div>
-
-                    <div class="col-md-4">
-                        <fieldset>
-                            <legend>Account Details</legend>
-                            <div class="row">
-                                <div class="col-md-12">
-                                    <label>Customer Name </label>
-                                    <label style="float: right;">{{customerName.value}}</label>
-                                </div>
-                                <div class="col-md-12">
-                                    <label>Account Number </label>
-                                    <label style="float: right;">{{accountNumber.value}}</label>
-                                </div>
-                                <div class="col-md-12">
-                                    <label>Account Type </label>
-                                    <label style="float: right;">{{accountType.value}}</label>
-                                </div>
-                                <div class="col-md-12">
-                                    <label>Last Transaction Date </label>
-                                    <label style="float: right;">{{lastTransactionDate.value}}</label>
-                                </div>
-                                <div class="col-md-12">
-                                    <label>Last Interest Date</label>
-                                    <label style="float: right;">{{lastInterestDate.value}}</label>
-                                </div>
-                                <div class="col-md-12">
-                                    <label>Opening Date</label>
-                                    <label style="float: right;">{{openDate.value}}</label>
-                                </div>
-                                <div class="col-md-12">
-                                    <label>Interest Rate </label>
-                                    <label style="float: right;">{{interestRate.value}}</label>
-                                </div>
-                                <div class="col-md-12">
-                                    <label>Balance </label>
-                                    <label style="float: right;">{{balance.value}}</label>
-                                </div>
-                                <div class="col-md-12">
-                                    <label>Min Balance </label>
-                                    <label style="float: right;">{{minBalance.value}}</label>
-                                </div>
-                                <div class="col-md-12" [ngClass]="{'blink': (unclearedReceipt.value > 0)}">
-                                    <label>Uncleared Receipt Amount </label>
-                                    <label style="float: right;">{{unclearedReceipt.value}}</label>
-                                </div>
-                                <div class="col-md-12" [ngClass]="{'blink': (unclearedPayment.value > 0)}">
-                                    <label>Uncleared Payment Amount </label>
-                                    <label style="float: right;">{{unclearedPayment.value}}</label>
-                                </div>
-                            </div>
-
-                        </fieldset>
+                    <div class="col-md-3 position-relative form-group">
+                        <label>Account Balance Will be </label>
+                        <input tabindex="28" type="number" class="form-control" readonly
+                            formControlName="balanceWillBe">
+                    </div>
+    
+                    <div class="col-md-3 position-relative form-group" style="margin-top: 24px;">
+                        <!-- <button class="btn btn-success" tabindex="2" data-toggle="modal" data-target="#cashDenominationModel">
+                            Denomination</button> -->
+                        <button class="btn btn-success" tabindex="2" (click)="openDenominations()"
+                        *ngIf="isCashierUser()">
+                            Add Denomination</button>
                     </div>
                 </div>
+                
+                
+
+                <div class="page-section-tablecontent">  
+                    <label class="form_label_forControlSubTitle">Denominations</label>                         
+                    <table class="mb-0 table table-striped">                       
+                        <thead>
+                            <tr role="row">
+                                <th style="width: 5%;">Nos</th>
+                                <th style="width: 15%;">Denomination</th>
+                                <th style="width: 20%;">Number (Receipt)</th>
+                                <th style="width: 20%;">Receipt Total</th>
+                                <th style="width: 20%;">Number (Payment)</th>
+                                <th style="width: 17%;">Payment Total</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr role="row"
+                                *ngFor="let uiTransactionDenomination of uiTransactionDenominations; let ind=index">
+                                <td>{{ind + 1}}</td>
+                                <td>{{uiTransactionDenomination.denomination_Label}}</td>
+                                <td>{{uiTransactionDenomination.receiptNumber}}</td>
+                                <td>{{uiTransactionDenomination.receiptTotal}}</td>
+                                <td>{{uiTransactionDenomination.paymentNumber}}</td>
+                                <td>{{uiTransactionDenomination.paymentTotal}}</td>
+                            </tr>
+                            <tr *ngIf="uiTransactionDenominations.length==0">
+                                <td class="noRecordFoundText" colspan="9">No denominations found..</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+    
+              
+    
+                <div class="actionBtnBelowTableSection">
+                    <button class="btn action-InfoBtn"  *ngIf="isCashierUser()">
+                        Customer Identity</button>
+                </div>
+            </div>
+        </div> 
+
+        <div class="customPageSubSections-right">
+            <div class="customPageSubSectionsHead customHeadTranspBack">
+                <div class="customPageSubSectionsHeadTitle1">Account Details</div> 
+            </div>
+            <div class="accountSectionInfoR">
+                <div class="informationSection">
+                    <label class="commonTextTitleLabel">Customer Name :</label>
+                    <label class="commonTextTitleLabelValue">{{customerName.value}}</label>
+                </div>
+                <div class="informationSection">
+                    <label class="commonTextTitleLabel">Account Number :</label>
+                    <label class="commonTextTitleLabelValue">{{accountNumber.value}}</label>
+                </div>
+                <div class="informationSection">
+                    <label class="commonTextTitleLabel">Account Type :</label>
+                    <label class="commonTextTitleLabelValue">{{accountType.value}}</label>
+                </div>
+
+                <div class="informationSection">
+                    <label class="commonTextTitleLabel">Last Transaction Date : </label>
+                    <label class="commonTextTitleLabelValue">{{lastTransactionDate.value}}</label>
+                </div>
+
+                <div class="informationSection">
+                    <label class="commonTextTitleLabel">Last Interest Date :</label>
+                    <label class="commonTextTitleLabelValue">{{lastInterestDate.value}}</label>
+                </div>
+                <div class="informationSection">
+                    <label class="commonTextTitleLabel">Opening Date :</label>
+                    <label class="commonTextTitleLabelValue">{{openDate.value}}</label>
+                </div>
+                <div class="informationSection">
+                    <label class="commonTextTitleLabel">Interest Rate :</label>
+                    <label class="commonTextTitleLabelValue">{{interestRate.value}}</label>
+                </div>
+                <div class="informationSection">
+                    <label class="commonTextTitleLabel">Balance :</label>
+                    <label class="commonTextTitleLabelValue">{{balance.value}}</label>
+                </div>
+                <div class="informationSection">
+                    <label class="commonTextTitleLabel">Min Balance :</label>
+                    <label class="commonTextTitleLabelValue">{{minBalance.value}}</label>
+                </div>
+
+                <div class="informationSection" [ngClass]="{'blink': (unclearedReceipt.value > 0)}">
+                    <label class="commonTextTitleLabel">Uncleared Receipt Amount :</label>
+                    <label class="commonTextTitleLabelValue">{{unclearedReceipt.value}}</label>
+                </div>
+                <div  class="informationSection" [ngClass]="{' blink':(unclearedPayment.value > 0)}">
+                    <label class="commonTextTitleLabel">Uncleared Payment Amount :</label>
+                    <label class="commonTextTitleLabelValue">{{unclearedPayment.value}}</label>
+                </div>
+                
             </div>
         </div>
+    </div> 
+    <div class="actionableFooterSection">
+        <button class="btn action-primatryBtn" tabindex="2" (click)="makeTransaction()" 
+        
+        *ngIf="isCashierUser()">
+            Finish Transaction</button>
+    
+        <button class="btn btn-danger" tabindex="2" (click)="clearTransaction()"
+        *ngIf="isCashierUser()">
+            Clear</button>
     </div>
 </form>
 
