@@ -12,8 +12,8 @@
 .outMainMaster .app-main__inner
 {
    background: var(--white) !important;
-   padding: var(--pixelSize4) !important;
-   margin: var(--pixelSize4) 0px 60px;
+   padding:0px var(--pixelSize8)  var(--pixelSize4) var(--pixelSize4)  !important;
+   margin: 0px 0px 60px;
 }
 .applicationLogoSection
 {
@@ -195,6 +195,13 @@
     
 }
 
+ .page-section-headerWithTab
+{
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+}
+
 .pagheaderWithBackBtn
 {
     display: flex;
@@ -209,7 +216,7 @@
 
 .pageWithTabsSection .page-section-tabsControls-data
 {
-    max-width: 96.5%;
+    max-width: 98%;
     margin: auto;
 }
 .pageWithTabsSection  .page-section-footerActionBtns
@@ -219,7 +226,7 @@
 
 .headerTitleText
 {
-    font-size: var(--pixelSize16);
+    font-size: var(--pixelSize14);
     color:var(--white);
     font-weight: 500;
     margin: 0px;   
@@ -228,10 +235,14 @@
 .svgIconForTitle
 {
     color:var(--white);
-    font-size: var(--pixelSize24);
+    font-size: var(--pixelSize22);
     margin: 0px  var(--pixelSize4);
 } 
 
+.page-section-headerWithTab .headerTitleText
+{
+    width: 30% !important;
+}
 
 
 .page-section-content
@@ -375,12 +386,23 @@
     
 }
 
+.page-section-headerWithTab  .page-section-tabsControls .nav-tabs
+{
+    margin-bottom: 0 !important;
+    padding:2px var(--pixelSize4) var(--pixelSize4) !important; 
+    border-radius: var(--pixelSize10);
+    
+}
+
+
 .page-section-tabsControls .nav-tabs .nav-link
 {
     border: 1px solid transparent !important;
     border-radius:var(--pixelSize10) !important ;
     color: var( --lightGreenShade1) !important;
     font-weight: 500;
+    font-size: var(--pixelSize12) !important;
+    padding: var(--pixelSize4) var(--pixelSize14) !important;
 }
 .page-section-tabsControls .nav-tabs .nav-link.active
 {
@@ -575,6 +597,13 @@
     font-size: var(--pixelSize20);
     margin: 0px  var(--pixelSize4);
   }
+    
+  .iconInBtn2
+  {
+    color:var(--white);
+    font-size: var(--pixelSize16);
+    margin: 0px  var(--pixelSize4);
+  }
 
 
 
@@ -643,10 +672,54 @@
  .filterSectionContentCotrols2
  {
     display: flex;
-    min-width: 20%;
+    min-width: 22%;
+    align-items: center;
+    gap: var(--pixelSize4);
+ }
+
+ 
+ .filterSectionContentCotrols2_1
+ {
+    display: flex;
+    width: 14%;
     flex-direction: column;
  }
 
+.filterSectionContentCotrols2 .form-control
+{
+    font-size: var(--pixelSize12) !important;
+}
+
+.filterSectionContentCotrols2 .ngx-dropdown-list-container
+{
+    max-height: 250px !important;
+    padding: var(--pixelSize4) !important;
+}
+.filterSectionContentCotrols2 .ngx-dropdown-list-container .search-container input
+{
+    font-size: var(--pixelSize12) !important;
+}
+
+.filterSectionContentCotrols2 .ngx-dropdown-list-container .available-item {
+    padding: var(--pixelSize4) !important;
+    font-size: var(--pixelSize11) !important;
+    font-weight: 500;
+}
+
+.filterSectionContentCotrols2 .ngx-dropdown-list-container .search-container label
+{
+    font-size: var(--pixelSize12) !important;
+    padding-left: 2px !important;
+    padding-right: 2px !important;
+     padding-top: 4px !important;
+}
+
+
+
+  .filterSectionContentCotrols2 .input-group .display-text
+ {
+    font-size: var(--pixelSize12) !important;
+ }
 
 
  .dropwControlSectionOption
@@ -661,7 +734,7 @@
 
  .filterSectionContentCotrols2 .labelwithFilter
  {
-
+    width: max-content;
  }
 
  .form_label_forControlSubTitle
@@ -799,10 +872,10 @@
 
 .footerSectionMaster
 {
-    z-index: 12;
+    z-index: 13;
     background-image: linear-gradient(15deg, var(--blueShade4) 0%,  var(--lightGreenShade4) 100%);
     padding: var(--pixelSize8);
-    position: absolute;
+    position: fixed;
     width: 100%;
     left: 0;
     bottom: 0;
@@ -818,6 +891,7 @@
     text-align: center;
     width:100%;
     color: var(--white);
+    font-size: var(--pixelSize12);
 
 }
 
@@ -900,7 +974,7 @@
 
 .app-main .outMainMaster
 {
-    padding-left: 300px !important;
+    padding-left: 295px !important;
     background: var(--white) !important;
 }
 
@@ -1161,6 +1235,22 @@
     width: 100%;
 }
 
+.customPageSubSectionsHead1
+{
+
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    align-items: center;
+    padding: var(--pixelSize4)  !important;
+    width: 100%;
+    border: 1.5px dotted var(--lightGreenShade1) !important;
+    background: var(--white);
+    border-radius: var(--pixelSize10);
+    box-shadow: 0px 0px 2px 1px var(--lightGreyShade1);
+    margin: var(--pixelSize4) 0px;
+}
+
 .customHeadTranspBack
 {
 
@@ -1187,9 +1277,30 @@
     width: 100%;
 }
 
+
+.customPageSubSectionsHeadTitle2
+{
+    font-size: var(--pixelSize12);
+    color: var(--blueShade2);
+    font-weight: 500;
+    margin: -12px 0px 1px 20px;
+    width: 100%;
+    background: var(--white);
+    width: max-content;
+    padding: var(--pixelSize4) var(--pixelSize10);
+}
+
 .customPageSubSections-left
 {
    width: 65%;
+   margin: var(--pixelSize10) auto;
+   padding:var(--pixelSize4) 0;
+
+}
+
+.customPageSubSections-left1
+{
+   width: 100%;
    margin: var(--pixelSize10) auto;
    padding:var(--pixelSize4) 0;
 
@@ -1255,6 +1366,55 @@
     
 }
 
+.accountSectionInfoR1
+{
+    margin: var(--pixelSize4) 0px !important;
+    padding: 0px var(--pixelSize10) !important;
+    width: 100%;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;  
+}
+
+.accountSectionInfoData
+{
+    margin: 1px 0px !important;
+    padding: 0px !important;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;  
+    width: 100%;
+}
+
+.accountSectionInfoR1 .filterActControlSection
+{
+    width: 26%;
+    display: flex;
+    gap: 1px;
+}
+.accountSectionInfoR1 .filterActControlSection1
+{
+    width: 15%;
+}
+
+.accountSectionInfoR1 .page-section-tablecontent
+{
+    width: 100%;
+    padding: var(--pixelSize10) 0;
+}
+
+
+.informationSection1
+{
+    padding: var(--pixelSize4) var(--pixelSize10);
+    border-bottom: 1px solid var(--lightGreyShade3);
+    justify-content: space-between;
+    display: flex;
+    width: 33%;
+}
+
+
+
 .informationSection
 {
     padding: var(--pixelSize4) var(--pixelSize10);
@@ -1274,9 +1434,9 @@
 .commonTextTitleLabelValue
 {
     
-    font-size: var(--pixelSize12) !important;
+    font-size: var(--pixelSize13) !important;
     color:var(--blueShade2) !important;
-    font-weight:500 !important;
+    font-weight:600 !important;
     margin: 0px 1px 1px !important;
 }
 
@@ -1368,7 +1528,7 @@
     display: none !important;
  }
 .app-main.collapsedPane .outMainMaster  {
-    padding-left: 100px !important;
+    padding-left: 65px !important;
  }
 
 

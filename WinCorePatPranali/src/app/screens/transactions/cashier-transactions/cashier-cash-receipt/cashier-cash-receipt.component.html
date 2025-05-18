@@ -1,48 +1,102 @@
 <form [formGroup]="cashierReceiptForm" #form="ngForm">
 
     <div class="customPageSubSections">
-        <div class="customPageSubSectionsHead">
-            <div class="customPageSubSectionsHeadTitle">Search Account</div> 
+        <div class="customPageSubSectionsHead1">
+            <div class="customPageSubSectionsHeadTitle2">Search Account</div> 
             <app-bank-acc-search [generalLedgers]="uiFilteredGeneralLedgers" [uiBranches]="uiBranches"
                             [isReset]="isResetAccountSearch"  (accounts)="getAccounts($event)" style="width: 100%;">
             </app-bank-acc-search>
         </div>
     </div>
 
+      <div class="customPageSubSections">
+        <div class="customPageSubSectionsHead1">
+            <div class="customPageSubSectionsHeadTitle2">Account Details</div> 
 
-    <div class="customPageSubSections1">       
-        <div class="customPageSubSections-left">
-            <div class="customPageSubSectionsHead customHeadTranspBack">
-                <div class="customPageSubSectionsHeadTitle1">Transaction Details</div> 
+             <div class="accountSectionInfoR1">
+                    <div class="informationSection1">
+                        <label class="commonTextTitleLabel">Customer Name :</label>
+                        <label class="commonTextTitleLabelValue">{{customerName.value}}</label>
+                    </div>
+                    <div class="informationSection1">
+                        <label class="commonTextTitleLabel">Account Number :</label>
+                        <label class="commonTextTitleLabelValue">{{accountNumber.value}}</label>
+                    </div>
+                    <div class="informationSection1">
+                        <label class="commonTextTitleLabel">Account Type :</label>
+                        <label class="commonTextTitleLabelValue">{{accountType.value}}</label>
+                    </div>
+
+                    <div class="informationSection1">
+                        <label class="commonTextTitleLabel">Last Transaction Date : </label>
+                        <label class="commonTextTitleLabelValue">{{lastTransactionDate.value}}</label>
+                    </div>
+
+                    <div class="informationSection1">
+                        <label class="commonTextTitleLabel">Last Interest Date :</label>
+                        <label class="commonTextTitleLabelValue">{{lastInterestDate.value}}</label>
+                    </div>
+                    <div class="informationSection1">
+                        <label class="commonTextTitleLabel">Opening Date :</label>
+                        <label class="commonTextTitleLabelValue">{{openDate.value}}</label>
+                    </div>
+                    <div class="informationSection1">
+                        <label class="commonTextTitleLabel">Interest Rate :</label>
+                        <label class="commonTextTitleLabelValue">{{interestRate.value}}</label>
+                    </div>
+                    <div class="informationSection1">
+                        <label class="commonTextTitleLabel">Balance :</label>
+                        <label class="commonTextTitleLabelValue">{{balance.value}}</label>
+                    </div>
+                    <div class="informationSection1">
+                        <label class="commonTextTitleLabel">Min Balance :</label>
+                        <label class="commonTextTitleLabelValue">{{minBalance.value}}</label>
+                    </div>
+
+                    <div class="informationSection1" [ngClass]="{'blink': (unclearedReceipt.value > 0)}">
+                        <label class="commonTextTitleLabel">Uncleared Receipt Amount :</label>
+                        <label class="commonTextTitleLabelValue">{{unclearedReceipt.value}}</label>
+                    </div>
+                    <div  class="informationSection1" [ngClass]="{' blink':(unclearedPayment.value > 0)}">
+                        <label class="commonTextTitleLabel">Uncleared Payment Amount :</label>
+                        <label class="commonTextTitleLabelValue">{{unclearedPayment.value}}</label>
+                    </div>
+                    
             </div>
-            <div class="accountSectionInfoL">
-                <div class="row accountSectionInfo">
-                    <div class="col-md-3 position-relative form-group">
-                        <label>Transaction Amount </label>
+            
+           
+        </div>
+    </div>
+
+    <div class="customPageSubSections">
+        <div class="customPageSubSectionsHead1">
+            <div class="customPageSubSectionsHeadTitle2">Transaction Details</div> 
+             <div class="accountSectionInfoR1">
+                <div class="accountSectionInfoData">
+                    <div class="filterActControlSection">
+                        <label  class="commonTextTitleLabel">Transaction Amount </label>
                         <input tabindex="28" type="number" class="form-control" placeholder="Amount"
                             formControlName="receiptAmount" (change)="updateBalance($event)">
                     </div>
-                    <div class="col-md-3 position-relative form-group">
-                        <label>Transaction Description </label>
+                    <div class="filterActControlSection">
+                        <label  class="commonTextTitleLabel">Transaction Description </label>
                         <input tabindex="28" type="text" class="form-control" placeholder="Reason"
                             formControlName="receiptDesc">
                     </div>
-                    <div class="col-md-3 position-relative form-group">
-                        <label>Account Balance Will be </label>
+                    <div class="filterActControlSection">
+                        <label  class="commonTextTitleLabel">Account Balance Will be </label>
                         <input tabindex="28" type="number" class="form-control" readonly
                             formControlName="balanceWillBe">
                     </div>
     
-                    <div class="col-md-3 position-relative form-group" style="margin-top: 24px;">
+                    <div class="filterActControlSection1">
                         <!-- <button class="btn btn-success" tabindex="2" data-toggle="modal" data-target="#cashDenominationModel">
                             Denomination</button> -->
                         <button class="btn btn-success" tabindex="2" (click)="openDenominations()"
                         *ngIf="isCashierUser()">
                             Add Denomination</button>
                     </div>
-                </div>
-                
-                
+                </div>   
 
                 <div class="page-section-tablecontent">  
                     <label class="form_label_forControlSubTitle">Denominations</label>                         
@@ -72,73 +126,17 @@
                             </tr>
                         </tbody>
                     </table>
-                </div>
-    
-              
+                </div>              
     
                 <div class="actionBtnBelowTableSection">
                     <button class="btn action-InfoBtn"  *ngIf="isCashierUser()">
                         Customer Identity</button>
                 </div>
             </div>
-        </div> 
-
-        <div class="customPageSubSections-right">
-            <div class="customPageSubSectionsHead customHeadTranspBack">
-                <div class="customPageSubSectionsHeadTitle1">Account Details</div> 
-            </div>
-            <div class="accountSectionInfoR">
-                <div class="informationSection">
-                    <label class="commonTextTitleLabel">Customer Name :</label>
-                    <label class="commonTextTitleLabelValue">{{customerName.value}}</label>
-                </div>
-                <div class="informationSection">
-                    <label class="commonTextTitleLabel">Account Number :</label>
-                    <label class="commonTextTitleLabelValue">{{accountNumber.value}}</label>
-                </div>
-                <div class="informationSection">
-                    <label class="commonTextTitleLabel">Account Type :</label>
-                    <label class="commonTextTitleLabelValue">{{accountType.value}}</label>
-                </div>
-
-                <div class="informationSection">
-                    <label class="commonTextTitleLabel">Last Transaction Date : </label>
-                    <label class="commonTextTitleLabelValue">{{lastTransactionDate.value}}</label>
-                </div>
-
-                <div class="informationSection">
-                    <label class="commonTextTitleLabel">Last Interest Date :</label>
-                    <label class="commonTextTitleLabelValue">{{lastInterestDate.value}}</label>
-                </div>
-                <div class="informationSection">
-                    <label class="commonTextTitleLabel">Opening Date :</label>
-                    <label class="commonTextTitleLabelValue">{{openDate.value}}</label>
-                </div>
-                <div class="informationSection">
-                    <label class="commonTextTitleLabel">Interest Rate :</label>
-                    <label class="commonTextTitleLabelValue">{{interestRate.value}}</label>
-                </div>
-                <div class="informationSection">
-                    <label class="commonTextTitleLabel">Balance :</label>
-                    <label class="commonTextTitleLabelValue">{{balance.value}}</label>
-                </div>
-                <div class="informationSection">
-                    <label class="commonTextTitleLabel">Min Balance :</label>
-                    <label class="commonTextTitleLabelValue">{{minBalance.value}}</label>
-                </div>
-
-                <div class="informationSection" [ngClass]="{'blink': (unclearedReceipt.value > 0)}">
-                    <label class="commonTextTitleLabel">Uncleared Receipt Amount :</label>
-                    <label class="commonTextTitleLabelValue">{{unclearedReceipt.value}}</label>
-                </div>
-                <div  class="informationSection" [ngClass]="{' blink':(unclearedPayment.value > 0)}">
-                    <label class="commonTextTitleLabel">Uncleared Payment Amount :</label>
-                    <label class="commonTextTitleLabelValue">{{unclearedPayment.value}}</label>
-                </div>
-                
-            </div>
         </div>
-    </div> 
+
+    </div>
+
     <div class="actionableFooterSection">
         <button class="btn action-primatryBtn" tabindex="2" (click)="makeTransaction()" 
         
