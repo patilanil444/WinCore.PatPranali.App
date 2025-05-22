@@ -1,37 +1,64 @@
-<div class="row">
-    <div class="col-lg-12">
 
-        <div class="main-card mb-3 card">
-            <div class="card-body">
 
-                <h5 class="card-title">Loan account opening</h5>
+
+ <!--Page Code Start here-->
+ <div class="pageMasterSection formControlTabs">
+
+    <!--Page Content Start here-->
+    <div class="pageContentSection">
+        
+        <!--Page Header Start here-->
+        <div class="page-section-header pagheaderWithBackBtn">
+            <label class="headerTitleText">		 
+                <svg class="svgIconForTitle" width="1em" height="1em" fill="currentColor" viewBox="0 0 122.88 102.3"><defs><style>.cls-1{fill-rule:evenodd;}</style></defs><title>payroll-salary</title><path class="cls-1" d="M111.83,70.4h10.06a1,1,0,0,1,1,1V95.8a1,1,0,0,1-1,1H111.83a1,1,0,0,1-1-1V71.38a1,1,0,0,1,1-1ZM74.23,41.54a5.71,5.71,0,1,1-4,7,5.71,5.71,0,0,1,4-7Zm34.69,11.67L89.6,70.81l-2.36-2.53L101,55.7l.19-.16a3.28,3.28,0,0,0,.16-4.63L78.94,23.59l3.27-3,26.71,32.62ZM.68,15,9.74,12.6a.93.93,0,0,1,1.13.66l5.89,22a.92.92,0,0,1-.65,1.13L7.05,38.8a.92.92,0,0,1-1.13-.65L0,16.16A.92.92,0,0,1,.68,15ZM14,15.68a1.78,1.78,0,0,1,0-1.14c.38-.95,1.85-1.09,2.76-1.34a13.34,13.34,0,0,0,2.72-1,32.71,32.71,0,0,0,3.62-2.38C26.1,7.74,28.89,6,31.81,4,38.31-.52,36-.51,44.3.65A85.94,85.94,0,0,1,54.88,2.82a5.93,5.93,0,0,1,1.41.54,5.62,5.62,0,0,1,1.21,1c4,3.37,7.51,6.9,11,10.47,1.18,1.26,1.87,2.57,1.57,3.59-1.23,4.2-6.56.12-11.73-2.15-2.17-1-5-1.58-7.44-2.47-3-.41-4.53-1.14-7.57-1-4.53.8-3.2,7.25,2.69,5.92,4-.9,13.09.5,16.25,3.19,3,2.5,2.59,5.85-1.78,6.9l-3.81.29c-6.07.47-6,.2-11.68,2.93-3.07,1.47-6.29,3-9.79,3.27-2.12.17-3.41-.36-5.59-1.25a16.31,16.31,0,0,0-3.42-1.24,10.9,10.9,0,0,0-2.94-.42c-1.48,0-3.3,1-4.43,0a2.28,2.28,0,0,1-.65-1.09L14,15.68Zm58.59,6.54L99.38,53.37,78.78,72.14l-29-33.67,6.33-5.76,5.4-.42.47-.08a9.67,9.67,0,0,0,3.78-1.74l-6.44,5.87a4.12,4.12,0,0,1-.27,5.82L76,62.55a4.12,4.12,0,0,1,5.81.27l8.14-7.43a4.11,4.11,0,0,1,.27-5.81l-16.9-20.4h0a4.11,4.11,0,0,1-5.82-.27l-1,.92a3.58,3.58,0,0,0,.26-.29A5.94,5.94,0,0,0,68,27a6,6,0,0,0,0-2.8,7.27,7.27,0,0,0-.31-1c2,.4,3.65.19,4.89-1Zm35.06,72.43V72.6H97.69c-4.2.75-8.4,3-12.61,5.68h-7.7c-3.49.21-5.32,3.74-1.93,6.06,2.7,2,6.27,1.87,9.92,1.55,2.52-.13,2.63,3.26,0,3.27-.91.07-1.9-.15-2.77-.15C78,89,74.29,88.14,72,84.54l-1.15-2.7L59.37,76.16c-5.73-1.89-9.8,4.11-5.58,8.29a150.31,150.31,0,0,0,25.52,15c6.33,3.84,12.65,3.71,19,0l9.33-4.82Z"/></svg>
+                  Loan account opening
+            </label> 
+        </div>
+        <!--Page Header End here-->
+
+        
+
+       
+
+        <!--Page action content Start here-->
+        <div class="page-section-content pageWithTabsSection">
+            <div>
                 <form [formGroup]="summaryForm" #form="ngForm">
-                    <div class="row">
+                    <div class="filterSectionAllCotrols2">
 
-                        <div class="col-md-3 position-relative">
-                            <label class="">General Ledger</label>
+                        <div class="filterSectionContentCotrols3">
+                            <div>
+                                <label  class="form_label_forControl labelwithFilter">General Ledger</label>
+                            </div>
                             <div class="input-group">
-                                <ngx-select-dropdown [config]="config" tabindex="1" [options]="uiLoanGeneralLedgers"
+                                  <ngx-select-dropdown [config]="config" tabindex="1" [options]="uiLoanGeneralLedgers"
                                     style="width: 100%;" formControlName="generalLedger"
                                     [multiple]="false" (change)="changeGeneralLedger($event)"
                                     [ngClass]="{'disabled': !isAddMode}" ></ngx-select-dropdown>
                             </div>
                         </div>
 
-                        <div class="col-md-3 position-relative form-group">
-                            <label class="">Account Number</label>
+                        <div class="filterSectionContentCotrols3">                            
+                            <div>
+                                <label  class="form_label_forControl labelwithFilter">Account Number</label>
+                            </div>
                             <div class="input-group">
                                 <input tabindex="4" type="text" readonly class="form-control" formControlName="glAccountNumberStr">
                             </div>
                         </div>
-                        <div class="col-md-6 position-relative">
-                            <app-cust-search [ngClass]="{'disabled': !isAddMode}" (customers)="getCustomers($event)"
+                        <div class="filterSectionContentCotrols3_1">
+                           <app-cust-search [ngClass]="{'disabled': !isAddMode}" (customers)="getCustomers($event)"
                             [allowMultiSearch]="false">
                             </app-cust-search>
                         </div>
                     </div>
                 </form>
-                <ul class="nav nav-tabs">
+            </div>
+
+           
+             <div class="page-section-tabsControls inpageMiddleSectioWithTab">
+			 
+			      <ul class="nav nav-tabs">
                     <li class="nav-item">
                         <a role="tab" class="nav-link active" id="tab-0" data-toggle="tab" href="#tab-content-0">
                             <span>Customer Details </span>
@@ -43,8 +70,8 @@
                         </a>
                     </li>
                    
-                    <li class="nav-item" [ngClass]="{'disabled': !isJointAccount}">
-                        <a role="tab" class="nav-link" id="tab-3" data-toggle="tab" href="#tab-content-2">
+                    <li class="nav-item navActionItem" >
+                        <a role="tab" class="nav-link" [ngClass]="{'disabled': !isJointAccount}" id="tab-3" data-toggle="tab" href="#tab-content-2">
                             <span>Joint Account</span>
                         </a>
                     </li>
@@ -55,7 +82,11 @@
                     </li>
                 </ul>
 
-                <div class="tab-content">
+             </div>
+
+             <div class="page-section-tabsControls-data">
+
+                 <div class="tab-content">
                     <div class="tab-pane tabs-animation fade show active" id="tab-content-0" role="tabpanel">
                         <form [formGroup]="customerDetailsForm" #form="ngForm">
                             <div class="row">
@@ -321,7 +352,7 @@
                                                             </ng-container>
                                                         </tr>
                                                         <tr *ngIf="uiSelectedJointCustomers.length==0">
-                                                            <td colspan="5">No records..</td>
+                                                            <td class="noRecordFoundText" colspan="5">No records..</td>
                                                         </tr>
                                                     </tbody>
                                                 </table>
@@ -339,21 +370,22 @@
                                 <div class="col-md-12">
                                     <div class="tab-content">
                                         <div class="row">
-                                            <div class="col-md-6 position-relative form-group">
+                                            <div class="col-md-7 position-relative form-group">
                                                 <app-cust-search (customers)="getCustomersForGuarantor($event)"
                                                 [allowMultiSearch]="false">
                                                 </app-cust-search>
                                             </div>
-                                            <div class="col-md-6 position-relative form-group">
-                                               *Note : A customer can be guarantor for maximum 2 loan accounts.
+                                            <div class="col-md-5 position-relative form-group">
+                                                <div class="form_label_forControlSubTitle">
+                                                    *Note :<i> A customer can be guarantor for maximum 2 loan accounts.</i>
+                                                </div>
+                                              
                                             </div>
                                         </div>
 
-                                        <div class="row">
-                                            <div class="col-md-12 position-relative" style="margin: 10px 0 0 0;">
-                                                <h5 class="card-title" style="color: #bb3fd8 !important;">Guarantor
-                                                    Customers <span class="mandatory">*</span></h5>
-                                            </div>
+                                      
+                                        <div class="paddInrowLR0 form_label_forControlSubTitle">
+                                            Guarantor Customers <span class="requiredLabelTextStar">*</span>
                                         </div>
 
                                         <div class="row">
@@ -387,7 +419,7 @@
                                                             </ng-container>
                                                         </tr>
                                                         <tr *ngIf="uiSelectedGuarantorCustomers.length==0">
-                                                            <td colspan="4">No records..</td>
+                                                            <td class="noRecordFoundText" colspan="4">No records..</td>
                                                         </tr>
                                                     </tbody>
                                                 </table>
@@ -401,25 +433,33 @@
                     </div>
                 </div>
 
-                <div class="row">
-                    <div class="col-md-6 position-relative">
-                        <button class="mt-1 btn btn-primary" (click)="saveLoanAccount()" *ngIf="isOperatorUser() || isLoanOfficerUser()"
+               
+             </div>
+
+             <div class="page-section-footerActionBtns">
+                
+
+
+                     <button class="btn action-primatryBtn" (click)="saveLoanAccount()" *ngIf="isOperatorUser() || isLoanOfficerUser()"
                             tabindex="23">Submit</button>
                         <!-- <button class="mt-1 btn btn-left-margin10 btn-success" *ngIf="!isAccountAuthorized && (isPassingOfficerUser() || isAdministratorUser())" (click)="authoriseAccount()"
                             tabindex="24">Authorise Account</button> -->
-                        <button class="mt-1 btn btn-left-margin10 btn-success" (click)="accountDetails()" *ngIf="isOperatorUser() || isPassingOfficerUser() || isLoanOfficerUser()"
+                        <button class="btn btn-info" (click)="accountDetails()" *ngIf="isOperatorUser() || isPassingOfficerUser() || isLoanOfficerUser()"
                             tabindex="24" [ngClass]="{'disabled': isAddMode}">Loan Details</button>
-                        <button class="mt-1 btn btn-left-margin10 btn-danger" (click)="clear()" *ngIf="isOperatorUser() || isLoanOfficerUser()"
+                        <button class="btn btn-danger"  (click)="clear()" *ngIf="isOperatorUser() || isLoanOfficerUser()"
                             tabindex="25">Clear</button>
-                    </div>
-                </div>
-
-            </div>
+             </div>
+        
         </div>
+        <!--Page action content End here-->
 
+       
     </div>
-</div>
+    <!--Page Content End here-->
 
+</div>
+ <!--Page Code End here-->
+ 
 <div id="deleteJointModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
     aria-hidden="true" data-backdrop="false">
     <div class="modal-dialog" role="document">

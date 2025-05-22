@@ -1,38 +1,69 @@
-<div class="row">
-    <div class="col-lg-12">
 
-        <div class="main-card mb-3 card">
-            <div class="card-body">
 
-                <h5 class="card-title">Deposit account opening</h5>
+ <!--Page Code Start here-->
+ <div class="pageMasterSection formControlTabs">
+
+    <!--Page Content Start here-->
+    <div class="pageContentSection">
+        
+        <!--Page Header Start here-->
+        <div class="page-section-header pagheaderWithBackBtn">
+          <label class="headerTitleText">
+		  <svg class="svgIconForTitle" width="1em" height="1em" fill="currentColor"
+		  x="0px" y="0px" viewBox="0 0 115.53 122.88" style="enable-background:new 0 0 115.53 122.88" xml:space="preserve"><g><path d="M97.65,36.83c0.95,0,1.77,0.58,2.13,1.4l15.49,23.96c0.2,0.38,0.28,0.79,0.25,1.18l-1.03,57.19c0,1.27-1.03,2.31-2.31,2.31 v0.01H3.55c-1.28,0-2.32-1.04-2.32-2.32L0,63.26l0-0.02l0-0.02v0l0-0.02l0-0.02l0-0.02l0-0.01l0-0.02l0-0.03v0l0-0.01l0-0.04 l0-0.01l0-0.01l0-0.04l0-0.01l0-0.01l0.01-0.04l0,0l0-0.02l0.01-0.04l0,0l0,0l0.01-0.04l0-0.02v0l0.01-0.04l0.01-0.02l0-0.02 l0-0.02l0-0.01l0-0.01l0.01-0.02l0.01-0.02l0-0.01l0-0.01l0.01-0.02L0.1,62.6l0-0.01l0-0.01l0.01-0.02l0-0.01l0.01-0.03l0.01-0.02 l0.01-0.02l0.01-0.02l0.01-0.02l0.01-0.02v0l0.01-0.02l0.01-0.02v0l0.02-0.04l0.01-0.02l0.02-0.03l0,0l0.01-0.02l0.01-0.01l0-0.01 l0.01-0.02l0.01-0.02l0.01-0.02l0.01-0.02l0.02-0.03l0.01-0.02l0,0l0.02-0.03l0.01-0.02l0.01-0.02l0.01-0.02l15.7-23.99 c0.41-0.78,1.22-1.23,2.05-1.23v-0.01l31.05,0L67.16,0l29.47,13.19L85.25,36.83H97.65L97.65,36.83z M46.88,41.47h-27.4L6.15,60.96 h103.28l-13.18-19.5H83.03l-3.49,7.26l2.56,0c1.28,0,2.32,1.04,2.32,2.32s-1.04,2.32-2.32,2.32H36.84c-1.28,0-2.32-1.04-2.32-2.32 c0-1.28,1.04-2.32,2.32-2.3h3.9l2.58,0L46.88,41.47L46.88,41.47z M74.04,48.73l13.7-28.58c-2.3-1.12-3.25-3.91-2.13-6.21L73.21,9.1 c-1.12,2.3-3.91,3.25-6.21,2.13l-17.66,36.1l0,0c0.69,0.34,1.26,0.83,1.69,1.41C58.49,48.73,66.76,48.73,74.04,48.73L74.04,48.73z M61.76,31.35c1.79-3.66,6.19-5.17,9.85-3.38c3.66,1.79,5.17,6.19,3.38,9.85c-1.79,3.66-6.19,5.17-9.85,3.38 C61.48,39.42,59.97,35.01,61.76,31.35L61.76,31.35z M4.63,65.59l1.23,52.65h104.01l1.04-52.65H4.63L4.63,65.59z"/></g></svg>
+						Deposit account opening
+            </label> 
+        
+
+          
+
+        </div>
+        <!--Page Header End here-->
+
+        
+
+       
+
+        <!--Page action content Start here-->
+        <div class="page-section-content pageWithTabsSection">
+            <div>
                 <form [formGroup]="summaryForm" #form="ngForm">
-                    <div class="row">
+                    <div class="filterSectionAllCotrols2">
 
-                        <div class="col-md-3 position-relative">
-                            <label class="">General Ledger</label>
+                        <div class="filterSectionContentCotrols3">
+                            <div>
+                                <label  class="form_label_forControl labelwithFilter">General Ledger</label>
+                            </div>
                             <div class="input-group">
-                                <ngx-select-dropdown [config]="config" tabindex="1" [options]="uiDepositGeneralLedgers"
+                                 <ngx-select-dropdown [config]="config" tabindex="1" [options]="uiDepositGeneralLedgers"
                                     style="width: 100%;" formControlName="generalLedger" [multiple]="false"
                                     (change)="changeGeneralLedger($event)"
                                     [ngClass]="{'disabled': !isAddMode}"></ngx-select-dropdown>
                             </div>
                         </div>
 
-                        <div class="col-md-3 position-relative form-group">
-                            <label class="">Account Number</label>
+                        <div class="filterSectionContentCotrols3">                            
+                            <div>
+                                <label  class="form_label_forControl labelwithFilter">Account Number</label>
+                            </div>
                             <div class="input-group">
-                                <input tabindex="2" type="text" readonly class="form-control"
+                               <input tabindex="2" type="text" readonly class="form-control"
                                     formControlName="glAccountNumberStr">
                             </div>
                         </div>
-                        <div class="col-md-6 position-relative">
-                            <app-cust-search tabindex="3" [ngClass]="{'disabled': !isAddMode}"
+                        <div class="filterSectionContentCotrols3_1">
+                           <app-cust-search tabindex="3" [ngClass]="{'disabled': !isAddMode}"
                                 (customers)="getCustomers($event)" [allowMultiSearch]="false">
                             </app-cust-search>
                         </div>
                     </div>
                 </form>
-                <ul class="nav nav-tabs">
+            </div>
+
+           
+             <div class="page-section-tabsControls inpageMiddleSectioWithTab">
+			 
+			 <ul class="nav nav-tabs">
                     <li class="nav-item">
                         <a role="tab" class="nav-link active" tabindex="4" id="tab-0" data-toggle="tab"
                             href="#tab-content-0">
@@ -54,24 +85,28 @@
                             <span>Nomini Details</span>
                         </a>
                     </li>
-                    <li class="nav-item" [ngClass]="{'disabled': isNotJointAccount}">
-                        <a role="tab" class="nav-link" id="tab-3" tabindex="22" data-toggle="tab" href="#tab-content-4">
+                    <li class="nav-item navActionItem" >
+                        <a role="tab" class="nav-link" [ngClass]="{'disabled': isNotJointAccount}" id="tab-3" tabindex="22" data-toggle="tab" href="#tab-content-4">
                             <span>Joint Account</span>
                         </a>
                     </li>
-                    <li class="nav-item" [ngClass]="{'disabled': !isFDAccount}">
-                        <a role="tab" class="nav-link" id="tab-3" data-toggle="tab" href="#tab-content-5">
+                    <li class="nav-item navActionItem" >
+                        <a role="tab" class="nav-link" [ngClass]="{'disabled': !isFDAccount}" id="tab-3" data-toggle="tab" href="#tab-content-5">
                             <span>FD Details</span>
                         </a>
                     </li>
-                    <li class="nav-item" [ngClass]="{'disabled': !isRDAccount}">
-                        <a role="tab" class="nav-link" id="tab-3" data-toggle="tab" href="#tab-content-6">
+                    <li class="nav-item navActionItem" >
+                        <a role="tab" class="nav-link" [ngClass]="{'disabled': !isRDAccount}" id="tab-3" data-toggle="tab" href="#tab-content-6">
                             <span>RD Details</span>
                         </a>
                     </li>
                 </ul>
 
-                <div class="tab-content">
+             </div>
+
+             <div class="page-section-tabsControls-data">
+
+                    <div class="tab-content">
                     <div class="tab-pane tabs-animation fade show active" id="tab-content-0" role="tabpanel">
                         <form [formGroup]="customerDetailsForm" #form="ngForm">
                             <div class="row">
@@ -293,10 +328,10 @@
                                                 <input tabindex="19" type="text" class="form-control"
                                                     formControlName="guardian">
                                             </div>
-                                        </div>
-                                        <div class="row">
-                                            <div style="display: flex; margin-bottom: 10px;">
-                                                <button class="mt-1 btn btn-primary" (click)="addNomini()"
+                                        </div> 
+                                        <div class="row paddInrow">
+                                            <div class="nomineeActionSaveSection">
+                                                <button class="btn btn-info" (click)="addNomini()"
                                                     tabindex="20">Save Nominee</button>
                                                 <button class="mt-1 btn btn-left-margin10 btn-danger"
                                                     (click)="clearNomini()" tabindex="21">Clear</button>
@@ -346,7 +381,7 @@
                                                             </ng-container>
                                                         </tr>
                                                         <tr *ngIf="uiNominis.length==0">
-                                                            <td colspan="5">No records found..</td>
+                                                            <td class="noRecordFoundText" colspan="5">No records found..</td>
                                                         </tr>
                                                     </tbody>
                                                 </table>
@@ -423,7 +458,7 @@
                                                             </ng-container>
                                                         </tr>
                                                         <tr *ngIf="uiSelectedJointCustomers.length==0">
-                                                            <td colspan="5">No records..</td>
+                                                            <td class="noRecordFoundText" colspan="5">No records..</td>
                                                         </tr>
                                                     </tbody>
                                                 </table>
@@ -613,23 +648,29 @@
                     </div>
                 </div>
 
-                <div class="row">
-                    <div class="col-md-6 position-relative">
-                        <button class="mt-1 btn btn-primary" (click)="saveDepositAccount()"
-                            *ngIf="isOperatorUser() || isDepositOfficerUser()" tabindex="53">Submit</button>
-                        <button class="mt-1 btn btn-left-margin10 btn-success"
-                            *ngIf="!isAccountAuthorized && isPassingOfficerUser()" (click)="authoriseAccount()"
-                            tabindex="54">Authorise Account</button>
-                        <button class="mt-1 btn btn-left-margin10 btn-danger" (click)="clear()"
-                            *ngIf="isOperatorUser() || isDepositOfficerUser()" tabindex="55">Clear</button>
-                    </div>
-                </div>
+               
+             </div>
 
-            </div>
+             <div class="page-section-footerActionBtns">
+                <button class="btn action-primatryBtn" (click)="saveDepositAccount()"
+                    *ngIf="isOperatorUser() || isDepositOfficerUser()" tabindex="53">Submit</button>
+                <button class="btn btn-info"
+                    *ngIf="!isAccountAuthorized && isPassingOfficerUser()" (click)="authoriseAccount()"
+                    tabindex="54">Authorise Account</button>
+                <button class="btn btn-danger" (click)="clear()"
+                    *ngIf="isOperatorUser() || isDepositOfficerUser()" tabindex="55">Clear</button>
+             </div>
+        
         </div>
+        <!--Page action content End here-->
 
+       
     </div>
+    <!--Page Content End here-->
+
 </div>
+ <!--Page Code End here-->
+
 
 <div id="deleteJointModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
     aria-hidden="true" data-backdrop="false">

@@ -386,6 +386,16 @@
     
 }
 
+.page-section-tabsControls .nav-tabs .navActionItem:has(.disabled)
+{
+    pointer-events: none !important;
+}
+
+.page-section-tabsControls .nav-tabs .navActionItem .disabled
+{
+    pointer-events: auto !important;
+}
+
 .page-section-headerWithTab  .page-section-tabsControls .nav-tabs
 {
     margin-bottom: 0 !important;
@@ -393,6 +403,20 @@
     border-radius: var(--pixelSize10);
     
 }
+
+.inpageMiddleSectioWithTab .nav-tabs
+{
+    border-bottom: 0px !important;
+    justify-content: center;
+    margin:var(--pixelSize10) 0px !important ;
+    margin-bottom: var(--pixelSize8) !important;
+    gap: var(--pixelSize15) !important;
+    background: var(--white) !important;
+    padding:var(--pixelSize10) 0 !important;
+    border-top: 2px dotted #e8e8e8;
+    
+}
+
 
 
 .page-section-tabsControls .nav-tabs .nav-link
@@ -676,14 +700,33 @@
     align-items: center;
     gap: var(--pixelSize4);
  }
-
- 
- .filterSectionContentCotrols2_1
+  .filterSectionContentCotrols2_1
  {
     display: flex;
     width: 14%;
     flex-direction: column;
  }
+
+  .filterSectionContentCotrols3
+ {
+    display: flex;
+    min-width: 25%;
+    width: 25%;
+    align-items: center;
+    gap: var(--pixelSize4);
+ }
+
+  .filterSectionContentCotrols3_1
+ {
+    display: flex;
+    min-width: 46.5%;
+    width: 46.5%;
+    align-items: center;
+    gap: var(--pixelSize4);
+ }
+
+ 
+
 
 .filterSectionContentCotrols2 .form-control
 {
@@ -736,7 +779,15 @@
  {
     width: max-content;
  }
+  .filterSectionContentCotrols3 .labelwithFilter
+ {
+    width: max-content;
+ }
 
+.filterSectionContentCotrols3_1 .labelwithFilter
+ {
+    width: max-content;
+ }
  .form_label_forControlSubTitle
  {
      font-size: var(--pixelSize14) !important;
@@ -913,6 +964,13 @@
     color: var(--redDarkShade2);
 }
 
+.requiredLabelTextStar
+{
+    font-size: var(--pixelSize12);
+    color: var(--redDarkShade2);
+}
+
+
 .formControlTabs .tab-content input
 {
     
@@ -1009,7 +1067,7 @@
 
 .siderBarActionMenu .vertical-nav-menu li a
 {
-    padding: 1px var(--pixelSize10) !important;
+    padding: 1px 1px 1px var(--pixelSize10) !important;
     color: var(--white) !important;
     letter-spacing: 1px;
     font-size: var(--pixelSize14) !important;
@@ -1017,6 +1075,7 @@
     font-weight: 400 !important;
     height: auto !important;
     white-space:wrap  !important;
+    width: 252px;
 }
 
 
@@ -1635,3 +1694,21 @@
   .tooltipControl:hover .tooltiptext4 {
     visibility: visible;
   }
+
+
+.paddInrow
+{
+    padding: 10px !important;
+}
+.paddInrowLR0
+{
+    padding: 10px 0 !important;
+}
+
+
+.nomineeActionSaveSection
+{
+      display: flex;
+      gap:10px;
+      padding:10px;
+}
