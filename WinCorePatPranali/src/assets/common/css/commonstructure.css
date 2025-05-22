@@ -725,6 +725,30 @@
     gap: var(--pixelSize4);
  }
 
+   .filterSectionContentCotrols4
+ {
+    display: flex;
+    min-width: 23%;
+    width: 23%;
+    align-items: center;
+    gap: var(--pixelSize4);
+ }
+
+  .filterSectionContentCotrols4_1
+ {
+    display: flex;
+    align-items: center;
+    gap: var(--pixelSize8);
+    flex-wrap: wrap;
+ }
+ 
+.filterSectionContentCotrols4 .form_label_forControl
+{
+    min-width: 110px;
+}
+
+ 
+
  
 
 
@@ -734,6 +758,16 @@
 }
 
 .filterSectionContentCotrols2 .ngx-dropdown-list-container
+{
+    max-height: 250px !important;
+    padding: var(--pixelSize4) !important;
+}
+.filterSectionContentCotrols3 .ngx-dropdown-list-container
+{
+    max-height: 250px !important;
+    padding: var(--pixelSize4) !important;
+}
+.filterSectionContentCotrols4 .ngx-dropdown-list-container
 {
     max-height: 250px !important;
     padding: var(--pixelSize4) !important;
