@@ -62,17 +62,18 @@
                                     tabindex="4" (click)="searchAccounts()">
                                     Search</button>
 
-                                        <button  class="btn action-primatryBtn" tabindex="5">Add Account</button>
-
-
-                                    <button type="button" aria-haspopup="true"  tabindex="6" aria-expanded="false" data-toggle="dropdown" class="dropdown-toggle-split dropdown-toggle btn action-primatryBtn"><span class="sr-only">Toggle Dropdown</span></button>
-                                    <div tabindex="-1" role="menu" aria-hidden="true" class="dropdown-menu" x-placement="bottom-start" 
-                                    style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(67px, 32px, 0px);">
-                                        <button type="button" tabindex="0" class="dropdown-item" (click)="addAccount('saving-accounts')">Saving</button>
-                                        <button type="button" tabindex="0" class="dropdown-item" (click)="addAccount('deposit-accounts')">Deposit</button>
-                                        <button type="button" tabindex="0" class="dropdown-item" (click)="addAccount('loan-accounts')">Loan</button>
-                                        <button type="button" tabindex="0" class="dropdown-item" (click)="addAccount('other-accounts')">Other</button>
+                                    <div class="addAccountActionBtn">
+                                        <button  class="btn action-primatryBtn1" tabindex="5">Add Account</button>
+                                        <button type="button" aria-haspopup="true"  tabindex="6" aria-expanded="false" data-toggle="dropdown" class="dropdown-toggle-split dropdown-toggle btn action-primatryBtn1"><span class="sr-only">Toggle Dropdown</span></button>
+                                        <div tabindex="-1" role="menu" aria-hidden="true" class="dropdown-menu" x-placement="bottom-start" 
+                                        style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(67px, 32px, 0px);">
+                                            <button type="button" tabindex="0" class="dropdown-item" (click)="addAccount('saving-accounts')">Saving</button>
+                                            <button type="button" tabindex="0" class="dropdown-item" (click)="addAccount('deposit-accounts')">Deposit</button>
+                                            <button type="button" tabindex="0" class="dropdown-item" (click)="addAccount('loan-accounts')">Loan</button>
+                                            <button type="button" tabindex="0" class="dropdown-item" (click)="addAccount('other-accounts')">Other</button>
+                                        </div>
                                     </div>
+
 
                                         <button class="btn btn-danger"  tabindex="7"
                                         (click)="clear()">

@@ -9911,7 +9911,7 @@ a, button, .btn {
 }
 
 .app-header {
-    height: 60px;
+    height: 50px;
     display: flex;
     align-items: center;
     align-content: center;
@@ -9930,7 +9930,7 @@ a, button, .btn {
         align-content: center;
         flex: 1;
         padding: 0 1.5rem;
-        height: 60px;
+        height: 45px;
     }
 
         .app-header .app-header__content .app-header-left {
@@ -9966,7 +9966,7 @@ a, button, .btn {
 
 .app-header__logo {
     padding: 0 1.5rem;
-    height: 60px;
+    height: 50px;
     width: 280px;
     display: flex;
     align-items: center;
@@ -9997,7 +9997,7 @@ a, button, .btn {
     }
 
 .fixed-header .app-main {
-    padding-top: 60px;
+    padding-top: 50px;
 }
 
 .fixed-header:not(.fixed-sidebar):not(.closed-sidebar) .app-sidebar .app-header__logo {
