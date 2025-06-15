@@ -128,16 +128,17 @@
                     </table>
                 </div>              
     
-                <div class="actionBtnBelowTableSection">
-                    <button class="btn action-InfoBtn"  *ngIf="isCashierUser()">
-                        Customer Identity</button>
-                </div>
+                <!-- <div class="actionBtnBelowTableSection">
+                   
+                </div> -->
             </div>
         </div>
 
     </div>
 
     <div class="actionableFooterSection">
+         <button class="btn action-InfoBtn"  *ngIf="isCashierUser()">
+                        Customer Identity</button>
         <button class="btn action-primatryBtn" tabindex="2" (click)="makeTransaction()" 
         
         *ngIf="isCashierUser()">
