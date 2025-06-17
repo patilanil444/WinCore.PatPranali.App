@@ -1586,6 +1586,12 @@
 {
     width: 79%;
 }
+.accountSectionInfoData .extraFilterSection2
+{
+    width: 100%;
+    text-align: end;
+    padding:1px;
+}
 
 .accountSectionInfoData1
 {
