@@ -1,66 +1,139 @@
-<form [formGroup]="counterPaymentForm" #form="ngForm">
-    <div class="row">
-        <div class="col-md-12">
-            <div class="tab-content">
-                <div class="row">
-                    <div class="col-md-12">
-                        <fieldset>
-                            <legend>Account Details</legend>
-                            <div class="row">
-                                <div class="col-md-2 position-relative form-group">
-                                    <label class="">Token No</label>
-                                    <input tabindex="28" type="text" class="form-control" placeholder="Token Number"
-                                        formControlName="tokenId" readonly>
-                                </div>
-                                <div class="col-md-10 position-relative form-group">
-                                    <app-bank-acc-search [generalLedgers]="uiFilteredGeneralLedgers"
-                                        [uiBranches]="uiBranches" [isReset]="isResetAccountSearch"
-                                        (accounts)="getAccounts($event)"></app-bank-acc-search>
-                                </div>
-                            </div>
 
-                        </fieldset>
+
+<form [formGroup]="counterPaymentForm" #form="ngForm">
+
+    <!--  Filter Section Start -->
+    <div class="customPageSubSections">
+        <div class="customPageSubSectionsHead1">
+            <div class="customPageSubSectionsHeadTitle2">Account Details</div> 
+            <div class="accountSectionInfoR1">
+                <div class="accountSectionInfoData">
+                    <div class="filterActControlSection2">
+                        <label  class="commonTextTitleLabel">Enter Token No</label>
+                        <input tabindex="28" type="text" class="form-control" placeholder="Token Number"
+                                        formControlName="tokenId" readonly>
+                    </div>
+                    <div class="extraFilterSection1">
+                                <app-bank-acc-search [generalLedgers]="uiFilteredGeneralLedgers"
+                                    [uiBranches]="uiBranches" [isReset]="isResetAccountSearch"
+                                    (accounts)="getAccounts($event)"></app-bank-acc-search>
+                    </div>                    
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--  Filter Section End --> 
+    
+
+
+    <!--  account details Section Start --> 
+    <div class="customPageSubSections">
+        <div class="customPageSubSectionsHead1">
+            <div class="customPageSubSectionsHeadTitle2">Account Details</div> 
+             <div class="accountSectionInfoR1">
+                    <div class="informationSection1">
+                        <label class="commonTextTitleLabel">Customer Name :</label>
+                        <label class="commonTextTitleLabelValue">{{customerName.value}}</label>
+                    </div> 
+                    <div class="informationSection1">
+                        <label class="commonTextTitleLabel">Account Number :</label>
+                        <label class="commonTextTitleLabelValue">{{accountNumber.value}}</label>
+                    </div> 
+                     <div class="informationSection1">
+                        <label class="commonTextTitleLabel">Account Type :</label>
+                        <label class="commonTextTitleLabelValue">{{accountType.value}}</label>
+                    </div> 
+                     <div class="informationSection1">
+                        <label class="commonTextTitleLabel">Last Transaction Date :</label>
+                        <label class="commonTextTitleLabelValue">{{lastTransactionDate.value}}</label>
+                    </div> 
+                     <div class="informationSection1">
+                        <label class="commonTextTitleLabel">Last Interest Date :</label>
+                        <label class="commonTextTitleLabelValue">{{lastInterestDate.value}}</label>
+                    </div>
+                    <div class="informationSection1">
+                        <label class="commonTextTitleLabel">Opening Date :</label>
+                        <label class="commonTextTitleLabelValue">{{openDate.value}}</label>
+                    </div>
+                    <div class="informationSection1">
+                        <label class="commonTextTitleLabel">Interest Rate :</label>
+                        <label class="commonTextTitleLabelValue">{{interestRate.value}}</label>
                     </div>
 
-                    <div class="col-md-8">
-                        <fieldset>
-                            <legend>Transaction Details</legend>
-                            <div class="row">
-                                <div class="col-md-3 position-relative form-group">
-                                    <label>Transaction Amount </label>
-                                    <input tabindex="28" type="number" class="form-control" placeholder="Amount"
+                    <div class="informationSection1">
+                        <label class="commonTextTitleLabel">Balance :</label>
+                        <label class="commonTextTitleLabelValue">{{balance.value}}</label>
+                    </div>
+
+                     <div class="informationSection1">
+                        <label class="commonTextTitleLabel">Min Balance :</label>
+                        <label class="commonTextTitleLabelValue">{{minBalance.value}}</label>
+                    </div>
+
+                    
+                     <div class="informationSection1" [ngClass]="{'blink': (unclearedReceipt.value > 0)}">
+                        <label class="commonTextTitleLabel">Uncleared Receipt Amount :</label>
+                        <label class="commonTextTitleLabelValue">{{unclearedReceipt.value}}</label>
+                    </div>
+
+
+                    
+                     <div class="informationSection1" [ngClass]="{'blink': (unclearedPayment.value > 0)}">
+                        <label class="commonTextTitleLabel">Uncleared Payment Amount :</label>
+                        <label class="commonTextTitleLabelValue">{{unclearedPayment.value}}</label>
+                    </div>
+
+
+                     
+            </div>
+
+        </div>
+    </div>
+    <!--  account details Section End --> 
+
+    <div class="customPageSubSections">
+        <div class="customPageSubSectionsHead1">
+            <div class="customPageSubSectionsHeadTitle2">Transaction Details</div> 
+             <div class="accountSectionInfoR1">
+                <div class="accountSectionInfoData">
+                    <div class="filterActControlSection4">
+                        <label  class="commonTextTitleLabel">Transaction Amount </label>
+                       <input tabindex="28" type="number" class="form-control" placeholder="Amount"
                                         formControlName="transactionAmount" (change)="updateBalance($event)">
-                                </div>
-                                <div class="col-md-3 position-relative form-group">
-                                    <label>Transaction Description </label>
-                                    <input tabindex="28" type="text" class="form-control" placeholder="Reason"
+                    </div>
+                    <div class="filterActControlSection4">
+                        <label  class="commonTextTitleLabel">Transaction Description </label>
+                       <input tabindex="28" type="text" class="form-control" placeholder="Reason"
                                         formControlName="transactionDesc">
-                                </div>
-                                <div class="col-md-3 position-relative form-group">
-                                    <label>Account Balance Will be </label>
-                                    <input tabindex="28" type="number" class="form-control" readonly
+                    </div>
+                    <div class="filterActControlSection4">
+                        <label  class="commonTextTitleLabel">Account Balance Will be </label>
+                        <input tabindex="28" type="number" class="form-control" readonly
                                         formControlName="balanceAmountWillBe">
-                                </div>
-                            </div>
-                            <div class="row">
+                    </div>
 
-
-                                <div class="col-md-3 position-relative form-group">
-                                    <label class="">Cheque No </label>
-                                    <input tabindex="28" type="text" class="form-control" placeholder="Cheque No"
+                     <div class="filterActControlSection4">
+                        <label  class="commonTextTitleLabel">Cheque No </label>
+                       <input tabindex="28" type="text" class="form-control" placeholder="Cheque No"
                                         formControlName="chequeNo">
-                                </div>
-                                <div class="col-md-3 position-relative form-group">
-                                    <label class="">Cheque Date </label>
-                                    <input tabindex="28" type="text" class="form-control" formControlName="chequeDate" bsDatepicker [bsConfig]="datepickerConfig">
-                                </div>
-                                <!-- <div class="col-md-3 position-relative form-group" style="margin-top: 30px;">
+                    </div>
+
+                     <div class="filterActControlSection4">
+                        <label  class="commonTextTitleLabel">Cheque Date </label>
+                        <input tabindex="28" type="text" class="form-control" formControlName="chequeDate" bsDatepicker [bsConfig]="datepickerConfig">
+                    </div>
+    
+                    <div class="filterActControlSection5">
+                        <!-- <div class="col-md-3 position-relative form-group" style="margin-top: 30px;">
                                     <button class="btn btn-success" tabindex="2" (click)="openDenominations()">
                                         Add Denomination</button>
                                 </div> -->
-                            </div>
+                       
+                    </div>
+                </div>   
 
-                            <!-- <label style="font-weight: bold;">Denominations</label>
+                <div class="page-section-tablecontent">  
+                                       <!-- <label style="font-weight: bold;">Denominations</label>
                             <div class="col-md-12">
                                 <div class="row">
                                     <table style="width: 100%;"
@@ -91,83 +164,26 @@
                                         </tbody>
                                     </table>
                                 </div>
-                            </div> -->
-                            <div class="row">
-                                <div class="col-md-12">
-                                    <button class="btn btn-info" style="float: right;" *ngIf="isOperatorUser()">
-                                        Customer Identity</button>
-                                </div>
-                            </div>
-                           
-                        </fieldset>
-                        <div style="margin-top: 10px;">
-                            <button class="btn btn-primary" style="float: left;" tabindex="2" (click)="makeTransaction()"
-                            *ngIf="isOperatorUser()">
-                                Finish Transaction</button>
-                            <button class="btn btn-danger btn-left-margin10" style="float: left;" tabindex="2" (click)="clearTransaction()"
-                            *ngIf="isOperatorUser()">
-                                Clear</button>
-                        
-                        </div>
-                    </div>
-
-                    <div class="col-md-4">
-                        <fieldset>
-                            <legend>Account Details</legend>
-                            <div class="row">
-                                <div class="col-md-12">
-                                    <label>Customer Name </label>
-                                    <label style="float: right;">{{customerName.value}}</label>
-                                </div>
-                                <div class="col-md-12">
-                                    <label>Account Number </label>
-                                    <label style="float: right;">{{accountNumber.value}}</label>
-                                </div>
-                                <div class="col-md-12">
-                                    <label>Account Type </label>
-                                    <label style="float: right;">{{accountType.value}}</label>
-                                </div>
-                                <div class="col-md-12">
-                                    <label>Last Transaction Date </label>
-                                    <label style="float: right;">{{lastTransactionDate.value}}</label>
-                                </div>
-                                <div class="col-md-12">
-                                    <label>Last Interest Date</label>
-                                    <label style="float: right;">{{lastInterestDate.value}}</label>
-                                </div>
-                                <div class="col-md-12">
-                                    <label>Opening Date</label>
-                                    <label style="float: right;">{{openDate.value}}</label>
-                                </div>
-                                <div class="col-md-12">
-                                    <label>Interest Rate </label>
-                                    <label style="float: right;">{{interestRate.value}}</label>
-                                </div>
-                                <div class="col-md-12">
-                                    <label>Balance </label>
-                                    <label style="float: right;">{{balance.value}}</label>
-                                </div>
-                                <div class="col-md-12">
-                                    <label>Min Balance </label>
-                                    <label style="float: right;">{{minBalance.value}}</label>
-                                </div>
-                                <div class="col-md-12" [ngClass]="{'blink': (unclearedReceipt.value > 0)}">
-                                    <label>Uncleared Receipt Amount </label>
-                                    <label style="float: right;">{{unclearedReceipt.value}}</label>
-                                </div>
-                                <div class="col-md-12" [ngClass]="{'blink': (unclearedPayment.value > 0)}">
-                                    <label>Uncleared Payment Amount </label>
-                                    <label style="float: right;">{{unclearedPayment.value}}</label>
-                                </div>
-                            </div>
-
-                        </fieldset>
-                    </div>
-                </div>
+                            </div> -->     
+                  
+                </div>              
+    
+               
             </div>
         </div>
     </div>
-</form>
 
+    <div class="actionableFooterSection"> 
+        <button class="btn action-InfoBtn" *ngIf="isOperatorUser()">
+        Customer Identity</button>
+        <button class="btn action-primatryBtn" tabindex="2" (click)="makeTransaction()"
+            *ngIf="isOperatorUser()">
+                Finish Transaction</button>
+            <button class="btn btn-danger" tabindex="2" (click)="clearTransaction()"
+            *ngIf="isOperatorUser()">
+                Clear</button>
+    </div>
+</form>
+          
 <app-message-box #messageBoxModal [messageNotes]="messageNotes"
     (onConfirm)="onTransactionConfirmed($event)"></app-message-box>

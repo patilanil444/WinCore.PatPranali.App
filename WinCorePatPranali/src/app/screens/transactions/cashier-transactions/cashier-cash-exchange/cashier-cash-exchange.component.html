@@ -1,21 +1,32 @@
 <form [formGroup]="cashExchangeForm" #form="ngForm">
-    <div class="col-md-12">
-        <div class="row">
-            <div class="col-md-3 position-relative form-group">
-                <label  class="">Exchange Amount</label>
-                <input tabindex="28" type="number" class="form-control" formControlName="receiptAmount">
-            </div>
-            <div class="col-md-3 position-relative form-group" style="margin-top: 30px;">
-                <button class="btn btn-success" tabindex="2" data-toggle="modal" *ngIf="isCashierUser()"
-                (click)="openDenominations()"> Denomination</button>
-                <button class="btn btn-primary btn btn-left-margin10" tabindex="2" (click)="makeTransaction()"
-                *ngIf="isCashierUser()">Finish</button>
-            </div>
-            <div class="col-md-6 position-relative form-group">
-                <label style="font-weight: bold;">Denominations</label>
-                <div class="col-md-12">
-                    <div class="row">
-                        <table style="width: 100%;" class="table table-hover table-bordered dataTable dtr-inline">
+
+    <div class="customPageSubSections">
+        <div class="customPageSubSectionsHead1">
+            <div class="customPageSubSectionsHeadTitle2">Exchange</div> 
+
+             <div class="accountSectionInfoR1">
+                <div class="accountSectionInfoData accountSectionInfoData1" >
+                    <div class="filterActControlSection">
+                        <label  class="commonTextTitleLabel">Exchange Amount</label>
+                         <input tabindex="28" type="number" class="form-control" formControlName="receiptAmount">
+                    </div>    
+                    <div class="filterActControlSection6">
+                        <button class="btn btn-success" tabindex="2" data-toggle="modal" *ngIf="isCashierUser()"
+                            (click)="openDenominations()"> 
+                            Denomination
+                        </button>
+
+                        <button class="btn btn-primary btn btn-left-margin10" tabindex="2" (click)="makeTransaction()"
+                            *ngIf="isCashierUser()">
+                            Finish
+                        </button>
+                    </div>
+                </div>   
+
+                <div class="page-section-tablecontent">  
+                    <label class="form_label_forControlSubTitle">Denominations</label> 
+                    
+                       <table style="width: 100%;" class="table table-hover table-bordered dataTable dtr-inline">
                             <thead>
                                 <tr role="row">
                                     <th style="width: 5%;">Nos</th>
@@ -37,14 +48,23 @@
                                     <td>{{uiTransactionDenomination.paymentTotal}}</td>
                                 </tr>
                                 <tr *ngIf="uiTransactionDenominations.length==0">
-                                    <td colspan="9">No denominations found..</td>
+                                    <td class="noRecordFoundText" colspan="9">No denominations found..</td>
                                 </tr>
                             </tbody>
                         </table>
-                    </div>
-                </div>
+               
+                </div>              
+    
+                <!-- <div class="actionBtnBelowTableSection">
+                   
+                </div> -->
             </div>
+          
         </div>
+    </div>
+
+    <div class="actionableFooterSection">
+        
     </div>
 </form>
 <app-denominations #denominationModal [denominationAmount]="receiptAmount.value" [transactionType]="transactionType"

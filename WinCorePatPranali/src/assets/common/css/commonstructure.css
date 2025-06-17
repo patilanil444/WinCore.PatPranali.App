@@ -1582,6 +1582,36 @@
     width: 100%;
 }
 
+.accountSectionInfoData .extraFilterSection1
+{
+    width: 79%;
+}
+
+.accountSectionInfoData1
+{
+    align-items: end;
+    justify-content: left !important;  
+}
+
+.accountSectionInfoData1 .filterActControlSection6
+{
+    width: auto;
+    margin: 0px 10px;
+    gap: 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.accountSectionInfoData1 .filterActControlSection7
+{
+    width: auto;
+    margin: 0px 10px 0px 0px;
+    gap: 10px;
+    display: flex;
+    flex-direction: column;
+}
+
 .accountSectionInfoR1 .filterActControlSection
 {
     width: 26%;
