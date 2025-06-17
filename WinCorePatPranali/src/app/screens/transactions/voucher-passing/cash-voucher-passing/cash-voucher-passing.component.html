@@ -1,104 +1,106 @@
+
 <form [formGroup]="cashVoucherPassingForm" #form="ngForm">
-    <div class="row">
-        <div class="col-md-12">
-            <div class="tab-content">
-                <div class="row">
-                    <div class="col-md-3 position-relative form-group">
-                        <label class="">Transaction Type</label>
+
+    <div class="customPageSubSections">
+        <div class="customPageSubSectionsHead1">
+            <div class="customPageSubSectionsHeadTitle2">Voucher Details</div> 
+
+             <div class="accountSectionInfoR1">
+                <div class="accountSectionInfoData">
+                    <div class="filterActControlSection">
+                        <label  class="commonTextTitleLabel">Transaction Type</label>
                         <select class="mb-2 form-control" tabindex="18" formControlName="transactionType">
                             <option *ngFor="let uiTransactionType of uicashTransactionTypes"
                                 [ngValue]="uiTransactionType.code" >
                                 {{uiTransactionType.name}}
                             </option>
                         </select>
-                    </div>
-                    <div class="col-md-3 position-relative form-group">
-                        <label class="">Voucher No </label>
-                        <input tabindex="28" type="text" class="form-control" placeholder="Voucher No" formControlName="voucherNumber">
-                    </div>
-                    <div class="col-md-3 position-relative form-group">
-                        <button class="btn btn-info" tabindex="2" style="margin-top: 30px;" (click)="fetchVoucher()"
+                    </div>   
+                     <div class="filterActControlSection">
+                        <label  class="commonTextTitleLabel">Voucher No </label>
+                       <input tabindex="28" type="text" class="form-control" placeholder="Voucher No" formControlName="voucherNumber">
+                    </div>    
+                    <div class="extraFilterSection3">
+                       <button class="bth action-DefaultBtn minWidth120" tabindex="2" style="margin-top: 30px;" (click)="fetchVoucher()"
                         *ngIf="isPassingOfficerUser()">
                             Search Voucher</button>
                     </div>
-                    <div class="col-md-12">
-                        <div class="row">
-                            <div class="col-md-3 position-relative form-group">
-                                <label class="">Voucher Amount </label>
-                                <input tabindex="28" type="text" class="form-control" placeholder="0" 
+                </div>  
+                 <div class="accountSectionInfoData">
+                    <div class="filterActControlSection">
+                        <label  class="commonTextTitleLabel">Voucher Amount</label>
+                       <input tabindex="28" type="text" class="form-control" placeholder="0" 
                                 readonly formControlName="voucherAmount">
-                            </div>
-                            <div class="col-md-3 position-relative form-group">
-                                <label class="">Grid Amount </label>
-                                <input tabindex="28" type="text" class="form-control" placeholder="0" 
+                    </div>
+                      <div class="filterActControlSection">
+                        <label  class="commonTextTitleLabel">Grid Amount</label>
+                        <input tabindex="28" type="text" class="form-control" placeholder="0" 
                                 readonly formControlName="gridAmount">
-                            </div>
-                            <div class="col-md-6 position-relative form-group">
-                                <button class="btn btn-info" tabindex="2" style="margin-top: 30px;"
+                    </div>
+                  
+    
+                    <div class="extraFilterSection4">
+                        <button class="btn action-InfoBtn" tabindex="2"
                                     (click)="viewVoucherDetails()" *ngIf="isPassingOfficerUser()">View Details</button>
-                                <button class="btn btn-success" tabindex="2"  (click)="passVoucher(false)"
-                                style=" margin-left: 30px; margin-top: 30px;" *ngIf="isPassingOfficerUser()"> Accept</button>
-                                <button class="btn btn-danger" tabindex="2" (click)="passVoucher(true)"
-                                    style="margin-top: 30px; margin-left: 30px;" *ngIf="isPassingOfficerUser()"> Reject</button>
-                            </div>
+                        
+                        <button class="btn btn-success" tabindex="2"  (click)="passVoucher(false)"
+                            *ngIf="isPassingOfficerUser()"> Accept</button>
+                        
+                        <button class="btn btn-danger" tabindex="2" (click)="passVoucher(true)"
+                            *ngIf="isPassingOfficerUser()"> Reject</button>
+                    </div>
+                </div>   
 
-                        </div>
-                    </div>
-                    <div class="col-md-12">
-                        <fieldset>
-                            <legend>Details</legend>
-                            <div class="row">
-                                <div class="col-md-12" style="margin-top: 10px;">
-                                    <div class="customer-panel">
-                                        <table style="width: 100%;"
-                                            class="table table-hover table-striped table-bordered dataTable dtr-inline">
-                                            <thead>
-                                                <tr role="row">
-                                                    <th style="width: 2%; padding: .25rem;">No</th>
-                                                    <th style="width: 15%; padding: .25rem;">Customer</th>
-                                                    <th style="width: 15%; padding: .25rem;">GL</th>
-                                                    <th style="width: 15%; padding: .25rem;">A/C Number</th>
-                                                    <th style="width: 10%; padding: .25rem;">Amount</th>
-                                                    <th style="width: 5%; padding: .25rem;">Int Flag</th>
-                                                    <th style="width: 15%; padding: .25rem;">Int GL</th>
-                                                    <th style="width: 15%; padding: .25rem;">Narration</th>
-                                                    <th style="width: 5%; padding: .25rem;">Actions</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                                <tr role="row"  *ngFor="let transaction of uiVoucherDetails; let ind=index">
-                                                    <td>{{ind + 1}}</td>
-                                                    <td>{{transaction.customerName}}</td>
-                                                    <td>{{transaction.GL}}</td>
-                                                    <td>{{transaction.accountNumber}}</td>
-                                                    <td>{{transaction.amount}}</td>
-                                                    <td>{{transaction.intFlag}}</td>
-                                                    <td>{{transaction.intGLName}}</td>
-                                                    <td>{{transaction.transaction_Narration}}</td>
-                                                    <td><div class="widget-content-right">
-                                                        <button type="button" placeholder="View Details"
-                                                            class="btn-shadow btn btn-info btn-actions">
-                                                            <span class="btn-icon-wrapper opacity-10">
-                                                                <i class="fa fa-info fa-w-10"></i>
-                                                            </span>
-                                                        </button>
-                                                    </div>
-                                                </td>
-                                                </tr>
-                                                <tr *ngIf="uiVoucherDetails.length==0">
-                                                    <td colspan="9">No transactions found..</td>
-                                                </tr>
-                                            </tbody>
-                                        </table>
-                                    </div>
+                <div class="page-section-tablecontent">  
+                    <table 
+                        class="table table-striped ">
+                        <thead>
+                            <tr role="row">
+                                <th style="width: 2%; padding: .25rem;">No</th>
+                                <th style="width: 15%; padding: .25rem;">Customer</th>
+                                <th style="width: 15%; padding: .25rem;">GL</th>
+                                <th style="width: 15%; padding: .25rem;">A/C Number</th>
+                                <th style="width: 10%; padding: .25rem;">Amount</th>
+                                <th style="width: 5%; padding: .25rem;">Int Flag</th>
+                                <th style="width: 15%; padding: .25rem;">Int GL</th>
+                                <th style="width: 15%; padding: .25rem;">Narration</th>
+                                <th style="width: 5%; padding: .25rem;">Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr role="row"  *ngFor="let transaction of uiVoucherDetails; let ind=index">
+                                <td>{{ind + 1}}</td>
+                                <td>{{transaction.customerName}}</td>
+                                <td>{{transaction.GL}}</td>
+                                <td>{{transaction.accountNumber}}</td>
+                                <td>{{transaction.amount}}</td>
+                                <td>{{transaction.intFlag}}</td>
+                                <td>{{transaction.intGLName}}</td>
+                                <td>{{transaction.transaction_Narration}}</td>
+                                <td><div class="widget-content-right">
+                                    <button type="button" placeholder="View Details"
+                                        class="btn-shadow btn btn-info btn-actions">
+                                        <span class="btn-icon-wrapper opacity-10">
+                                            <i class="fa fa-info fa-w-10"></i>
+                                        </span>
+                                    </button>
                                 </div>
-                            </div>
-                        </fieldset>
-                    </div>
-                </div>
+                            </td>
+                            </tr>
+                            <tr *ngIf="uiVoucherDetails.length==0">
+                                <td class="noRecordFoundText" colspan="9">No transactions found..</td>
+                            </tr>
+                        </tbody>
+                    </table>                
+               
+                </div>              
+    
+               
             </div>
+          
         </div>
     </div>
-</form>
 
+  
+</form>
 <app-passing-info #passingInfoModel ></app-passing-info>

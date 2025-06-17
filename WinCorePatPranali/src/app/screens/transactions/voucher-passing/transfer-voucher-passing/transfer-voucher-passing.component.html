@@ -1,31 +1,36 @@
+
+
 <form [formGroup]="cashVoucherPassingForm" #form="ngForm">
-    <div class="row">
-        <div class="col-md-12">
-            <div class="tab-content">
-                <div class="row">
-                    <div class="col-md-3 position-relative form-group">
-                        <label  class="">Voucher No </label>
-                        <input tabindex="28" type="text" class="form-control" placeholder="Voucher No" formControlName="voucherNumber">
-                    </div>
-                    <div class="col-md-3 position-relative form-group">
-                        <button class="btn btn-info" tabindex="2" style="margin-top: 30px;" (click)="fetchVoucher()"
+
+    <div class="customPageSubSections">
+        <div class="customPageSubSectionsHead1">
+            <div class="customPageSubSectionsHeadTitle2">Voucher Details</div> 
+
+             <div class="accountSectionInfoR1">
+                <div class="accountSectionInfoData">
+                    <div class="filterActControlSection">
+                        <label  class="commonTextTitleLabel">Voucher No</label>
+                         <input tabindex="28" type="text" class="form-control" placeholder="Voucher No" formControlName="voucherNumber">
+                    </div>   
+                     
+                    <div class="extraFilterSection6">                    
+                        <button  class="bth action-DefaultBtn minWidth120" tabindex="2" (click)="fetchVoucher()"
                         *ngIf="isPassingOfficerUser()">
                             Search Voucher</button>
                     </div>
-                    <div class="col-md-6 position-relative form-group">
-                        <button class="btn btn-success" tabindex="2"  (click)="passVoucher(false)"
-                        style=" margin-left: 30px; margin-top: 30px;" *ngIf="isPassingOfficerUser()"> Accept</button>
+                </div>  
+                 <div class="accountSectionInfoData">
+                    <div class="extraFilterSection5">
+                       <button class="btn btn-success" tabindex="2"  (click)="passVoucher(false)"
+                         *ngIf="isPassingOfficerUser()"> Accept</button>
                         <button class="btn btn-danger" tabindex="2" (click)="passVoucher(true)"
-                            style="margin-top: 30px; margin-left: 30px;" *ngIf="isPassingOfficerUser()"> Reject</button>
+                             *ngIf="isPassingOfficerUser()"> Reject</button>
                     </div>
-                    <div class="col-md-12">
-                        <fieldset>
-                            <legend>Details</legend>
-                            <div class="row">
-                                <div class="col-md-12" style="margin-top: 10px;">
-                                    <div class="customer-panel">
-                                        <table style="width: 100%;"
-                                            class="table table-hover table-striped table-bordered dataTable dtr-inline">
+                </div>   
+
+                <div class="page-section-tablecontent">  
+                    <table 
+                                            class="table table-striped">
                                             <thead>
                                                 <tr role="row">
                                                     <th style="width: 2%; padding: .25rem;">No</th>
@@ -62,19 +67,20 @@
                                                 </td>
                                                 </tr>
                                                 <tr *ngIf="uiVoucherDetails.length==0">
-                                                    <td colspan="10">No transactions found..</td>
+                                                    <td class="noRecordFoundText" colspan="10">No transactions found..</td>
                                                 </tr>
                                             </tbody>
-                                        </table>
-                                    </div>
-                                </div>
-                            </div>
-                        </fieldset>
-                    </div>
-                </div>
+                    </table>
+               
+                </div>              
+    
+               
             </div>
+          
         </div>
     </div>
+
+  
 </form>
 
 <app-passing-info #passingInfoModel ></app-passing-info>

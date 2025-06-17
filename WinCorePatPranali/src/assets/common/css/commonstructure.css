@@ -115,6 +115,8 @@
     background: linear-gradient(15deg, #017699 0%, #00719d 100%) !important;
     border: 1px solid var(--blueShade4) !important;
 }
+
+
 .btn-danger
 {
 
@@ -129,9 +131,10 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    letter-spacing: 1px;
+    letter-spacing: 0.8px;
     text-transform: uppercase;
 }
+
 
 
 
@@ -1586,12 +1589,46 @@
 {
     width: 79%;
 }
+
 .accountSectionInfoData .extraFilterSection2
 {
     width: 100%;
     text-align: end;
     padding:1px;
 }
+.accountSectionInfoData .extraFilterSection3
+{
+    width: 45%;
+}
+
+.accountSectionInfoData .extraFilterSection4
+{
+    width: 45%;
+    display: flex;
+    align-items: end;
+    gap: var(--pixelSize10);
+}
+.accountSectionInfoData .extraFilterSection5
+{
+    margin: var(--pixelSize10) 0px 0px;
+    width: 100%;
+    display: flex;
+    align-items: end;
+    gap: var(--pixelSize10);
+    justify-content: end;
+    border-top:1px solid var(--lightGreyShade8) ;
+    padding: var(--pixelSize10) 0px 0px;
+}
+
+.accountSectionInfoData .extraFilterSection6
+{
+    align-items: end;
+    display: flex;
+    padding: 0px 0px 4px;
+    width: 72%;
+
+}
+
 
 .accountSectionInfoData1
 {
@@ -1672,6 +1709,20 @@
 }
 .accountSectionInfoR1 .filterActControlSection1  .btn-success
 {
+    text-transform: uppercase;
+}
+
+
+.btn-success
+{
+    padding: var(--pixelSize4) var(--pixelSize10) !important;
+    font-size: var(--pixelSize13);
+    text-align: center;
+    border-radius: var(--pixelSize10);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    letter-spacing: 0.8px;
     text-transform: uppercase;
 }
 
