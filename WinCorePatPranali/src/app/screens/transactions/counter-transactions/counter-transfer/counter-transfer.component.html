@@ -1,20 +1,19 @@
 <form [formGroup]="transferCreditForm" #form="ngForm">
-    <div class="row">
-        <div class="col-md-12">
-            <div class="tab-content">
-                <div class="row">
-                    <div class="col-md-12">
-                        <fieldset>
-                            <legend>Debit Accounts</legend>
-                            <div class="row">
-                                <div class="col-md-1">
-                                    <button class="btn btn-primary" style="float: left;" tabindex="2" (click)="selectDebitAccount()"
+    <div class="customPageSubSections">
+        <div class="customPageSubSectionsHead1">
+            <div class="customPageSubSectionsHeadTitle2">Debit Accounts</div> 
+            <div class="accountSectionInfoR1">
+                <div class="accountSectionInfoData">                  
+                    <div class="extraFilterSection2">
+                           <button class="bth action-DefaultBtn minWidth120" tabindex="2" (click)="selectDebitAccount()"
                                     *ngIf="isOperatorUser()">Add
                                        Debit Account</button>
-                                </div>
-                                <div class="col-md-11 customer-panel">
-                                    <table style="width: 100%;"
-                                        class="table table-hover table-striped table-bordered dataTable dtr-inline">
+                    </div>                    
+                </div>
+
+
+                <div class="page-section-tablecontent">  
+                    <table class="table table-striped">
                                         <thead>
                                             <tr role="row">
                                                 <th style="width: 3%; padding: .25rem;">No</th>
@@ -53,59 +52,72 @@
                                                 </td>
                                             </tr>
                                             <tr *ngIf="uiDebitAccounts.length==0">
-                                                <td colspan="12">No accounts found..</td>
+                                                <td class="noRecordFoundText" colspan="12">No accounts found..</td>
                                             </tr>
                                         </tbody>
-                                    </table>
-                                </div>
-                            </div>
-                        </fieldset>
+                    </table> 
+                </div>  
+            </div>
+        </div>
+    </div>
 
-                        <fieldset>
-                            <legend>Transaction Balance</legend>
-                            <div class="row">
-                                <div class="col-md-2 position-relative form-group">
-                                    <label class="">Debit Amount </label>
-                                    <input tabindex="1" type="number" class="form-control" readonly placeholder="Debit Amount"
+    <div class="customPageSubSections">
+        <div class="customPageSubSectionsHead1">
+            <div class="customPageSubSectionsHeadTitle2">Transaction Balance</div> 
+             <div class="accountSectionInfoR1">
+                <div class="accountSectionInfoData">
+                    <div class="filterActControlSection4">
+                        <label  class="commonTextTitleLabel">Debit Amount </label>
+                        <input tabindex="1" type="number" class="form-control" readonly placeholder="Debit Amount"
                                         formControlName="debitAmount">
-                                </div>
-                                <div class="col-md-2 position-relative form-group">
-                                    <label class="">Cheque No </label>
-                                    <input tabindex="2" type="text" class="form-control" formControlName="chequeNo">
-                                </div>
-                                <div class="col-md-2 position-relative form-group">
-                                    <label class="">Cheque Date </label>
-                                    <input tabindex="3" type="text" class="form-control" formControlName="chequeDate"
+                    </div>
+                    <div class="filterActControlSection4">
+                        <label  class="commonTextTitleLabel">Cheque No </label>
+                        <input tabindex="2" type="text" class="form-control" formControlName="chequeNo">
+                    </div>
+                    <div class="filterActControlSection4">
+                        <label  class="commonTextTitleLabel">Cheque Date  </label>
+                        <input tabindex="3" type="text" class="form-control" formControlName="chequeDate"
                                     bsDatepicker [bsConfig]="datepickerConfig">
-                                </div>
-                                <div class="col-md-2 position-relative form-group">
-                                    <button class="btn btn-info" style="margin-top: 30px;" tabindex="4"
+                    </div>
+                     <div class="filterActControlSection4">                       
+                       <button class="btn action-InfoBtn"  tabindex="4"
                                     *ngIf="isOperatorUser()">Customer Identity</button>
-                                </div>
-                                <div class="col-md-2 position-relative form-group">
-                                    <label class="">Total Credit Amount</label>
-                                    <input tabindex="5" type="text" class="form-control" readonly
-                                        formControlName="creditAmount">
-                                </div>
-                                <div class="col-md-2 position-relative form-group">
-                                    <label class="">Difference</label>
-                                    <input tabindex="6" type="text" class="form-control" readonly
-                                        formControlName="differenceAmount">
-                                </div>
-                            </div>
-                        </fieldset>
+                    </div>
 
-                        <fieldset>
-                            <legend>Credit Accounts</legend>
-                            <div class="row">
-                                <div class="col-md-1">
-                                    <button class="btn btn-primary" style="float: left;" tabindex="2" (click)="selectCreditAccount()"
+                     <div class="filterActControlSection4">
+                        <label  class="commonTextTitleLabel">Total Credit Amount </label>
+                       <input tabindex="5" type="text" class="form-control" readonly
+                                        formControlName="creditAmount">
+                    </div>
+
+                     <div class="filterActControlSection4">
+                        <label  class="commonTextTitleLabel">Difference </label>
+                        <input tabindex="6" type="text" class="form-control" readonly
+                                        formControlName="differenceAmount">
+                    </div>
+    
+                    
+                </div>
+            </div>
+        </div>
+    </div>
+
+      <div class="customPageSubSections">
+        <div class="customPageSubSectionsHead1">
+            <div class="customPageSubSectionsHeadTitle2">Credit Accounts</div> 
+            <div class="accountSectionInfoR1">
+                <div class="accountSectionInfoData">                  
+                    <div class="extraFilterSection2">
+                            <button class="bth action-DefaultBtn minWidth120" tabindex="2" (click)="selectCreditAccount()"
                                     *ngIf="isOperatorUser()">Add
                                        Credit Account</button>
-                                </div>
-                                <div class="col-md-11 customer-panel">
-                                    <table style="width: 100%;"
-                                        class="table table-hover table-striped table-bordered dataTable dtr-inline">
+                    </div>                    
+                </div>
+
+
+                <div class="page-section-tablecontent">  
+                                 <table class="table table-striped">
                                         <thead>
                                             <tr role="row">
                                                 <th style="width: 3%; padding: .25rem;">No</th>
@@ -144,30 +156,27 @@
                                                 </td>
                                             </tr>
                                             <tr *ngIf="uiCreditAccounts.length==0">
-                                                <td colspan="12">No accounts found..</td>
+                                                <td class="noRecordFoundText" colspan="12">No accounts found..</td>
                                             </tr>
                                         </tbody>
-                                    </table>
-                                </div>
-                            </div>
-                        </fieldset>
-
-                        <div style="margin-top: 10px;">
-                            <button class="btn btn-primary" style="float: left;" tabindex="2"
-                                (click)="makeTransaction()" *ngIf="isOperatorUser()">
-                                Finish Transaction</button>
-
-                            <button class="btn btn-danger btn-left-margin10" style="float: left;" tabindex="2"
-                                (click)="clearTransaction()" *ngIf="isOperatorUser()">
-                                Clear</button>
-
-                        </div>
-                    </div>
-                </div>
+                                    </table>        
+                  
+                </div>  
             </div>
         </div>
     </div>
+
+    <div class="actionableFooterSection"> 
+        <button class="btn action-primatryBtn" tabindex="2"
+            (click)="makeTransaction()" *ngIf="isOperatorUser()">
+            Finish Transaction</button>
+
+        <button class="btn btn-danger" tabindex="2"
+                (click)="clearTransaction()" *ngIf="isOperatorUser()">
+                Clear</button>
+    </div>
 </form>
+          
 
 <app-account-selector #accountSelectorModal (account)="addAccount($event)"></app-account-selector>
 

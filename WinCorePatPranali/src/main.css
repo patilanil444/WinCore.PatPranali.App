@@ -2742,6 +2742,7 @@ a.btn.disabled, fieldset:disabled a.btn {
     color: #fff;
     background-color: #d92550;
     border-color: #d92550;
+    text-transform: uppercase !important;
 }
 
     .btn-danger:hover {
@@ -3285,10 +3286,10 @@ input[type="submit"].btn-block, input[type="reset"].btn-block, input[type="butto
     margin-left: .255em;
     vertical-align: .255em;
     content: "";
-    border-top: .3em solid;
-    border-right: .3em solid transparent;
+    border-top: .4em solid;
+    border-right: .4em solid transparent;
     border-bottom: 0;
-    border-left: .3em solid transparent;
+    border-left: .4em solid transparent;
 }
 
 .dropdown-toggle:empty::after {
@@ -10537,7 +10538,7 @@ a, button, .btn {
 }
 
 .fixed-sidebar .app-main .app-main__outer {
-    z-index: 9;
+    z-index: unset;
     padding-left: 280px;
 }
 
