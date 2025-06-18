@@ -100,6 +100,7 @@ import { CollectionAccountsListComponent } from '../screens/pigmy/collection-acc
 import { LinkCollectionAccountComponent } from '../screens/pigmy/collection-accounts/link-collection-account/link-collection-account.component';
 import { StandingInstructionsListComponent } from '../screens/transactions/standing-instructions/standing-instructions-list/standing-instructions-list.component';
 import { StandingInstructionsFormComponent } from '../screens/transactions/standing-instructions/standing-instructions-form/standing-instructions-form.component';
+import { MemberSearchBaseComponent } from '../common/directives/member-search/member-search-base.component';
 
 @NgModule({
   declarations: [
@@ -198,7 +199,8 @@ import { StandingInstructionsFormComponent } from '../screens/transactions/stand
     CollectionAccountsListComponent,
     LinkCollectionAccountComponent,
     StandingInstructionsListComponent,
-    StandingInstructionsFormComponent
+    StandingInstructionsFormComponent,
+    MemberSearchBaseComponent
   ],
   imports: [
     CommonModule,

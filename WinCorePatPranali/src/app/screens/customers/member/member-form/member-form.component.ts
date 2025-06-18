@@ -2,6 +2,7 @@ import { formatDate } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
+import { BsDatepickerConfig } from 'ngx-bootstrap/datepicker';
 import { ToastrService } from 'ngx-toastr';
 import { CustomerDeclarations } from 'src/app/common/customer-declarations';
 import { IGeneralDTO, UiEnumGeneralMaster } from 'src/app/common/models/common-ui-models';
@@ -79,7 +80,7 @@ export interface UiDocument {
 })
 export class MemberFormComponent implements OnInit {
 
-  memberForm!: FormGroup;
+  datepickerConfig: BsDatepickerConfig;
   personalDetailsForm!: FormGroup;
   nominiForm!: FormGroup;
   dividentForm!: FormGroup;
@@ -118,6 +119,7 @@ export class MemberFormComponent implements OnInit {
 
   p_nomini: number = 1;
   total_nomini: number = 0;
+  maharashtraStateId = 21;
 
   dto: IGeneralDTO = {} as IGeneralDTO;
 
@@ -125,21 +127,30 @@ export class MemberFormComponent implements OnInit {
     private _generalMasterService: GeneralMasterService, private _toastrService: ToastrService) { }
 
   ngOnInit(): void {
+
+    this.datepickerConfig = this._sharedService.getDatepickerConfig();
     this.maxDate = new Date();
-    this.uiGenders = CustomerDeclarations.genders;
-    this.uiTitles = CustomerDeclarations.titles;
+    this.uiGenders = this.retrieveMasters(UiEnumGeneralMaster.GENDER);
+    this.uiTitles = this.retrieveMasters(UiEnumGeneralMaster.TITLE);
+    this.uiOccupations = this.retrieveMasters(UiEnumGeneralMaster.OCCUPTION);
+    this.uiCasts = this.retrieveMasters(UiEnumGeneralMaster.CASTE);
+    this.uiRelations = this.retrieveMasters(UiEnumGeneralMaster.RELATION);
+
+    this.uiAllStates = this._sharedService.uiAllStates;
+    this.uiAllDistricts = this._sharedService.uiAllDistricts;
+    this.uiAllTahshils = this._sharedService.uiAllTalukas;
+
     this.uiDocumentTypes = CustomerDeclarations.documents;
 
-    this.memberForm = new FormGroup({
-      memberCode: new FormControl("", []),
-    });
+    
 
     this.personalDetailsForm = new FormGroup({
-      personalTitle: new FormControl(this.uiTitles[0].code, [Validators.required]),
+      memberCode: new FormControl("", []),
+      personalTitle: new FormControl(this.uiTitles[0].constantNo, [Validators.required]),
       personalFirstName: new FormControl("", [Validators.required]),
       personalMiddleName: new FormControl("", []),
       personalLastName: new FormControl("", [Validators.required]),
-      personalDateOfBirth: new FormControl("", [Validators.required]),
+      personalDateOfBirth: new FormControl(new Date(Date.now()), []),
       personalAge: new FormControl("", []),
       personalAddress: new FormControl("", []),
       personalState: new FormControl("", []),
@@ -147,30 +158,30 @@ export class MemberFormComponent implements OnInit {
       personalTahsil: new FormControl("", [Validators.required]),
       personalPincode: new FormControl("", []),
       personalPhone: new FormControl("", [Validators.required]),
-      personalGender: new FormControl(this.uiGenders[0].code, [Validators.required]),
-      personalOccupation: new FormControl("", []),
-      personalCast: new FormControl("", []),
+      personalGender: new FormControl(this.uiGenders[0].constantNo, [Validators.required]),
+      personalOccupation: new FormControl(this.uiOccupations[0].constantNo, []),
+      personalCast: new FormControl(this.uiCasts[0].constantNo, []),
       personalDirector: new FormControl("", []),
       personalAccountNumber: new FormControl("", []),
-      personalAccountopenDate: new FormControl("", []),
+      personalAccountopenDate: new FormControl(new Date(Date.now()), []),
       personalAuthorisedBy: new FormControl("", []),
       personalEmail: new FormControl("", [Validators.pattern("[a-zA-Z0-9.-_]{1,}@[a-zA-Z.-]{2,}[.]{1}[a-zA-Z]{2,}")]),
     });
 
 
     this.nominiForm = new FormGroup({
-      nominiTitle: new FormControl(this.uiTitles[0].code, [Validators.required]),
+      nominiTitle: new FormControl(this.uiTitles[0].constantNo, [Validators.required]),
       nominiFirstName: new FormControl("", [Validators.required]),
       nominiMiddleName: new FormControl("", []),
       nominiLastName: new FormControl("", [Validators.required]),
-      nominiRelation: new FormControl("", [Validators.required]),
+      nominiRelation: new FormControl(this.uiRelations[0].constantNo, [Validators.required]),
       nominiAddress: new FormControl("", [Validators.required]),
       nominiCity: new FormControl("", [Validators.required]),
       nominiState: new FormControl("", []),
       nominiDistrict: new FormControl("", []),
       nominiTahsil: new FormControl("", [Validators.required]),
       nominiPincode: new FormControl("", []),
-      nominiGivenDate: new FormControl("", [Validators.required]),
+      nominiGivenDate: new FormControl(new Date(Date.now()), [Validators.required]),
       nominiSharePercentage: new FormControl(100, []),
       nominiGender: new FormControl(this.uiGenders[0].code, [])
     });
@@ -180,7 +191,7 @@ export class MemberFormComponent implements OnInit {
       dividentShareValue: new FormControl("", [Validators.required]),
       dividentTotalShareValue: new FormControl("", [Validators.required]),
       dividentAmount: new FormControl("", [Validators.required]),
-      dividentAdmissionFeeDate: new FormControl("", []),
+      dividentAdmissionFeeDate: new FormControl(new Date(Date.now()), []),
       dividentIncome: new FormControl("", [Validators.required]),
       dividentLoanLimit: new FormControl("", [Validators.required]),
     });
@@ -189,49 +200,67 @@ export class MemberFormComponent implements OnInit {
       documentSelect: new FormControl(this.uiDocumentTypes[2].code, [Validators.required]),
     });
 
-    this.loadMasters().then(() => {
+    this.loadDirectors().then(() => {
       this.loadForm();
     })
   }
 
+  retrieveMasters(uiEnumGeneralMaster: UiEnumGeneralMaster) {
+    let mastersData = this._sharedService.uiAllMasters.filter((m: any) => m.identifier == uiEnumGeneralMaster);
+    if (mastersData && mastersData.length) {
+      let masters = mastersData.filter((m: any) => m.identifier == uiEnumGeneralMaster);
+      return masters[0].codeTables;
+    }
+    return [];
+  }
+
   loadForm() {
-    this.uiAllStates = this._sharedService.uiAllStates;
+    
     this.uiAddressStates = this._sharedService.uiAllStates;
-    this.uiNominiStates = this._sharedService.uiAllStates;
-    this.uiAllDistricts = this._sharedService.uiAllDistricts;
-    this.uiAllTahshils = this._sharedService.uiAllTalukas;
+    // this.uiNominiStates = this._sharedService.uiAllStates;
+    // this.uiAllDistricts = this._sharedService.uiAllDistricts;
+    // this.uiAllTahshils = this._sharedService.uiAllTalukas;
 
-    let districts = this.uiAllDistricts.filter((d: any) => d.stateId == this.uiAddressStates[0].id);
-    if (districts) {
-      this.uiAddressDistricts = districts;
-      this.uiNominiDistricts = districts;
+    if (this.uiAddressStates && this.uiAddressStates.length) {
+      // set Maharashtra as default state 
+      let states = this.uiAddressStates.filter(s => s.id == this.maharashtraStateId);
+      if (states && states.length) {
+        this.personalDetailsForm.patchValue({
+          personalState: states[0].id,
+        })
+      }
     }
 
-    let tahshils = this.uiAllTahshils.filter((d: any) => d.districtId == this.uiAddressDistricts[0].id);
-    if (tahshils) {
-      this.uiAddressTahshils = tahshils;
-      this.uiNominiTahshils = tahshils;
+    if (this.uiAddressStates && this.uiAddressStates.length) {
+      let districts = this.uiAllDistricts.filter((d: any) => d.stateId == this.maharashtraStateId);
+      if (districts) {
+        this.uiAddressDistricts = districts;
+        this.personalDetailsForm.patchValue({
+          personalDistrict: districts[0].id,
+        })
+      }
     }
 
-    this._memberService.getDTO().subscribe((obj:any) => this.dto = obj);
+    if (this.uiAddressDistricts && this.uiAddressDistricts.length) {
+      let tahshils = this.uiAllTahshils.filter((d: any) => d.districtId == this.uiAddressDistricts[0].id);
+      if (tahshils) {
+        this.uiAddressTahshils = tahshils;
+        this.personalDetailsForm.patchValue({
+          personalTahsil: tahshils[0].id,
+        })
+      }
+    }
+
+
+    this._memberService.getDTO().subscribe((obj: any) => this.dto = obj);
     if (this.dto) {
       this.personalDetailsForm.patchValue({
-        personalOccupation: this.uiOccupations[0].id,
-        personalDirector : this.uiDirectors[0].id,
-        personalCast: this.uiCasts[0].id,
+        personalOccupation: this.uiOccupations[0].constantNo,
+        personalDirector: this.uiDirectors[0].id,
         personalState: this.uiAddressStates[0].id,
         personalDistrict: this.uiAddressDistricts[0].id,
         personalTahsil: this.uiAddressTahshils[0].id,
       })
-
-      this.nominiForm.patchValue({
-        nominiRelation: this.uiRelations[0].id,
-        nominiState: this.uiNominiStates[0].id,
-        nominiDistrict: this.uiNominiDistricts[0].id,
-        nominiTahsil: this.uiNominiTahshils[0].id,
-      })
-
-     
 
       this.id = this.dto.id;
       if (this.dto.id == 0 || this.dto.id == undefined) {
@@ -241,31 +270,17 @@ export class MemberFormComponent implements OnInit {
         // TODO:
         this._memberService.getMaxMemberId(this._sharedService.applicationUser.branchId).subscribe((data: any) => {
           let maxCustId = data.data.data;
-          this.maxId = maxCustId + 1;
-          this.memberForm.patchValue({
-            memberCode: this.maxId,
-          });
-
+          this.maxId = maxCustId;
           this.personalDetailsForm.patchValue({
-            personalDateOfBirth: formatDate(new Date(), 'yyyy-MM-dd', 'en'),
-            personalAccountopenDate: formatDate(new Date(), 'yyyy-MM-dd', 'en'),
-            personalAge: this.calculateAge(formatDate(new Date(), 'yyyy-MM-dd', 'en')),
-          });
-
-          this.nominiForm.patchValue({
-            nominiGivenDate: formatDate(new Date(), 'yyyy-MM-dd', 'en'),
-          });
-
-          this.dividentForm.patchValue({
-            dividentAdmissionFeeDate: formatDate(new Date(), 'yyyy-MM-dd', 'en'),
+            memberCode: this.maxId,
           });
         });
       }
       else {
         // Edit Mode
         this.isAddMode = false;
-        this._memberService.getMember(this.dto.id).subscribe((data: any) => {
-         
+        this._memberService.getMember(this._sharedService.applicationUser.branchId, this.dto.id).subscribe((data: any) => {
+
           if (data) {
             if (data.statusCode == 200 && data.data.data) {
               var member = data.data.data;
@@ -277,19 +292,17 @@ export class MemberFormComponent implements OnInit {
                 district = dists[0];
               }
 
-              this.memberForm.patchValue({
-                memberCode: member.id,
-              });
-
+              
               this.personalDetailsForm.patchValue({
+                memberCode: member.id,
                 personalTitle: member.title,
                 personalFirstName: member.firstName,
                 personalMiddleName: member.middleName,
                 personalLastName: member.lastName,
-                personalDateOfBirth: formatDate(new Date(member.dateOfBirth), 'yyyy-MM-dd', 'en'),
+                personalDateOfBirth: new Date(member.dateOfBirth),
                 personalAge: this.calculateAge(member.dateOfBirth),
                 personalAddress: member.address,
-                personalState : district.stateId,
+                personalState: district.stateId,
                 personalDistrict: district.id,
                 personalTahsil: member.tahsilId,
                 personalPincode: member.pincode,
@@ -299,33 +312,33 @@ export class MemberFormComponent implements OnInit {
                 personalCast: member.castId,
                 personalDirector: member.directorId,
                 personalAccountNumber: member.accountNumber,
-                personalAccountopenDate: formatDate(new Date(member.accOpenDate), 'yyyy-MM-dd', 'en'),
+                personalAccountopenDate: new Date(member.accOpenDate),
                 personalAuthorisedBy: member.authorisedBy,
                 personalEmail: member.email,
               });
 
               this.nominiForm.patchValue({
-                nominiGivenDate: formatDate(new Date(), 'yyyy-MM-dd', 'en'),
+                nominiGivenDate: new Date(Date.now()),
               });
 
-               this.uiNominis = member.nominis.map((nomini: any) => (
-               {
-                ...nomini,
-                givenDate: formatDate(new Date(nomini.givenDate), 'yyyy-MM-dd', 'en')
-               }));
+              this.uiNominis = member.nominis.map((nomini: any) => (
+                {
+                  ...nomini,
+                  givenDate: new Date(nomini.givenDate)
+                }));
 
-               this.dividentForm.patchValue({
+              this.dividentForm.patchValue({
                 dividentNoOfShares: member.numOfShares,
                 dividentShareValue: member.shareValue,
                 dividentTotalShareValue: parseFloat(member.shareValue) * parseFloat(member.numOfShares),
                 dividentAmount: member.dividentAmount,
-                dividentAdmissionFeeDate: formatDate(new Date(member.admissionFeeDate), 'yyyy-MM-dd', 'en'),
+                dividentAdmissionFeeDate: new Date(member.admissionFeeDate),
                 dividentIncome: member.income,
                 dividentLoanLimit: member.loanLimitAmount,
               });
 
               if (member.documents) {
-                  member.documents.forEach((doc:any) => {
+                member.documents.forEach((doc: any) => {
                   let uiDocument = {} as UiDocument;
                   uiDocument.memberId = this.dto.id;
                   uiDocument.documentKey = doc.documentKey;
@@ -342,54 +355,17 @@ export class MemberFormComponent implements OnInit {
     }
   }
 
-  loadMasters() {
+  loadDirectors() {
     return new Promise((resolve, reject) => {
-      let occupationsMasterModel = {
-        GeneralMasterId:1,// UiEnumGeneralMaster.OccupationMaster,
-        BranchId: this._sharedService.applicationUser.branchId
-      }
-      this._generalMasterService.getAllGeneralMasters(occupationsMasterModel).subscribe((memberGroups: any) => {
-        if (memberGroups) {
-          if (memberGroups.statusCode == 200 && memberGroups.data.data) {
-            this.uiOccupations = memberGroups.data.data;
-
-            let castMasterModel = {
-              GeneralMasterId: 1,//UiEnumGeneralMaster.CastMaster,
-              BranchId: this._sharedService.applicationUser.branchId
-            }
-            this._generalMasterService.getAllGeneralMasters(castMasterModel).subscribe((casts: any) => {
-              if (casts) {
-                if (casts.statusCode == 200 && casts.data.data) {
-                  this.uiCasts = casts.data.data;
-
-                  let relationsMasterModel = {
-                    GeneralMasterId: 1,//UiEnumGeneralMaster.RelationMaster,
-                    BranchId: this._sharedService.applicationUser.branchId
-                  }
-                  this._generalMasterService.getAllGeneralMasters(relationsMasterModel).subscribe((relations: any) => {
-                    if (relations) {
-                      if (relations.statusCode == 200 && relations.data.data) {
-                        this.uiRelations = relations.data.data;
-
-                        this._memberService.getDirectors(this._sharedService.applicationUser.branchId).subscribe((directors: any) => {
-                          if (directors) {
-                            if (directors.statusCode == 200 && directors.data.data) {
-                              this.uiDirectors = directors.data.data;
-                              resolve(true);
-                            }
-                          }
-                        })
-                      }
-                    }
-                  })
-                }
-              }
-            })
+      this._memberService.getDirectors().subscribe((directors: any) => {
+        if (directors) {
+          if (directors.statusCode == 200 && directors.data.data) {
+            this.uiDirectors = directors.data.data;
+            resolve(true);
           }
         }
       })
     })
-
   }
 
   pageNominiChangeEvent(event: number) {
@@ -427,37 +403,6 @@ export class MemberFormComponent implements OnInit {
     }
   }
 
-  onNominiStateChange(event: any) {
-    let targetValue = event.target.value;
-    let stateId = targetValue.split(":");
-    if (stateId) {
-      this.uiNominiDistricts = [];
-      let districts = this.uiAllDistricts.filter((d: any) => d.stateId == parseInt(stateId[1]));
-      if (districts) {
-        this.uiNominiDistricts = districts;
-        this.nominiForm.patchValue({
-          nominiDistrict: this.uiNominiDistricts[0].id
-        });
-      }
-    }
-
-  }
-
-  onNominiDistrictChange(event: any) {
-    let targetValue = event.target.value;
-    let districtId = targetValue.split(":");
-    if (districtId) {
-      this.uiNominiTahshils = [];
-      let tahshils = this.uiAllTahshils.filter((d: any) => d.districtId == parseInt(districtId[1]));
-      if (tahshils) {
-        this.uiNominiTahshils = tahshils;
-        this.nominiForm.patchValue({
-          nominiTahsil: this.uiNominiTahshils[0].id
-        });
-      }
-    }
-  }
-
   onPersonalDOBChange(event: any) {
     let targetValue = new Date(event.target.value);
     let age = this.calculateAge(targetValue);
@@ -474,8 +419,7 @@ export class MemberFormComponent implements OnInit {
     }
   }
 
-  validNominiForm()
-  {
+  validNominiForm() {
     if (this.nominiForm.invalid) {
       for (const control of Object.keys(this.nominiForm.controls)) {
         this.nominiForm.controls[control].markAsTouched();
@@ -494,7 +438,7 @@ export class MemberFormComponent implements OnInit {
       //   nomini.middleName.toLowerCase() == this.nominiMiddleName.value.toLowerCase() &&
       //   nomini.lastName.toLowerCase() == this.nominiLastName.value.toLowerCase());
 
-        let nominiIndex = this.uiNominis.findIndex(nomini =>
+      let nominiIndex = this.uiNominis.findIndex(nomini =>
         nomini.relationId == this.nominiRelation.value);
 
       let totalPercentage = this.uiNominis.reduce((sum, nomini) => sum + parseInt(nomini.percentage), 0);
@@ -618,15 +562,14 @@ export class MemberFormComponent implements OnInit {
     this.uiNominis.splice(ind, 1);
   }
 
-  calculateTotalShareValue()
-  {
+  calculateTotalShareValue() {
     this.dividentForm.patchValue({
       dividentTotalShareValue: new FormControl("", [])
     })
 
     let numberOfShares = this.dividentNoOfShares.value;
     let shareValue = this.dividentShareValue.value;
-    if (parseFloat(numberOfShares) > 0 && parseFloat(shareValue) > 0 ) {
+    if (parseFloat(numberOfShares) > 0 && parseFloat(shareValue) > 0) {
       let totalAmount = parseFloat(numberOfShares) * parseFloat(shareValue);
       this.dividentForm.patchValue({
         dividentTotalShareValue: totalAmount
@@ -759,7 +702,7 @@ export class MemberFormComponent implements OnInit {
 
     if (this.isAddMode) {
       this._memberService.createMember(memberModel).subscribe((data: any) => {
-       
+
         if (data) {
           if (data.statusCode == 200 && data.data.data > 0) {
             this._toastrService.success('Member created.', 'Success!');
@@ -771,7 +714,7 @@ export class MemberFormComponent implements OnInit {
     }
     else {
       this._memberService.updateMember(memberModel.Id, memberModel).subscribe((data: any) => {
-       
+
         if (data) {
           if (data.statusCode == 200 && data.data.data > 0) {
             this._toastrService.success('Member updated.', 'Success!');
@@ -808,8 +751,7 @@ export class MemberFormComponent implements OnInit {
     });
   }
 
-  clearDivident()
-  {
+  clearDivident() {
     this.dividentForm.patchValue({
       dividentNoOfShares: "",
       dividentShareValue: "",
@@ -821,8 +763,7 @@ export class MemberFormComponent implements OnInit {
     });
   }
 
-  clearDocuments()
-  {
+  clearDocuments() {
     this.uiDocuments = [];
   }
 
@@ -839,8 +780,7 @@ export class MemberFormComponent implements OnInit {
     return Math.abs(currentDate - dob);
   }
 
-  searchMember()
-  {
+  searchMember() {
     this.configClick("member-list");
   }
 
@@ -851,7 +791,7 @@ export class MemberFormComponent implements OnInit {
 
   //member
   get memberCode() {
-    return this.memberForm.get('memberCode')!;
+    return this.personalDetailsForm.get('memberCode')!;
   }
 
   //Personal
