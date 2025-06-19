@@ -690,7 +690,7 @@
   .iconInBtn
   {
     color:var(--white);
-    font-size: var(--pixelSize24);
+    font-size: var(--pixelSize20);
     margin: 0px  var(--pixelSize4);
   }
 
@@ -1246,7 +1246,18 @@
     background: var(--lightGreenShade1) !important;
     border-color: var(--lightGreenShade1) !important;
     text-transform: uppercase;
+    border-radius: var(--pixelSize10) !important;
 }
+
+.btn-info:focus,
+.btn-info:active,
+.btn-info:hover
+{
+    background: var(--lightGreenShade1) !important;
+    border-color: var(--lightGreenShade1) !important;
+    text-transform: uppercase;
+}
+
 
 .optionControlsdocuments
 {
@@ -1989,3 +2000,33 @@
       gap:10px;
       padding:10px;
 }
+
+.btnsCollectioninTable
+{
+    display: flex;
+    gap: var(--pixelSize4);
+}
+
+.btnsCollectioninInTabsLeftSide
+{
+    display: flex;
+    gap: var(--pixelSize4);
+    padding: var(--pixelSize8) var(--pixelSize20);
+}
+
+.btn:disabled
+{
+    background: #cccccc !important;
+    border: 1px solid #989898 !important;
+    outline: 1px solid #989898 !important;
+    box-shadow: none;
+    cursor: not-allowed;
+}
+
+
+.mrgtb10AutoLR
+{
+    margin: var(--pixelSize10) auto  !important;
+
+}
+
