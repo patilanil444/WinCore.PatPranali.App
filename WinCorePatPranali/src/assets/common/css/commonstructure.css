@@ -756,6 +756,17 @@
 
 
  }
+
+  .filterSectionAllCotrols3
+ {
+    display: flex;
+    padding:var(--pixelSize4);
+    gap: var(--pixelSize10);
+    flex-wrap: wrap;
+    width: 100%;
+
+
+ }
  .filterSectionContentCotrols
  {
     display: flex;
@@ -2036,3 +2047,8 @@
 
 }
 
+
+.form_label_forControl .mandatory
+{
+    color:var(--redDarkShade2);
+}
