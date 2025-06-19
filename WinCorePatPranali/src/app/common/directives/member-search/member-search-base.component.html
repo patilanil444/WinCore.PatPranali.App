@@ -1,0 +1,42 @@
+<form [formGroup]="searchForm" #form="ngForm">
+    <div class="filterSectionAllCotrols">
+        <div class="filterSectionContentCotrols">
+            <div>
+                <label  class="form_label_forControl">Search Member By </label>
+            </div>
+            <div class="dropwControlSectionOption">
+                <select class="form-control formControl_dropdownselect" tabindex="1" formControlName="searchBy">
+                    <option *ngFor="let uiMemberSearch of uiMemberSearchBy" [ngValue]="uiMemberSearch.code">
+                        {{uiMemberSearch.name}}
+                    </option>
+                </select>
+            </div>
+        </div>
+    
+        <div class="filterSectionContentCotrols">
+            <div>
+                <label  class="form_label_forControl">Member Search Text</label>
+            </div>
+            <div>
+                <ng-autocomplete
+                class="formControl_actiontextBox"
+                placeHolder="Enter search text"
+                [data]="uiMembers"
+                [searchKeyword]="keyword"
+                [itemTemplate]="itemTemplateStatic"
+                (selected)='selectEvent($event)'
+                (inputChanged)='onChangeSearch($event)'>
+            </ng-autocomplete>
+    
+            <ng-template #itemTemplateStatic let-item>
+                <a [innerHTML]="item.memberCodeStr +'-'+ item.fullName"></a>
+              </ng-template>
+            </div>
+        </div>
+
+        <div *ngIf="allowMultiSearch" class="position-relative form-group">
+            <button class="btn btn-info" style="float: right;" tabindex="2" (click)="searchMember()"><i
+                    class="fa fa-search"></i> Search</button>
+        </div>
+    </div>
+</form>

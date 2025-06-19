@@ -31,14 +31,14 @@ export class MemberService {
     return this.http.post(GlobleDeclarations.apiBaseURL + "api/member/search-member", memberModel, options);
   }
 
-  getMember(id: number): any {
+  getMember(branchCode: number, id: number): any {
     let options = GlobleDeclarations.getHeaderOptions();
-    return this.http.get(GlobleDeclarations.apiBaseURL + "api/member/member?id=" + id, options);
+    return this.http.get(GlobleDeclarations.apiBaseURL + "api/member/member?branchCode=" + branchCode + "&memberId=" + id, options);
   }
 
   getMaxMemberId(branchId: number): any {
     let options = GlobleDeclarations.getHeaderOptions();
-    return this.http.get(GlobleDeclarations.apiBaseURL + "api/member/max-member-id?branchId=" + branchId, options);
+    return this.http.get(GlobleDeclarations.apiBaseURL + "api/member/max-member-no?branchCode=" + branchId, options);
   }
 
   createMember(memberModel: any): any {
@@ -62,8 +62,8 @@ export class MemberService {
     return this.http.post(GlobleDeclarations.apiBaseURL + "api/member/upload-document", uplaodMemberDocument, options);
   }
 
-  getDirectors(branchId: number) {
+  getDirectors() {
     let options = GlobleDeclarations.getHeaderOptions();
-    return this.http.get(GlobleDeclarations.apiBaseURL + "api/member/directors?branchId=" + branchId, options);
+    return this.http.get(GlobleDeclarations.apiBaseURL + "api/account/directors", options);
   }
 }

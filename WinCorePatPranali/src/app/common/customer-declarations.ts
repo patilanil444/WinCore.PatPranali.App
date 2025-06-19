@@ -9,6 +9,13 @@ export class CustomerDeclarations
     new UiStaticType(4, "A", "Aadhar"),
     new UiStaticType(5, "O", "Phone")];
 
+    static memberSearchBy = [
+    new UiStaticType(1, "N", "Member Name"), 
+    new UiStaticType(2, "C", "Member Number"),
+    new UiStaticType(3, "P", "Phone"),
+    new UiStaticType(4, "A", "Account Number"),
+    new UiStaticType(5, "E", "Email")];
+
     static titles = [new UiStaticType(1, "M", "Mr."), 
     new UiStaticType(2, "R", "Mrs."),
     new UiStaticType(3, "I", "Miss"),
