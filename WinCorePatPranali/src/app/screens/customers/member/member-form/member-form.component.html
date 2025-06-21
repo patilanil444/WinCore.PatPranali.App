@@ -18,18 +18,6 @@
             </label>
             
             <div class="memberSectionWithExtraControl">
-                <!-- <div class="memeberNumberSection">
-                    <form [formGroup]="memberForm" #form="ngForm">
-                        <div class="memeberNumberControl">
-                            <label class="form_label_forControlWhite">Member number</label>
-                            <div class="input-group">
-                                <input tabindex="1" type="text" class="form-control" readonly
-                                    formControlName="memberCode">
-                            </div>
-                        </div>
-                    </form>
-
-                </div> -->
                 <div class="backbtnSectionCOntrol">
 
                     <button class="GotoBackBtn" (click)="searchMember()">
@@ -83,15 +71,6 @@
                                 <div class="col-md-12">
                                     <div class="tab-content">
                                         <div class="row">
-                                            <!-- <div class="col-md-3 position-relative">
-                                                <label class="">Title</label>
-                                                <select class="mb-2 form-control" tabindex="2"
-                                                    formControlName="personalTitle">
-                                                    <option *ngFor="let uiTitle of uiTitles" [ngValue]="uiTitle.code">
-                                                        {{uiTitle.name}}
-                                                    </option>
-                                                </select>
-                                            </div> -->
 
                                             <div class="col-md-3 actionControlsInputs" style="display: flex !important;">
                                                 <div class="col-md-6 position-relative" style="padding-left: unset;">
@@ -101,13 +80,6 @@
                                                 </div>
                                                 <div class="col-md-6 position-relative" style="padding-right: unset;">
                                                     <label class="">Title <span class="mandatory">*</span></label>
-                                                    <!-- <select class="mb-2 form-control" tabindex="1"
-                                                        formControlName="personalTitle">
-                                                        <option *ngFor="let uiTitle of uiTitles"
-                                                            [ngValue]="uiTitle.code">
-                                                            {{uiTitle.name}}
-                                                        </option>
-                                                    </select> -->
 
                                                     <select class="form-control formControl_dropdownselect" tabindex="1"
                                                         formControlName="personalTitle">
@@ -121,7 +93,11 @@
                                             <div class="col-md-3 position-relative">
                                                 <label class="">First Name <span class="mandatory">*</span></label>
                                                 <input tabindex="3" type="text" class="form-control" autocomplete="off"
-                                                    formControlName="personalFirstName">
+                                                    formControlName="personalFirstName"
+                                                    [ngClass]="{'is-invalid': personalDetailsForm.get('personalFirstName')?.invalid && (personalDetailsForm.get('personalFirstName')?.touched || personalDetailsForm.get('personalFirstName')?.dirty)}">
+                                                <div *ngIf="personalDetailsForm.get('personalFirstName')?.invalid && (personalDetailsForm.get('personalFirstName')?.touched || personalDetailsForm.get('personalFirstName')?.dirty)" class="invalid-feedback">
+                                                    First Name is required.
+                                                </div>
                                             </div>
                                             <div class="col-md-3 position-relative">
                                                 <label class="">Middle Name</label>
@@ -131,26 +107,49 @@
                                             <div class="col-md-3 position-relative">
                                                 <label class="">Last name <span class="mandatory">*</span></label>
                                                 <input tabindex="5" type="text" class="form-control" autocomplete="off"
-                                                    formControlName="personalLastName">
+                                                    formControlName="personalLastName"
+                                                    [ngClass]="{'is-invalid': personalDetailsForm.get('personalLastName')?.invalid && (personalDetailsForm.get('personalLastName')?.touched || personalDetailsForm.get('personalLastName')?.dirty)}">
+                                                <div *ngIf="personalDetailsForm.get('personalLastName')?.invalid && (personalDetailsForm.get('personalLastName')?.touched || personalDetailsForm.get('personalLastName')?.dirty)" class="invalid-feedback">
+                                                    Last Name is required.
+                                                </div>
                                             </div>
 
                                             <div class="col-md-3 position-relative form-group">
                                                 <label class="">Date Of Birth <span class="mandatory">*</span></label>
-                                                <input tabindex="6" type="text" class="form-control"
+                                                <input
+                                                    tabindex="6"
+                                                    type="text"
+                                                    class="form-control"
                                                     (change)="onPersonalDOBChange($event)"
-                                                    formControlName="personalDateOfBirth" bsDatepicker [bsConfig]="datepickerConfig">
+                                                    formControlName="personalDateOfBirth"
+                                                    bsDatepicker
+                                                    [bsConfig]="datepickerConfig"
+                                                    [ngClass]="{'is-invalid': personalDetailsForm.get('personalDateOfBirth')?.invalid && (personalDetailsForm.get('personalDateOfBirth')?.touched || personalDetailsForm.get('personalDateOfBirth')?.dirty)}"
+                                                >
+                                                <div *ngIf="personalDetailsForm.get('personalDateOfBirth')?.invalid && (personalDetailsForm.get('personalDateOfBirth')?.touched || personalDetailsForm.get('personalDateOfBirth')?.dirty)" class="invalid-feedback">
+                                                    Date Of Birth is required.
+                                                </div>
                                             </div>
 
                                             <div class="col-md-3 position-relative form-group">
                                                 <label class="">Age </label>
-                                                    <input tabindex="7" type="text" class="form-control"
+                                                    <input tabindex="7" type="text" readonly class="form-control"
                                                         autocomplete="off" formControlName="personalAge">
                                             </div>
 
                                             <div class="col-md-3 position-relative">
                                                 <label class="">Address <span class="mandatory">*</span></label>
-                                                <input tabindex="8" type="text" class="form-control" autocomplete="off"
-                                                    formControlName="personalAddress">
+                                                <input
+                                                    tabindex="8"
+                                                    type="text"
+                                                    class="form-control"
+                                                    autocomplete="off"
+                                                    formControlName="personalAddress"
+                                                    [ngClass]="{'is-invalid': personalDetailsForm.get('personalAddress')?.invalid && (personalDetailsForm.get('personalAddress')?.touched || personalDetailsForm.get('personalAddress')?.dirty)}"
+                                                >
+                                                <div *ngIf="personalDetailsForm.get('personalAddress')?.invalid && (personalDetailsForm.get('personalAddress')?.touched || personalDetailsForm.get('personalAddress')?.dirty)" class="invalid-feedback">
+                                                    Address is required.
+                                                </div>
                                             </div>
 
                                             <div class="col-md-3 position-relative form-group">
@@ -183,70 +182,148 @@
                                             <div class="col-md-3 position-relative form-group">
                                                 <label class="">Taluka <span class="mandatory">*</span></label>
 
-                                                 <select class="form-control formControl_dropdownselect" tabindex="11"
-                                                    formControlName="personalTahsil">
+                                                <select class="form-control formControl_dropdownselect"
+                                                    tabindex="11"
+                                                    formControlName="personalTahsil"
+                                                    [ngClass]="{'is-invalid': personalDetailsForm.get('personalTahsil')?.invalid && (personalDetailsForm.get('personalTahsil')?.touched || personalDetailsForm.get('personalTahsil')?.dirty)}">
                                                     <option *ngFor="let uiAddressTahshil of uiAddressTahshils"
                                                         [ngValue]="uiAddressTahshil.id">
-                                                        {{uiAddressTahshil.talukaName}}
+                                                    {{uiAddressTahshil.talukaName}}
                                                     </option>
                                                 </select>
+                                                <div *ngIf="personalDetailsForm.get('personalTahsil')?.invalid && (personalDetailsForm.get('personalTahsil')?.touched || personalDetailsForm.get('personalTahsil')?.dirty)" class="invalid-feedback">
+                                                    Taluka is required.
+                                                </div>
                                             </div>
 
                                             <div class="col-md-3 position-relative form-group">
                                                 <label class="">Pincode <span class="mandatory">*</span></label>
-                                                <input tabindex="12" type="text" class="form-control" autocomplete="off"
-                                                    formControlName="personalPincode">
+                                                <input
+                                                    tabindex="12"
+                                                    type="text"
+                                                    class="form-control"
+                                                    autocomplete="off"
+                                                    formControlName="personalPincode"
+                                                    maxlength="6"
+                                                    pattern="^[0-9]{6}$"
+                                                    [ngClass]="{'is-invalid': personalDetailsForm.get('personalPincode')?.invalid && (personalDetailsForm.get('personalPincode')?.touched || personalDetailsForm.get('personalPincode')?.dirty)}"
+                                                >
+                                                <div *ngIf="personalDetailsForm.get('personalPincode')?.invalid && (personalDetailsForm.get('personalPincode')?.touched || personalDetailsForm.get('personalPincode')?.dirty)" class="invalid-feedback">
+                                                    <div *ngIf="personalDetailsForm.get('personalPincode')?.errors?.['required']">
+                                                        Pincode is required.
+                                                    </div>
+                                                    <div *ngIf="personalDetailsForm.get('personalPincode')?.errors?.['pattern']">
+                                                        Pincode must be a 6-digit number.
+                                                    </div>
+                                                </div>
                                             </div>
                                             <div class="col-md-3 position-relative">
                                                 <label class="">Mobile/Phone <span class="mandatory">*</span></label>
-                                                <input tabindex="13" type="text" class="form-control" autocomplete="off"
-                                                    formControlName="personalPhone">
+                                                <input
+                                                    tabindex="13"
+                                                    type="text"
+                                                    class="form-control"
+                                                    autocomplete="off"
+                                                    formControlName="personalPhone"
+                                                    maxlength="10"
+                                                    pattern="^[0-9]{10}$"
+                                                    [ngClass]="{'is-invalid': personalDetailsForm.get('personalPhone')?.invalid && (personalDetailsForm.get('personalPhone')?.touched || personalDetailsForm.get('personalPhone')?.dirty)}"
+                                                />
+                                                <div *ngIf="personalDetailsForm.get('personalPhone')?.invalid && (personalDetailsForm.get('personalPhone')?.touched || personalDetailsForm.get('personalPhone')?.dirty)" class="invalid-feedback">
+                                                    <div *ngIf="personalDetailsForm.get('personalPhone')?.errors?.['required']">
+                                                        Mobile/Phone is required.
+                                                    </div>
+                                                    <div *ngIf="personalDetailsForm.get('personalPhone')?.errors?.['pattern']">
+                                                        Mobile/Phone must be a 10-digit number.
+                                                    </div>
+                                                </div>
                                             </div>
                                             <div class="col-md-3 position-relative form-group">
                                                 <label class="">Gender <span class="mandatory">*</span></label>
-                                                 <select class="form-control formControl_dropdownselect" tabindex="14"
-                                                    formControlName="personalGender">
+                                                <select 
+                                                    class="form-control formControl_dropdownselect" 
+                                                    tabindex="14"
+                                                    formControlName="personalGender"
+                                                    [ngClass]="{'is-invalid': personalDetailsForm.get('personalGender')?.invalid && (personalDetailsForm.get('personalGender')?.touched || personalDetailsForm.get('personalGender')?.dirty)}">
+                                                    <option value="" disabled selected>Select Gender</option>
                                                     <option *ngFor="let uiGender of uiGenders"
                                                         [ngValue]="uiGender.constantNo">
                                                         {{uiGender.constantname}}
                                                     </option>
                                                 </select>
+                                                <div *ngIf="personalDetailsForm.get('personalGender')?.invalid && (personalDetailsForm.get('personalGender')?.touched || personalDetailsForm.get('personalGender')?.dirty)" class="invalid-feedback">
+                                                    Gender is required.
+                                                </div>
                                             </div>
                                             <div class="col-md-3 position-relative form-group">
                                                 <label class="">Occupation</label><span class="mandatory">*</span>
 
-                                                <select class="form-control formControl_dropdownselect" tabindex="15"
-                                                    formControlName="personalOccupation">
+                                                <select class="form-control formControl_dropdownselect"
+                                                    tabindex="15"
+                                                    formControlName="personalOccupation"
+                                                    [ngClass]="{'is-invalid': personalDetailsForm.get('personalOccupation')?.invalid && (personalDetailsForm.get('personalOccupation')?.touched || personalDetailsForm.get('personalOccupation')?.dirty)}">
+                                                    <option value="" disabled selected>Select Occupation</option>
                                                     <option *ngFor="let uiOccupation of uiOccupations"
                                                         [ngValue]="uiOccupation.constantNo">
                                                         {{uiOccupation.constantname}}
                                                     </option>
                                                 </select>
+                                                <div *ngIf="personalDetailsForm.get('personalOccupation')?.invalid && (personalDetailsForm.get('personalOccupation')?.touched || personalDetailsForm.get('personalOccupation')?.dirty)" class="invalid-feedback">
+                                                    Occupation is required.
+                                                </div>
                                             </div>
                                             <div class="col-md-3 position-relative form-group">
                                                 <label class="">Cast</label>
-                                                 <select class="form-control formControl_dropdownselect" tabindex="16"
-                                                    formControlName="personalCast">
-                                                    <option *ngFor="let uiCaste of uiCasts"
-                                                        [ngValue]="uiCaste.constantNo">
+                                                <select 
+                                                    class="form-control formControl_dropdownselect" 
+                                                    tabindex="16"
+                                                    formControlName="personalCast"
+                                                    [ngClass]="{'is-invalid': personalDetailsForm.get('personalCast')?.invalid && (personalDetailsForm.get('personalCast')?.touched || personalDetailsForm.get('personalCast')?.dirty)}">
+                                                    <option *ngFor="let uiCaste of uiCasts" [ngValue]="uiCaste.constantNo">
                                                         {{uiCaste.constantname}}
                                                     </option>
                                                 </select>
+                                                <div *ngIf="personalDetailsForm.get('personalCast')?.invalid && (personalDetailsForm.get('personalCast')?.touched || personalDetailsForm.get('personalCast')?.dirty)" class="invalid-feedback">
+                                                    Cast is required.
+                                                </div>
                                             </div>
                                             <div class="col-md-3 position-relative form-group">
                                                 <label class="">Director</label>
-                                                <select class="mb-2 form-control" tabindex="17"
-                                                    formControlName="personalDirector">
+                                                <select 
+                                                    class="mb-2 form-control" 
+                                                    tabindex="17"
+                                                    formControlName="personalDirector"
+                                                    [ngClass]="{'is-invalid': personalDetailsForm.get('personalDirector')?.invalid && (personalDetailsForm.get('personalDirector')?.touched || personalDetailsForm.get('personalDirector')?.dirty)}">
+                                                    
                                                     <option *ngFor="let uiDirector of uiDirectors"
                                                         [ngValue]="uiDirector.id">
                                                         {{uiDirector.directorName}}
                                                     </option>
                                                 </select>
+                                                <div *ngIf="personalDetailsForm.get('personalDirector')?.invalid && (personalDetailsForm.get('personalDirector')?.touched || personalDetailsForm.get('personalDirector')?.dirty)" class="invalid-feedback">
+                                                    Director is required.
+                                                </div>
                                             </div>
                                             <div class="col-md-3 position-relative form-group">
                                                 <label class="">Account Number <span class="mandatory">*</span></label>
-                                                <input tabindex="18" type="text" class="form-control" autocomplete="off"
-                                                    formControlName="personalAccountNumber">
+                                                <input
+                                                    tabindex="18"
+                                                    type="text"
+                                                    class="form-control"
+                                                    autocomplete="off"
+                                                    formControlName="personalAccountNumber"
+                                                    maxlength="20"
+                                                    pattern="^[0-9]{8,20}$"
+                                                    [ngClass]="{'is-invalid': personalDetailsForm.get('personalAccountNumber')?.invalid && (personalDetailsForm.get('personalAccountNumber')?.touched || personalDetailsForm.get('personalAccountNumber')?.dirty)}"
+                                                />
+                                                <div *ngIf="personalDetailsForm.get('personalAccountNumber')?.invalid && (personalDetailsForm.get('personalAccountNumber')?.touched || personalDetailsForm.get('personalAccountNumber')?.dirty)" class="invalid-feedback">
+                                                    <div *ngIf="personalDetailsForm.get('personalAccountNumber')?.errors?.['required']">
+                                                        Account Number is required.
+                                                    </div>
+                                                    <div *ngIf="personalDetailsForm.get('personalAccountNumber')?.errors?.['pattern']">
+                                                        Account Number must be 8-20 digits.
+                                                    </div>
+                                                </div>
                                             </div>
 
                                             <div class="col-md-3 position-relative form-group">
@@ -256,13 +333,36 @@
                                             </div>
                                             <div class="col-md-3 position-relative form-group">
                                                 <label class="">Authorised by <span class="mandatory">*</span></label>
-                                                <input tabindex="20" type="text" class="form-control" autocomplete="off"
-                                                    formControlName="personalAuthorisedBy">
+                                                <input
+                                                    tabindex="20"
+                                                    type="text"
+                                                    class="form-control"
+                                                    autocomplete="off"
+                                                    formControlName="personalAuthorisedBy"
+                                                    [ngClass]="{'is-invalid': personalDetailsForm.get('personalAuthorisedBy')?.invalid && (personalDetailsForm.get('personalAuthorisedBy')?.touched || personalDetailsForm.get('personalAuthorisedBy')?.dirty)}"
+                                                />
+                                                <div *ngIf="personalDetailsForm.get('personalAuthorisedBy')?.invalid && (personalDetailsForm.get('personalAuthorisedBy')?.touched || personalDetailsForm.get('personalAuthorisedBy')?.dirty)" class="invalid-feedback">
+                                                    Authorised by is required.
+                                                </div>
                                             </div>
                                             <div class="col-md-3 position-relative form-group">
-                                                <label class="">Email <span class="mandatory">*</span></label>
-                                                <input tabindex="20" type="text" class="form-control" autocomplete="off"
-                                                    formControlName="personalEmail">
+                                                <label class="">Email </label>
+                                                <input
+                                                    tabindex="20"
+                                                    type="email"
+                                                    class="form-control"
+                                                    autocomplete="off"
+                                                    formControlName="personalEmail"
+                                                    [ngClass]="{'is-invalid': personalDetailsForm.get('personalEmail')?.invalid && (personalDetailsForm.get('personalEmail')?.touched || personalDetailsForm.get('personalEmail')?.dirty)}"
+                                                />
+                                                <div *ngIf="personalDetailsForm.get('personalEmail')?.invalid && (personalDetailsForm.get('personalEmail')?.touched || personalDetailsForm.get('personalEmail')?.dirty)" class="invalid-feedback">
+                                                    <div *ngIf="personalDetailsForm.get('personalEmail')?.errors?.['required']">
+                                                        Email is required.
+                                                    </div>
+                                                    <div *ngIf="personalDetailsForm.get('personalEmail')?.errors?.['email']">
+                                                        Please enter a valid email address.
+                                                    </div>
+                                                </div>
                                             </div>
                                         </div> <!-- End of row -->
                                     </div>
@@ -289,8 +389,17 @@
                                             </div>
                                             <div class="col-md-3 position-relative">
                                                 <label class="">Nominee Name <span class="mandatory">*</span></label>
-                                                <input tabindex="22" type="text" class="form-control" autocomplete="off"
-                                                    formControlName="nominiName">
+                                                <input
+                                                    tabindex="22"
+                                                    type="text"
+                                                    class="form-control"
+                                                    autocomplete="off"
+                                                    formControlName="nominiName"
+                                                    [ngClass]="{'is-invalid': nominiForm.get('nominiName')?.invalid && (nominiForm.get('nominiName')?.touched || nominiForm.get('nominiName')?.dirty)}"
+                                                />
+                                                <div *ngIf="nominiForm.get('nominiName')?.invalid && (nominiForm.get('nominiName')?.touched || nominiForm.get('nominiName')?.dirty)" class="invalid-feedback">
+                                                    Nominee Name is required.
+                                                </div>
                                             </div>
 
                                             <div class="col-md-3 position-relative form-group">
@@ -307,8 +416,17 @@
 
                                             <div class="col-md-3 position-relative form-group">
                                                 <label class="">Address <span class="mandatory">*</span></label>
-                                                <input tabindex="27" type="text" class="form-control" autocomplete="off"
-                                                    formControlName="nominiAddress">
+                                                <input 
+                                                    tabindex="27" 
+                                                    type="text" 
+                                                    class="form-control" 
+                                                    autocomplete="off"
+                                                    formControlName="nominiAddress"
+                                                    [ngClass]="{'is-invalid': nominiForm.get('nominiAddress')?.invalid && (nominiForm.get('nominiAddress')?.touched || nominiForm.get('nominiAddress')?.dirty)}"
+                                                />
+                                                <div *ngIf="nominiForm.get('nominiAddress')?.invalid && (nominiForm.get('nominiAddress')?.touched || nominiForm.get('nominiAddress')?.dirty)" class="invalid-feedback">
+                                                    Nominee Address is required.
+                                                </div>
                                             </div>
                                             <div class="col-md-3 actionControlsInputs form-group">
                                                 <label class="">Date Of Birth <span class="mandatory">*</span></label>
@@ -325,13 +443,44 @@
                                             </div> -->
                                             <div class="col-md-3 position-relative form-group">
                                                 <label class="">Percentage <span class="mandatory">*</span></label>
-                                                <input tabindex="34" type="number" class="form-control"
-                                                    formControlName="nominiSharePercentage">
+                                                <input
+                                                    tabindex="34"
+                                                    type="number"
+                                                    class="form-control"
+                                                    formControlName="nominiSharePercentage"
+                                                    min="1"
+                                                    max="100"
+                                                    [ngClass]="{'is-invalid': nominiForm.get('nominiSharePercentage')?.invalid && (nominiForm.get('nominiSharePercentage')?.touched || nominiForm.get('nominiSharePercentage')?.dirty)}"
+                                                />
+                                                <div *ngIf="nominiForm.get('nominiSharePercentage')?.invalid && (nominiForm.get('nominiSharePercentage')?.touched || nominiForm.get('nominiSharePercentage')?.dirty)" class="invalid-feedback">
+                                                    <div *ngIf="nominiForm.get('nominiSharePercentage')?.errors?.['required']">
+                                                        Percentage is required.
+                                                    </div>
+                                                    <div *ngIf="nominiForm.get('nominiSharePercentage')?.errors?.['min'] || nominiForm.get('nominiSharePercentage')?.errors?.['max']">
+                                                        Percentage must be between 1 and 100.
+                                                    </div>
+                                                </div>
                                             </div>
                                             <div class="col-md-3 position-relative form-group">
                                                 <label class="">Mobile/Phone <span class="mandatory">*</span></label>
-                                                <input tabindex="34" type="number" class="form-control"
-                                                    formControlName="nominiPhone">
+                                                <input
+                                                    tabindex="34"
+                                                    type="text"
+                                                    class="form-control"
+                                                    formControlName="nominiPhone"
+                                                    maxlength="10"
+                                                    pattern="^[0-9]{10}$"
+                                                    autocomplete="off"
+                                                    [ngClass]="{'is-invalid': nominiForm.get('nominiPhone')?.invalid && (nominiForm.get('nominiPhone')?.touched || nominiForm.get('nominiPhone')?.dirty)}"
+                                                />
+                                                <div *ngIf="nominiForm.get('nominiPhone')?.invalid && (nominiForm.get('nominiPhone')?.touched || nominiForm.get('nominiPhone')?.dirty)" class="invalid-feedback">
+                                                    <div *ngIf="nominiForm.get('nominiPhone')?.errors?.['required']">
+                                                        Mobile/Phone is required.
+                                                    </div>
+                                                    <div *ngIf="nominiForm.get('nominiPhone')?.errors?.['pattern']">
+                                                        Mobile/Phone must be a 10-digit number.
+                                                    </div>
+                                                </div>
                                             </div>
                                         </div>
                                         <div class="row">
@@ -410,15 +559,45 @@
                                         <div class="row">
                                             <div class="col-md-3 position-relative form-group">
                                                 <label class="">Number Of Shares <span class="mandatory">*</span></label>
-                                                <input tabindex="37" type="number" class="form-control"
+                                                <input 
+                                                    tabindex="37" 
+                                                    type="number" 
+                                                    class="form-control"
                                                     formControlName="dividentNoOfShares"
-                                                    (change)="calculateTotalShareValue()">
+                                                    min="1"
+                                                    required
+                                                    [ngClass]="{'is-invalid': dividentForm.get('dividentNoOfShares')?.invalid && (dividentForm.get('dividentNoOfShares')?.touched || dividentForm.get('dividentNoOfShares')?.dirty)}"
+                                                    (change)="calculateTotalShareValue()"
+                                                />
+                                                <div *ngIf="dividentForm.get('dividentNoOfShares')?.invalid && (dividentForm.get('dividentNoOfShares')?.touched || dividentForm.get('dividentNoOfShares')?.dirty)" class="invalid-feedback">
+                                                    <div *ngIf="dividentForm.get('dividentNoOfShares')?.errors?.['required']">
+                                                        Number Of Shares is required.
+                                                    </div>
+                                                    <div *ngIf="dividentForm.get('dividentNoOfShares')?.errors?.['min']">
+                                                        Number Of Shares must be at least 1.
+                                                    </div>
+                                                </div>
                                             </div>
                                             <div class="col-md-3 position-relative form-group">
                                                 <label class="">Share Value <span class="mandatory">*</span></label>
-                                                <input tabindex="38" type="number" class="form-control"
+                                                <input 
+                                                    tabindex="38" 
+                                                    type="number" 
+                                                    class="form-control"
                                                     formControlName="dividentShareValue"
-                                                    (change)="calculateTotalShareValue()">
+                                                    min="1"
+                                                    required
+                                                    [ngClass]="{'is-invalid': dividentForm.get('dividentShareValue')?.invalid && (dividentForm.get('dividentShareValue')?.touched || dividentForm.get('dividentShareValue')?.dirty)}"
+                                                    (change)="calculateTotalShareValue()"
+                                                />
+                                                <div *ngIf="dividentForm.get('dividentShareValue')?.invalid && (dividentForm.get('dividentShareValue')?.touched || dividentForm.get('dividentShareValue')?.dirty)" class="invalid-feedback">
+                                                    <div *ngIf="dividentForm.get('dividentShareValue')?.errors?.['required']">
+                                                        Share Value is required.
+                                                    </div>
+                                                    <div *ngIf="dividentForm.get('dividentShareValue')?.errors?.['min']">
+                                                        Share Value must be at least 1.
+                                                    </div>
+                                                </div>
                                             </div>
                                             <div class="col-md-3 position-relative form-group">
                                                 <label class="">Total Share Value</label>
@@ -427,13 +606,43 @@
                                             </div>
                                             <div class="col-md-3 position-relative form-group">
                                                 <label class="">Divident Amount <span class="mandatory">*</span></label>
-                                                <input tabindex="40" type="number" class="form-control"
-                                                    formControlName="dividentAmount">
+                                                <input
+                                                    tabindex="40"
+                                                    type="number"
+                                                    class="form-control"
+                                                    formControlName="dividentAmount"
+                                                    min="1"
+                                                    required
+                                                    [ngClass]="{'is-invalid': dividentForm.get('dividentAmount')?.invalid && (dividentForm.get('dividentAmount')?.touched || dividentForm.get('dividentAmount')?.dirty)}"
+                                                />
+                                                <div *ngIf="dividentForm.get('dividentAmount')?.invalid && (dividentForm.get('dividentAmount')?.touched || dividentForm.get('dividentAmount')?.dirty)" class="invalid-feedback">
+                                                    <div *ngIf="dividentForm.get('dividentAmount')?.errors?.['required']">
+                                                        Divident Amount is required.
+                                                    </div>
+                                                    <div *ngIf="dividentForm.get('dividentAmount')?.errors?.['min']">
+                                                        Divident Amount must be at least 1.
+                                                    </div>
+                                                </div>
                                             </div>
                                             <div class="col-md-3 position-relative form-group">
                                                 <label class="">Loan Limit Amount <span class="mandatory">*</span></label>
-                                                <input tabindex="41" type="number" class="form-control"
-                                                    formControlName="dividentLoanLimit">
+                                                <input
+                                                    tabindex="41"
+                                                    type="number"
+                                                    class="form-control"
+                                                    formControlName="dividentLoanLimit"
+                                                    min="1"
+                                                    required
+                                                    [ngClass]="{'is-invalid': dividentForm.get('dividentLoanLimit')?.invalid && (dividentForm.get('dividentLoanLimit')?.touched || dividentForm.get('dividentLoanLimit')?.dirty)}"
+                                                />
+                                                <div *ngIf="dividentForm.get('dividentLoanLimit')?.invalid && (dividentForm.get('dividentLoanLimit')?.touched || dividentForm.get('dividentLoanLimit')?.dirty)" class="invalid-feedback">
+                                                    <div *ngIf="dividentForm.get('dividentLoanLimit')?.errors?.['required']">
+                                                        Loan Limit Amount is required.
+                                                    </div>
+                                                    <div *ngIf="dividentForm.get('dividentLoanLimit')?.errors?.['min']">
+                                                        Loan Limit Amount must be at least 1.
+                                                    </div>
+                                                </div>
                                             </div>
 
 
@@ -444,8 +653,23 @@
                                             </div>
                                             <div class="col-md-3 position-relative form-group">
                                                 <label class="">Income <span class="mandatory">*</span></label>
-                                                <input tabindex="43" type="number" class="form-control"
-                                                    formControlName="dividentIncome">
+                                                <input
+                                                    tabindex="43"
+                                                    type="number"
+                                                    class="form-control"
+                                                    formControlName="dividentIncome"
+                                                    min="1"
+                                                    required
+                                                    [ngClass]="{'is-invalid': dividentForm.get('dividentIncome')?.invalid && (dividentForm.get('dividentIncome')?.touched || dividentForm.get('dividentIncome')?.dirty)}"
+                                                />
+                                                <div *ngIf="dividentForm.get('dividentIncome')?.invalid && (dividentForm.get('dividentIncome')?.touched || dividentForm.get('dividentIncome')?.dirty)" class="invalid-feedback">
+                                                    <div *ngIf="dividentForm.get('dividentIncome')?.errors?.['required']">
+                                                        Income is required.
+                                                    </div>
+                                                    <div *ngIf="dividentForm.get('dividentIncome')?.errors?.['min']">
+                                                        Income must be at least 1.
+                                                    </div>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>

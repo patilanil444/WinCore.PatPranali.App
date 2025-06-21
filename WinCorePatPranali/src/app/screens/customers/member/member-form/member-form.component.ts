@@ -145,19 +145,19 @@ export class MemberFormComponent implements OnInit {
       personalLastName: new FormControl("", [Validators.required]),
       personalDateOfBirth: new FormControl(new Date(Date.now()), []),
       personalAge: new FormControl("", []),
-      personalAddress: new FormControl("", []),
+      personalAddress: new FormControl("", [Validators.required]),
       personalState: new FormControl("", []),
       personalDistrict: new FormControl("", []),
       personalTahsil: new FormControl("", [Validators.required]),
-      personalPincode: new FormControl("", []),
+      personalPincode: new FormControl("", [Validators.required]),
       personalPhone: new FormControl("", [Validators.required]),
       personalGender: new FormControl(this.uiGenders[0].constantNo, [Validators.required]),
       personalOccupation: new FormControl(this.uiOccupations[0].constantNo, []),
       personalCast: new FormControl(this.uiCasts[0].constantNo, []),
       personalDirector: new FormControl("", []),
-      personalAccountNumber: new FormControl("", []),
+      personalAccountNumber: new FormControl("", [Validators.required]),
       personalAccountopenDate: new FormControl(new Date(Date.now()), []),
-      personalAuthorisedBy: new FormControl("", []),
+      personalAuthorisedBy: new FormControl("", [Validators.required]),
       personalEmail: new FormControl("", [Validators.pattern("[a-zA-Z0-9.-_]{1,}@[a-zA-Z.-]{2,}[.]{1}[a-zA-Z]{2,}")]),
     });
 
@@ -168,8 +168,8 @@ export class MemberFormComponent implements OnInit {
       nominiRelation: new FormControl(this.uiRelations[0].constantNo, [Validators.required]),
       nominiAddress: new FormControl("", [Validators.required]),
       nominiDateOfBirth: new FormControl(new Date(Date.now()), [Validators.required]),
-      nominiSharePercentage: new FormControl(100, []),
-      nominiPhone: new FormControl("", []),
+      nominiSharePercentage: new FormControl(100, [Validators.required]),
+      nominiPhone: new FormControl("", [Validators.required]),
     });
 
     this.dividentForm = new FormGroup({
@@ -670,11 +670,11 @@ export class MemberFormComponent implements OnInit {
     memberModel.MemberNominees = this.uiNominis;
     memberModel.MemberDocuments = this.uiDocuments;
 
-    console.log(memberModel);
+    // console.log(memberModel);
 
     this._memberService.saveMember(memberModel).subscribe((data: any) => {
       if (data) {
-        if (data.statusCode == 200 && data.data.data > 0) {
+        if (data.statusCode == 200 && data.data.data.retId > 0) {
           this._toastrService.success('Member saved.', 'Success!');
           this.clear();
           this.loadForm();
