@@ -67,7 +67,7 @@
                                             </td>
                                         </tr>
                                         <tr *ngIf="uiFDAccounts.length==0">
-                                            <td colspan="4">No records..</td>
+                                            <td class="noRecordFoundText" colspan="4">No records..</td>
                                         </tr>
                                     </tbody>
                                 </table>
@@ -163,7 +163,7 @@
                                             <td>{{uiAddedFDAccount.releaseOn}}</td>
                                             <td>{{uiAddedFDAccount.releaseBy}}</td>
                                             <td>
-                                                <div class="widget-content-right">
+                                                <div class="btnsCollectioninTable">
                                                     <button type="button" placeholder="Delete record"
                                                         class="btn-shadow btn btn-danger btn-actions" data-toggle="modal"
                                                         (click)="deleteAccount(uiAddedFDAccount, ind)">
@@ -176,7 +176,7 @@
                                         </ng-container>
                                     </tr>
                                     <tr *ngIf="uiAddedFDAccounts.length==0">
-                                        <td colspan="11">No records found..</td>
+                                        <td class="noRecordFoundText" colspan="11">No records found..</td>
                                     </tr>
                                 </tbody>
                             </table>

@@ -388,15 +388,15 @@
                                             </div>
                                         </div>
                                         <div class="row">
-                                            <div class="col-md-3 actionControlsInputs form-group">
-                                                <button class="mt-1 btn btn-info" (click)="addAddress()"
+                                            <div class="btnsCollectioninInTabsLeftSide actionControlsInputs form-group">
+                                                <button class="btn btn-info" (click)="addAddress()"
                                                     tabindex="30">Save Address</button>
-                                                <button class="mt-1 btn btn-left-margin10 btn-danger"
+                                                <button class="btn btn-danger"
                                                     (click)="clearAddress()" tabindex="23">Clear</button>
                                             </div>
                                         </div>
 
-                                        <table class="mb-0 table table-bordered">
+                                        <table class="table table-bordered">
                                             <thead>
                                                 <tr>
                                                     <th width="15%">Address Type</th>
@@ -426,7 +426,7 @@
                                                             </div>
                                                         </td>
                                                         <td>
-                                                            <div class="widget-content-right">
+                                                            <div class="btnsCollectioninTable">
                                                                 <button type="button" placeholder="Edit record"
                                                                     class="btn-shadow btn btn-info btn-actions"
                                                                     (click)="editAddress(uiAddress, ind)">
@@ -547,15 +547,15 @@
                                         </div>
 
                                         <div class="row">
-                                            <div class="col-md-3 actionControlsInputs form-group">
-                                                <button class="mt-1 btn btn-info" (click)="addNomini()"
+                                            <div class="btnsCollectioninInTabsLeftSide actionControlsInputs form-group">
+                                                <button class="btn btn-info" (click)="addNomini()"
                                                     tabindex="39">Save Nominee</button>
-                                                <button class="mt-1 btn btn-left-margin10 btn-danger"
+                                                <button class="btn btn-danger"
                                                     (click)="clearNomini()" tabindex="40">Clear</button>
                                             </div>
                                         </div>
 
-                                        <table class="mb-0 table table-bordered">
+                                        <table class="table table-bordered">
                                             <thead>
                                                 <tr>
                                                     <th width="20%">Name</th>
@@ -576,7 +576,7 @@
                                                         <td>{{uiNomini.nomineeAddress}}</td>
                                                         <td>{{uiNomini.phone}}</td>
                                                         <td>
-                                                            <div class="widget-content-right">
+                                                            <div class="btnsCollectioninTable">
                                                                 <button type="button" placeholder="Edit record"
                                                                     class="btn-shadow btn btn-info btn-actions"
                                                                     (click)="editNomini(uiNomini, ind)">
@@ -597,7 +597,7 @@
                                                     </ng-container>
                                                 </tr>
                                                 <tr *ngIf="uiNominis.length==0">
-                                                    <td colspan="6">No records found..</td>
+                                                    <td class="noRecordFoundText" colspan="6">No records found..</td>
                                                 </tr>
                                             </tbody>
                                         </table>
@@ -633,7 +633,7 @@
 
                                         <div class="row" *ngFor="let uiDocument of uiDocuments; let ind = index">
                                             <div class="col-md-12 position-relative form-group">
-                                                <table class="mb-0 table table-striped">
+                                                <table class="table table-striped">
                                                     <tr>
                                                         <td width="10%">{{uiDocument.documentName}}</td>
                                                         <td width="40%">

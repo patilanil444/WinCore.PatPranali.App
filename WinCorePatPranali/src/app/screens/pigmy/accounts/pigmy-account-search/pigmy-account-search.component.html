@@ -71,7 +71,7 @@
 
                                     </td>
                                     <td>
-                                        <div class="widget-content-right">
+                                        <div class="btnsCollectioninTable">
                                             <button type="button" title="Edit record"
                                                 class="btn-shadow btn btn-info btn-actions" 
                                                 *ngIf="isOperatorUser() || isDepositOfficerUser() || isLoanOfficerUser() || isPassingOfficerUser" 
@@ -91,7 +91,7 @@
                                     </td>
                                 </tr>
                                 <tr *ngIf="uiAccounts.length==0">
-                                    <td colspan="7">No records found..</td>
+                                    <td class="noRecordFoundText" colspan="7">No records found..</td>
                                 </tr>
                             </tbody>
                         </table>

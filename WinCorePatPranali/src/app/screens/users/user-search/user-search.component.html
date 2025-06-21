@@ -45,7 +45,7 @@
     
                                     </td>
                                     <td>
-                                        <div class="widget-content-right">
+                                        <div class="btnsCollectioninTable">
                                             <button type="button" title="Unlock User" [disabled]="!uiUser.isActive"
                                             class="btn-shadow btn btn-warning btn-actions" (click)="unlockUser(uiUser)">
                                             <span class="btn-icon-wrapper opacity-10">
@@ -75,7 +75,7 @@
                                     </td>
                                 </tr>
                                 <tr *ngIf="uiUsers.length==0">
-                                    <td colspan="8">No records found..</td>
+                                    <td class="noRecordFoundText" colspan="8">No records found..</td>
                                 </tr>
                             </tbody>
                         </table>

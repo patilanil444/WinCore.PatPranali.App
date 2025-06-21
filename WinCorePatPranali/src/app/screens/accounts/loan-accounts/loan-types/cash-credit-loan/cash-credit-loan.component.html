@@ -66,7 +66,7 @@
                                                 <td>{{uiSecurity.security}}</td>
                                                 <td>{{uiSecurity.securityValue}}</td>
                                                 <td>
-                                                    <div class="widget-content-right">
+                                                    <div class="btnsCollectioninTable">
                                                         <button type="button" placeholder="Edit record"
                                                             class="btn-shadow btn btn-info btn-actions"
                                                             (click)="editSecurity(uiSecurity, ind)">
@@ -88,7 +88,7 @@
                                             </ng-container>
                                         </tr>
                                         <tr *ngIf="uiSecurities.length==0">
-                                            <td colspan="4">No records found..</td>
+                                            <td class="noRecordFoundText" colspan="4">No records found..</td>
                                         </tr>
                                     </tbody>
                                 </table>

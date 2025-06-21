@@ -345,7 +345,7 @@
 
                                         <div class="row">
                                             <div class="col-md-12">
-                                                <table class="mb-0 table table-striped">
+                                                <table class="table table-striped">
                                                     <thead>
                                                         <tr>
                                                             <th width="20%">Name</th>
@@ -365,7 +365,7 @@
                                                             <td>{{uiNomini.percentage}}</td>
                                                             <td>{{uiNomini.phone}}</td>
                                                             <td>
-                                                                <div class="widget-content-right">
+                                                                <div class="btnsCollectioninTable">
                                                                     <button type="button" title="Edit record"
                                                                         class="btn-shadow btn btn-info btn-actions"
                                                                         (click)="editNomini(uiNomini, ind)">
@@ -385,7 +385,7 @@
                                                             </td>
                                                         </tr>
                                                         <tr *ngIf="uiNominis.length==0">
-                                                            <td colspan="6">No records found..</td>
+                                                            <td class="noRecordFoundText" colspan="6">No records found..</td>
                                                         </tr>
                                                     </tbody>
                                                 </table>
@@ -479,7 +479,7 @@
 
                                         <div class="row" *ngFor="let uiDocument of uiDocuments; let ind = index">
                                             <div class="col-md-12 position-relative form-group">
-                                                <table class="mb-0 table table-striped">
+                                                <table class="table table-striped">
                                                     <tr>
                                                         <td width="10%">{{uiDocument.documentName}}</td>
                                                         <td width="40%">

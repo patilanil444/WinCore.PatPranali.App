@@ -85,7 +85,7 @@
                                             <td>{{uiVehicle.invoiceAmount}}</td>
                                             <td>{{uiVehicle.dealer}}</td>
                                             <td>
-                                                <div class="widget-content-right">
+                                                <div class="btnsCollectioninTable">
                                                     <button type="button" placeholder="Edit record"
                                                         class="btn-shadow btn btn-info btn-actions"
                                                         (click)="editVehicle(uiVehicle, ind)">
@@ -107,7 +107,7 @@
                                         </ng-container>
                                     </tr>
                                     <tr *ngIf="uiVehicles.length==0">
-                                        <td colspan="8">No records found..</td>
+                                        <td class="noRecordFoundText" colspan="8">No records found..</td>
                                     </tr>
                                 </tbody>
                             </table>

@@ -84,7 +84,7 @@
                                     <td>{{uiAddedGold.amount}}</td>
                                     <!-- <td>{{uiAddedGold.paidDate}}</td> -->
                                     <td>
-                                        <div class="widget-content-right">
+                                        <div class="btnsCollectioninTable">
                                             <button type="button" placeholder="Delete record"
                                                 class="btn-shadow btn btn-danger btn-actions" 
                                                 (click)="deleteGold(uiAddedGold, ind)"
@@ -98,7 +98,7 @@
                                 </ng-container>
                             </tr>
                             <tr *ngIf="uiAddedGolds.length==0">
-                                <td colspan="8">No records found..</td>
+                                <td class="noRecordFoundText" colspan="8">No records found..</td>
                             </tr>
                         </tbody>
                     </table>
