@@ -41,14 +41,9 @@ export class MemberService {
     return this.http.get(GlobleDeclarations.apiBaseURL + "api/member/max-member-no?branchCode=" + branchId, options);
   }
 
-  createMember(memberModel: any): any {
+  saveMember(memberModel: any): any {
     let options = GlobleDeclarations.getHeaderOptions();
-    return this.http.post(GlobleDeclarations.apiBaseURL + "api/member/create-member", memberModel, options);
-  }
-
-  updateMember(id: number, memberModel: any): any {
-    let options = GlobleDeclarations.getHeaderOptions();
-    return this.http.post(GlobleDeclarations.apiBaseURL + "api/member/update-member?id=" + id, memberModel, options);
+    return this.http.post(GlobleDeclarations.apiBaseURL + "api/member/save-member", memberModel, options);
   }
 
   deleteMember(id: number): any {

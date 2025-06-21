@@ -1,4 +1,4 @@
-import { formatDate } from '@angular/common';
+import { DatePipe, formatDate } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
@@ -11,8 +11,8 @@ import { GeneralMasterService } from 'src/app/services/masters/general-master/ge
 import { SharedService } from 'src/app/services/shared.service';
 
 interface ICustomerModel {
-  Id: number;
-  Title: string;
+  MemberId: number;
+  Title: number;
   FirstName: string;
   MiddleName: string;
   LastName: string;
@@ -36,31 +36,24 @@ interface ICustomerModel {
   AdmissionFeeDate: Date;
   Income: number;
   Status: string;
-  BranchId: number;
-  Nominis: any[];
-  Documents: any[];
+  BranchCode: number;
+  Createdby: number;
+  MemberNominees: any[];
+  MemberDocuments: any[];
 }
 
 export interface UiNomini {
   id: number,
   memberId: number,
   title: string,
-  firstName: string,
-  middleName: string,
-  lastName: string,
+  name: string,
   relationId: number,
   relationName: string,
-  gender: string,
+  phone: string,
   address: string,
-  street: string,
-  city: string,
-  tahshilId: number,
-  tahshilName: string,
-  districtId: number,
-  districtName: string,
-  pincode: string,
   percentage: string,
-  givenDate: string,
+  birthDate: Date,
+  birthDateText: string | null;
 }
 
 export interface UiDocument {
@@ -124,7 +117,7 @@ export class MemberFormComponent implements OnInit {
   dto: IGeneralDTO = {} as IGeneralDTO;
 
   constructor(private router: Router, private _memberService: MemberService, private _sharedService: SharedService,
-    private _generalMasterService: GeneralMasterService, private _toastrService: ToastrService) { }
+    private _generalMasterService: GeneralMasterService, private _toastrService: ToastrService, private datePipe: DatePipe) { }
 
   ngOnInit(): void {
 
@@ -142,7 +135,7 @@ export class MemberFormComponent implements OnInit {
 
     this.uiDocumentTypes = CustomerDeclarations.documents;
 
-    
+
 
     this.personalDetailsForm = new FormGroup({
       memberCode: new FormControl("", []),
@@ -171,19 +164,12 @@ export class MemberFormComponent implements OnInit {
 
     this.nominiForm = new FormGroup({
       nominiTitle: new FormControl(this.uiTitles[0].constantNo, [Validators.required]),
-      nominiFirstName: new FormControl("", [Validators.required]),
-      nominiMiddleName: new FormControl("", []),
-      nominiLastName: new FormControl("", [Validators.required]),
+      nominiName: new FormControl("", [Validators.required]),
       nominiRelation: new FormControl(this.uiRelations[0].constantNo, [Validators.required]),
       nominiAddress: new FormControl("", [Validators.required]),
-      nominiCity: new FormControl("", [Validators.required]),
-      nominiState: new FormControl("", []),
-      nominiDistrict: new FormControl("", []),
-      nominiTahsil: new FormControl("", [Validators.required]),
-      nominiPincode: new FormControl("", []),
-      nominiGivenDate: new FormControl(new Date(Date.now()), [Validators.required]),
+      nominiDateOfBirth: new FormControl(new Date(Date.now()), [Validators.required]),
       nominiSharePercentage: new FormControl(100, []),
-      nominiGender: new FormControl(this.uiGenders[0].code, [])
+      nominiPhone: new FormControl("", []),
     });
 
     this.dividentForm = new FormGroup({
@@ -215,7 +201,7 @@ export class MemberFormComponent implements OnInit {
   }
 
   loadForm() {
-    
+
     this.uiAddressStates = this._sharedService.uiAllStates;
     // this.uiNominiStates = this._sharedService.uiAllStates;
     // this.uiAllDistricts = this._sharedService.uiAllDistricts;
@@ -257,9 +243,10 @@ export class MemberFormComponent implements OnInit {
       this.personalDetailsForm.patchValue({
         personalOccupation: this.uiOccupations[0].constantNo,
         personalDirector: this.uiDirectors[0].id,
-        personalState: this.uiAddressStates[0].id,
-        personalDistrict: this.uiAddressDistricts[0].id,
-        personalTahsil: this.uiAddressTahshils[0].id,
+        //personalState: this.uiAddressStates[0].id,
+        //personalDistrict: this.uiAddressDistricts[0].id,
+        //personalTahsil: this.uiAddressTahshils[0].id,
+        personalAge: this.calculateAge(formatDate(new Date(), 'yyyy-MM-dd', 'en')),
       })
 
       this.id = this.dto.id;
@@ -272,7 +259,7 @@ export class MemberFormComponent implements OnInit {
           let maxCustId = data.data.data;
           this.maxId = maxCustId;
           this.personalDetailsForm.patchValue({
-            memberCode: this.maxId,
+            memberCode: this._sharedService.applicationUser.branchId + this.maxId.toString().padStart(5, '0'),
           });
         });
       }
@@ -292,7 +279,7 @@ export class MemberFormComponent implements OnInit {
                 district = dists[0];
               }
 
-              
+
               this.personalDetailsForm.patchValue({
                 memberCode: member.id,
                 personalTitle: member.title,
@@ -404,7 +391,17 @@ export class MemberFormComponent implements OnInit {
   }
 
   onPersonalDOBChange(event: any) {
-    let targetValue = new Date(event.target.value);
+
+    if (!event || !event.target || !event.target.value) {
+      this.personalDetailsForm.patchValue({
+        personalAge: 0
+      });
+      return;
+    }
+
+    const [day, month, year] = event.target.value.split('-').map(Number);
+    // Create Date object
+    const targetValue = new Date(year, month - 1, day); // month is 0-based
     let age = this.calculateAge(targetValue);
     if (age > -1) {
       //this.personalAge.setValue(Math.round(age));
@@ -415,6 +412,32 @@ export class MemberFormComponent implements OnInit {
     else {
       this.personalDetailsForm.patchValue({
         personalAge: 0
+      });
+    }
+
+  }
+
+  onNominDOBChange(event: any) {
+    if (!event || !event.target || !event.target.value) {
+      this.nominiForm.patchValue({
+        nominiAge: 0
+      });
+      return;
+    }
+    
+    const [day, month, year] = event.target.value.split('-').map(Number);
+    // Create Date object
+    const targetValue = new Date(year, month - 1, day); // month is 0-based
+    let age = this.calculateAge(targetValue);
+    if (age > -1) {
+      //this.nominiAge.setValue(Math.round(age));
+      this.nominiForm.patchValue({
+        nominiAge: age
+      });
+    }
+    else {
+      this.nominiForm.patchValue({
+        nominiAge: 0
       });
     }
   }
@@ -432,12 +455,6 @@ export class MemberFormComponent implements OnInit {
   addNomini() {
     if (this.validNominiForm()) {
 
-      // Check existing nomini with name and relation
-      // let nominiIndex = this.uiNominis.findIndex(nomini =>
-      //   nomini.firstName.toLowerCase() == this.nominiFirstName.value.toLowerCase() &&
-      //   nomini.middleName.toLowerCase() == this.nominiMiddleName.value.toLowerCase() &&
-      //   nomini.lastName.toLowerCase() == this.nominiLastName.value.toLowerCase());
-
       let nominiIndex = this.uiNominis.findIndex(nomini =>
         nomini.relationId == this.nominiRelation.value);
 
@@ -451,50 +468,36 @@ export class MemberFormComponent implements OnInit {
       }
 
       let relation = "";
-      let uiRelation = this.uiRelations.filter(r => r.id == parseInt(this.nominiRelation.value.toString()));
+      let uiRelation = this.uiRelations.filter(r => r.constantNo == parseInt(this.nominiRelation.value.toString()));
       if (uiRelation) {
-        relation = uiRelation[0].branchMasterName;
+        relation = uiRelation[0].constantname;
       }
-
-      let district = this.uiAllDistricts.filter(d => d.id == this.nominiDistrict.value.toString());
-      let districtName = district[0].name;
 
       if (nominiIndex > -1) {
         let uiNomini = this.uiNominis[nominiIndex];
         uiNomini.title = this.nominiTitle.value.toString();
-        uiNomini.firstName = this.nominiFirstName.value.toString();
-        uiNomini.middleName = this.nominiMiddleName.value.toString();
-        uiNomini.lastName = this.nominiLastName.value.toString();
+        uiNomini.name = this.nominiName.value.toString();
+      
         uiNomini.relationId = this.nominiRelation.value.toString();
         uiNomini.relationName = relation;
-        uiNomini.gender = this.nominiGender.value.toString();
+        uiNomini.phone = this.nominiPhone.value.toString();
         uiNomini.address = this.nominiAddress.value.toString();
-        uiNomini.city = this.nominiCity.value.toString();
-        uiNomini.districtId = this.nominiDistrict.value.toString();
-        uiNomini.districtName = districtName;
-        uiNomini.tahshilId = this.nominiTahsil.value.toString();
-        uiNomini.pincode = this.nominiPincode.value.toString();
         uiNomini.percentage = this.nominiSharePercentage.value.toString();
-        uiNomini.givenDate = this.nominiGivenDate.value.toString();
+        uiNomini.birthDate = new Date(this.nominiDateOfBirth.value.toString());
+        uiNomini.birthDateText = this.datePipe.transform(uiNomini.birthDate, 'dd-MM-yyyy');
       }
       else {
         let uiNomini = {} as UiNomini;
         uiNomini.id = this.uiNominis.length + 1;
         uiNomini.title = this.nominiTitle.value.toString();
-        uiNomini.firstName = this.nominiFirstName.value.toString();
-        uiNomini.middleName = this.nominiMiddleName.value.toString();
-        uiNomini.lastName = this.nominiLastName.value.toString();
+        uiNomini.name = this.nominiName.value.toString();
         uiNomini.relationId = this.nominiRelation.value.toString();
         uiNomini.relationName = relation;
-        uiNomini.gender = this.nominiGender.value.toString();
+        uiNomini.phone = this.nominiPhone.value.toString();
         uiNomini.address = this.nominiAddress.value.toString();
-        uiNomini.city = this.nominiCity.value.toString();
-        uiNomini.districtId = this.nominiDistrict.value.toString();
-        uiNomini.districtName = districtName;
-        uiNomini.tahshilId = this.nominiTahsil.value.toString();
-        uiNomini.pincode = this.nominiPincode.value.toString();
         uiNomini.percentage = this.nominiSharePercentage.value.toString();
-        uiNomini.givenDate = this.nominiGivenDate.value.toString();
+        uiNomini.birthDate = new Date(this.nominiDateOfBirth.value.toString());
+        uiNomini.birthDateText = this.datePipe.transform(this.nominiDateOfBirth.value, 'dd-MM-yyyy');
         this.uiNominis.push(uiNomini);
       }
 
@@ -504,57 +507,25 @@ export class MemberFormComponent implements OnInit {
 
   clearNomini() {
     this.nominiForm.patchValue({
-      nominiTitle: this.uiTitles[0].code,
-      nominiFirstName: "",
-      nominiMiddleName: "",
-      nominiLastName: "",
-      nominiRelation: this.uiRelations[0].id,
+      nominiTitle: this.uiTitles[0].constantNo,
+      nominiName: "",
+      nominiRelation: this.uiRelations[0].constantNo,
       nominiAddress: "",
-      nominiCity: "",
-      nominiStreet: "",
-      nominiState: this.uiNominiStates[0].id,
-      nominiDistrict: this.uiNominiDistricts[0].id,
-      nominiTahsil: this.uiNominiTahshils[0].id,
-      nominiPincode: "",
       nominiSharePercentage: 100,
-      nominiGivenDate: formatDate(new Date(), 'yyyy-MM-dd', 'en'),
-      nominiGender: this.uiGenders[0].code
+      nominiDateOfBirth: formatDate(new Date(), 'yyyy-MM-dd', 'en'),
+      nominiPhone: "",
     });
   }
 
   editNomini(uiNomini: any, ind: number) {
-    let stateId = 0;
-    if (uiNomini.districtId) {
-      // Find corresponding state
-      let addressState = this.uiNominiDistricts.filter(d => d.id == uiNomini.districtId);
-      stateId = addressState[0].stateId;
-    }
-    // Bind Districts
-    if (stateId) {
-      let districts = this.uiAllDistricts.filter(d => d.stateId == stateId);
-      this.uiNominiDistricts = districts;
-    }
-    // Bind Tahsils
-    if (uiNomini.districtId) {
-      let tahsils = this.uiAllTahshils.filter(d => d.districtId == uiNomini.districtId);
-      this.uiNominiTahshils = tahsils;
-    }
 
     this.nominiForm.patchValue({
-      nominiTitle: uiNomini.title,
-      nominiFirstName: uiNomini.firstName,
-      nominiMiddleName: uiNomini.middleName,
-      nominiLastName: uiNomini.lastName,
+      nominiName: uiNomini.name,
       nominiRelation: parseInt(uiNomini.relationId),
       nominiAddress: uiNomini.address,
-      nominiCity: uiNomini.city,
-      nominiState: stateId,
-      nominiDistrict: parseInt(uiNomini.districtId),
-      nominiTahsil: parseInt(uiNomini.tahsilId),
-      nominiPincode: uiNomini.pincode,
-      nominiGivenDate: formatDate(new Date(uiNomini.givenDate), 'yyyy-MM-dd', 'en'),
+      nominiDateOfBirth: formatDate(new Date(uiNomini.birthDate), 'yyyy-MM-dd', 'en'),
       nominiSharePercentage: uiNomini.percentage,
-      nominiGender: uiNomini.gender
+      nominiPhone: uiNomini.phone
     });
   }
 
@@ -669,12 +640,12 @@ export class MemberFormComponent implements OnInit {
     }
 
     let memberModel = {} as ICustomerModel;
-    memberModel.Id = parseInt(this.memberCode.value.toString());
+    memberModel.MemberId = this.dto.id;
     memberModel.Title = this.personalTitle.value.toString();
     memberModel.FirstName = this.personalFirstName.value.toString();
     memberModel.MiddleName = this.personalMiddleName.value.toString();
     memberModel.LastName = this.personalLastName.value.toString();
-    memberModel.DateOfBirth = this.personalDateOfBirth.value.toString();
+    memberModel.DateOfBirth = new Date(this.personalDateOfBirth.value.toString());
     memberModel.Address = this.personalAddress.value.toString();
     memberModel.TahsilId = this.personalTahsil.value.toString();
     memberModel.Pincode = this.personalPincode.value.toString();
@@ -684,51 +655,37 @@ export class MemberFormComponent implements OnInit {
     memberModel.CastId = this.personalCast.value.toString();
     memberModel.DirectorId = this.personalDirector.value.toString();
     memberModel.AccountNumber = this.personalAccountNumber.value.toString();
-    memberModel.AccOpenDate = this.personalAccountopenDate.value.toString();
+    memberModel.AccOpenDate = new Date(this.personalAccountopenDate.value.toString());
     memberModel.AuthorisedBy = this.personalAuthorisedBy.value.toString();
     memberModel.Email = this.personalEmail.value.toString();
     memberModel.NumOfShares = this.dividentNoOfShares.value.toString();
     memberModel.ShareValue = this.dividentShareValue.value.toString();
     memberModel.DividentAmount = this.dividentAmount.value.toString();
     memberModel.LoanLimitAmount = this.dividentLoanLimit.value.toString();
-    memberModel.AdmissionFeeDate = this.dividentAdmissionFeeDate.value.toString();
+    memberModel.AdmissionFeeDate = new Date(this.dividentAdmissionFeeDate.value.toString());
     memberModel.Income = this.dividentIncome.value.toString();
     //memberModel.Status = this.stat.value.toString();
-    memberModel.BranchId = this._sharedService.applicationUser.branchId;
-    memberModel.Nominis = this.uiNominis;
-    memberModel.Documents = this.uiDocuments;
+    memberModel.BranchCode = this._sharedService.applicationUser.branchId;
+    memberModel.Createdby = this._sharedService.applicationUser.id;
+    memberModel.MemberNominees = this.uiNominis;
+    memberModel.MemberDocuments = this.uiDocuments;
 
     console.log(memberModel);
 
-    if (this.isAddMode) {
-      this._memberService.createMember(memberModel).subscribe((data: any) => {
-
-        if (data) {
-          if (data.statusCode == 200 && data.data.data > 0) {
-            this._toastrService.success('Member created.', 'Success!');
-            this.clear();
-            this.loadForm();
-          }
+    this._memberService.saveMember(memberModel).subscribe((data: any) => {
+      if (data) {
+        if (data.statusCode == 200 && data.data.data > 0) {
+          this._toastrService.success('Member saved.', 'Success!');
+          this.clear();
+          this.loadForm();
         }
-      })
-    }
-    else {
-      this._memberService.updateMember(memberModel.Id, memberModel).subscribe((data: any) => {
-
-        if (data) {
-          if (data.statusCode == 200 && data.data.data > 0) {
-            this._toastrService.success('Member updated.', 'Success!');
-            this.clear();
-            this.loadForm();
-          }
-        }
-      })
-    }
+      }
+    })
   }
 
   clearPersonalDetails() {
     this.personalDetailsForm.patchValue({
-      personalTitle: this.uiTitles[0].code,
+      personalTitle: this.uiTitles[0].constantNo,
       personalFirstName: "",
       personalMiddleName: "",
       personalLastName: "",
@@ -740,9 +697,9 @@ export class MemberFormComponent implements OnInit {
       personalTahsil: this.uiAddressTahshils[0].id,
       personalPincode: "",
       personalPhone: "",
-      personalGender: this.uiGenders[0].code,
-      personalOccupation: this.uiOccupations[0].id,
-      personalCast: this.uiCasts[0].id,
+      personalGender: this.uiGenders[0].constantNo,
+      personalOccupation: this.uiOccupations[0].constantNo,
+      personalCast: this.uiCasts[0].constantNo,
       personalDirector: this.uiDirectors[0].id,
       personalAccountNumber: "",
       personalAccountopenDate: formatDate(new Date(), 'yyyy-MM-dd', 'en'),
@@ -857,18 +814,13 @@ export class MemberFormComponent implements OnInit {
   }
 
 
+
   // Nomini
   get nominiTitle() {
     return this.nominiForm.get('nominiTitle')!;
   }
-  get nominiFirstName() {
-    return this.nominiForm.get('nominiFirstName')!;
-  }
-  get nominiMiddleName() {
-    return this.nominiForm.get('nominiMiddleName')!;
-  }
-  get nominiLastName() {
-    return this.nominiForm.get('nominiLastName')!;
+  get nominiName() {
+    return this.nominiForm.get('nominiName')!;
   }
   get nominiRelation() {
     return this.nominiForm.get('nominiRelation')!;
@@ -876,29 +828,14 @@ export class MemberFormComponent implements OnInit {
   get nominiAddress() {
     return this.nominiForm.get('nominiAddress')!;
   }
-  get nominiCity() {
-    return this.nominiForm.get('nominiCity')!;
-  }
-  get nominiState() {
-    return this.nominiForm.get('nominiState')!;
-  }
-  get nominiDistrict() {
-    return this.nominiForm.get('nominiDistrict')!;
-  }
-  get nominiTahsil() {
-    return this.nominiForm.get('nominiTahsil')!;
-  }
-  get nominiPincode() {
-    return this.nominiForm.get('nominiPincode')!;
-  }
-  get nominiGivenDate() {
-    return this.nominiForm.get('nominiGivenDate')!;
+  get nominiDateOfBirth() {
+    return this.nominiForm.get('nominiDateOfBirth')!;
   }
   get nominiSharePercentage() {
     return this.nominiForm.get('nominiSharePercentage')!;
   }
-  get nominiGender() {
-    return this.nominiForm.get('nominiGender')!;
+  get nominiPhone() {
+    return this.nominiForm.get('nominiPhone')!;
   }
 
   // Divident

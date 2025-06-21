@@ -137,7 +137,7 @@
                                             <div class="col-md-3 position-relative form-group">
                                                 <label class="">Date Of Birth <span class="mandatory">*</span></label>
                                                 <input tabindex="6" type="text" class="form-control"
-                                                    (change)="onPersonalDOBChange($event)" [max]="maxDate | date:'yyyy-MM-dd'"
+                                                    (change)="onPersonalDOBChange($event)"
                                                     formControlName="personalDateOfBirth" bsDatepicker [bsConfig]="datepickerConfig">
                                             </div>
 
@@ -288,9 +288,9 @@
                                                     </select>
                                             </div>
                                             <div class="col-md-3 position-relative">
-                                                <label class="">Name <span class="mandatory">*</span></label>
+                                                <label class="">Nominee Name <span class="mandatory">*</span></label>
                                                 <input tabindex="22" type="text" class="form-control" autocomplete="off"
-                                                    formControlName="nominiFirstName">
+                                                    formControlName="nominiName">
                                             </div>
 
                                             <div class="col-md-3 position-relative form-group">
@@ -310,12 +310,19 @@
                                                 <input tabindex="27" type="text" class="form-control" autocomplete="off"
                                                     formControlName="nominiAddress">
                                             </div>
-
-                                            <div class="col-md-3 position-relative form-group">
+                                            <div class="col-md-3 actionControlsInputs form-group">
+                                                <label class="">Date Of Birth <span class="mandatory">*</span></label>
+                                                <input tabindex="33" type="text" class="form-control"
+                                                    (change)="onNominDOBChange($event)"
+                                                    [max]="maxDate | date:'yyyy-MM-dd'"
+                                                    formControlName="nominiDateOfBirth" bsDatepicker [bsConfig]="datepickerConfig">
+                                                   
+                                            </div>
+                                            <!-- <div class="col-md-3 position-relative form-group">
                                                 <label class="">Given date <span class="mandatory">*</span></label>
                                                 <input tabindex="33" type="text" class="form-control"
                                                     formControlName="nominiGivenDate" bsDatepicker [bsConfig]="datepickerConfig">
-                                            </div>
+                                            </div> -->
                                             <div class="col-md-3 position-relative form-group">
                                                 <label class="">Percentage <span class="mandatory">*</span></label>
                                                 <input tabindex="34" type="number" class="form-control"
@@ -324,12 +331,12 @@
                                             <div class="col-md-3 position-relative form-group">
                                                 <label class="">Mobile/Phone <span class="mandatory">*</span></label>
                                                 <input tabindex="34" type="number" class="form-control"
-                                                    formControlName="nominiSharePercentage">
+                                                    formControlName="nominiPhone">
                                             </div>
                                         </div>
                                         <div class="row">
                                             <div class="col-md-3 position-relative form-group">
-                                                <button class="mt-1 btn btn-info" (click)="addNomini()"
+                                                <button class="mt-1 action-primatryBtn" (click)="addNomini()"
                                                     tabindex="35">Save</button>
                                                 <button class="mt-1 btn btn-left-margin10 btn-danger"
                                                     (click)="clearNomini()" tabindex="36">Clear</button>
@@ -343,21 +350,20 @@
                                                         <tr>
                                                             <th width="20%">Name</th>
                                                             <th width="15%">Relation</th>
+                                                            <th width="15%">Date of Birth</th>
                                                             <th width="15%">Percentage</th>
-                                                            <!-- <th width="15%">District</th> -->
-                                                            <th width="15%">Date</th>
+                                                            <th width="15%">Phone</th>
                                                             <th width="15%">Actions</th>
                                                         </tr>
                                                     </thead>
                                                     <tbody>
                                                         <tr
                                                             *ngFor="let uiNomini of uiNominis | paginate: { itemsPerPage: 10, currentPage: p_nomini, totalItems: total_nomini }; let ind = index">
-                                                            <td>{{uiNomini.firstName}} {{uiNomini.middleName}}
-                                                                {{uiNomini.lastName}}</td>
+                                                            <td>{{uiNomini.name}}</td>
                                                             <td>{{uiNomini.relationName}}</td>
+                                                            <td>{{uiNomini.birthDateText}}</td>
                                                             <td>{{uiNomini.percentage}}</td>
-                                                            <!-- <td>{{uiNomini.districtName}}</td> -->
-                                                            <td>{{uiNomini.givenDate}}</td>
+                                                            <td>{{uiNomini.phone}}</td>
                                                             <td>
                                                                 <div class="widget-content-right">
                                                                     <button type="button" title="Edit record"
@@ -403,13 +409,13 @@
                                     <div class="tab-content">
                                         <div class="row">
                                             <div class="col-md-3 position-relative form-group">
-                                                <label class="">Number Of Shares</label>
+                                                <label class="">Number Of Shares <span class="mandatory">*</span></label>
                                                 <input tabindex="37" type="number" class="form-control"
                                                     formControlName="dividentNoOfShares"
                                                     (change)="calculateTotalShareValue()">
                                             </div>
                                             <div class="col-md-3 position-relative form-group">
-                                                <label class="">Share Value</label>
+                                                <label class="">Share Value <span class="mandatory">*</span></label>
                                                 <input tabindex="38" type="number" class="form-control"
                                                     formControlName="dividentShareValue"
                                                     (change)="calculateTotalShareValue()">
@@ -420,24 +426,24 @@
                                                     formControlName="dividentTotalShareValue">
                                             </div>
                                             <div class="col-md-3 position-relative form-group">
-                                                <label class="">Divident Amount</label>
+                                                <label class="">Divident Amount <span class="mandatory">*</span></label>
                                                 <input tabindex="40" type="number" class="form-control"
                                                     formControlName="dividentAmount">
                                             </div>
                                             <div class="col-md-3 position-relative form-group">
-                                                <label class="">Loan Limit Amount</label>
+                                                <label class="">Loan Limit Amount <span class="mandatory">*</span></label>
                                                 <input tabindex="41" type="number" class="form-control"
                                                     formControlName="dividentLoanLimit">
                                             </div>
 
 
                                             <div class="col-md-3 position-relative form-group">
-                                                <label class="">Admission Fee Date</label>
+                                                <label class="">Admission Fee Date <span class="mandatory">*</span></label>
                                                 <input tabindex="42" type="text" class="form-control"
                                                     formControlName="dividentAdmissionFeeDate" bsDatepicker [bsConfig]="datepickerConfig">
                                             </div>
                                             <div class="col-md-3 position-relative form-group">
-                                                <label class="">Income</label>
+                                                <label class="">Income <span class="mandatory">*</span></label>
                                                 <input tabindex="43" type="number" class="form-control"
                                                     formControlName="dividentIncome">
                                             </div>
