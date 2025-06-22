@@ -101,6 +101,7 @@ import { LinkCollectionAccountComponent } from '../screens/pigmy/collection-acco
 import { StandingInstructionsListComponent } from '../screens/transactions/standing-instructions/standing-instructions-list/standing-instructions-list.component';
 import { StandingInstructionsFormComponent } from '../screens/transactions/standing-instructions/standing-instructions-form/standing-instructions-form.component';
 import { MemberSearchBaseComponent } from '../common/directives/member-search/member-search-base.component';
+import { PendingVouchersComponent } from '../screens/transactions/pending-vouchers/pending-vouchers.component';
 
 @NgModule({
   declarations: [
@@ -200,7 +201,8 @@ import { MemberSearchBaseComponent } from '../common/directives/member-search/me
     LinkCollectionAccountComponent,
     StandingInstructionsListComponent,
     StandingInstructionsFormComponent,
-    MemberSearchBaseComponent
+    MemberSearchBaseComponent,
+    PendingVouchersComponent,
   ],
   imports: [
     CommonModule,
