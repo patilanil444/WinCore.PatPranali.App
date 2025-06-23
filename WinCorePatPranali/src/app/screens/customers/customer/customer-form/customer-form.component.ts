@@ -591,7 +591,16 @@ export class CustomerFormComponent implements OnInit {
   // }
 
   onPersonalDOBChange(event: any) {
-    let targetValue = new Date(event.target.value);
+    if (!event || !event.target || !event.target.value) {
+      this.personalDetailsForm.patchValue({
+        personalAge: 0
+      });
+      return;
+    }
+    
+    const [day, month, year] = event.target.value.split('-').map(Number);
+    // Create Date object
+    const targetValue = new Date(year, month - 1, day); // month is 0-based
     let age = this.calculateAge(targetValue);
     if (age > -1) {
       //this.personalAge.setValue(Math.round(age));
@@ -607,7 +616,16 @@ export class CustomerFormComponent implements OnInit {
   }
 
   onNominDOBChange(event: any) {
-    let targetValue = new Date(event.target.value);
+    if (!event || !event.target || !event.target.value) {
+      this.nominiForm.patchValue({
+        nominiAge: 0
+      });
+      return;
+    }
+    
+    const [day, month, year] = event.target.value.split('-').map(Number);
+    // Create Date object
+    const targetValue = new Date(year, month - 1, day); // month is 0-based
     let age = this.calculateAge(targetValue);
     if (age > -1) {
       //this.nominiAge.setValue(Math.round(age));

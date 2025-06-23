@@ -58,6 +58,7 @@ import { PigmyPassingComponent } from '../screens/pigmy/pigmy-passing/pigmy-pass
 import { CollectionAccountsListComponent } from '../screens/pigmy/collection-accounts/collection-accounts-list/collection-accounts-list.component';
 import { LinkCollectionAccountComponent } from '../screens/pigmy/collection-accounts/link-collection-account/link-collection-account.component';
 import { StandingInstructionsListComponent } from '../screens/transactions/standing-instructions/standing-instructions-list/standing-instructions-list.component';
+import { PendingVouchersComponent } from '../screens/transactions/pending-vouchers/pending-vouchers.component';
 
 const routes: Routes = [
   {
@@ -285,6 +286,13 @@ const routes: Routes = [
         }
        },
       { path: 'voucher-passing', component: VoucherPassingSummaryComponent, canActivate: [AuthGuard],
+        data: {
+          roles: [UiUserRole.MANAGER, UiUserRole.GENERAL_MANAGER, UiUserRole.ASSISTENT_MANAGER,
+             UiUserRole.PASSING_OFFICER
+          ]
+        }
+       },
+       { path: 'pending-vouchers', component: PendingVouchersComponent, canActivate: [AuthGuard],
         data: {
           roles: [UiUserRole.MANAGER, UiUserRole.GENERAL_MANAGER, UiUserRole.ASSISTENT_MANAGER,
              UiUserRole.PASSING_OFFICER

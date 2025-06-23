@@ -130,7 +130,7 @@
                                             </div>
                                             <div class="col-md-3 actionControlsInputs form-group">
                                                 <label class="">Date Of Birth <span class="mandatory">*</span></label>
-                                                <input tabindex="7" type="date" class="form-control"
+                                                <input tabindex="7" type="text" class="form-control"
                                                     (change)="onPersonalDOBChange($event)"
                                                     formControlName="personalDateOfBirth"
                                                     [max]="maxDate | date:'yyyy-MM-dd'"
@@ -486,7 +486,7 @@
                                             </div>
                                             <div class="col-md-3 actionControlsInputs form-group">
                                                 <label class="">Date Of Birth <span class="mandatory">*</span></label>
-                                                <input tabindex="33" type="date" class="form-control"
+                                                <input tabindex="33" type="text" class="form-control"
                                                     (change)="onNominDOBChange($event)"
                                                     [max]="maxDate | date:'yyyy-MM-dd'"
                                                     formControlName="nominiDateOfBirth"
