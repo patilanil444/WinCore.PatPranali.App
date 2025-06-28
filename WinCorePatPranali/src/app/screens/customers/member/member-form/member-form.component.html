@@ -377,7 +377,7 @@
                                     <div class="tab-content">
                                         <div class="row">
 
-                                            <div class="col-md-3 position-relative">
+                                            <!-- <div class="col-md-3 position-relative">
                                                 <label class="">Title <span class="mandatory">*</span></label>
 
                                                  <select class="form-control formControl_dropdownselect" tabindex="21"
@@ -386,7 +386,7 @@
                                                             {{uiTitle.constantname}}
                                                         </option>
                                                     </select>
-                                            </div>
+                                            </div> -->
                                             <div class="col-md-3 position-relative">
                                                 <label class="">Nominee Name <span class="mandatory">*</span></label>
                                                 <input
@@ -436,11 +436,11 @@
                                                     formControlName="nominiDateOfBirth" bsDatepicker [bsConfig]="datepickerConfig">
                                                    
                                             </div>
-                                            <!-- <div class="col-md-3 position-relative form-group">
-                                                <label class="">Given date <span class="mandatory">*</span></label>
-                                                <input tabindex="33" type="text" class="form-control"
-                                                    formControlName="nominiGivenDate" bsDatepicker [bsConfig]="datepickerConfig">
-                                            </div> -->
+                                               <div class="col-md-3 actionControlsInputs form-group">
+                                                <label class="">Guardian (for minor)</label>
+                                                <input tabindex="36" type="text" class="form-control"  
+                                                maxlength="49"   formControlName="nominiGuardian">
+                                            </div>
                                             <div class="col-md-3 position-relative form-group">
                                                 <label class="">Percentage <span class="mandatory">*</span></label>
                                                 <input

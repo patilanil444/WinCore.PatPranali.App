@@ -25,7 +25,7 @@
                
                 <div class="row">
                     <div class="col-lg-9">
-                        <app-member-search-base (customers)="getMembers($event)">
+                        <app-member-search-base (members)="getMembers($event)">
                         </app-member-search-base>
                     </div>
                     <div class="col-lg-3 actionBtnsInFilterSection" *ngIf="isOperatorUser()" >   
@@ -36,13 +36,8 @@
                                  Add Member </button> 
                         </div>
                         <button class="btn btn-danger" tabindex="0" (click)="clear()">Clear</button>
-                                         
-                        
                     </div>
-
                 </div>
-
-
             </div>
 
 
@@ -65,10 +60,10 @@
                         <tbody>
                             <tr
                                 *ngFor="let uiMember of uiMembers | paginate: { itemsPerPage: 10, currentPage: p, totalItems: total }">
-                                <th scope="row">{{uiMember.id}}</th>
-                                <td>{{uiMember.firstName}} {{uiMember.middleName}} {{uiMember.lastName}}</td>
+                                <th scope="row">{{uiMember.memberCodeStr}}</th>
+                                <td>{{uiMember.memberName}}</td>
                                 <td>{{uiMember.phone}}</td>
-                                <td>{{uiMember.numOfShares}}</td>
+                                <td>{{uiMember.shares}}</td>
                                 <td>{{uiMember.email}}</td>
                                 <td>
                                     <div class="badge"

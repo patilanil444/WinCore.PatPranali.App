@@ -51,12 +51,13 @@ export class MemberSearchBaseComponent implements OnInit {
             let tempMembers = members.map((mem: any) => (
               {
                 id: mem.memberId,
-                custName: mem.custName,
-                customerCodeStr: mem.memberCodeStr,
-                pan: mem.panNo,
+                memberName: mem.fullName,
+                memberCodeStr: mem.memberCodeStr,
+                phone: mem.phone,
                 aadhar: mem.aadharno,
-                mobile: mem.mobileno,
-                joinDate: formatDate(new Date(mem.custOpenDate), 'yyyy-MM-dd', 'en'),
+                shares: mem.numOfShares,
+                email: mem.email,
+                //joinDate: formatDate(new Date(mem.custOpenDate), 'yyyy-MM-dd', 'en'),
                 status: this.getMemberStatus(mem.active)
               }))
 

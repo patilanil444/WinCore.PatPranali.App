@@ -29,14 +29,10 @@
             </ng-autocomplete>
     
             <ng-template #itemTemplateStatic let-item>
-                <a [innerHTML]="item.memberCodeStr +'-'+ item.fullName"></a>
+                <a [innerHTML]="item.memberCodeStr +'-'+ item.memberName"></a>
               </ng-template>
             </div>
         </div>
 
-        <div *ngIf="allowMultiSearch" class="position-relative form-group">
-            <button class="btn btn-info" style="float: right;" tabindex="2" (click)="searchMember()"><i
-                    class="fa fa-search"></i> Search</button>
-        </div>
     </div>
 </form>

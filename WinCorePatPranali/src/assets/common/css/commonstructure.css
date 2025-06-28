@@ -477,10 +477,10 @@
 
 .page-section-tabsControls-data .tab-content .tab-pane
 {
-    margin: 1px auto var(--pixelSize10);
+    /* margin: 1px auto var(--pixelSize10);
     border: 1px solid var(--lightGreyShade3);
     padding: var(--pixelSize10);
-    border-radius: var(--pixelSize10);
+    border-radius: var(--pixelSize10); */
 }
 
 
@@ -1411,7 +1411,7 @@
 
 .customPageSubSections
 {
-    padding: 0px !important;
+    padding: 2px !important;
     margin: 0px;
     display: flex;
     justify-content: space-between;
@@ -1504,7 +1504,7 @@
     font-size: var(--pixelSize12);
     color: var(--blueShade2);
     font-weight: 500;
-    margin: -12px 0px 1px 20px;
+    margin: -15px 0px 1px 20px;
     width: 100%;
     background: var(--white);
     width: max-content;

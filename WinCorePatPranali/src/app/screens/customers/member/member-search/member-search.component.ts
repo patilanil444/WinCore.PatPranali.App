@@ -161,16 +161,16 @@ export class MemberSearchComponent implements OnInit {
     this.router.navigate(['/app/'+ routeValue]);
   }
 
-  getMembers(memberData: any)
+  getMembers(membersData: any)
   {
     this.uiMembers  = [];
-    if (memberData && memberData.length > 0) {
-      this.uiMembers = memberData;
+    if (membersData && membersData.length > 0) {
+      this.uiMembers = membersData;
     }
     else
     {
-      if (memberData.status == 'Active') {
-        this.uiMembers.push(memberData);
+      if (membersData.status == 'Active') {
+        this.uiMembers.push(membersData);
       }
     }
   }
