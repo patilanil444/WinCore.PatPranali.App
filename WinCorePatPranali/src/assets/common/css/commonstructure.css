@@ -1164,6 +1164,98 @@
 
 
 
+/*Only Form css */
+
+
+.formControlSection1 .table td
+{
+    padding: var(--pixelSize6) !important;
+}
+
+.formControlSection1 .table td
+{
+    padding: var(--pixelSize6) !important;
+}
+
+
+.formControlSection1 input
+{
+    
+    border: 1px solid var(--lightGreyShade3) !important;
+    border-radius: var(--pixelSize6) !important;
+    padding-left: var(--pixelSize10);
+    box-shadow: 0px 0px 1px 1px var( --lightGreyShade1) !important;
+    cursor: pointer;
+    color: var(--blueShade8);
+    font-weight: 500;
+}
+
+.formControlSection1 input:disabled,
+.formControlSection1 input[readonly]
+{
+    background-color: var(--lightGreyShade6) !important;
+    cursor:not-allowed !important;
+}
+
+
+
+.formControlSection label
+{
+    
+  
+    font-size: var(--pixelSize12);
+    color: var(--darkGreyBlackShade2);
+}
+
+.formControlSection label .mandatory
+{
+    
+  
+    font-size: var(--pixelSize12);
+    color: var(--redDarkShade2);
+}
+
+
+
+.formControlSection input
+{
+    
+    border: 1px solid var(--lightGreyShade3) !important;
+    border-radius: var(--pixelSize6) !important;
+    padding-left: var(--pixelSize10);
+    font-size: var(--pixelSize14);
+    box-shadow: 0px 0px 1px 1px var( --lightGreyShade1) !important;
+    cursor: pointer;
+    color: var(--blueShade8);
+    font-weight: 500;
+}
+
+.formControlSection input:disabled,
+.formControlSection input[readonly]
+{
+    background-color: var(--lightGreyShade6) !important;
+    cursor:not-allowed !important;
+}
+
+
+
+
+
+.formControlSection input:hover,
+.formControlSection  input:focus
+{
+    border: 1px solid var(--lightblueShade1) !important;
+    box-shadow: 0px 0px 1px 1px var(--lightblueShade1) !important;
+    cursor: pointer;	
+}
+
+
+
+
+
+
+
+
 /*side Bar menu CSS start here */
 
 .mainAppSiderSection
@@ -2056,4 +2148,20 @@
 .form_label_forControl .mandatory
 {
     color:var(--redDarkShade2);
+}
+
+.sectionWithSingleControl 
+{
+    width: 100%;
+}
+
+.sectionWithSingleControl .sectionWiseImplemenation
+{
+    max-width: 40%;
+    padding: var(--pixelSize10) 0;
+}
+
+.sectionSearchOption
+{
+    width: 100%;
 }
