@@ -37,8 +37,14 @@ export class StandingInstructionsListComponent implements OnInit {
 
   addNewInstruction()
   {
-    
+        this.configClick('standing-instruction');
   }
+
+    configClick(routeValue: string) {
+    sessionStorage.setItem("configMenu", routeValue);
+    this.router.navigate(['/app/' + routeValue]);
+  }
+
 
   isAdministratorUser() {
     return UserRoleHeper.isAdministratorUser();
