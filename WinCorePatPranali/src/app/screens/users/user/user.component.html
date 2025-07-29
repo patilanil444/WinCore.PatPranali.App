@@ -40,7 +40,7 @@
                         </div>
                         <div class="col-md-3 position-relative form-group">
                             <label  class="">Role <span class="mandatory">*</span></label>
-                            <select class="mb-2 form-control" tabindex="4" formControlName="role">
+                            <select class="form-control formControl_dropdownselect" tabindex="4" formControlName="role">
                                 <option *ngFor="let uiUserRole of uiUserRoles" [ngValue]="uiUserRole.id">
                                     {{uiUserRole.userRole}}
                                 </option>

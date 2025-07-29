@@ -13,7 +13,7 @@
                         <div class="col-md-6 position-relative form-group">
                             <label for="txtName" class="">State</label>
                             <div class="input-group">
-                                <select class="mb-2 form-control" tabindex="10"
+                                <select class="form-control formControl_dropdownselect" tabindex="10"
                                 formControlName="stateId" (change)="onStateChange($event)" >
                                 <option *ngFor="let uiState of uiStates" [ngValue]="uiState.id">
                                     {{uiState.stateName}}
@@ -26,7 +26,7 @@
                         <div class="col-md-6 position-relative form-group">
                             <label for="txtName" class="">District</label>
                             <div class="input-group">
-                                <select class="mb-2 form-control" tabindex="10"
+                                <select class="form-control formControl_dropdownselect" tabindex="10"
                                 formControlName="districtId">
                                 <option *ngFor="let uiDistrict of uiDistricts" [ngValue]="uiDistrict.id">
                                     {{uiDistrict.districtName}}

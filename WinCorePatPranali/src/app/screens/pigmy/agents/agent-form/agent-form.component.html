@@ -49,7 +49,7 @@
                                 <div>
                                     <label  class="form_label_forControl labelwithFilter">User Name <span class="mandatory">*</span></label>
                                 </div>
-                                <select class="mb-2 form-control" tabindex="2" formControlName="userId">
+                                <select class="form-control formControl_dropdownselect" tabindex="2" formControlName="userId">
                                     <option *ngFor="let uiUser of uiUsers" [ngValue]="uiUser.id">
                                         {{uiUser.userName}}
                                     </option>

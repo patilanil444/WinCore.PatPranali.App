@@ -190,7 +190,7 @@
                                             <div class="col-md-3 position-relative form-group">
                                                 <label class="">Account Type <span
                                                         class="mandatory">*</span></label>
-                                                <select class="mb-2 form-control" tabindex="18"
+                                                <select class="form-control formControl_dropdownselect" tabindex="18"
                                                     formControlName="accountType" (change)="selectAccountType($event)">
                                                     <option *ngFor="let uiAccountType of uiAccountTypes"
                                                         [ngValue]="uiAccountType.constantNo">
@@ -201,7 +201,7 @@
                                             <div class="col-md-3 position-relative form-group">
                                                 <label class="">Mode Of Operation <span
                                                         class="mandatory">*</span></label>
-                                                <select class="mb-2 form-control" tabindex="19"
+                                                <select class="form-control formControl_dropdownselect" tabindex="19"
                                                     formControlName="modeOfOperation">
                                                     <option *ngFor="let uiModeOfOperation of uiModeOfOperations"
                                                         [ngValue]="uiModeOfOperation.constantNo">
@@ -212,7 +212,7 @@
                                             <div class="col-md-3 position-relative form-group">
                                                 <label class="">Mode Of Signature <span
                                                         class="mandatory">*</span></label>
-                                                <select class="mb-2 form-control" tabindex="20"
+                                                <select class="form-control formControl_dropdownselect" tabindex="20"
                                                     formControlName="modeOfSignature">
                                                     <option *ngFor="let uiModeOfOperation of uiModeOfOperations"
                                                         [ngValue]="uiModeOfOperation.constantNo">
@@ -223,7 +223,7 @@
                                             <div class="col-md-3 position-relative form-group">
                                                 <label class="">Staff/Director/Other <span
                                                         class="mandatory">*</span></label>
-                                                <select class="mb-2 form-control" tabindex="21"
+                                                <select class="form-control formControl_dropdownselect" tabindex="21"
                                                     formControlName="staffDirectorOther">
                                                     <option *ngFor="let uiEmployyeType of uiEmployyeTypes"
                                                         [ngValue]="uiEmployyeType.code">
@@ -234,7 +234,7 @@
                                             <div class="col-md-3 position-relative form-group">
                                                 <label class="">Account Status <span
                                                         class="mandatory">*</span></label>
-                                                <select class="mb-2 form-control" tabindex="22"
+                                                <select class="form-control formControl_dropdownselect" tabindex="22"
                                                     formControlName="accountStatus" (change)="selectAccountStatus($event)">
                                                     <option *ngFor="let uiAccountStatus of uiAccountStatuses"
                                                         [ngValue]="uiAccountStatus.constantNo">
@@ -329,7 +329,7 @@
                                             <div class="col-md-3 position-relative form-group">
                                                 <label class="">Currency <span
                                                         class="mandatory">*</span></label>
-                                                <select class="mb-2 form-control" tabindex="32" formControlName="currency">
+                                                <select class="form-control formControl_dropdownselect" tabindex="32" formControlName="currency">
                                                     <option *ngFor="let uiCurrency of uiCurrencies"
                                                         [ngValue]="uiCurrency.currencyId">
                                                         {{uiCurrency.currencyCode}}
@@ -339,7 +339,7 @@
                                             <div class="col-md-3 position-relative form-group">
                                                 <label class="">Other Branch Transfer <span
                                                         class="mandatory">*</span></label>
-                                                <select class="mb-2 form-control" tabindex="33" formControlName="otherBranchTransfer">
+                                                <select class="form-control formControl_dropdownselect" tabindex="33" formControlName="otherBranchTransfer">
                                                     <option *ngFor="let uiTDSOption of uiTDSOptions"
                                                         [ngValue]="uiTDSOption.code">
                                                         {{uiTDSOption.name}}
@@ -367,7 +367,7 @@
                                             <div class="col-md-3 position-relative form-group">
                                                 <label class="">Relation <span
                                                         class="mandatory">*</span></label>
-                                                <select class="mb-2 form-control" tabindex="35"
+                                                <select class="form-control formControl_dropdownselect" tabindex="35"
                                                     formControlName="relation">
                                                     <option *ngFor="let uiRelation of uiRelations"
                                                         [ngValue]="uiRelation.constantNo">

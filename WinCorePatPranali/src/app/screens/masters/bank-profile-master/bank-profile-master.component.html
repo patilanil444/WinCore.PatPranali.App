@@ -74,7 +74,7 @@
                                             </div>
                                             <div class="col-md-3 position-relative form-group">
                                                 <label class="">Day Open (Y/N)</label>
-                                                <select class="form-control" tabindex="3" formControlName="dayOpen"
+                                                <select class="form-control formControl_dropdownselect" tabindex="3" formControlName="dayOpen"
                                                     readonly>
                                                     <option *ngFor="let dayOpenGen of dayOpenGeneral"
                                                         [ngValue]="dayOpenGen.code"> {{dayOpenGen.name}}
@@ -84,7 +84,7 @@
                                             <div class="col-md-3 position-relative form-group">
                                                 <label class="">Standing Instruction Executed
                                                     (Y/N)</label>
-                                                <select class="form-control" tabindex="4"
+                                                <select class="form-control formControl_dropdownselect" tabindex="4"
                                                     formControlName="standingInstructionExe" readonly>
                                                     <option
                                                         *ngFor="let standingInstructionGen of standingInstructionGeneral"
@@ -202,7 +202,7 @@
                                             </div>
                                             <div class="col-md-3 position-relative form-group">
                                                 <label class="">Actual Profit</label>
-                                                <select class="form-control" tabindex="21"
+                                                <select class="form-control formControl_dropdownselect" tabindex="21"
                                                     formControlName="actualProfit">
                                                     <option *ngFor="let actualProfitGen of actualProfitGeneral"
                                                         [ngValue]="actualProfitGen.code"> {{actualProfitGen.name}}
@@ -212,7 +212,7 @@
                                             <div class="col-md-3 position-relative form-group">
                                                 <label class="">Keep photo and signature in seperate
                                                     files</label>
-                                                <select class="form-control" tabindex="22"
+                                                <select class="form-control formControl_dropdownselect" tabindex="22"
                                                     formControlName="photoSignatureSeperate">
                                                     <option *ngFor="let photoSignatureGen of photoSignatureGeneral"
                                                         [ngValue]="photoSignatureGen.code"> {{photoSignatureGen.name}}
@@ -225,7 +225,7 @@
                                         <div class="row">
                                             <div class="col-md-3 position-relative form-group">
                                                 <label class="">Photo Extension</label>
-                                                <select class="form-control" tabindex="23"
+                                                <select class="form-control formControl_dropdownselect" tabindex="23"
                                                     formControlName="photoExtension">
                                                     <option *ngFor="let photoExtentionsGen of photoExtentionsGeneral"
                                                         [ngValue]="photoExtentionsGen.code"> {{photoExtentionsGen.name}}
@@ -234,7 +234,7 @@
                                             </div>
                                             <div class="col-md-3 position-relative form-group">
                                                 <label class="">Signature Extension</label>
-                                                <select class="form-control" tabindex="24"
+                                                <select class="form-control formControl_dropdownselect" tabindex="24"
                                                     formControlName="signatureExtension">
                                                     <option *ngFor="let photoExtentionsGen of photoExtentionsGeneral"
                                                         [ngValue]="photoExtentionsGen.code"> {{photoExtentionsGen.name}}
@@ -243,7 +243,7 @@
                                             </div>
                                             <div class="col-md-3 position-relative form-group">
                                                 <label class="">Clearing</label>
-                                                <select class="form-control" tabindex="25" formControlName="clearing"
+                                                <select class="form-control formControl_dropdownselect" tabindex="25" formControlName="clearing"
                                                     readonly>
                                                     <option *ngFor="let clearingGen of clearingGeneral"
                                                         [ngValue]="clearingGen.code"> {{clearingGen.name}}
@@ -252,7 +252,7 @@
                                             </div>
                                             <div class="col-md-3 position-relative form-group">
                                                 <label class="">Clearing Member</label>
-                                                <select class="form-control" tabindex="26"
+                                                <select class="form-control formControl_dropdownselect" tabindex="26"
                                                     formControlName="clearingMember">
                                                     <option *ngFor="let clearingMemberGen of clearingMemberGeneral"
                                                         [ngValue]="clearingMemberGen.code"> {{clearingMemberGen.name}}
@@ -270,7 +270,7 @@
                                             </div>
                                             <div class="col-md-3 position-relative form-group">
                                                 <label class="">Daily Authorisation</label>
-                                                <select class="form-control" tabindex="28"
+                                                <select class="form-control formControl_dropdownselect" tabindex="28"
                                                     formControlName="dailyAuthorisation">
                                                     <option
                                                         *ngFor="let dailyAuthorisationGen of dailyAuthorisationGeneral"
@@ -323,7 +323,7 @@
                                             </div>
                                             <div class="col-md-3 position-relative form-group">
                                                 <label class="">Software type</label>
-                                                <select class="form-control" tabindex="36"
+                                                <select class="form-control formControl_dropdownselect" tabindex="36"
                                                     formControlName="softwareType">
                                                     <option *ngFor="let softwareTypesGen of softwareTypesGeneral"
                                                         [ngValue]="softwareTypesGen.code">
@@ -333,7 +333,7 @@
                                             </div>
                                             <div class="col-md-3 position-relative form-group">
                                                 <label class="">Software language</label>
-                                                <select class="form-control" tabindex="37"
+                                                <select class="form-control formControl_dropdownselect" tabindex="37"
                                                     formControlName="softwareLanguage">
                                                     <option *ngFor="let softwareLanguageGen of softwareLanguageGeneral"
                                                         [ngValue]="softwareLanguageGen.code">
@@ -345,7 +345,7 @@
                                         <div class="row">
                                             <div class="col-md-3 position-relative form-group">
                                                 <label class="">Bank type</label>
-                                                <select class="form-control" tabindex="38" formControlName="bankType">
+                                                <select class="form-control formControl_dropdownselect" tabindex="38" formControlName="bankType">
                                                     <option *ngFor="let bankTypeGen of bankTypeGeneral"
                                                         [ngValue]="bankTypeGen.code">
                                                         {{bankTypeGen.name}}
@@ -354,7 +354,7 @@
                                             </div>
                                             <div class="col-md-3 position-relative form-group">
                                                 <label class="">Shares language</label>
-                                                <select class="form-control" tabindex="39"
+                                                <select class="form-control formControl_dropdownselect" tabindex="39"
                                                     formControlName="sharesLanguage">
                                                     <option *ngFor="let sharesLanguageGen of sharesLanguageGeneral"
                                                         [ngValue]="sharesLanguageGen.code">
@@ -413,7 +413,7 @@
                                                     <td></td>
                                                     <td></td>
                                                     <td>
-                                                        <select class="form-control" tabindex="42"
+                                                        <select class="form-control formControl_dropdownselect" tabindex="42"
                                                             formControlName="overdueLoanInterestAutoCR">
                                                             <option
                                                                 *ngFor="let automaticTransferEntry of automaticTransferEntryLoan"
@@ -440,7 +440,7 @@
                                                             formControlName="penalInterestReceivableGL"></ngx-select-dropdown>
                                                     </td>
                                                     <td>
-                                                        <select class="form-control" tabindex="45"
+                                                        <select class="form-control formControl_dropdownselect" tabindex="45"
                                                             formControlName="penalInterestAddBalance">
                                                             <option
                                                                 *ngFor="let addReceivableInBalance of addReceivableInBalanceLoan"
@@ -449,7 +449,7 @@
                                                             </option>
                                                         </select>
                                                     </td>
-                                                    <td><select class="form-control" tabindex="46"
+                                                    <td><select class="form-control formControl_dropdownselect" tabindex="46"
                                                             formControlName="penalInterestAutoCR">
                                                             <option
                                                                 *ngFor="let automaticTransferEntry of automaticTransferEntryLoan"
@@ -473,7 +473,7 @@
                                                             formControlName="postageReceivableGL"></ngx-select-dropdown>
                                                     </td>
                                                     <td>
-                                                        <select class="form-control" tabindex="45"
+                                                        <select class="form-control formControl_dropdownselect" tabindex="45"
                                                             formControlName="postageInterestAddBalance">
                                                             <option
                                                                 *ngFor="let addReceivableInBalance of addReceivableInBalanceLoan"
@@ -482,7 +482,7 @@
                                                             </option>
                                                         </select>
                                                     </td>
-                                                    <td><select class="form-control" tabindex="49"
+                                                    <td><select class="form-control formControl_dropdownselect" tabindex="49"
                                                             formControlName="postageAutoCR">
                                                             <option
                                                                 *ngFor="let automaticTransferEntry of automaticTransferEntryLoan"
@@ -505,7 +505,7 @@
                                                             [multiple]="false"
                                                             formControlName="noticeExpensesReceivableGL"></ngx-select-dropdown>
                                                     </td>
-                                                    <td><select class="form-control" tabindex="52"
+                                                    <td><select class="form-control formControl_dropdownselect" tabindex="52"
                                                             formControlName="noticeExpensesAddBalance">
                                                             <option
                                                                 *ngFor="let addReceivableInBalance of addReceivableInBalanceLoan"
@@ -513,7 +513,7 @@
                                                                 {{addReceivableInBalance.name}}
                                                             </option>
                                                         </select></td>
-                                                    <td><select class="form-control" tabindex="53"
+                                                    <td><select class="form-control formControl_dropdownselect" tabindex="53"
                                                             formControlName="noticeExpensesAutoCR">
                                                             <option
                                                                 *ngFor="let automaticTransferEntry of automaticTransferEntryLoan"
@@ -536,7 +536,7 @@
                                                             [multiple]="false"
                                                             formControlName="insuranceReceivableGL"></ngx-select-dropdown>
                                                     </td>
-                                                    <td><select class="form-control" tabindex="56"
+                                                    <td><select class="form-control formControl_dropdownselect" tabindex="56"
                                                             formControlName="insuranceAddBalance">
                                                             <option
                                                                 *ngFor="let addReceivableInBalance of addReceivableInBalanceLoan"
@@ -544,7 +544,7 @@
                                                                 {{addReceivableInBalance.name}}
                                                             </option>
                                                         </select></td>
-                                                    <td><select class="form-control" tabindex="57"
+                                                    <td><select class="form-control formControl_dropdownselect" tabindex="57"
                                                             formControlName="insuranceAutoCR">
                                                             <option
                                                                 *ngFor="let automaticTransferEntry of automaticTransferEntryLoan"
@@ -567,7 +567,7 @@
                                                             [multiple]="false"
                                                             formControlName="surchargeReceivableGL"></ngx-select-dropdown>
                                                     </td>
-                                                    <td><select class="form-control" tabindex="60"
+                                                    <td><select class="form-control formControl_dropdownselect" tabindex="60"
                                                             formControlName="surchargeAddBalance">
                                                             <option
                                                                 *ngFor="let addReceivableInBalance of addReceivableInBalanceLoan"
@@ -575,7 +575,7 @@
                                                                 {{addReceivableInBalance.name}}
                                                             </option>
                                                         </select></td>
-                                                    <td><select class="form-control" tabindex="61"
+                                                    <td><select class="form-control formControl_dropdownselect" tabindex="61"
                                                             formControlName="surchargeAutoCR">
                                                             <option
                                                                 *ngFor="let automaticTransferEntry of automaticTransferEntryLoan"
@@ -598,7 +598,7 @@
                                                             [multiple]="false"
                                                             formControlName="otherExpenseReceivableGL"></ngx-select-dropdown>
                                                     </td>
-                                                    <td><select class="form-control" tabindex="64"
+                                                    <td><select class="form-control formControl_dropdownselect" tabindex="64"
                                                             formControlName="otherExpenseAddBalance">
                                                             <option
                                                                 *ngFor="let addReceivableInBalance of addReceivableInBalanceLoan"
@@ -606,7 +606,7 @@
                                                                 {{addReceivableInBalance.name}}
                                                             </option>
                                                         </select></td>
-                                                    <td><select class="form-control" tabindex="65"
+                                                    <td><select class="form-control formControl_dropdownselect" tabindex="65"
                                                             formControlName="otherExpenseAutoCR">
                                                             <option
                                                                 *ngFor="let automaticTransferEntry of automaticTransferEntryLoan"
@@ -626,7 +626,7 @@
                                 <div class="col-md-4 position-relative form-group">
                                     <label class="">Want to calculate interest at every time of
                                         receipt</label>
-                                    <select class="form-control" tabindex="66" formControlName="calcInterestOnReceipt">
+                                    <select class="form-control formControl_dropdownselect" tabindex="66" formControlName="calcInterestOnReceipt">
                                         <option *ngFor="let calcInterestAtReceiptLo of calcInterestAtReceiptLoan"
                                             [ngValue]="calcInterestAtReceiptLo.code">
                                             {{calcInterestAtReceiptLo.name}}
@@ -635,7 +635,7 @@
                                 </div>
                                 <div class="col-md-4 position-relative form-group">
                                     <label class="">Treat after expiry penal as interest</label>
-                                    <select class="form-control" tabindex="67" formControlName="treatPenalAsInterest">
+                                    <select class="form-control formControl_dropdownselect" tabindex="67" formControlName="treatPenalAsInterest">
                                         <option *ngFor="let treatPenalAsInterestLo of treatPenalAsInterestLoan"
                                             [ngValue]="treatPenalAsInterestLo.code">
                                             {{treatPenalAsInterestLo.name}}
@@ -644,7 +644,7 @@
                                 </div>
                                 <div class="col-md-4 position-relative form-group">
                                     <label class="">Want to calculate interest on all receivables</label>
-                                    <select class="form-control" tabindex="68"
+                                    <select class="form-control formControl_dropdownselect" tabindex="68"
                                         formControlName="calcInterestOnReceivables">
                                         <option
                                             *ngFor="let calcInterestOnReceivablesLo of calcInterestOnReceivablesLoan"
@@ -657,7 +657,7 @@
                             <div class="row">
                                 <div class="col-md-4 position-relative form-group">
                                     <label class="">Loan interest</label>
-                                    <select class="form-control" tabindex="69" formControlName="loanInterest">
+                                    <select class="form-control formControl_dropdownselect" tabindex="69" formControlName="loanInterest">
                                         <option *ngFor="let loanInterestLo of loanInterestLoan"
                                             [ngValue]="loanInterestLo.code">
                                             {{loanInterestLo.name}}
@@ -808,7 +808,7 @@
 
                                                 <div class="col-md-3 position-relative form-group">
                                                     <label class="">Calculation Type</label>
-                                                    <select class="form-control" tabindex="91"
+                                                    <select class="form-control formControl_dropdownselect" tabindex="91"
                                                         formControlName="pigmyCalculationType">
                                                         <option *ngFor="let pigmyCalcTypeDep of pigmyCalcTypeDeposit"
                                                             [ngValue]="pigmyCalcTypeDep.code">
@@ -819,7 +819,7 @@
                                                 <div class="col-md-3 position-relative form-group">
                                                     <label class="">For monthly balance pigmy balance on
                                                     </label>
-                                                    <select class="form-control" tabindex="92"
+                                                    <select class="form-control formControl_dropdownselect" tabindex="92"
                                                         formControlName="pigmyMontlyBalanceType">
                                                         <option *ngFor="let pigmyMonthlyBalanceDep of pigmyMonthlyBalanceDeposit"
                                                             [ngValue]="pigmyMonthlyBalanceDep.code">
@@ -829,7 +829,7 @@
                                                 </div>
                                                 <div class="col-md-3 position-relative form-group">
                                                     <label class="">Balance type</label>
-                                                    <select class="form-control" tabindex="93"
+                                                    <select class="form-control formControl_dropdownselect" tabindex="93"
                                                         formControlName="pigmyBalanceType">
                                                         <option *ngFor="let pigmyBalanceTypeDep of pigmyBalanceTypeDeposit"
                                                             [ngValue]="pigmyBalanceTypeDep.code">
@@ -861,7 +861,7 @@
                                             <div class="row">
                                                 <div class="col-md-3 position-relative form-group">
                                                     <label class="">Monthly balance on</label>
-                                                    <select class="form-control" tabindex="96"
+                                                    <select class="form-control formControl_dropdownselect" tabindex="96"
                                                         formControlName="recurringMonthlyBalanceType">
                                                         <option *ngFor="let recurringMonthlyBalanceDep of recurringMonthlyBalanceDeposit"
                                                             [ngValue]="recurringMonthlyBalanceDep.code">
@@ -871,7 +871,7 @@
                                                 </div>
                                                 <div class="col-md-3 position-relative form-group">
                                                     <label class="">Balance type</label>
-                                                    <select class="form-control" tabindex="97"
+                                                    <select class="form-control formControl_dropdownselect" tabindex="97"
                                                         formControlName="recurringBalanceType">
                                                         <option *ngFor="let recurringBalanceTypeDep of recurringBalanceTypeDeposit"
                                                             [ngValue]="recurringBalanceTypeDep.code">
@@ -882,7 +882,7 @@
                                                 <div class="col-md-3 position-relative form-group">
                                                     <label class="">Calculate interest for demanded
                                                         installment</label>
-                                                    <select class="form-control" tabindex="98"
+                                                    <select class="form-control formControl_dropdownselect" tabindex="98"
                                                         formControlName="recurringCalcIntOnDemand">
                                                         <option *ngFor="let recurringCalcIntOnDemandDep of recurringCalcIntOnDemandDeposit"
                                                             [ngValue]="recurringCalcIntOnDemandDep.code">
@@ -900,7 +900,7 @@
 
                                                 <div class="col-md-3 position-relative form-group">
                                                     <label class="">Interest calculation type</label>
-                                                    <select class="form-control" tabindex="99"
+                                                    <select class="form-control formControl_dropdownselect" tabindex="99"
                                                         formControlName="fdIntCalcType">
                                                         <option *ngFor="let fdintCalcTypeDep of fdintCalcTypeDeposit"
                                                             [ngValue]="fdintCalcTypeDep.code">
@@ -910,7 +910,7 @@
                                                 </div>
                                                 <div class="col-md-3 position-relative form-group">
                                                     <label class="">Monthly discount rate</label>
-                                                    <select class="form-control" tabindex="100"
+                                                    <select class="form-control formControl_dropdownselect" tabindex="100"
                                                         formControlName="monthlyDicountRate">
                                                         <option *ngFor="let fdMonthlyDiscountRateDep of fdMonthlyDiscountRateDeposit"
                                                             [ngValue]="fdMonthlyDiscountRateDep.code">
@@ -927,7 +927,7 @@
                                             <div class="row">
                                                 <div class="col-md-3 position-relative form-group">
                                                     <label class="">Interest calculation type</label>
-                                                    <select class="form-control" tabindex="101"
+                                                    <select class="form-control formControl_dropdownselect" tabindex="101"
                                                         formControlName="reinvestmentIntCalcType">
                                                         <option *ngFor="let riIntCalcTypeDep of riIntCalcTypeDeposit"
                                                             [ngValue]="riIntCalcTypeDep.code">
@@ -937,7 +937,7 @@
                                                 </div>
                                                 <div class="col-md-3 position-relative form-group">
                                                     <label class="">Premature interest calculation</label>
-                                                    <select class="form-control" tabindex="102"
+                                                    <select class="form-control formControl_dropdownselect" tabindex="102"
                                                         formControlName="prematureIntCalc">
                                                         <option *ngFor="let riPrematureIntCalcDep of riPrematureIntCalcDeposit"
                                                             [ngValue]="riPrematureIntCalcDep.code">
@@ -953,7 +953,7 @@
                                                 <div class="col-md-6 position-relative form-group">
                                                     <label class="">Make automatic transfer entry for
                                                         debit deposit interest in back office entry</label>
-                                                    <select class="form-control" tabindex="103"
+                                                    <select class="form-control formControl_dropdownselect" tabindex="103"
                                                         formControlName="drIntAutoTransfer">
                                                         <option *ngFor="let autoDRIntDep of autoDRIntDeposit"
                                                             [ngValue]="autoDRIntDep.code">

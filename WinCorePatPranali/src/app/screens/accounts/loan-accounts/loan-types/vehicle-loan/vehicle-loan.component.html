@@ -5,7 +5,7 @@
                 <h5 class="card-title">Vehicle Details</h5>
             </div>
             <div class="col-md-12">
-                <div class="tab-content">
+                <div class="tab-content actionInfoTableOption">
                     <div class="row" style="margin-bottom: 10px;">
                         <div class="col-md-3 position-relative form-group">
                             <label class="">Register Number <span
@@ -50,17 +50,22 @@
                                 formControlName="dealer">
                         </div>
                         <div class="col-md-3 position-relative form-group">
-                            <div style="margin-top: 25px;">
-                                <button class="mt-1 btn btn-primary" (click)="addVehicle()"
-                                tabindex="31">Add</button>
-                            <button class="mt-1 btn btn-left-margin10 btn-danger"
-                                (click)="clearVehicle()" tabindex="24">Clear</button>
+
+                            <div class="btnsCollectioninInTabsLeftSide actionControlsInputs form-group">
+                                
+                                <button class="btn btn-info" (click)="addVehicle()"
+                                    tabindex="31">Add</button>
+                                <button class="btn btn-danger"
+                                    (click)="clearVehicle()" tabindex="24">Clear</button>
+                                
                             </div>
+                            
                         </div>
+                       
                     </div>
                     <div class="row">
                         <div class="col-md-12">
-                            <table class="mb-0 table table-bordered">
+                            <table class="table table-striped">
                                 <thead>
                                     <tr>
                                         <th width="12%">Register Number</th>

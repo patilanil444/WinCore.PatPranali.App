@@ -8,7 +8,7 @@
                             <div class="col-md-3 position-relative form-group">
                                 <label class="">Security Type <span
                                         class="mandatory">*</span></label>
-                                <select class="mb-2 form-control" tabindex="27"
+                                <select class="form-control formControl_dropdownselect" tabindex="27"
                                     formControlName="securityType">
                                     <option *ngFor="let uiSecurityType of uiSecurityTypes"
                                         [ngValue]="uiSecurityType.id">
@@ -54,7 +54,7 @@
         
                         <div class="row">
                             <div class="col-md-12">
-                                <table class="mb-0 table table-bordered">
+                                <table class="table table-striped">
                                     <thead>
                                         <tr>
                                             <th width="17%">Security Type</th>

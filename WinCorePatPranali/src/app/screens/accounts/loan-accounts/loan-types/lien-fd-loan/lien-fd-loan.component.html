@@ -8,7 +8,7 @@
                             <div class="row">
                                 <div class="col-md-6 position-relative form-group">
                                     <label class="">Branch </label>
-                                    <select class="form-control" tabindex="27" formControlName="branchId">
+                                    <select class="form-control formControl_dropdownselect" tabindex="27" formControlName="branchId">
                                         <option *ngFor="let uiBranch of uiBranches" [ngValue]="uiBranch.branchCode">
                                             {{uiBranch.branchName}}
                                         </option>

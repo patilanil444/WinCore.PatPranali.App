@@ -8,7 +8,7 @@
                 <div class="row" style="margin-bottom: 10px;">
                     <div class="col-md-4 position-relative">
                         <label class="">General Ledger</label>
-                        <!-- <select class="form-control" name="masterList" [(ngModel)]="generalLedgerId" tabindex="2">
+                        <!-- <select class="form-control formControl_dropdownselect" name="masterList" [(ngModel)]="generalLedgerId" tabindex="2">
                             <option *ngFor="let uiGeneralLedger of uiGeneralLedgers" [ngValue]="uiGeneralLedger.code">
                                 {{uiGeneralLedger.glName}}
                             </option>
@@ -39,7 +39,7 @@
                     <!-- <div class="col-md-4 position-relative">
                         <label class="">Purpose from</label>
                         <div class="input-group">
-                            <select class="form-control" name="masterList" [(ngModel)]="purposeToId" tabindex="2">
+                            <select class="form-control formControl_dropdownselect" name="masterList" [(ngModel)]="purposeToId" tabindex="2">
                                 <option *ngFor="let uiPurposeMaster of uiPurposeMasters" [ngValue]="uiPurposeMaster.id">
                                     {{uiPurposeMaster.branchMasterName}}
                                 </option>
@@ -49,7 +49,7 @@
                     <div class="col-md-4 position-relative">
                         <label class="">Purpose To</label>
                         <div class="input-group">
-                            <select class="form-control" name="masterList" [(ngModel)]="purposeFromId" tabindex="2">
+                            <select class="form-control formControl_dropdownselect" name="masterList" [(ngModel)]="purposeFromId" tabindex="2">
                                 <option *ngFor="let uiPurposeMaster of uiPurposeMasters" [ngValue]="uiPurposeMaster.id">
                                     {{uiPurposeMaster.branchMasterName}}
                                 </option>

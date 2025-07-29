@@ -172,7 +172,7 @@
                                             <div class="col-md-3 position-relative form-group">
                                                 <label class="">Account Status <span
                                                         class="mandatory">*</span></label>
-                                                <select class="mb-2 form-control" tabindex="22"
+                                                <select class="form-control formControl_dropdownselect" tabindex="22"
                                                     formControlName="accountStatus" (change)="selectAccountStatus($event)">
                                                     <option *ngFor="let uiAccountStatus of uiAccountStatuses"
                                                         [ngValue]="uiAccountStatus.constantNo">

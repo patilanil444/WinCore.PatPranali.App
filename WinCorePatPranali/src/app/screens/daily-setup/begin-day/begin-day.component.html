@@ -23,15 +23,18 @@
             <!--Page filter Start here-->
             <div class="page-section-filtersection">
                 <div class="row">
-                    <div class="col-12">
-                       <app-calender-view (currentSelectedDate)="getSelectedDate($event)"
-                            [isDisabled]="areDaysOpen"></app-calender-view>
-                    </div>
-                    <div class="col-4 mrgtb10AutoLR"> 
+                    <div class="col-4"> 
                        <label  class="commonTextTitleLabel">Selected Working Day</label>
                         <input type="text" tabindex="2" autocomplete="off" [(ngModel)]="dtStartDay" id="dtStartDay"
                             [disabled]="areDaysOpen" class="form-control" bsDatepicker [bsConfig]="datepickerConfig">
                     </div>
+                    <div class="row mrgtb10LR0">
+                        <div class="col-4">
+                            <app-calender-view (currentSelectedDate)="getSelectedDate($event)"
+                                    [isDisabled]="areDaysOpen"></app-calender-view>
+                        </div>
+                    </div>
+                    
                     <div class="col-12">
 
                     </div>

@@ -3,7 +3,3 @@
     cursor: not-allowed;
     pointer-events: none;
    }
-
-   .table > thead > tr > th {
-    background-color: #d0d0d0 !important;
-}

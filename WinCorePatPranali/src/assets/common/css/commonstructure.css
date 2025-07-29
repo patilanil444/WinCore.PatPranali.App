@@ -121,7 +121,7 @@
 {
 
     background: var(--redDarkShade2) !important;
-    padding: var(--pixelSize4) var(--pixelSize10) !important;
+    padding: var(--pixelSize5) var(--pixelSize10) !important;
     color: var(--white);
     font-size: var(--pixelSize13);
     border: 1px solid var(--redDarkShade2) !important;
@@ -150,7 +150,7 @@
 .ActionBtnClear
 {
     background: var(--redDarkShade2) !important;
-    padding: var(--pixelSize4) var(--pixelSize10) !important;
+    padding: var(--pixelSize5) var(--pixelSize10) !important;
     color: var(--white);
     font-size: var(--pixelSize13);
     border: 1px solid var(--redDarkShade2) !important;
@@ -2144,6 +2144,12 @@
 
 }
 
+.mrgtb10LR0
+{
+    margin: var(--pixelSize10) 0  !important;
+
+}
+
 
 .form_label_forControl .mandatory
 {
@@ -2164,4 +2170,29 @@
 .sectionSearchOption
 {
     width: 100%;
+}
+
+.actionInfoTableOption .btn-info {
+    color: var(--white) !important;
+    display: flex;
+    align-items: center;
+    gap: var(--pixelSize10);
+}
+
+.actionInfoTableOption .btn-info {
+    color: var(--white) !important;
+}
+
+
+.tabsdataForVehicalDetails
+{
+    border: 1px solid var(--lightGreyShade3);
+    padding: 1px var(--pixelSize4) var(--pixelSize4);
+    border-radius: var(--pixelSize10);
+    border-top: 0px;
+}
+
+.tabsdataForVehicalDetails .inpageMiddleSectioWithTab .nav-tabs
+{
+    margin-top: 0px !important;
 }
