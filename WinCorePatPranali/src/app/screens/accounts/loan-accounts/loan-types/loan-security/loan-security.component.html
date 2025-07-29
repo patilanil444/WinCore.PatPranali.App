@@ -3,7 +3,7 @@
         <form [formGroup]="securityForm" #form="ngForm">
             <div class="row">
                 <div class="col-md-12">
-                    <div class="tab-content">
+                    <div class="tab-content actionInfoTableOption">
                         <div class="row" style="margin-bottom: 10px;">
                             <div class="col-md-3 position-relative form-group">
                                 <label class="">Security Type <span
@@ -43,11 +43,11 @@
                                     formControlName="percentage" onKeyPress="if(this.value >= 100) return false;">
                             </div>
                             <div class="col-md-3 position-relative form-group">
-                                <div style="margin-top: 25px;">
-                                    <button class="mt-1 btn btn-primary" (click)="addSecurity()"
+                                 <div class="btnsCollectioninInTabsLeftSide actionControlsInputs form-group">
+                                    <button class="btn btn-info" (click)="addSecurity()"
                                     tabindex="31">Add</button>
-                                <button class="mt-1 btn btn-left-margin10 btn-danger"
-                                    (click)="clearSecurity()" tabindex="24">Clear</button>
+                                    <button class="btn btn-danger"
+                                        (click)="clearSecurity()" tabindex="24">Clear</button>
                                 </div>
                             </div>
                         </div>
