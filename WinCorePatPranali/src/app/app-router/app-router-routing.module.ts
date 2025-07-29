@@ -378,6 +378,13 @@ const routes: Routes = [
           ]
         }
        },
+        { path: 'standing-instruction', component: StandingInstructionsFormComponent, canActivate: [AuthGuard],
+        data: {
+          roles: [UiUserRole.MANAGER, UiUserRole.GENERAL_MANAGER, UiUserRole.ASSISTENT_MANAGER, 
+            UiUserRole.CLERK, UiUserRole.OPERATOR, UiUserRole.PASSING_OFFICER
+          ]
+        }
+       },
       { path: '**', component: NotFoundComponent },
       { path: '', redirectTo: 'projects', pathMatch: 'full' },
       ]
