@@ -16,7 +16,7 @@
                             </div>
                             <div class="col-md-3 position-relative form-group">
                                 <label class="">Gold Type <span class="mandatory">*</span></label>
-                                <select class="form-control" tabindex="6" formControlName="goldType">
+                                <select class="form-control formControl_dropdownselect" tabindex="6" formControlName="goldType">
                                     <option *ngFor="let uigoldType of uigoldTypes" [ngValue]="uigoldType.id">
                                         {{uigoldType.name}}
                                     </option>

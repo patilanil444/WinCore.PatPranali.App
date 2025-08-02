@@ -15,7 +15,7 @@
                         <div class="col-md-6 position-relative form-group">
                             <label for="txtName" class="">State</label>
                             <div class="input-group">
-                                <select class="mb-2 form-control" tabindex="10"
+                                <select class="form-control formControl_dropdownselect" tabindex="10"
                                 formControlName="stateId">
                                 <option *ngFor="let uiState of uiStates" [ngValue]="uiState.id">
                                     {{uiState.stateName}}

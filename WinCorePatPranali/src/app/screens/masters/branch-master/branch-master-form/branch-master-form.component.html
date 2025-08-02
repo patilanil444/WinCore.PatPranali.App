@@ -113,7 +113,7 @@
                         <div class="col-md-3 position-relative form-group">
                             <label class="">HO</label>
                             <div class="input-group">
-                                <select class="mb-2 form-control" tabindex="9" formControlName="ho">
+                                <select class="form-control formControl_dropdownselect" tabindex="9" formControlName="ho">
                                     <option *ngFor="let uiHO of uiHOYN" [ngValue]="uiHO.code">
                                         {{uiHO.name}}
                                     </option>
@@ -126,7 +126,7 @@
                         <div class="col-md-3 position-relative form-group">
                             <label class="">Clearing</label>
                             <div class="input-group">
-                                <select class="mb-2 form-control" tabindex="10" formControlName="clearing">
+                                <select class="form-control formControl_dropdownselect" tabindex="10" formControlName="clearing">
                                     <option *ngFor="let uiClearing of uiClearingYN" [ngValue]="uiClearing.code">
                                         {{uiClearing.name}}
                                     </option>
@@ -137,7 +137,7 @@
                         <div class="col-md-3 position-relative form-group">
                             <label class="">Regional language</label>
                             <div class="input-group">
-                                <select class="mb-2 form-control" tabindex="11" formControlName="regionalLanguage">
+                                <select class="form-control formControl_dropdownselect" tabindex="11" formControlName="regionalLanguage">
                                     <option *ngFor="let uiRegional of uiRegionalLang" [ngValue]="uiRegional.code">
                                         {{uiRegional.name}}
                                     </option>
@@ -147,7 +147,7 @@
                         <div class="col-md-3 position-relative form-group">
                             <label class="">Daily Authorisation</label>
                             <div class="input-group">
-                                <select class="mb-2 form-control" tabindex="12" formControlName="dailyAuthorisation">
+                                <select class="form-control formControl_dropdownselect" tabindex="12" formControlName="dailyAuthorisation">
                                     <option *ngFor="let uiDailyAuth of uiDailyAuthYN" [ngValue]="uiDailyAuth.code">
                                         {{uiDailyAuth.name}}
                                     </option>
@@ -157,7 +157,7 @@
                         <div class="col-md-3 position-relative form-group">
                             <label class="">Software Type</label>
                             <div class="input-group">
-                                <select class="mb-2 form-control" tabindex="13" formControlName="softwareType">
+                                <select class="form-control formControl_dropdownselect" tabindex="13" formControlName="softwareType">
                                     <option *ngFor="let uiSoftwareTyp of uiSoftwareType" [ngValue]="uiSoftwareTyp.code">
                                         {{uiSoftwareTyp.name}}
                                     </option>
@@ -171,7 +171,7 @@
                         <div class="col-md-3 position-relative form-group">
                             <label class="">Clearing Member</label>
                             <div class="input-group">
-                                <select class="mb-2 form-control" tabindex="14" formControlName="clearingMember">
+                                <select class="form-control formControl_dropdownselect" tabindex="14" formControlName="clearingMember">
                                     <option *ngFor="let uiClearingMember of uiClearingMemberYN" [ngValue]="uiClearingMember.code">
                                         {{uiClearingMember.name}}
                                     </option>
@@ -181,7 +181,7 @@
                         <div class="col-md-3 position-relative form-group">
                             <label class="">Cashier Transactions</label>
                             <div class="input-group">
-                                <select class="mb-2 form-control" tabindex="15" formControlName="cashyn">
+                                <select class="form-control formControl_dropdownselect" tabindex="15" formControlName="cashyn">
                                     <option *ngFor="let uiCashierTransaction of uiCashierTransactionsYN" [ngValue]="uiCashierTransaction.code">
                                         {{uiCashierTransaction.name}}
                                     </option>
@@ -245,7 +245,7 @@
                         <div class="col-md-3 position-relative form-group">
                             <label class="">Currency</label>
                             <div class="input-group">
-                                <select class="mb-2 form-control" tabindex="20" formControlName="currency">
+                                <select class="form-control formControl_dropdownselect" tabindex="20" formControlName="currency">
                                     <option *ngFor="let uiCurrency of uiCurrencies" [ngValue]="uiCurrency.currencyId">
                                         {{uiCurrency.currencyName}}
                                     </option>
@@ -254,7 +254,7 @@
                         </div>
                         <div class="col-md-3 position-relative">
                             <label class="">State</label>
-                            <select class="mb-2 form-control" tabindex="21" (change)="onStateChange($event)"
+                            <select class="form-control formControl_dropdownselect" tabindex="21" (change)="onStateChange($event)"
                                 formControlName="stateId">
                                 <option *ngFor="let uiState of uiStates" [ngValue]="uiState.id">
                                     {{uiState.stateName}}
@@ -266,7 +266,7 @@
                         
                         <div class="col-md-3 position-relative">
                             <label class="">District</label>
-                            <select class="mb-2 form-control" tabindex="22" (change)="onDistrictChange($event)"
+                            <select class="form-control formControl_dropdownselect" tabindex="22" (change)="onDistrictChange($event)"
                                 formControlName="districtId">
                                 <option *ngFor="let uiDistrict of uiDistricts" [ngValue]="uiDistrict.id">
                                     {{uiDistrict.districtName}}
@@ -275,7 +275,7 @@
                         </div>
                         <div class="col-md-3 position-relative">
                             <label class="">Tahsil</label>
-                            <select class="mb-2 form-control" formControlName="tahshilId" tabindex="23"
+                            <select class="form-control formControl_dropdownselect" formControlName="tahshilId" tabindex="23"
                                 formControlName="tahshilId">
                                 <option *ngFor="let uiTahshil of uiTahshils" [ngValue]="uiTahshil.id">
                                     {{uiTahshil.talukaName}}

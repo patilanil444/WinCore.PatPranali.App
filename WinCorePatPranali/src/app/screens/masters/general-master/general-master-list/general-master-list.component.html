@@ -8,10 +8,10 @@
                 <div class="row" style="margin-bottom: 10px;">
                     <div class="col-md-6 position-relative">
                         <label  class="">Select Master</label>
-                        <!-- <select class="mb-2 form-control">
+                        <!-- <select class="form-control formControl_dropdownselect">
                             <option>Default Select</option>
                         </select> -->
-                        <select class="form-control" name="masterList" [(ngModel)]="masterId">
+                        <select class="form-control formControl_dropdownselect" name="masterList" [(ngModel)]="masterId">
                             <option *ngFor="let uiMaster of uiMasters" [ngValue]="uiMaster.id">
                                 {{uiMaster.constName}}
                             </option>

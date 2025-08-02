@@ -50,7 +50,7 @@
                     <div class="row">
                         <div class="col-md-3 position-relative">
                             <label class="">Interest Posting</label>
-                            <select class="form-control" name="masterList" tabindex="6"
+                            <select class="form-control formControl_dropdownselect" name="masterList" tabindex="6"
                                 formControlName="interestPosting">
                                 <option *ngFor="let interestPosting of interestPostings"
                                     [ngValue]="interestPosting.code">
@@ -60,7 +60,7 @@
                         </div>
                         <div class="col-md-3 position-relative">
                             <label class="">Add Interest to Balance</label>
-                            <select class="form-control" name="masterList" tabindex="7"
+                            <select class="form-control formControl_dropdownselect" name="masterList" tabindex="7"
                                 formControlName="addIntToBalance">
                                 <option *ngFor="let addInterest of addInterestToBal" [ngValue]="addInterest.code">
                                     {{addInterest.name}}
@@ -77,7 +77,7 @@
                                     style="width: 100%;" [multiple]="false"
                                     formControlName="receivable"></ngx-select-dropdown>
                             </div>
-                            <!-- <select class="form-control" name="masterList" tabindex="8"
+                            <!-- <select class="form-control formControl_dropdownselect" name="masterList" tabindex="8"
                                 formControlName="receivable">
                                 <option *ngFor="let uiGeneralLedger of uiGeneralLedgers" [ngValue]="uiGeneralLedger.id">
                                     {{uiGeneralLedger.name}}
@@ -93,7 +93,7 @@
                                     style="width: 100%;" [multiple]="false"
                                     formControlName="received"></ngx-select-dropdown>
                             </div>
-                            <!-- <select class="form-control" name="masterList" tabindex="9"
+                            <!-- <select class="form-control formControl_dropdownselect" name="masterList" tabindex="9"
                                 formControlName="received">
                                 <option *ngFor="let uiGeneralLedger of uiGeneralLedgers" [ngValue]="uiGeneralLedger.id">
                                     {{uiGeneralLedger.name}}
@@ -105,7 +105,7 @@
                     <div class="row">
                         <div class="col-md-3 position-relative">
                             <label class="">Rate for Staff</label>
-                            <select class="form-control" name="masterList" tabindex="10"
+                            <select class="form-control formControl_dropdownselect" name="masterList" tabindex="10"
                                 (change)="onStaffRateChange($event)" formControlName="rateForStaffYN">
                                 <option *ngFor="let rateForSpecial of rateForSpecials" [ngValue]="rateForSpecial.code">
                                     {{rateForSpecial.name}}
@@ -114,7 +114,7 @@
                         </div>
                         <div class="col-md-3 position-relative">
                             <label class="">Rate for Female</label>
-                            <select class="form-control" name="masterList" tabindex="12"
+                            <select class="form-control formControl_dropdownselect" name="masterList" tabindex="12"
                                 (change)="onFemaleRateChange($event)" formControlName="rateForFemaleYN">
                                 <option *ngFor="let rateForSpecial of rateForSpecials" [ngValue]="rateForSpecial.code">
                                     {{rateForSpecial.name}}
@@ -123,7 +123,7 @@
                         </div>
                         <div class="col-md-3 position-relative">
                             <label class="">Rate for Senior citizen</label>
-                            <select class="form-control" name="masterList" tabindex="14"
+                            <select class="form-control formControl_dropdownselect" name="masterList" tabindex="14"
                                 (change)="onSeniorRateChange($event)" formControlName="rateForSeniorYN">
                                 <option *ngFor="let rateForSpecial of rateForSpecials" [ngValue]="rateForSpecial.code">
                                     {{rateForSpecial.name}}
@@ -157,7 +157,7 @@
                             <div class="row">
                                 <div class="col-md-3 position-relative">
                                     <label class="">Calculate interest after</label>
-                                    <select class="form-control" name="masterList" tabindex="16"
+                                    <select class="form-control formControl_dropdownselect" name="masterList" tabindex="16"
                                         formControlName="calculateIntAfterMaturity1">
                                         <option *ngFor="let calculateInterest of calculateInterestAfter"
                                             [ngValue]="calculateInterest.code">
@@ -167,7 +167,7 @@
                                 </div>
                                 <div class="col-md-3 position-relative">
                                     <label class="">Maturity at the time of</label>
-                                    <select class="form-control" name="masterList" tabindex="17"
+                                    <select class="form-control formControl_dropdownselect" name="masterList" tabindex="17"
                                         formControlName="calculateIntAfterMaturity2">
                                         <option *ngFor="let maturity of maturityAtTheTimeOf" [ngValue]="maturity.code">
                                             {{maturity.name}}
@@ -177,14 +177,14 @@
                                 <div class="col-md-6 position-relative">
                                     <label class="">Calculate Provision</label>
                                     <div style="display: flex;">
-                                        <select class="form-control" name="masterList" tabindex="18"
+                                        <select class="form-control formControl_dropdownselect" name="masterList" tabindex="18"
                                             formControlName="calculateProvision1">
                                             <option *ngFor="let calculateProv of calculateProvision01"
                                                 [ngValue]="calculateProv.code">
                                                 {{calculateProv.name}}
                                             </option>
                                         </select>
-                                        <select class="form-control" name="masterList" tabindex="19"
+                                        <select class="form-control formControl_dropdownselect" name="masterList" tabindex="19"
                                             formControlName="calculateProvision2" style="margin-left: 30px;">
                                             <option *ngFor="let calculateProv of calculateProvision02"
                                                 [ngValue]="calculateProv.code">
@@ -199,7 +199,7 @@
                                 <div class="col-md-3 position-relative form-group">
                                     <label class="">Calculate Payable</label>
                                     <div class="input-group">
-                                        <select class="form-control" name="masterList" tabindex="20"
+                                        <select class="form-control formControl_dropdownselect" name="masterList" tabindex="20"
                                             formControlName="calculatePayble">
                                             <option *ngFor="let calculatePay of calculatePayable"
                                                 [ngValue]="calculatePay.code">
@@ -225,7 +225,7 @@
                                 <div class="col-md-3 position-relative form-group">
                                     <label class="">Installment Penal</label>
                                     <div class="input-group">
-                                        <select class="form-control" name="masterList" tabindex="21"
+                                        <select class="form-control formControl_dropdownselect" name="masterList" tabindex="21"
                                             formControlName="installmantPenalDeposit">
                                             <option *ngFor="let installmentP of installmentPenal"
                                                 [ngValue]="installmentP.code">
@@ -238,7 +238,7 @@
                                 <div class="col-md-3 position-relative form-group">
                                     <label class="">RI Cumulative</label>
                                     <div class="input-group">
-                                        <select class="form-control" name="masterList" tabindex="22"
+                                        <select class="form-control formControl_dropdownselect" name="masterList" tabindex="22"
                                             formControlName="riCumulative">
                                             <option *ngFor="let riCumulate of riCumulative01"
                                                 [ngValue]="riCumulate.code">
@@ -254,7 +254,7 @@
                             <div class="row">
                                 <div class="col-md-3 position-relative">
                                     <label class="">Installment Penal</label>
-                                    <select class="form-control" name="masterList" tabindex="16"
+                                    <select class="form-control formControl_dropdownselect" name="masterList" tabindex="16"
                                         formControlName="installmantPenalForLoan">
                                         <option *ngFor="let installmentP of installmentPenal"
                                             [ngValue]="installmentP.code">
@@ -269,7 +269,7 @@
 
                                 </div>
                                 <div class="col-md-3 position-relative">
-                                    <select class="form-control" name="masterList" tabindex="17"
+                                    <select class="form-control formControl_dropdownselect" name="masterList" tabindex="17"
                                         style="margin-top: 25px;" formControlName="installmantPenalAfter">
                                         <option *ngFor="let installmentPenalA of installmentPenalAfter"
                                             [ngValue]="installmentPenalA.code">
@@ -279,7 +279,7 @@
                                 </div>
                                 <div class="col-md-3 position-relative">
                                     <label class="">Interest calculation type</label>
-                                    <select class="form-control" name="masterList" tabindex="17"
+                                    <select class="form-control formControl_dropdownselect" name="masterList" tabindex="17"
                                         formControlName="interestCalculationTypeForLoan">
                                         <option *ngFor="let interestCalculationT of interestCalculationType"
                                             [ngValue]="interestCalculationT.code">
@@ -292,7 +292,7 @@
                                 <div class="col-md-3 position-relative">
                                     <label class="">Interest after maturity</label>
                                     <div style="display: flex;">
-                                        <select class="form-control" name="masterList" tabindex="18"
+                                        <select class="form-control formControl_dropdownselect" name="masterList" tabindex="18"
                                             formControlName="interestAfterMaturityForLoan">
                                             <option *ngFor="let interestAfterMature of interestAfterMaturity"
                                                 [ngValue]="interestAfterMature.code">
@@ -309,7 +309,7 @@
                                 <div class="col-md-3 position-relative form-group">
                                     <label class="">Installment Calculation</label>
                                     <div class="input-group">
-                                        <select class="form-control" name="masterList" tabindex="20"
+                                        <select class="form-control formControl_dropdownselect" name="masterList" tabindex="20"
                                             formControlName="installmentCalculationForLoan">
                                             <option *ngFor="let installmentCalculate of installmentCalculation"
                                                 [ngValue]="installmentCalculate.code">
@@ -321,7 +321,7 @@
                                 <div class="col-md-3 position-relative form-group">
                                     <label class="">Calculate extra interest for CC above limit</label>
                                     <div class="input-group">
-                                        <select class="form-control" name="masterList" tabindex="21"
+                                        <select class="form-control formControl_dropdownselect" name="masterList" tabindex="21"
                                             formControlName="extraInterestForCCForLoan">
                                             <option *ngFor="let extraInterest of extraInterestForCC"
                                                 [ngValue]="extraInterest.code">

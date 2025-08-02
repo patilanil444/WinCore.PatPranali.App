@@ -51,7 +51,7 @@
                                         <div class="row">
                                             <div class="col-md-3 position-relative form-group">
                                                 <label class="">Transaction Type</label>
-                                                <select class="mb-2 form-control" tabindex="18" formControlName="cashTransactionType">
+                                                <select class="form-control formControl_dropdownselect" tabindex="18" formControlName="cashTransactionType">
                                                     <option *ngFor="let uiTransactionType of uicashTransactionTypes" [ngValue]="uiTransactionType.code">
                                                         {{uiTransactionType.name}}
                                                     </option>
@@ -63,7 +63,7 @@
                                                 <div class="row">
                                                     <div class="col-md-3 position-relative form-group">
                                                         <label class="">Branch </label>
-                                                        <select class="form-control" tabindex="27" formControlName="cashBranchId">
+                                                        <select class="form-control formControl_dropdownselect" tabindex="27" formControlName="cashBranchId">
                                                             <option *ngFor="let uiBranch of uiBranches" [ngValue]="uiBranch.branchCode">
                                                                 {{uiBranch.branchName}}
                                                             </option>
@@ -158,7 +158,7 @@
                                         <div class="row">
                                             <div class="col-md-3 position-relative form-group">
                                                 <label class="">Transaction Type</label>
-                                                <select class="mb-2 form-control" tabindex="18" formControlName="transferTransactionType">
+                                                <select class="form-control formControl_dropdownselect" tabindex="18" formControlName="transferTransactionType">
                                                     <option *ngFor="let uiTransactionType of uiTransferTransactionTypes" [ngValue]="uiTransactionType.code">
                                                         {{uiTransactionType.name}}
                                                     </option>
@@ -170,7 +170,7 @@
                                                 <div class="row">
                                                     <div class="col-md-3 position-relative form-group">
                                                         <label class="">Branch </label>
-                                                        <select class="form-control" tabindex="27" formControlName="fromBranchId">
+                                                        <select class="form-control formControl_dropdownselect" tabindex="27" formControlName="fromBranchId">
                                                             <option *ngFor="let uiBranch of uiBranches" [ngValue]="uiBranch.branchCode">
                                                                 {{uiBranch.branchName}}
                                                             </option>
@@ -239,7 +239,7 @@
                                                 <div class="row">
                                                     <div class="col-md-3 position-relative form-group">
                                                         <label class="">Branch </label>
-                                                        <select class="form-control" tabindex="27" formControlName="toBranchId">
+                                                        <select class="form-control formControl_dropdownselect" tabindex="27" formControlName="toBranchId">
                                                             <option *ngFor="let uiBranch of uiBranches" [ngValue]="uiBranch.branchCode">
                                                                 {{uiBranch.branchName}}
                                                             </option>
@@ -353,7 +353,7 @@
                                         <div class="row">
                                             <div class="col-md-3 position-relative form-group">
                                                 <label class="">Transaction Type</label>
-                                                <select class="mb-2 form-control" tabindex="18" formControlName="closureTransactionType">
+                                                <select class="form-control formControl_dropdownselect" tabindex="18" formControlName="closureTransactionType">
                                                     <option *ngFor="let uiTransactionType of uiAccountClosureTransactionTypes" [ngValue]="uiTransactionType.code">
                                                         {{uiTransactionType.name}}
                                                     </option>
@@ -365,7 +365,7 @@
                                                 <div class="row">
                                                     <div class="col-md-3 position-relative form-group">
                                                         <label class="">Branch </label>
-                                                        <select class="form-control" tabindex="27" formControlName="closureBranchId">
+                                                        <select class="form-control formControl_dropdownselect" tabindex="27" formControlName="closureBranchId">
                                                             <option *ngFor="let uiBranch of uiBranches" [ngValue]="uiBranch.branchCode">
                                                                 {{uiBranch.branchName}}
                                                             </option>

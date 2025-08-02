@@ -35,7 +35,7 @@
 
                             <div class="extraFilterSection8">
                                 <label  class="commonTextTitleLabel">Transaction Type </label>
-                                <select class="form-control" id="transactionType" name="transactionType"
+                                <select class="form-control formControl_dropdownselect" id="transactionType" name="transactionType"
                                     (change)="changeTransactionType($event)" [(ngModel)]="selectedTransactionType">
                                     <option *ngFor="let uiTransactionType of uiTransactionTypes" [value]="uiTransactionType.code">
                                         {{uiTransactionType.name}}
@@ -98,7 +98,7 @@
 
                             <div class="extraFilterSection8">
                                 <label  class="commonTextTitleLabel">Select Cashier </label>
-                                <select class="form-control" id="cashier" name="cashier" [(ngModel)]="selectedUserId"
+                                <select class="form-control formControl_dropdownselect" id="cashier" name="cashier" [(ngModel)]="selectedUserId"
                                     (change)="changeUser($event)">
                                         <option *ngFor="let uiCashier of uiCashiers" [value]="uiCashier.id">
                                             {{uiCashier.name}}

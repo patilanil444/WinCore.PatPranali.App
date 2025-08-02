@@ -13,7 +13,7 @@
                         </div>
                         <div class="col-md-3 position-relative form-group">
                             <label class="">User Role <span class="mandatory">*</span></label>
-                            <select class="mb-2 form-control" tabindex="3" formControlName="role">
+                            <select class="form-control formControl_dropdownselect" tabindex="3" formControlName="role">
                                 <option *ngFor="let uiUserRole of uiUserRoles" [ngValue]="uiUserRole.id">
                                     {{uiUserRole.userRole}}
                                 </option>
@@ -21,7 +21,7 @@
                         </div>
                         <div class="col-md-3 position-relative form-group">
                             <label class="">Todays Role <span class="mandatory">*</span></label>
-                            <select class="mb-2 form-control" tabindex="3" formControlName="todaysRole">
+                            <select class="form-control formControl_dropdownselect" tabindex="3" formControlName="todaysRole">
                                 <option *ngFor="let uiUserRole of uiUserRoles" [ngValue]="uiUserRole.id">
                                     {{uiUserRole.userRole}}
                                 </option>
