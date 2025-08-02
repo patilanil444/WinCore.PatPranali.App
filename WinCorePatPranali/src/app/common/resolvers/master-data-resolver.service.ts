@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { ActivatedRouteSnapshot, Resolve } from '@angular/router';
 import { Observable, forkJoin } from 'rxjs';
 import { MasterDataService } from 'src/app/services/common/master-data.service';
+import { DocumentsService } from 'src/app/services/documents/documents.service';
 import { GeneralLedgerService } from 'src/app/services/masters/general-ledger/general-ledger.service';
 import { TransactionMasterService } from 'src/app/services/transactions/transaction-master/transaction-master.service';
 
@@ -11,7 +12,7 @@ import { TransactionMasterService } from 'src/app/services/transactions/transact
 export class MasterDataResolverService {
 
   constructor(private _masterDataService: MasterDataService,private _generalLedgerService: GeneralLedgerService,
-    private _transactionMasterService: TransactionMasterService
+    private _transactionMasterService: TransactionMasterService, private _documentsService: DocumentsService
    ) {}
   
   resolve(route: ActivatedRouteSnapshot): Observable<any> {
@@ -25,6 +26,8 @@ export class MasterDataResolverService {
         villages: this._masterDataService.getUiVillages(),
         glTypesAndGroups: this._generalLedgerService.getGeneralLedgerTypesAndGroups(""),
         denominations: this._transactionMasterService.getDenominations(),
+        documentTypes: this._documentsService.getDocumentTypes(),
+        documentMasters: this._documentsService.getDocumentMasters(),
         //typeOfAccounts: this._masterDataService.getUiTypeOfAccounts()
       }
     );

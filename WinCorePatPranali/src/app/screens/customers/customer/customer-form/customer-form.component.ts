@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { formatDate } from '@angular/common';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ToastrService } from 'ngx-toastr';
@@ -9,6 +9,8 @@ import { SharedService } from 'src/app/services/shared.service';
 import { NgxDropdownConfig } from 'ngx-select-dropdown';
 import { Router } from '@angular/router';
 import { UserRoleHeper } from 'src/app/common/utils/user-role-helper';
+import { DocumentsService } from 'src/app/services/documents/documents.service';
+import { ConfirmBoxComponent } from 'src/app/common/directives/confirm-box/confirm-box.component';
 
 interface ICustomerModel {
   CustomerId: number;
@@ -40,7 +42,7 @@ interface ICustomerModel {
   ModifiedBy: number;
   CustomerAddresses: ICustomerAddress[];
   CustomerNominees: ICustomerNominee[];
-  Documents: any[];
+  CustomerDocuments: any[];
 }
 
 interface ICustomerAddress {
@@ -110,18 +112,26 @@ export interface UiNomini {
   phone: string,
   createdBy: number,
   modifiedBy: number,
-  status : string,
+  status: string,
   mstCustomer: {}
 }
 
 export interface UiDocument {
-  id: number,
-  customerId: number,
-  documentKey: string,
-  documentName: string,
-  filePath: string,
-  uploadSuccess: false,
-  percentDone: 0
+  DocumentId: number,
+  DocumentName: string,
+  DocumentEntityId: number,
+  EntityId: number,
+  DocumentMasterId: number,
+  DocumentMasterName: string,
+  DocumentTypeName: string,
+  DocumentNo: string,
+  DocumentFileName: string,
+  Extension: string,
+  DocumentFile: File | null,
+  CreatedBy: number,
+  UploadSuccess: boolean,
+  PercentDone: number,
+  UploadMessage: string,
 }
 
 @Component({
@@ -146,6 +156,9 @@ export class CustomerFormComponent implements OnInit {
     enableSelectAll: false,
   };
 
+  @ViewChild('confirmModal', { static: false }) confirmModal: ConfirmBoxComponent
+
+  messageNote: any = {};
   personalDetailsForm!: FormGroup;
   addressForm!: FormGroup;
   nominiForm!: FormGroup;
@@ -181,6 +194,8 @@ export class CustomerFormComponent implements OnInit {
   uiCustomerTypes: any[] = [];
   uiTitles: any[] = [];
   uiDocumentTypes: any[] = [];
+  uiAllDocumentMasters: any[] = [];
+  uiDocumentMasters: any[] = [];
 
   p_address: number = 1;
   p_nomini: number = 1;
@@ -202,13 +217,15 @@ export class CustomerFormComponent implements OnInit {
   uiNominis: any[] = [];
   uiDocuments: any[] = [];
 
+
   //uiMembers: any[] = [];
 
   dto: IGeneralDTO = {} as IGeneralDTO;
 
 
   constructor(private router: Router, private _customerService: CustomerService,
-    private _sharedService: SharedService, private _toastrService: ToastrService) { }
+    private _sharedService: SharedService, private _toastrService: ToastrService,
+    private _documentsService: DocumentsService) { }
 
   ngOnInit(): void {
     this.maxDate = new Date();
@@ -219,10 +236,10 @@ export class CustomerFormComponent implements OnInit {
     this.uiEducations = this.retrieveMasters(UiEnumGeneralMaster.EDUCATION);
     //this.uiTdsApplicables = CustomerDeclarations.tdsApplicables;
     //this.uiTdsPrintings = CustomerDeclarations.tdsPrintings;
+    this.uiAllDocumentMasters = this._sharedService.uiDocumentMasters;
     this.uiAddressTypes = this.retrieveMasters(UiEnumGeneralMaster.ADDRESSTYPE);
     this.uiCustomerTypes = CustomerDeclarations.customerTypes;
     this.uiTitles = this.retrieveMasters(UiEnumGeneralMaster.TITLE);
-    this.uiDocumentTypes = CustomerDeclarations.documents;
     this.uiCustomerGroups = this.retrieveMasters(UiEnumGeneralMaster.CUSTOMERGROUP);
     this.uiOccupations = this.retrieveMasters(UiEnumGeneralMaster.OCCUPTION);
     this.uiRelations = this.retrieveMasters(UiEnumGeneralMaster.RELATION);
@@ -285,8 +302,13 @@ export class CustomerFormComponent implements OnInit {
     });
 
     this.documentsForm = new FormGroup({
-      documentSelect: new FormControl(this.uiDocumentTypes[0].code, [Validators.required]),
+      documentSelect: new FormControl(this.uiDocumentTypes?.[0]?.id, []),
+      documentMaster: new FormControl(this.uiAllDocumentMasters?.[0]?.id, []),
+      documentNumber: new FormControl("", []),
+      documentFile: new FormControl("", []),
     });
+
+    this.loadDocumentMasters();
 
     this.loadForm();
     UserRoleHeper.initialiseUserRoles(this._sharedService.applicationUser);
@@ -294,6 +316,23 @@ export class CustomerFormComponent implements OnInit {
 
   isOperatorUser() {
     return UserRoleHeper.isOperatorUser();
+  }
+
+  isDocumentsEnabled() {
+    return this.dto.id > 0;
+  }
+
+  loadDocumentMasters() {
+    if (this._sharedService.uiDocumentTypes && this._sharedService.uiDocumentTypes.length) {
+      this.uiDocumentTypes = this._sharedService.uiDocumentTypes;
+      if (this.uiAllDocumentMasters && this.uiAllDocumentMasters.length) {
+        let documentMasters = this.uiAllDocumentMasters;
+        let masters = documentMasters.filter((d: any) => d.documentTypeId == this.uiDocumentTypes[0].id);
+        if (masters && masters.length) {
+          this.uiDocumentMasters = masters;
+        }
+      }
+    }
   }
 
   retrieveMasters(uiEnumGeneralMaster: UiEnumGeneralMaster) {
@@ -380,13 +419,18 @@ export class CustomerFormComponent implements OnInit {
             nominiDateOfBirth: formatDate(new Date(), 'yyyy-MM-dd', 'en'),
             nominiAge: this.calculateAge(formatDate(new Date(), 'yyyy-MM-dd', 'en')),
           });
+
+          this.documentsForm.patchValue({
+            documentSelect: this.uiDocumentTypes?.[0]?.id,
+            documentMaster: this.uiAllDocumentMasters?.[0]?.id,
+          });
         });
       }
       else {
         // Edit Mode
         this.isAddMode = false;
         this._customerService.getCustomer(this._sharedService.applicationUser.branchId, this.dto.id).subscribe((data: any) => {
-         
+
           if (data) {
             if (data.statusCode == 200 && data.data.data) {
               var customer = data.data.data;
@@ -400,9 +444,9 @@ export class CustomerFormComponent implements OnInit {
                 personalLastName: customer.lName,
                 personalPhone: customer.phone,
                 personalMobile: customer.mobileno,
-                personalDateOfBirth:  formatDate(new Date(customer.birthDate), 'yyyy-MM-dd', 'en'),
+                personalDateOfBirth: formatDate(new Date(customer.birthDate), 'yyyy-MM-dd', 'en'),
                 personalAge: this.calculateAge(customer.birthDate),
-                personalOpenDate:  formatDate(new Date(customer.custOpenDate), 'yyyy-MM-dd', 'en'),
+                personalOpenDate: formatDate(new Date(customer.custOpenDate), 'yyyy-MM-dd', 'en'),
                 personalEmail: customer.emailid,
                 personalPAN: customer.panNo,
                 personalAadhar: customer.aadharno,
@@ -416,6 +460,11 @@ export class CustomerFormComponent implements OnInit {
                 personalNationality: customer.nationality,
                 personalEducation: customer.education,
                 personalCustCategory: customer.custCategory
+              });
+
+              this.documentsForm.patchValue({
+                documentSelect: this.uiDocumentTypes?.[0]?.id,
+                documentMaster: this.uiAllDocumentMasters?.[0]?.id,
               });
 
               if (customer.customerAddresses) {
@@ -474,17 +523,24 @@ export class CustomerFormComponent implements OnInit {
                 });
               }
 
-              // if (customer.documents) {
-              //   customer.documents.forEach((doc: any) => {
-              //     let uiDocument = {} as UiDocument;
-              //     uiDocument.customerId = this.dto.id;
-              //     uiDocument.documentKey = doc.documentKey;
-              //     uiDocument.documentName = this.uiDocumentTypes.filter(d => d.code == uiDocument.documentKey)[0].name;
-              //     uiDocument.filePath = doc.filePath;
-              //     uiDocument.id = doc.id;
-              //     this.uiDocuments.push(uiDocument);
-              //   });
-              // }
+              if (customer.customerDocuments) {
+                this.uiDocuments = [];
+                customer.customerDocuments.forEach((doc: any) => {
+                  let uiDocument = {} as UiDocument;
+                  uiDocument.EntityId = doc.entityId;
+                  uiDocument.DocumentEntityId = doc.documentEntityId;
+                  uiDocument.DocumentFileName = doc.documentFileName;
+                  uiDocument.DocumentId = doc.documentId;
+                  uiDocument.DocumentMasterId = doc.documentMasterId;
+                  let documentMaster = this.uiAllDocumentMasters.filter(d => d.id == doc.documentMasterId);
+                  uiDocument.DocumentMasterName = (documentMaster && documentMaster.length > 0) ? documentMaster[0].documentName : "";
+                  uiDocument.DocumentTypeName = (documentMaster && documentMaster.length > 0) ? this.uiDocumentTypes.filter(d => d.id == documentMaster[0].documentTypeId)[0].documentType : "";
+                  uiDocument.DocumentNo = doc.documentNo;
+                  uiDocument.Extension = doc.extension;
+                  uiDocument.DocumentFile = doc.documentFile ? doc.documentFile : null;
+                  this.uiDocuments.push(uiDocument);
+                });
+              }
             }
           }
         })
@@ -509,6 +565,19 @@ export class CustomerFormComponent implements OnInit {
     let currentDate = new Date().getFullYear();
     let dob = new Date(dateOfBirth).getFullYear();
     return Math.abs(currentDate - dob);
+  }
+
+  onDocumentTypeChange(event: any) {
+    let val = event.target.value;
+    let documentType = val.split(":");
+
+    if (documentType) {
+      let document = this.uiDocumentTypes.filter(d => d.id == parseInt(documentType[1]));
+      if (document && document.length) {
+        let documentMasters = this.uiAllDocumentMasters.filter(d => d.documentTypeId == parseInt(document[0].id));
+        this.uiDocumentMasters = documentMasters;
+      }
+    }
   }
 
   pageAddressChangeEvent(event: number) {
@@ -597,7 +666,7 @@ export class CustomerFormComponent implements OnInit {
       });
       return;
     }
-    
+
     const [day, month, year] = event.target.value.split('-').map(Number);
     // Create Date object
     const targetValue = new Date(year, month - 1, day); // month is 0-based
@@ -622,7 +691,7 @@ export class CustomerFormComponent implements OnInit {
       });
       return;
     }
-    
+
     const [day, month, year] = event.target.value.split('-').map(Number);
     // Create Date object
     const targetValue = new Date(year, month - 1, day); // month is 0-based
@@ -731,7 +800,7 @@ export class CustomerFormComponent implements OnInit {
     customerModel.CustomerAddresses = [];
     this.uiAddresses.forEach(add => {
       customerAddress = {} as ICustomerAddress;
-      customerAddress.AddressID =  add.id;
+      customerAddress.AddressID = add.id;
       customerAddress.CustomerId = add.customerId;
       customerAddress.Address_Type = add.addressTypeId;
       customerAddress.Address = add.address;
@@ -751,8 +820,8 @@ export class CustomerFormComponent implements OnInit {
     customerModel.CustomerNominees = [];
     this.uiNominis.forEach(nom => {
       customerNomini = {} as ICustomerNominee;
-      customerNomini.Id =  nom.id;
-      customerNomini.SrNo =  nom.srNo;
+      customerNomini.Id = nom.id;
+      customerNomini.SrNo = nom.srNo;
       customerNomini.CustomerId = nom.customerId;
       customerNomini.BirthDate = nom.birthDate;
       customerNomini.NomineeAddress = nom.nomineeAddress;
@@ -766,11 +835,11 @@ export class CustomerFormComponent implements OnInit {
       customerModel.CustomerNominees.push(customerNomini);
     });
 
-    customerModel.Documents = this.uiDocuments;
+    //customerModel.CustomerDocuments = this.uiDocuments;
     console.log(customerModel);
 
     this._customerService.saveCustomer(customerModel).subscribe((data: any) => {
-     
+
       if (data) {
         if (data.data.data && data.data.data.retId > 0) {
           this._toastrService.success('Customer saved.', 'Success!');
@@ -802,7 +871,8 @@ export class CustomerFormComponent implements OnInit {
     this.clearPersonalDetails();
     this.clearAddress();
     this.clearNomini();
-    this.clearDocuments();
+    this.clearDocument();
+    this.uiDocuments = [];
   }
 
   searchCustomer() {
@@ -971,7 +1041,7 @@ export class CustomerFormComponent implements OnInit {
       let relationName = "";
       let uiRelation = this.uiRelations.filter(r => r.constantNo == parseInt(this.nominiRelation.value.toString()));
       if (uiRelation) {
-        relationName = (uiRelation && uiRelation.length > 0)? uiRelation[0].constantname : "";
+        relationName = (uiRelation && uiRelation.length > 0) ? uiRelation[0].constantname : "";
       }
 
       if (nominiIndex > -1) {
@@ -1016,7 +1086,7 @@ export class CustomerFormComponent implements OnInit {
       nominiName: uiNomini.nomineeName,
       nominiAddress: uiNomini.nomineeAddress,
       nominiDateOfBirth: formatDate(uiNomini.birthDate, 'yyyy-MM-dd', 'en'),
-      nominiAge:this.calculateAge(formatDate(uiNomini.birthDate, 'yyyy-MM-dd', 'en')),
+      nominiAge: this.calculateAge(formatDate(uiNomini.birthDate, 'yyyy-MM-dd', 'en')),
       nominiPhone: uiNomini.phone,
       nominiRelation: parseInt(uiNomini.relation),
       nominiGuardian: uiNomini.guardian,
@@ -1043,61 +1113,186 @@ export class CustomerFormComponent implements OnInit {
   }
 
 
+  getCustomerDocuments() {
+    if (this.dto.id > 0) {
+      this.uiDocuments = [];
+      this._documentsService.getDocumentsByEntityId(this.dto.id, 1).subscribe((data: any) => {
+        if (data && data.data && data.data.data) {
+          data.data.data.forEach((doc: any) => {
+            let uiDocument = {} as UiDocument;
+            uiDocument.EntityId = doc.entityId;
+            uiDocument.DocumentEntityId = doc.documentEntityId;
+            uiDocument.DocumentFileName = doc.documentFileName;
+            uiDocument.DocumentId = doc.documentId;
+            uiDocument.DocumentMasterId = doc.documentMasterId;
+            let documentMaster = this.uiAllDocumentMasters.filter(d => d.id == doc.documentMasterId);
+            uiDocument.DocumentMasterName = (documentMaster && documentMaster.length > 0) ? documentMaster[0].documentName : "";
+            uiDocument.DocumentTypeName = (documentMaster && documentMaster.length > 0) ? this.uiDocumentTypes.filter(d => d.id == documentMaster[0].documentTypeId)[0].documentType : "";
+            uiDocument.DocumentNo = doc.documentNo;
+            uiDocument.Extension = doc.extension;
+            uiDocument.DocumentFile = doc.documentFile ? doc.documentFile : null;
+            this.uiDocuments.push(uiDocument);
+          });
+        }
+      });
+
+    }
+
+  }
 
   addDocument() {
 
-    let documentIndex = this.uiDocuments.findIndex(d => d.documentKey == this.documentSelect.value.toString());
+    let documentIndex = this.uiDocuments.findIndex(d => d.documentKey == this.documentMaster.value.toString());
     if (documentIndex > -1) {
       this._toastrService.error('Document already exists.', 'Error!');
       return;
     }
+
+    if (this.documentNumber.value == null || this.documentNumber.value == "") {
+      this._toastrService.error('Document number is required.', 'Error!');
+      return;
+    }
+
+    if (this.documentFile.value == null || this.documentFile.value == "") {
+      this._toastrService.error('Document file is required.', 'Error!');
+      return;
+    }
+
     let uiDocument = {} as UiDocument;
-    uiDocument.customerId = parseInt(this.customerCode.value);
-    uiDocument.documentKey = this.documentSelect.value.toString();
-    uiDocument.documentName = this.uiDocumentTypes.filter(d => d.code == uiDocument.documentKey)[0].name;
-    uiDocument.filePath = "";
-    uiDocument.id = 0;
-    uiDocument.uploadSuccess = false;
-    uiDocument.percentDone = 0;
+    uiDocument.DocumentId = 0;
+    uiDocument.DocumentEntityId = 1; // 1 for customer
+    uiDocument.EntityId = this.dto.id;
+    uiDocument.DocumentMasterId = parseInt(this.documentMaster.value.toString());
+    let documentMaster = this.uiAllDocumentMasters.filter(d => d.id == uiDocument.DocumentMasterId);
+    uiDocument.DocumentMasterName = (documentMaster && documentMaster.length > 0) ? documentMaster[0].documentName : "";
+    uiDocument.DocumentTypeName = (documentMaster && documentMaster.length > 0) ? this.uiDocumentTypes.filter(d => d.id == documentMaster[0].documentTypeId)[0].documentType : "";
+    uiDocument.DocumentNo = this.documentNumber.value ? this.documentNumber.value.toString() : "";
+    uiDocument.Extension = this.documentFile.value ? this.documentFile.value.split('.').pop() || '' : '';
+    //uiDocument.DocumentFile = this.selectedFile ? this.selectedFile : null;
+    uiDocument.DocumentFileName = this.documentFile.value ? this.documentFile.value : "";
+    uiDocument.CreatedBy = this._sharedService.applicationUser.id;
+    uiDocument.UploadSuccess = false;
+    uiDocument.PercentDone = 0;
     this.uiDocuments.push(uiDocument);
 
+    this.clearDocument();
   }
 
   deleteDocument(index: number) {
     // Add confirmation 
-    this.uiDocuments.splice(index, 1);
+
+    this.messageNote = { value: "Are you sure you want to delete this document?" };
+    this.confirmModal.open(index);
   }
 
-  clearDocuments() {
-    this.uiDocuments = [];
-  }
+  onConfirmed(event: any) {
 
-  uploadDocument(event: any, index: number, documentKey: string) {
-    this.uploadAndProgressSingle(event.target.files[0], index, documentKey);
-  }
+    let uiDocument = this.uiDocuments[event];
+    if (uiDocument && uiDocument.DocumentId == 0) {
+      this.uiDocuments.splice(event, 1);
+      return;
+    }
 
-  uploadAndProgressSingle(file: File, index: number, documentKey: string) {
-    let formData = new FormData();
-    formData.append('documentName', file.name);
-    formData.append('documentKey', documentKey);
-    formData.append('customerId', this.customerCode.value);
-    formData.append('postedDocument', file);
+    let documentModel: any = {};
+    documentModel.DocumentId = uiDocument.DocumentId;
+    documentModel.CreatedBy = this._sharedService.applicationUser.id;
 
-    this._customerService.uploadDocument(formData).subscribe((data: any) => {
-      let result = data.data.data;
-      if (result.includes(file.name)) {
-        this.uiDocuments[index].uploadSuccess = true;
-        this.uiDocuments[index].percentDone = 100;
+    this._documentsService.deleteDocument(documentModel).subscribe((data: any) => {
+      let result = data;
+      if (result.isSuccess > 0) {
+        this.uiDocuments.push(uiDocument);
+        uiDocument.UploadSuccess = true;
+        uiDocument.PercentDone = 100;
+        uiDocument.UploadMessage = result.message;
+        this._toastrService.success(result.message, 'Success!');
+        this.getCustomerDocuments();
       }
+      else {
+        uiDocument.UploadSuccess = false;
+        uiDocument.PercentDone = 0;
+        uiDocument.UploadMessage = "Document delete failed.";
+        this._toastrService.error(result.message, 'Error!');
+      }
+    });
 
-      this.uiDocuments[index].filePath = file.name;
+
+  }
+
+  editDocument(uiDocument: any, index: number) {
+    // This function can be used to edit document details if needed
+  }
+
+  clearDocument() {
+    this.documentsForm.patchValue({
+      documentSelect: (this.uiDocumentTypes.length) ? this.uiDocumentTypes[0].id : null,
+      documentMaster: (this.uiAllDocumentMasters.length) ? this.uiAllDocumentMasters[0].id : null,
+      documentNumber: "",
+      documentFile: ""
     });
   }
 
-  ///Customer
+  //selectedFile: File | null = null;
 
+  uploadDocument(event: any, index: number) {
+    //this.selectedFile = event.target.files[0];
+    this.uploadAndProgressSingle(event.target.files[0], index);
+  }
 
-  ///
+  uploadAndProgressSingle(file: File, index: number) {
+
+    // Check if document with same documentMaster already exists
+    const exists = this.uiDocuments.some(doc => doc.DocumentMasterId === parseInt(this.documentMaster.value.toString()));
+    if (exists) {
+      this._toastrService.error('Document already exists. Delete old to add new.', 'Error!');
+      return;
+    }
+
+    let uiDocument = {} as UiDocument;
+    uiDocument.DocumentId = 0;
+    uiDocument.DocumentEntityId = 1; // 1 for customer
+    uiDocument.EntityId = this.dto.id;
+    uiDocument.DocumentMasterId = parseInt(this.documentMaster.value.toString());
+    let documentMaster = this.uiAllDocumentMasters.filter(d => d.id == uiDocument.DocumentMasterId);
+    uiDocument.DocumentMasterName = (documentMaster && documentMaster.length > 0) ? documentMaster[0].documentName : "";
+    uiDocument.DocumentTypeName = (documentMaster && documentMaster.length > 0) ? this.uiDocumentTypes.filter(d => d.id == documentMaster[0].documentTypeId)[0].documentType : "";
+    uiDocument.DocumentFile = file;
+    uiDocument.DocumentFileName = file.name;
+    uiDocument.UploadSuccess = false;
+    uiDocument.Extension = file.name.split('.').pop() || '';
+    uiDocument.DocumentNo = this.documentNumber.value.toString();
+    uiDocument.CreatedBy = this._sharedService.applicationUser.id;
+    uiDocument.PercentDone = 0;
+
+    let formData = new FormData();
+
+    formData.append('DocumentId', uiDocument.DocumentId.toString());
+    formData.append('DocumentEntityId', uiDocument.DocumentEntityId.toString());
+    formData.append('EntityId', uiDocument.EntityId.toString());
+    formData.append('DocumentMasterId', uiDocument.DocumentMasterId.toString());
+    formData.append('DocumentNo', uiDocument.DocumentNo.toString());
+    formData.append('DocumentFileName', uiDocument.DocumentFileName);
+    formData.append('Extension', uiDocument.Extension);
+    formData.append('CreatedBy', uiDocument.CreatedBy.toString());
+    formData.append('DocumentFile', file);
+
+    this._documentsService.saveDocument(formData).subscribe((data: any) => {
+      let result = data;
+      if (result.documentId > 0) {
+        this.uiDocuments.push(uiDocument);
+        uiDocument.UploadSuccess = true;
+        uiDocument.PercentDone = 100;
+        uiDocument.UploadMessage = result.message;
+        this._toastrService.success('Document uploaded successfully.', 'Success!');
+      }
+      else {
+        uiDocument.UploadSuccess = false;
+        uiDocument.PercentDone = 0;
+        uiDocument.UploadMessage = "Document upload failed.";
+        this._toastrService.error('Document upload failed.', 'Error!');
+      }
+    });
+  }
+
 
   /// Personal
   get customerCode() {
@@ -1107,7 +1302,7 @@ export class CustomerFormComponent implements OnInit {
   get customerNumber() {
     return this.personalDetailsForm.get('customerNumber')!;
   }
-  
+
   get personalTitle() {
     return this.personalDetailsForm.get('personalTitle')!;
   }
@@ -1234,6 +1429,22 @@ export class CustomerFormComponent implements OnInit {
   /// Document
   get documentSelect() {
     return this.documentsForm.get('documentSelect')!;
+  }
+
+  get documentMaster() {
+    return this.documentsForm.get('documentMaster')!;
+  }
+
+  get documentNumber() {
+    return this.documentsForm.get('documentNumber')!;
+  }
+
+  get documentFile() {
+    return this.documentsForm.get('documentFile')!;
+  }
+
+  get uploadPercent() {
+    return this.documentsForm.get('uploadPercent')!;
   }
 
   ///

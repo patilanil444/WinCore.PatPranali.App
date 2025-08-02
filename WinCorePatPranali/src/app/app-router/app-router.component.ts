@@ -42,6 +42,8 @@ export class AppRouterComponent implements OnInit, AfterViewInit {
       this._sharedService.uiCurrencies = this.activatedRoute.snapshot.data['masterData'].currencies.data.data
       this._sharedService.uiGLTypesAndGroups = this.activatedRoute.snapshot.data['masterData'].glTypesAndGroups.data.data
       this._sharedService.uiDenominatons = this.activatedRoute.snapshot.data['masterData'].denominations.data.data
+      this._sharedService.uiDocumentTypes = this.activatedRoute.snapshot.data['masterData'].documentTypes
+      this._sharedService.uiDocumentMasters = this.activatedRoute.snapshot.data['masterData'].documentMasters
     });
 
     let configMenu = sessionStorage.getItem("configMenu");

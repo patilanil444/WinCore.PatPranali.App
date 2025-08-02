@@ -1,12 +1,16 @@
+import { DatePipe } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { Router } from '@angular/router';
+import { NgxDropdownConfig } from 'ngx-select-dropdown';
 import { ToastrService } from 'ngx-toastr';
-import { UiEnumGeneralMaster } from 'src/app/common/models/common-ui-models';
+import { IGeneralDTO, UiEnumGeneralMaster } from 'src/app/common/models/common-ui-models';
 import { TransactionsDeclarations } from 'src/app/common/transaction-declarations';
 import { UserRoleHeper } from 'src/app/common/utils/user-role-helper';
 import { AccountsService } from 'src/app/services/accounts/accounts/accounts.service';
+import { GeneralLedgerService } from 'src/app/services/masters/general-ledger/general-ledger.service';
 import { SharedService } from 'src/app/services/shared.service';
+import { StandingInstructionService } from 'src/app/services/transactions/standing-instructions/standing-instruction.service';
 
 @Component({
   selector: 'app-standing-instructions-list',
@@ -15,36 +19,83 @@ import { SharedService } from 'src/app/services/shared.service';
 })
 export class StandingInstructionsListComponent implements OnInit {
 
+  config: NgxDropdownConfig = {
+      displayKey: "glName",
+      height: "auto",
+      search: true,
+      placeholder: "Select GL",
+      searchPlaceholder: "Search GL by name...",
+      limitTo: 0,
+      customComparator: undefined,
+      noResultsFound: "No results found",
+      moreText: "more",
+      clearOnSelection: false,
+      inputDirection: "ltr",
+      enableSelectAll: false,
+    };
+  
   StandingInstructionForm!: FormGroup;
-  uicashTransactionTypes: any[] = [];
+  uiInstructionStatuses: any[] = [];
   voucherTransactionSummary: any = {};
-  uiVoucherDetails: any[] = [];
+  uiInstructionDetails: any[] = [];
+  uiDueInstructionDetails: any[] = [];
+  uiAllGeneralLedgers: any = [];
+  p: number = 1;
+  total: number = 0;
 
   constructor(private router: Router, private _toastrService: ToastrService, private _sharedService: SharedService,
-    private _accountsService: AccountsService
-  ) { }
+    private _standingInstructionService: StandingInstructionService, private _generalLedgerService: GeneralLedgerService,
+  private datePipe: DatePipe) { }
 
   ngOnInit(): void {
-    this.uicashTransactionTypes = TransactionsDeclarations.voucherTransactionTypes;
+    this.uiInstructionStatuses = TransactionsDeclarations.uiInstructionStatuses;
 
     this.StandingInstructionForm = new FormGroup({
-      transactionType: new FormControl(this.uicashTransactionTypes[0].code, []),
+      instructionStatus: new FormControl(this.uiInstructionStatuses[0].code, []),
+      generalLedger: new FormControl(null, [])
     });
 
     //this.getBranches();
     UserRoleHeper.initialiseUserRoles(this._sharedService.applicationUser);
+
+    this.getGeneralLedgers();
   }
 
-  addNewInstruction()
-  {
-        this.configClick('standing-instruction');
+   pageChangeEvent(event: number) {
+    this.p = event;
+    //this.getBranches();
   }
 
-    configClick(routeValue: string) {
+  getGeneralLedgers() {
+    return new Promise((resolve, reject) => {
+      this._generalLedgerService.getGeneralLedgers(this._sharedService.applicationUser.branchId).subscribe((data: any) => {
+        if (data) {
+          this.uiAllGeneralLedgers = data.data.data;
+          if (this.uiAllGeneralLedgers) {
+
+            this.uiAllGeneralLedgers.map((gl: any, i: any) => {
+              gl.glName = gl.code + "-" + gl.glName;
+            });
+
+            resolve(true);
+          }
+        }
+        else {
+          resolve(false);
+        }
+      })
+    })
+  }
+
+  addNewInstruction() {
+    this.configClick('standing-instruction');
+  }
+
+
+  configClick(routeValue: string) {
     sessionStorage.setItem("configMenu", routeValue);
     this.router.navigate(['/app/' + routeValue]);
   }
-
 
   isAdministratorUser() {
     return UserRoleHeper.isAdministratorUser();
@@ -65,98 +116,87 @@ export class StandingInstructionsListComponent implements OnInit {
 
   fetchInstructions() {
 
+    const glId = this.generalLedger.value?.code;
+    const instructionStatus = this.instructionStatus.value == "A" ? 1 : (this.instructionStatus.value == "C" ? 2 : 3);
+
+    this.uiInstructionDetails = [];
+    this._standingInstructionService.getStandingInstructions(this._sharedService.applicationUser.branchId,
+      glId || 0, instructionStatus || 0
+     ).subscribe((data: any) => {
+      let instructionModels = data.data.data;
+      if (instructionModels) {
+        this.uiInstructionDetails = instructionModels.map((ins: any) => ({
+          ...ins,
+          instructionAmount: parseFloat(ins.instructionAmount).toFixed(2),
+          executionDate: this.datePipe.transform(ins.executionDate, 'dd-MM-yyyy')
+        }));
+      } else {
+        this._toastrService.error('No standing instructions found for the selected status.', 'Warning!');
+      }
+    });
   }
 
-  viewVoucherDetails() {
-    //  if (this.voucherTransactionSummary && this.voucherTransactionSummary.voucherNo &&
-    //    this.voucherTransactionSummary.voucherNo > 0) {
-    //      this._accountsService.SearchAccountDetailsAsync(this.voucherTransactionSummary.branchCode, 
-    //        this.voucherTransactionSummary.transactionDetails[0].code1, 
-    //        this.voucherTransactionSummary.transactionDetails[0].accountNumber).subscribe((data: any) => {
-    //          let accounts = data.data.data;
-    //          if (accounts) {
-    //            this.uiBankAccounts = accounts.map((acc: any) => (
-    //              {
-    //                ...acc,
-    //                accountType: this.uiAccountTypes.filter(at=>at.constantNo == acc.accountType)[0]?.constantname,
-    //                modeOfOperation: this.uiModeOfOperations.filter(at=>at.constantNo == acc.modeOfOperation)[0]?.constantname,
-    //                openDate: formatDate(new Date(acc.openDate), 'yyyy-MM-dd', 'en'),
-    //                lastTransactionDate: formatDate(new Date(acc.lastTransactionDate), 'yyyy-MM-dd', 'en'),
-    //                lastInterestDate: formatDate(new Date(acc.lastInterestDate), 'yyyy-MM-dd', 'en'),
-    //                balance: parseFloat(acc.balance).toFixed(2),
-    //                minBalance: parseFloat(acc.minBalance).toFixed(2),
-    //              }))
+  fetchDueInstructions() {
 
-    //              let branchName = "";
-    //              let branch = this.uiBranches.filter((b: any) => b.branchCode == this.voucherTransactionSummary.branchCode);
-    //              if (branch && branch.length) {
-    //                branchName = branch[0].branchName
-    //              }
-
-    //              this.passingInfoModel.setAccountDetails(branchName, this.uiBankAccounts, this.voucherTransactionSummary);
-    //              this.passingInfoModel.open();
-    //          }
-    //          else {
-    //            this._toastrService.error('No accounts found', 'Warning!');
-    //          }
-    //        })
-    //  }
-    //  else
-    //  {
-    //    this._toastrService.error('Please search voucher to view details.', 'Error!');
-    //  }
-
-
+    this.uiDueInstructionDetails = [];
+    this._standingInstructionService.getDueStandingInstructions(this._sharedService.applicationUser.branchId
+     ).subscribe((data: any) => {
+      let instructionModels = data.data.data;
+      if (instructionModels) {
+        this.uiDueInstructionDetails = instructionModels.map((ins: any) => ({
+          ...ins,
+          instructionAmount: parseFloat(ins.instructionAmount).toFixed(2),
+          executionDate: this.datePipe.transform(ins.executionDate, 'dd-MM-yyyy'),
+          dueDate: this.datePipe.transform(ins.dueDate, 'dd-MM-yyyy')
+        }));
+      } else {
+        this._toastrService.error('No standing instructions found for the selected status.', 'Warning!');
+      }
+    });
   }
 
-  passVoucher(isRejected: boolean) {
-    //  if (this.voucherNumber.value && this.voucherNumber.value.trim().length) {
-
-    //    if (this.transactionHeadId.value && this.transactionHeadId.value) {
-    //      let passVoucherRequestModel = {
-    //        TransactionHeadId: parseInt(this.transactionHeadId.value),
-    //        IsRejected: isRejected,
-    //        PassedByUserId: this._sharedService.applicationUser.id,
-    //        PassingDate: this._sharedService.getWorkOperationDate()
-    //      };
-
-    //      this._voucherPassingService.passVoucher(passVoucherRequestModel).subscribe((data: any) => {
-    //        let result = data.data.data;
-    //        if (result) {
-    //          this._toastrService.success('Transaction has beed passed.', 'Success!');
-    //          this.clearSerach();
-    //        }
-    //      })
-
-    //    }
-    //    else
-    //    {
-    //      this._toastrService.error('Please search voucher to pass it.', 'Error!');
-    //    }
-    //  }
-    //  else
-    //  {
-    //    this._toastrService.error('Please search voucher to pass it.', 'Error!');
-    //  }
+  edit(uiInstructionDetail: any) {
+     let dtObject: IGeneralDTO = {
+          route: "standing-instruction",
+          action: "editRecord",
+          id: uiInstructionDetail.id,
+          maxId: 0,
+          models: this.uiInstructionDetails
+        }
+    this._standingInstructionService.setDTO(dtObject);
+    this.configClick('standing-instruction');
   }
 
-  clearSerach() {
-    //  this.voucherTransactionSummary = {};
+  execute(uiInstructionDetail: any) {
+    let executeInstructionRequest = {
+      BranchCode: this._sharedService.applicationUser.branchId,
+      InstructionId: uiInstructionDetail.id,
+      UserId: this._sharedService.applicationUser.id,
+    }
 
-    //  this.uiVoucherDetails = [];
-
-    //  this.StandingInstructionForm.patchValue({
-    //    transactionHeadId: 0,
-    //    voucherNumber: "",
-    //    voucherAmount: "",
-    //    gridAmount: "",
-    //  });
+    this._standingInstructionService.executeStandingInstruction(executeInstructionRequest).subscribe((data: any) => {
+      let result = data.data.data;
+      if (result) {
+        this._toastrService.success('Standing instruction executed successfully.', 'Success!');
+        this.fetchDueInstructions();
+      } else {
+        this._toastrService.error('Failed to execute standing instruction.', 'Error!');
+      }
+    });
 
   }
 
-  get transactionType() {
-    return this.StandingInstructionForm.get('transactionType')!;
+  clearSearch() {
+    this.uiInstructionDetails = [];
+    this.StandingInstructionForm.reset();
+    this.StandingInstructionForm.get('instructionStatus')?.setValue(this.uiInstructionStatuses[0].code);
+    this.StandingInstructionForm.get('generalLedger')?.setValue(null);
   }
 
-
+  get instructionStatus() {
+    return this.StandingInstructionForm.get('instructionStatus')!;
+  }
+  get generalLedger() {
+    return this.StandingInstructionForm.get('generalLedger')!;
+  }
 }

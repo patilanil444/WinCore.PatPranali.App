@@ -29,47 +29,52 @@
                                 <div class="accountSectionInfoData">
                                     <div class="col-md-3 actionControlsInputs form-group">
                                         <label class="commonTextTitleLabel">Instruction No </label>
-                                        <input tabindex="28" type="number" class="form-control" placeholder="Amount"
-                                            formControlName="receiptAmount">
+                                        <input tabindex="5" type="number" class="form-control" readonly
+                                            formControlName="instructionNo">
+                                    </div>
+                                    <div class="col-md-2 actionControlsInputs form-group">
+                                        <label class="commonTextTitleLabel">Execution Date</label>
+                                        <input tabindex="6" type="text" class="form-control"
+                                            [max]="maxDate | date:'yyyy-MM-dd'" formControlName="executionDate"
+                                            bsDatepicker [bsConfig]="datepickerConfig">
+
+                                    </div>
+                                    <div class="col-md-2 actionControlsInputs form-group">
+                                        <label class="commonTextTitleLabel">Execution For No. Of Times </label>
+                                        <input tabindex="7" type="number" class="form-control" max="9999"
+                                            formControlName="executionTimes" (input)="executionTimes.value > 9999 ? executionTimes.setValue(9999) : null">
+                                    </div>
+                                     <div class="col-md-2 actionControlsInputs form-group">
+                                        <label class="commonTextTitleLabel">Interest </label>
+                                        <select class="mb-2 form-control" tabindex="8" formControlName="interestYN">
+                                            <option *ngFor="let uiInterestOption of uiInterestOptions"
+                                                [ngValue]="uiInterestOption.code">
+                                                {{uiInterestOption.name}}
+                                            </option>
+                                        </select>
                                     </div>
                                     <div class="col-md-3 actionControlsInputs form-group">
-                                        <label class="commonTextTitleLabel">Execution Date</label>
-                                        <input tabindex="28" type="text" class="form-control" placeholder="Reason"
-                                            formControlName="receiptDesc">
-                                    </div>
-                                    <div class="col-md-2 actionControlsInputs form-group">
-                                        <label class="commonTextTitleLabel">Interest </label>
-                                        <input tabindex="28" type="number" class="form-control" readonly
-                                            formControlName="balanceWillBe">
-                                    </div>
-                                    <div class="col-md-2 actionControlsInputs form-group">
-                                        <label class="commonTextTitleLabel">Type </label>
-                                        <input tabindex="28" type="number" class="form-control" readonly
-                                            formControlName="balanceWillBe">
-                                    </div>
-
-                                    <div class="col-md-2 actionControlsInputs form-group">
-                                        <label class="commonTextTitleLabel">Amount </label>
-                                        <input tabindex="28" type="number" class="form-control" readonly
-                                            formControlName="balanceWillBe">
+                                        <label class="commonTextTitleLabel">Status </label>
+                                        <select class="mb-2 form-control" tabindex="9" formControlName="status">
+                                            <option *ngFor="let uiInstructionStatus of uiInstructionStatuses"
+                                                [ngValue]="uiInstructionStatus.code">
+                                                {{uiInstructionStatus.name}}
+                                            </option>
+                                        </select>
                                     </div>
                                 </div>
-                                  <div class="accountSectionInfoData">
+                                <div class="accountSectionInfoData">
                                     <div class="col-md-3 actionControlsInputs form-group">
-                                        <label class="commonTextTitleLabel">Particulars</label>
-                                        <input tabindex="28" type="number" class="form-control" placeholder="Amount"
-                                            formControlName="receiptAmount">
-                                    </div>
-                                    <div class="col-md-3 actionControlsInputs form-group">
-                                        <label class="commonTextTitleLabel">Execution For Number Of Times </label>
-                                        <input tabindex="28" type="text" class="form-control" placeholder="Reason"
-                                            formControlName="receiptDesc">
+                                        <label class="commonTextTitleLabel">Amount </label>
+                                        <input tabindex="10" type="number" class="form-control"
+                                            formControlName="amount">
                                     </div>
                                     <div class="col-md-2 actionControlsInputs form-group">
-                                        <label class="commonTextTitleLabel">Execution Cycle <span class="mandatory">*</span></label>
+                                        <label class="commonTextTitleLabel">Execution Cycle <span
+                                                class="mandatory">*</span></label>
                                         <div class="input-group">
-                                            <input tabindex="38" type="number" min="0" class="form-control"
-                                                formControlName="days">
+                                            <input tabindex="11" type="number" min="0" class="form-control"
+                                                formControlName="executionCycleDays" (input)="executionCycleDays.value > 31 ? executionCycleDays.setValue(31) : null">
                                             <div class="input-group-append"><span class="input-group-text">Days</span>
                                             </div>
                                         </div>
@@ -77,8 +82,8 @@
                                     <div class="col-md-2 actionControlsInputs form-group">
                                         <label class="commonTextTitleLabel"> &nbsp;</label>
                                         <div class="input-group">
-                                            <input tabindex="40" type="number" min="0" class="form-control"
-                                                formControlName="months">
+                                            <input tabindex="12" type="number" min="0" class="form-control"
+                                                formControlName="executionCycleMonths" (input)="executionCycleMonths.value > 12 ? executionCycleMonths.setValue(12) : null">
                                             <div class="input-group-append"><span class="input-group-text">Months</span>
                                             </div>
                                         </div>
@@ -86,98 +91,86 @@
                                     <div class="col-md-2 actionControlsInputs form-group">
                                         <label class="commonTextTitleLabel"> &nbsp;</label>
                                         <div class="input-group">
-                                            <input tabindex="41" type="number" min="0" class="form-control"
-                                                formControlName="years">
+                                            <input tabindex="13" type="number" min="0" class="form-control"
+                                                formControlName="executionCycleYears" (input)="executionCycleYears.value > 50 ? executionCycleYears.setValue(50) : null">
                                             <div class="input-group-append"><span class="input-group-text">Years</span>
                                             </div>
 
                                         </div>
                                     </div>
-                                </div>
-                            </div>
-                        </div>
-
-                    </div>
-
-                    <div class="customPageSubSections">
-                        <div class="customPageSubSectionsHead1">
-                            <div class="accountSectionInfoR1">
-                                <div class="customPageSubSectionsHeadTitle2">Search Account</div>
-                                <app-bank-acc-search [generalLedgers]="uiFilteredGeneralLedgers" [uiBranches]="uiBranches"
-                                    [isReset]="isResetAccountSearch" (accounts)="getAccounts($event)" style="width: 100%;">
-                                </app-bank-acc-search>
-                            </div>
-                             <div class="accountSectionInfoR1">
-                                <div class="informationSection1">
-                                    <label class="commonTextTitleLabel">Customer Name :</label>
-                                    <label class="commonTextTitleLabelValue">{{customerName.value}}</label>
-                                </div>
-                                <div class="informationSection1">
-                                    <label class="commonTextTitleLabel">Account Number :</label>
-                                    <label class="commonTextTitleLabelValue">{{accountNumber.value}}</label>
-                                </div>
-                                <div class="informationSection1">
-                                    <label class="commonTextTitleLabel">Account Type :</label>
-                                    <label class="commonTextTitleLabelValue">{{accountType.value}}</label>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="customPageSubSections">
-                        <div class="customPageSubSectionsHead1">
-                            <div class="accountSectionInfoR1">
-                                <div class="customPageSubSectionsHeadTitle2">Search Account</div>
-                                <app-bank-acc-search [generalLedgers]="uiFilteredGeneralLedgers" [uiBranches]="uiBranches"
-                                    [isReset]="isResetAccountSearch" (accounts)="getAccounts($event)" style="width: 100%;">
-                                </app-bank-acc-search>
-                            </div>
-                             <div class="accountSectionInfoR1">
-                                <div class="informationSection1">
-                                    <label class="commonTextTitleLabel">Customer Name :</label>
-                                    <label class="commonTextTitleLabelValue">{{customerName.value}}</label>
-                                </div>
-                                <div class="informationSection1">
-                                    <label class="commonTextTitleLabel">Account Number :</label>
-                                    <label class="commonTextTitleLabelValue">{{accountNumber.value}}</label>
-                                </div>
-                                <div class="informationSection1">
-                                    <label class="commonTextTitleLabel">Account Type :</label>
-                                    <label class="commonTextTitleLabelValue">{{accountType.value}}</label>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="customPageSubSections">
-                        <div class="customPageSubSectionsHead1">
-                            <div class="customPageSubSectionsHeadTitle2">Cancellation</div>
-                            <div class="accountSectionInfoR1">
-                                <div class="accountSectionInfoData">
+                                    
                                     <div class="col-md-3 actionControlsInputs form-group">
-                                        <label class="commonTextTitleLabel">Instruction Cancel </label>
-                                        <input tabindex="28" type="number" class="form-control" placeholder="Amount"
-                                            formControlName="receiptAmount">
-                                    </div>
-                                    <div class="col-md-3 actionControlsInputs form-group">
-                                        <label class="commonTextTitleLabel">Cancel Date </label>
-                                        <input tabindex="28" type="text" class="form-control" placeholder="Reason"
-                                            formControlName="receiptDesc">
+                                        <label class="commonTextTitleLabel">Particulars</label>
+                                        <input tabindex="14" type="text" class="form-control"
+                                            placeholder="Particulars" formControlName="particulars">
                                     </div>
                                 </div>
                             </div>
                         </div>
 
                     </div>
+
+                    <div class="customPageSubSections">
+                        <div class="customPageSubSectionsHead1">
+                            <div class="accountSectionInfoR1">
+                                <div class="customPageSubSectionsHeadTitle2">Search Debit Account</div>
+                                <app-bank-acc-search [generalLedgers]="uiFilteredGeneralLedgers"
+                                    [uiBranches]="uiBranches" [isReset]="isResetAccountSearch"
+                                    (accounts)="getDebitAccounts($event)" style="width: 100%;">
+                                </app-bank-acc-search>
+                            </div>
+                            <div class="accountSectionInfoR1">
+                                <div class="informationSection1">
+                                    <label class="commonTextTitleLabel">Customer Name :</label>
+                                    <label class="commonTextTitleLabelValue">{{debitCustomerName.value}}</label>
+                                </div>
+                                <div class="informationSection1">
+                                    <label class="commonTextTitleLabel">Account Number :</label>
+                                    <label class="commonTextTitleLabelValue">{{debitAccountNumber.value}}</label>
+                                </div>
+                                <div class="informationSection1">
+                                    <label class="commonTextTitleLabel">Account Type :</label>
+                                    <label class="commonTextTitleLabelValue">{{debitAccountType.value}}</label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="customPageSubSections">
+                        <div class="customPageSubSectionsHead1">
+                            <div class="accountSectionInfoR1">
+                                <div class="customPageSubSectionsHeadTitle2">Search Credit Account</div>
+                                <app-bank-acc-search [generalLedgers]="uiFilteredGeneralLedgers"
+                                    [uiBranches]="uiBranches" [isReset]="isResetAccountSearch"
+                                    (accounts)="getCreditAccounts($event)" style="width: 100%;">
+                                </app-bank-acc-search>
+                            </div>
+                            <div class="accountSectionInfoR1">
+                                <div class="informationSection1">
+                                    <label class="commonTextTitleLabel">Customer Name :</label>
+                                    <label class="commonTextTitleLabelValue">{{creditCustomerName.value}}</label>
+                                </div>
+                                <div class="informationSection1">
+                                    <label class="commonTextTitleLabel">Account Number :</label>
+                                    <label class="commonTextTitleLabelValue">{{creditAccountNumber.value}}</label>
+                                </div>
+                                <div class="informationSection1">
+                                    <label class="commonTextTitleLabel">Account Type :</label>
+                                    <label class="commonTextTitleLabelValue">{{creditAccountType.value}}</label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
 
                     <div class="actionableFooterSection">
-                        <button class="btn action-primatryBtn" tabindex="2" (click)="saveInstruction()"
+                        <button class="btn action-primatryBtn" tabindex="15" (click)="saveInstruction()"
                             *ngIf="isCashierUser()">
                             Submit</button>
 
-                        <button class="btn btn-danger" tabindex="2" (click)="clearInstruction()"
+                        <button class="btn btn-danger" tabindex="16" (click)="clearInstruction()"
                             *ngIf="isCashierUser()">
-                            Cancel Instruction</button>
+                            Clear</button>
                     </div>
                 </form>
             </div>

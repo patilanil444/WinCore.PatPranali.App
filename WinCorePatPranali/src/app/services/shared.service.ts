@@ -18,6 +18,8 @@ export class SharedService {
   public uiTypeOfAccounts = [];
   public uiCurrencies = [];
   public uiDenominatons = [];
+  public uiDocumentTypes = [];
+  public uiDocumentMasters = [];
 
   public uiAllMasters: any[] = [];
 
